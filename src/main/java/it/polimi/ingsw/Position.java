@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import java.util.Objects;
+
 public class Position {
     public Integer row;
     public Integer col;
@@ -10,12 +12,19 @@ public class Position {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null)
-            return false;
-        if (obj instanceof Position){
-            return this.row.equals(((Position) obj).row) && this.col.equals(((Position) obj).col);
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Position position = (Position) o;
+        return row.equals(position.row) &&
+                col.equals(position.col);
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "row=" + row +
+                ", col=" + col +
+                '}';
     }
 }
