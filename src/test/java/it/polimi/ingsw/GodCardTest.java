@@ -42,16 +42,16 @@ public class GodCardTest {
         boolean actualminotaur = CardTestMinotaur.isSelected();
         boolean actualpan = CardTestPan.isSelected();
         boolean actualprome = CardTestPrometheus.isSelected();
-        
-        Assert.assertEquals(false,actual);
-        Assert.assertEquals(false,actualartemis);
-        Assert.assertEquals(false,actualathena);
-        Assert.assertEquals(false,actualatlas);
-        Assert.assertEquals(false,actualdemeter);
-        Assert.assertEquals(false,actualhephastaus);
-        Assert.assertEquals(false,actualminotaur);
-        Assert.assertEquals(false,actualpan);
-        Assert.assertEquals(false,actualprome);
+
+        assertFalse(actual);
+        assertFalse(actualartemis);
+        assertFalse(actualathena);
+        assertFalse(actualatlas);
+        assertFalse(actualdemeter);
+        assertFalse(actualhephastaus);
+        assertFalse(actualminotaur);
+        assertFalse(actualpan);
+        assertFalse(actualprome);
     }
 
     @Test
