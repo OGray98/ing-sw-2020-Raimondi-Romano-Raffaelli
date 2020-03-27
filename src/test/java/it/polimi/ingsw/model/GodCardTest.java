@@ -1,10 +1,10 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 public class GodCardTest {
 
@@ -20,8 +20,8 @@ public class GodCardTest {
 
     @Before
     public void before(){
-        CardTestApollo = new GodCard(God.APOLLO,God.APOLLO.GetGodDescription(),PowerType.YOUR_MOVE);
-        CardTestArtemis = new GodCard(God.ARTEMIS,God.ARTEMIS.GetGodDescription(),PowerType.YOUR_MOVE);
+        CardTestApollo = new GodCard(God.APOLLO, God.APOLLO.GetGodDescription(), PowerType.YOUR_MOVE);
+        CardTestArtemis = new GodCard(God.ARTEMIS, God.ARTEMIS.GetGodDescription(), PowerType.YOUR_MOVE);
         CardTestAthena = new GodCard(God.ATHENA,God.ATHENA.GetGodDescription(),PowerType.OPPONENT_TURN);
         CardTestAtlas = new GodCard(God.ATLAS,God.ATLAS.GetGodDescription(),PowerType.YOUR_BUILD);
         CardTestDemeter = new GodCard(God.DEMETER,God.DEMETER.GetGodDescription(),PowerType.YOUR_BUILD);

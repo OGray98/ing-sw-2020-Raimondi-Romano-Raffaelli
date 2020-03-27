@@ -1,6 +1,4 @@
-package it.polimi.ingsw;
-
-import java.util.Objects;
+package it.polimi.ingsw.model;
 
 public class Position {
     public Integer row;

@@ -1,8 +1,9 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
-import org.junit.Test;
-import org.junit.BeforeClass;
 
 /*
 * Test related to the Worker class and its methods

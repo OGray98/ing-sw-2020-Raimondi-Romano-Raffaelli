@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 // Class representing the attributes of godcard.
 public class GodCard {

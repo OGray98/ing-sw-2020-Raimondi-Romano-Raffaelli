@@ -1,12 +1,13 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
+
+import org.junit.Test;
 
 import static org.junit.Assert.*;
-import org.junit.Test;
 
 public class PlayerTest {
 
     @Test
-    public void isInitPlayer(){
+    public void isInitPlayer() {
 
         Player player = new Player("Jack", 1);
 
