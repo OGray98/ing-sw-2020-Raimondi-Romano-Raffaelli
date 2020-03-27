@@ -9,7 +9,9 @@ public class Board {
     private static final int NUM_COLUMNS = 5;
     private Cell[][] map;
 
+
     public Board(){
+
         this.map = new Cell[NUM_ROW][NUM_COLUMNS];
         for(int i = 0; i < NUM_ROW; i++){
             for(int j = 0; j < NUM_COLUMNS; j++)
