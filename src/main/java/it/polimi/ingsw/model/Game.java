@@ -30,6 +30,7 @@ public class Game {
         if (players == null)
             throw new NullPointerException();
 
+
         if (game == null)
             game = new Game(players);
         return game;

@@ -46,18 +46,19 @@ public class Deck  {
         }
     }
 
-    public void setChosenCards() throws NullPointerException, ArrayIndexOutOfBoundsException {
+    public GodCard[] setChosenCards() throws NullPointerException, ArrayIndexOutOfBoundsException {
         int count=0;
         if(godCards.size()==0) throw new NullPointerException();
-        for(int i=0;i<godCards.size();i++){
-            if(godCards.get(i).isSelected() && count <= NumberOfPlayers){
-                chosenCards[count] = godCards.get(i);
-                count++;
-            }
-            if(i >= godCards.size() || count > chosenCards.length || count < 0){
-                throw new ArrayIndexOutOfBoundsException();
-            }
-        }
 
+            for (int i = 0; i < godCards.size(); i++) {
+                if (godCards.get(i).isSelected() && count <= NumberOfPlayers) {
+                    chosenCards[count] = godCards.get(i);
+                    count++;
+                }
+                if (i >= godCards.size() || count > chosenCards.length || count < 0) {
+                    throw new ArrayIndexOutOfBoundsException();
+                }
+            }
+        return chosenCards;
     }
 }
