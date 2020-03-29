@@ -39,10 +39,10 @@ public class PlayerTest {
 
         Player player = new Player("Jack", 1);
         Board board = new Board();
-        Position destinationPosition = new Position(1,1);
-        Cell destinationCell = board.getCell(destinationPosition.row,destinationPosition.col);
+        Position destinationPosition = new Position(1, 1);
+        Cell destinationCell = board.getCell(destinationPosition);
 
-        player.putWorker(board.getCell(0,0), 0);
+        player.putWorker(board.getCell(new Position(0, 0)), 0);
         player.moveWorker(board, destinationPosition, 0);
 
         assertEquals(destinationCell.getOccupation(), CellOccupation.PLAYER1);
@@ -50,20 +50,20 @@ public class PlayerTest {
     }
 
     @Test
-    public void buildTest(){
+    public void buildTest() {
 
         Player player = new Player("Jack", 1);
         Board board = new Board();
-        Position destinationPosition = new Position(1,1);
-        Cell destinationCell = board.getCell(destinationPosition.row,destinationPosition.col);
+        Position destinationPosition = new Position(1, 1);
+        Cell destinationCell = board.getCell(destinationPosition);
         int beforeBuildLevel = destinationCell.getLevel();
 
-        player.putWorker(board.getCell(0,1), 1);
+        player.putWorker(board.getCell(new Position(0, 1)), 1);
         Position beforeBuildWorkerPosition = player.getWorkerPosition(1);
 
         player.build(board, destinationPosition, 1);
 
-        if(destinationCell.getLevel() < 3){
+        if (destinationCell.getLevel() < 3) {
             assertEquals(destinationCell.getLevel(), beforeBuildLevel + 1);
         }
         else if(destinationCell.getLevel() == 3){

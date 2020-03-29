@@ -1,12 +1,20 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidPositionException;
+
 public class Position {
     public Integer row;
     public Integer col;
 
-    public Position(int row, int col){
+    public Position(int row, int col) {
+        if (row < 0 || row > 4 || col < 0 || col > 4)
+            throw new InvalidPositionException(row, col);
         this.row = row;
         this.col = col;
+    }
+
+    public boolean isIllegal() {
+        return row < 0 || row > 4 || col < 0 || col > 4;
     }
 
     @Override

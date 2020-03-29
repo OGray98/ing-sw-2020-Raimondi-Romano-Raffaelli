@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.InvalidIncrementLevelException;
+import it.polimi.ingsw.exceptions.InvalidPositionException;
 
 public class Cell {
 
@@ -10,7 +11,7 @@ public class Cell {
 
     public Cell(int row, int col) throws IllegalArgumentException{
         if(row < 0 || row > 4 || col <0 || col > 4)
-            throw new IllegalArgumentException("There can't be a cell in [" + row + "][" + col + "]");
+            throw new InvalidPositionException(row, col);
         this.occupation = CellOccupation.EMPTY;
         this.level = 0;
         position = new Position(row, col);

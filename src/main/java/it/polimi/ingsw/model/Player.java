@@ -56,7 +56,7 @@ public class Player implements PlayerInterface {
     public void moveWorker(Board map, Position newCellPosition, int workerIndex) throws ArrayIndexOutOfBoundsException {
         if(workerIndex < 0 || workerIndex > 1) throw new ArrayIndexOutOfBoundsException();
 
-        this.workers[workerIndex].move(map.getCell(newCellPosition.row, newCellPosition.col));
+        this.workers[workerIndex].move(map.getCell(newCellPosition));
 
     }
 
@@ -64,7 +64,7 @@ public class Player implements PlayerInterface {
     public void build(Board map, Position newBuildingPosition, int workerIndex) throws ArrayIndexOutOfBoundsException{
         if(workerIndex < 0 || workerIndex > 1) throw new ArrayIndexOutOfBoundsException();
 
-        this.workers[workerIndex].build(map.getCell(newBuildingPosition.row, newBuildingPosition.col));
+        this.workers[workerIndex].build(map.getCell(newBuildingPosition));
     }
 
     @Override
