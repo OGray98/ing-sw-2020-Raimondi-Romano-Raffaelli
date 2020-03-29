@@ -46,7 +46,7 @@ public class Deck  {
         }
     }
 
-    public GodCard[] setChosenCards() throws NullPointerException, ArrayIndexOutOfBoundsException {
+    public void setChosenCards() throws NullPointerException, ArrayIndexOutOfBoundsException {
         int count=0;
         if(godCards.size()==0) throw new NullPointerException();
 
@@ -59,6 +59,10 @@ public class Deck  {
                     throw new ArrayIndexOutOfBoundsException();
                 }
             }
+
+    }
+
+    public GodCard[] getChosenCards(){
         return chosenCards;
     }
 }
