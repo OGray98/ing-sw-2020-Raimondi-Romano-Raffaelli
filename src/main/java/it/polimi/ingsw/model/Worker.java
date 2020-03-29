@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 public class Worker {
 
-    private Cell cellOccupied;
+    private Position positionOccupied;
     private final CellOccupation playerNum; //final perchè la pedina rimane dello stesso giocatore sempre
 
     //Constructor where it is set the player who own this worker
@@ -11,40 +11,36 @@ public class Worker {
         this.playerNum = playerNum;
     }
 
-    public Cell getCellOccupied() {
-        return cellOccupied;
+    public Position getPositionOccupied() {
+        return positionOccupied;
     }
 
     public CellOccupation getPlayerNum() {
         return playerNum;
     }
 
-    //Set the Cell occupied by this Worker and set the related CellOccupation
-    public void setCellOccupied(Cell cellOccupied){
-        this.cellOccupied = cellOccupied;
-        this.cellOccupied.setOccupation(playerNum);
+    //Set the Position occupied by this Worker, update on the board will be done by the controller
+    public void setPositionOccupied(Position positionOccupied){
+        this.positionOccupied = positionOccupied;
     }
 
-    //Method that move the worker in newWorkerCell
+    //Method that move the worker in newWorkerPosition, update on the board will be done by the controller
     //TODO:Forse da aggiungere controllo della win condition???
-    public void move(Cell newWorkerCell){
-
-        this.cellOccupied.setOccupation(CellOccupation.EMPTY);
-        this.setCellOccupied(newWorkerCell);
-
+    public void move(Position newWorkerPosition){
+        this.setPositionOccupied(newWorkerPosition);
     }
 
-    //Method that try to build in buildingPosition, it handles Exception from Cell.incrementLevel()
-    public void build(Cell buildingCell){
-
+    /*
+    * Old method build
+    * Method that try to build in buildingPosition, it handles Exception from Cell.incrementLevel()
+    public void build(Position buildingCell){
         try{
             buildingCell.incrementLevel();
         }
         catch(Exception e){
             e.printStackTrace();
         }
-
-    }
+    }*/
 
     @Override
     public String toString(){

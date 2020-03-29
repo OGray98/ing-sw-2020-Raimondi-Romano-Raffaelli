@@ -3,67 +3,58 @@ package it.polimi.ingsw.model;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /*
-* Test related to the Worker class and its methods
-* */
+ * Test related to the Worker class and its methods
+ * */
 
 public class WorkerTest {
 
     private static Worker worker;
-    private static Cell cell;
+    private static Position position;
     private static final CellOccupation player1 = CellOccupation.PLAYER1;
 
     @BeforeClass
     public static void initWorkerP1(){
         worker = new Worker(player1);
-        cell = new Cell(0,0);
+        position = new Position(0,0);
     }
 
     @Test
     public void isWorkerInit(){
         //assertNull(worker.getCellOccupied());
 
-        worker.setCellOccupied(cell);
+        worker.setPositionOccupied(position);
 
-        assertNotNull(worker.getCellOccupied());
+        assertNotNull(worker.getPositionOccupied());
         assertEquals(worker.getPlayerNum(), CellOccupation.PLAYER1);
-        assertTrue(worker.getCellOccupied().isOccupied());
-        assertEquals(worker.getCellOccupied().getOccupation(), worker.getPlayerNum());
     }
 
     @Test
     public void moveTest(){
 
-        Cell oldCell = new Cell(0,0);
-        worker.setCellOccupied(oldCell);
+        Position oldPosition = new Position(0,0);
+        worker.setPositionOccupied(oldPosition);
 
-        assertEquals(worker.getPlayerNum(), oldCell.getOccupation());
+        worker.move(position);
 
-        worker.move(cell);
-
-        assertEquals(worker.getCellOccupied(), cell);
-        assertEquals(worker.getCellOccupied().getOccupation(), worker.getPlayerNum());
-        //Apollo maybe can violate the following assertion
-        assertEquals(oldCell.getOccupation(), CellOccupation.EMPTY);
+        assertEquals(worker.getPositionOccupied(), position);
     }
 
-    @Test
+    /*@Test
     public void buildTest(){
-
         int beforeBuildLevel = cell.getLevel();
         Cell cellOccupied = new Cell(0, 1);
-        worker.setCellOccupied(cellOccupied);
-
+        worker.setPositionOccupied(cellOccupied);
         worker.build(cell);
-
         if(beforeBuildLevel < 3){
             assertEquals(cell.getLevel(), beforeBuildLevel+1);
         }
         else if(beforeBuildLevel == 3){
             assertTrue(cell.getLevel() == 3 && cell.getOccupation() == CellOccupation.DOME);
         }
-        assertEquals(worker.getCellOccupied(), cellOccupied);
-    }
+        assertEquals(worker.getPositionOccupied(), cellOccupied);
+    }*/
 }

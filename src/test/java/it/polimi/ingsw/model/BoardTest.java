@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidPositionException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ public class BoardTest {
     private static Board board;
 
     private Cell getCell(int r, int c){
-        return board.getCell(r, c);
+        return board.getCell(new Position(r, c));
     }
 
     @BeforeClass
@@ -35,27 +36,11 @@ public class BoardTest {
 
     @Test
     public void isGetAdjacentListCorrected() {
-        /*
-        //Corner case control
-        assertTrue(isCornerUpLeftCorrected(board.getAdjacentCells(0,0)));
-        assertTrue(isCornerUpRightCorrected(board.getAdjacentCells(0,4)));
-        assertTrue(isCornerDownLeftCorrected(board.getAdjacentCells(4,0)));
-        assertTrue(isCornerDownRightCorrected(board.getAdjacentCells(4,4)));
-
-        //Boundary case control
-        assertTrue(isBoundaryUpCorrected(board.getAdjacentCells(0,1), 1));
-        assertTrue(isBoundaryDownCorrected(board.getAdjacentCells(4,1), 1));
-        assertTrue(isBoundaryLeftCorrected(board.getAdjacentCells(2,0), 2));
-        assertTrue(isBoundaryRightCorrected(board.getAdjacentCells(3,4), 3));
-
-        //Standard case control
-        assertTrue(isStandardCaseCorrected(board.getAdjacentCells(3,1), 3,1));
-        */
 
         //Control every cases
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                assertTrue(isStandardCaseCorrected(board.getAdjacentCells(i,j), i,j));
+                assertTrue(isStandardCaseCorrected(board.getAdjacentCells(new Position(i, j)), i, j));
             }
         }
 
@@ -63,18 +48,84 @@ public class BoardTest {
         int row = 2;
         int col = 5;
         try {
-            board.getAdjacentCells(row, col);
-        } catch (IllegalArgumentException e) {
-            assertEquals("There can't be a cell in [" + row + "][" + col + "]", e.getMessage());
+            board.getAdjacentCells(new Position(row, col));
+        } catch (InvalidPositionException e) {
+            assertEquals("You cannot have a position in : [" + row + "][" + col + "]", e.getMessage());
         }
     }
 
+    @Test
+    public void isPutWorkerCorrected() {
+        Position p00 = new Position(0, 0);
+        board.putWorker(p00, 0);
+        Position p01 = new Position(1, 3);
+        board.putWorker(p01, 0);
+
+        Position p10 = new Position(4, 2);
+        board.putWorker(p10, 1);
+        Position p11 = new Position(3, 3);
+        board.putWorker(p11, 1);
+
+        Position p20 = new Position(1, 2);
+        board.putWorker(p20, 2);
+        Position p21;
+        try {
+            p21 = new Position(1, 2);
+            board.putWorker(p21, 2);
+        } catch (InvalidPositionException e) {
+            assertEquals("You cannot have a position in : [" + 1 + "][" + 2 + "]", e.getMessage());
+        }
+        p21 = new Position(2, 4);
+        board.putWorker(p21, 2);
+
+        assertSame(board.getCell(p00).getOccupation(), CellOccupation.PLAYER1);
+        assertSame(board.getCell(p01).getOccupation(), CellOccupation.PLAYER1);
+        assertSame(board.getCell(p10).getOccupation(), CellOccupation.PLAYER2);
+        assertSame(board.getCell(p11).getOccupation(), CellOccupation.PLAYER2);
+        assertSame(board.getCell(p20).getOccupation(), CellOccupation.PLAYER3);
+        assertSame(board.getCell(p21).getOccupation(), CellOccupation.PLAYER3);
+        assertSame(board.getCell(new Position(0, 1)).getOccupation(), CellOccupation.EMPTY);
+
+    }
+
+    @Test
+    public void isUpdateBoardCorrected() {
+        Position p00 = new Position(0, 0);
+        board.putWorker(p00, 0);
+        Position p01 = new Position(1, 3);
+        board.putWorker(p01, 0);
+
+        Position p10 = new Position(4, 2);
+        board.putWorker(p10, 1);
+        Position p11 = new Position(3, 3);
+        board.putWorker(p11, 1);
+
+        Position p20 = new Position(1, 2);
+        board.putWorker(p20, 2);
+        Position p21 = new Position(2, 4);
+
+        board.putWorker(p21, 2);
+
+        Position newP00 = new Position(0, 1);
+        board.updateBoard(p00, newP00, 0);
+        assertSame(board.getCell(p00).getOccupation(), CellOccupation.EMPTY);
+        assertSame(board.getCell(newP00).getOccupation(), CellOccupation.PLAYER1);
+
+        try {
+            board.updateBoard(p10, p11, 1);
+        } catch (InvalidPositionException e) {
+            assertEquals("You cannot have a position in : [" + p11.row + "][" + p11.col + "]", e.getMessage());
+        }
+
+
+    }
+
     private boolean isCornerUpLeftCorrected(List<Cell> cells) {
-        return cells.size()== 3 && getCell(0,1).equals(cells.get(0)) && getCell(1,0).equals(cells.get(1)) && getCell(1,1).equals(cells.get(2));
+        return cells.size() == 3 && getCell(0, 1).equals(cells.get(0)) && getCell(1, 0).equals(cells.get(1)) && getCell(1, 1).equals(cells.get(2));
     }
 
     private boolean isCornerDownRightCorrected(List<Cell> cells) {
-        return cells.size()== 3 && getCell(3,3).equals(cells.get(0)) && getCell(3,4).equals(cells.get(1)) && getCell(4,3).equals(cells.get(2));
+        return cells.size() == 3 && getCell(3, 3).equals(cells.get(0)) && getCell(3, 4).equals(cells.get(1)) && getCell(4, 3).equals(cells.get(2));
     }
 
     private boolean isCornerUpRightCorrected(List<Cell> cells) {

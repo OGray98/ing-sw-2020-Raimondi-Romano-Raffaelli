@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.InvalidIncrementLevelException;
+import it.polimi.ingsw.exceptions.InvalidPositionException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -10,7 +11,24 @@ public class CellTest {
     private static Cell cell;
 
     @BeforeClass
-    public static void initCell(){
+    public static void initCell() {
+
+        try {
+            cell = new Cell(0, 5);
+        } catch (InvalidPositionException e) {
+            assertEquals("You cannot have a position in : [0][5]", e.getMessage());
+        }
+        try {
+            cell = new Cell(5, 4);
+        } catch (InvalidPositionException e) {
+            assertEquals("You cannot have a position in : [5][4]", e.getMessage());
+        }
+        try {
+            cell = new Cell(-1, -2);
+        } catch (InvalidPositionException e) {
+            assertEquals("You cannot have a position in : [-1][-2]", e.getMessage());
+        }
+
         cell = new Cell(1, 4);
     }
 
@@ -23,7 +41,7 @@ public class CellTest {
 
     @Test
     public void occupiedTest(){
-        //cell.setOccupation(CellOccupation.EMPTY);
+        cell.setOccupation(CellOccupation.EMPTY);
         assertFalse(cell.isOccupied());
         cell.setOccupation(CellOccupation.PLAYER1);
         assertTrue(cell.isOccupied() && cell.getOccupation() == CellOccupation.PLAYER1);
