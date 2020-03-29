@@ -34,14 +34,12 @@ public class Worker {
     * Old method build
     * Method that try to build in buildingPosition, it handles Exception from Cell.incrementLevel()
     public void build(Position buildingCell){
-
         try{
             buildingCell.incrementLevel();
         }
         catch(Exception e){
             e.printStackTrace();
         }
-
     }*/
 
     @Override

@@ -3,11 +3,12 @@ package it.polimi.ingsw.model;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /*
-* Test related to the Worker class and its methods
-* */
+ * Test related to the Worker class and its methods
+ * */
 
 public class WorkerTest {
 
@@ -44,13 +45,10 @@ public class WorkerTest {
 
     /*@Test
     public void buildTest(){
-
         int beforeBuildLevel = cell.getLevel();
         Cell cellOccupied = new Cell(0, 1);
         worker.setPositionOccupied(cellOccupied);
-
         worker.build(cell);
-
         if(beforeBuildLevel < 3){
             assertEquals(cell.getLevel(), beforeBuildLevel+1);
         }
