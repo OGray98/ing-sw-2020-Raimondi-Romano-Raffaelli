@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.InvalidIndexPlayerException;
+
 import java.util.List;
 
 public class Player implements PlayerInterface {
@@ -24,20 +26,19 @@ public class Player implements PlayerInterface {
     }
 
     @Override
-    public Worker getWorker(int workerIndex) throws ArrayIndexOutOfBoundsException{
-        if(workerIndex < 0 || workerIndex > 1) throw new ArrayIndexOutOfBoundsException();
+    public Worker getWorker(int workerIndex) throws InvalidIndexPlayerException {
+        if(workerIndex < 0 || workerIndex > 1) throw new InvalidIndexPlayerException(workerIndex);
 
         return this.workers[workerIndex];
     }
 
     @Override
-    public Position getWorkerPosition(int workerIndex) throws ArrayIndexOutOfBoundsException {
-        if(workerIndex < 0 || workerIndex > 1) throw new ArrayIndexOutOfBoundsException();
+    public Position getWorkerPosition(int workerIndex) throws InvalidIndexPlayerException {
+        if(workerIndex < 0 || workerIndex > 1) throw new InvalidIndexPlayerException(workerIndex);
 
         return this.workers[workerIndex].getPositionOccupied();
     }
 
-    //TODO: mettere una Exception appropriata
     @Override
     public God getGodChosen() throws NullPointerException {
         if (this.godChosen == null) throw new NullPointerException("This player hasn't choose any God yet!");
@@ -46,26 +47,27 @@ public class Player implements PlayerInterface {
     }
 
     @Override
-    public void putWorker(Position startingPosition, int workerIndex) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
-        if (workerIndex < 0 || workerIndex > 1) throw new ArrayIndexOutOfBoundsException();
+    public void putWorker(Position startingPosition, int workerIndex) throws InvalidIndexPlayerException, IllegalArgumentException {
+        if (workerIndex < 0 || workerIndex > 1) throw new InvalidIndexPlayerException(workerIndex);
         if (startingPosition.col > 4 || startingPosition.row > 4 || startingPosition.col < 0 || startingPosition.row < 0)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Not valid position!");
 
         this.workers[workerIndex].setPositionOccupied(startingPosition);
     }
 
     @Override
-    public void moveWorker(Position newPosition, int workerIndex) throws ArrayIndexOutOfBoundsException, IllegalArgumentException {
-        if (workerIndex < 0 || workerIndex > 1) throw new ArrayIndexOutOfBoundsException();
+    public void moveWorker(Position newPosition, int workerIndex) throws InvalidIndexPlayerException, IllegalArgumentException {
+        if (workerIndex < 0 || workerIndex > 1) throw new InvalidIndexPlayerException(workerIndex);
         if (newPosition.col > 4 || newPosition.row > 4 || newPosition.col < 0 || newPosition.row < 0)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Not valid position!");
 
         this.workers[workerIndex].move(newPosition);
     }
 
     @Override
-    public boolean canMove(List<Cell> adjacentCells, Position moveToCheck, int workerLevel) {
-
+    public boolean canMove(List<Cell> adjacentCells, Position moveToCheck, int workerLevel) throws NullPointerException, IllegalArgumentException{
+        if(adjacentCells == null) throw new NullPointerException("adjacentCells is null!");
+        if(workerLevel < 0 || workerLevel > 3) throw new IllegalArgumentException("Impossible value of worker level!");
         for (Cell cell : adjacentCells) {
             if (cell.getPosition().equals(moveToCheck)) {
                 if (cell.getOccupation() != CellOccupation.EMPTY) return false;
@@ -77,9 +79,10 @@ public class Player implements PlayerInterface {
     }
 
     @Override
-    public boolean canBuild(List<Cell> adjacentCell, Position buildingPosition) {
+    public boolean canBuild(List<Cell> adjacentCells, Position buildingPosition) throws NullPointerException{
+        if(adjacentCells == null) throw new NullPointerException("adjacentCells is null!");
 
-        for (Cell cell : adjacentCell) {
+        for (Cell cell : adjacentCells) {
             if (cell.getPosition().equals(buildingPosition)) {
                 if (cell.getOccupation() == CellOccupation.EMPTY) return true;
             }

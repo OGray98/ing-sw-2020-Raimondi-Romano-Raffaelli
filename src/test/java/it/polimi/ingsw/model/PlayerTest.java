@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polimi.ingsw.exceptions.InvalidIndexPlayerException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -49,6 +50,15 @@ public class PlayerTest {
         assertNotNull(player.getWorker(1).getPositionOccupied());
         assertEquals(player.getWorker(1).getPositionOccupied(), position);
 
+        //Exceptions check
+
+        //Invalid index of worker
+        try{
+            player.putWorker(position, -1);
+        }
+        catch(InvalidIndexPlayerException e){
+            assertEquals("You cannot have a player with index: " + -1, e.getMessage());
+        }
     }
 
     @Test
@@ -58,10 +68,28 @@ public class PlayerTest {
         player.moveWorker(newPosition, 0);
 
         assertEquals(player.getWorker(0).getPositionOccupied(), newPosition);
+
+        //Exceptions check
+
+        //Invalid index of worker
+        try{
+            player.putWorker(position, -1);
+        }
+        catch(InvalidIndexPlayerException e){
+            assertEquals("You cannot have a player with index: " + -1, e.getMessage());
+        }
     }
 
     @Test
     public void canMoveTest(){
+
+        //Null adjacentCells is given, exception check
+        try{
+            player.canMove(cellList, new Position(0,0), 2);
+        }
+        catch (NullPointerException e){
+            assertEquals("adjacentCells is null!", e.getMessage());
+        }
 
         //Initialization of the Cells adjacent, assuming they are actually adjacent (this is tested in BoardTest class)
         //Assuming adjacentCells of board[1][1] cell
@@ -112,6 +140,15 @@ public class PlayerTest {
         cellList.add(adjCell20);
         cellList.add(adjCell21);
         cellList.add(adjCell22);
+
+        //Invalid workerLevel value is given, exception check
+
+        try{
+            player.canMove(cellList, new Position(0,0), 4);
+        }
+        catch (IllegalArgumentException e){
+            assertEquals("Impossible value of worker level!", e.getMessage());
+        }
 
         /*Adjacent cells tested reprasention:
         *
@@ -181,6 +218,14 @@ public class PlayerTest {
 
     @Test
     public void canBuildTest(){
+
+        //Null adjacentCells is given, exception check
+        try{
+            player.canMove(cellList, new Position(0,0), 2);
+        }
+        catch (NullPointerException e){
+            assertEquals("adjacentCells is null!", e.getMessage());
+        }
         //Initialization of the Cells adjacent, assuming they are actually adjacent (this is tested in BoardTest class)
         //Assuming adjacentCells of board[1][1] cell
         Cell adjCell00 = new Cell(0,0);
@@ -265,8 +310,5 @@ public class PlayerTest {
         //Check build on a not in adjacentCells cell
         assertFalse(player.canBuild(cellList, pos23));
     }
-
-
-    //TODO: Test per chooseGodPower
 
 }
