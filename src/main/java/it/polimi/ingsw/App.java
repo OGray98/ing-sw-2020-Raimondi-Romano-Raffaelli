@@ -1,9 +1,6 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Cell;
-
-import java.util.List;
 
 /**
  * Hello world!

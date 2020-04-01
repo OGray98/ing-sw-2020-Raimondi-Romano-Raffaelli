@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.CellNotFreeException;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -72,8 +73,8 @@ public class BoardTest {
         try {
             p21 = new Position(1, 2);
             board.putWorker(p21, 2);
-        } catch (InvalidPositionException e) {
-            assertEquals("You cannot have a position in : [" + 1 + "][" + 2 + "]", e.getMessage());
+        } catch (CellNotFreeException e) {
+            assertEquals("Cell in position [" + 1 + "][" + 2 + "] isn't free", e.getMessage());
         }
         p21 = new Position(2, 4);
         board.putWorker(p21, 2);
@@ -107,14 +108,14 @@ public class BoardTest {
         board.putWorker(p21, 2);
 
         Position newP00 = new Position(0, 1);
-        board.updateBoard(p00, newP00, 0);
+        board.updateBoardMove(p00, newP00, 0);
         assertSame(board.getCell(p00).getOccupation(), CellOccupation.EMPTY);
         assertSame(board.getCell(newP00).getOccupation(), CellOccupation.PLAYER1);
 
         try {
-            board.updateBoard(p10, p11, 1);
-        } catch (InvalidPositionException e) {
-            assertEquals("You cannot have a position in : [" + p11.row + "][" + p11.col + "]", e.getMessage());
+            board.updateBoardMove(p10, p11, 1);
+        } catch (CellNotFreeException e) {
+            assertEquals("Cell in position [" + p11.row + "][" + p11.col + "] isn't free", e.getMessage());
         }
 
 

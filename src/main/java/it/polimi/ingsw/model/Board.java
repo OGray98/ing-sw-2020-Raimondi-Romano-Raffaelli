@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.CellNotFreeException;
+import it.polimi.ingsw.exceptions.InvalidIncrementLevelException;
 import it.polimi.ingsw.exceptions.InvalidIndexPlayerException;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
 
@@ -46,8 +48,7 @@ public class Board {
         return new Cell(this.map[position.row][position.col]);
     }
 
-    //Update board
-    public void updateBoard(Position oldPosition, Position newPosition, int indexPlayer) throws NullPointerException, InvalidPositionException, InvalidIndexPlayerException {
+    public void updateBoardMove(Position oldPosition, Position newPosition, int indexPlayer) throws NullPointerException, InvalidPositionException, InvalidIndexPlayerException, CellNotFreeException {
         if (oldPosition == null)
             throw new NullPointerException("OldPosition");
         if (newPosition == null)
@@ -56,33 +57,30 @@ public class Board {
             throw new InvalidPositionException(oldPosition.row, oldPosition.col);
         if (newPosition.isIllegal())
             throw new InvalidPositionException(newPosition.row, newPosition.col);
-        if (this.map[newPosition.row][newPosition.col].isOccupied())
-            throw new InvalidPositionException(newPosition.row, newPosition.col); //TODO: fare nuova eccezione OccupiedCellException?
 
         this.map[oldPosition.row][oldPosition.col].setOccupation(CellOccupation.EMPTY);
 
         setWorkerPosition(newPosition, indexPlayer);
     }
 
-    //Put worker in board when game start
-    public void putWorker(Position position, int indexPlayer) throws InvalidPositionException, NullPointerException, InvalidIndexPlayerException {
+    public void putWorker(Position position, int indexPlayer) throws NullPointerException, InvalidPositionException, InvalidIndexPlayerException, CellNotFreeException {
         if (position == null)
             throw new NullPointerException("position");
         if (position.isIllegal())
             throw new InvalidPositionException(position.row, position.col);
-        if (this.map[position.row][position.col].isOccupied())
-            throw new InvalidPositionException(position.row, position.col); //TODO: fare nuova eccezione OccupiedCellException?
+
         setWorkerPosition(position, indexPlayer);
     }
 
-    private void setWorkerPosition(Position position, int indexPlayer) throws InvalidIndexPlayerException, InvalidPositionException {
+
+    private void setWorkerPosition(Position position, int indexPlayer) throws InvalidIndexPlayerException, NullPointerException, InvalidPositionException, CellNotFreeException {
         if (position == null)
             throw new NullPointerException("position");
         if (position.isIllegal())
             throw new InvalidPositionException(position.row, position.col);
-        //TODO: fare nuova eccezione OccupiedCellException? Qua serve metterla visto che nella putWorker e updateeBoard controllo già?
         if (this.map[position.row][position.col].isOccupied())
-            throw new InvalidPositionException(position.row, position.col);
+            throw new CellNotFreeException(position.row, position.col);
+
         switch (indexPlayer) {
             case 0:
                 this.map[position.row][position.col].setOccupation(CellOccupation.PLAYER1);
@@ -96,5 +94,17 @@ public class Board {
             default:
                 throw new InvalidIndexPlayerException(indexPlayer);
         }
+    }
+
+    public void updateBoardBuild(Position buildPosition) throws NullPointerException, InvalidPositionException, CellNotFreeException, InvalidIncrementLevelException {
+        if (buildPosition == null)
+            throw new NullPointerException("position");
+        if (buildPosition.isIllegal())
+            throw new InvalidPositionException(buildPosition.row, buildPosition.col);
+        if (this.map[buildPosition.row][buildPosition.col].isOccupied())
+            throw new CellNotFreeException(buildPosition.row, buildPosition.col);
+
+        this.map[buildPosition.row][buildPosition.col].incrementLevel();
+
     }
 }
