@@ -40,6 +40,7 @@ public class WorkerTest {
 
         Position newPosition = new Position(1,1);
 
+        worker.move(position);
         worker.move(newPosition);
 
         assertEquals(worker.getPositionOccupied(), newPosition);

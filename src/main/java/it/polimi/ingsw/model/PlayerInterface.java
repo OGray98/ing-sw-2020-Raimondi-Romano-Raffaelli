@@ -25,6 +25,8 @@ public interface PlayerInterface {
     //Throws IllegalArgumentException if workerIndex < 0 || workerIndex > 1
     Position getWorkerPositionOccupied(int workerIndex) throws InvalidIndexPlayerException;
 
+    void putWorker(Position startingCellPosition, int workerIndex) throws InvalidIndexWorkerException, InvalidPositionException;
+
     //Move the Worker tile on the Position wanted
     //Throws InvalidIndexPlayerException if worker index is not a possible value
     void moveWorker(Position newCellPosition, int workerIndex) throws InvalidIndexWorkerException;

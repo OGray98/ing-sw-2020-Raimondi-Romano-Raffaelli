@@ -42,12 +42,39 @@ public class PlayerTest {
     }
 
     @Test
-    public void moveWorkerTest(){
+    public void putWorkerTest(){
 
-        player.moveWorker(position, 0);
+        player.putWorker(position, 0);
 
         assertEquals(player.getWorkerPositionOccupied(0), position);
         assertNull(player.getWorker(0).getOldPosition());
+
+        //InvalidPositionException check
+        try{
+            player.putWorker(new Position(-1, 0), 0);
+        }
+        catch(InvalidPositionException e){
+            assertEquals("You cannot have a position in : [" + -1 + "][" + 0 + "]", e.getMessage());
+        }
+
+        //InvalidIndexWorkerException check
+        try{
+            player.putWorker(newPosition, -1);
+        }
+        catch(InvalidIndexWorkerException e){
+            assertEquals("You cannot have a worker with index: " + -1, e.getMessage());
+        }
+
+
+    }
+    @Test
+    public void moveWorkerTest(){
+
+        player.putWorker(position, 0);
+
+        assertEquals(player.getWorkerPositionOccupied(0), position);
+        assertNull(player.getWorker(0).getOldPosition());
+
 
         player.moveWorker(newPosition, 0);
 

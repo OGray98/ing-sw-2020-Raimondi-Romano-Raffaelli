@@ -68,6 +68,16 @@ public class Player implements PlayerInterface {
     }
 
     @Override
+    public void putWorker(Position startingCellPosition, int workerIndex) throws InvalidIndexWorkerException, InvalidPositionException {
+        if (workerIndex < 0 || workerIndex > 1) throw new InvalidIndexWorkerException(workerIndex);
+        if (startingCellPosition.col > 4 || startingCellPosition.row > 4 || startingCellPosition.col < 0 || startingCellPosition.row < 0)
+            throw new InvalidPositionException(startingCellPosition.row, startingCellPosition.col);
+
+        this.workers[workerIndex].move(startingCellPosition);
+        this.board.putWorker(startingCellPosition, this.playerNumber);
+    }
+
+    @Override
     public void moveWorker(Position newPosition, int workerIndex) throws InvalidIndexWorkerException {
         if (workerIndex < 0 || workerIndex > 1) throw new InvalidIndexWorkerException(workerIndex);
 
