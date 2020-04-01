@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.ingsw.exceptions.InvalidIndexPlayerException;
+import it.polimi.ingsw.exceptions.InvalidIndexWorkerException;
+import it.polimi.ingsw.exceptions.InvalidPositionException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -11,6 +13,7 @@ import static org.junit.Assert.*;
 
 public class PlayerTest {
 
+    private static Board board;
     private static Player player;
     private static Position position;
     private static Position newPosition;
@@ -18,7 +21,8 @@ public class PlayerTest {
 
     @BeforeClass
     public static void init(){
-        player = new Player("Jack", 1);
+        board = new Board();
+        player = new Player(board, "Jack", 1);
         position = new Position(0,0);
         newPosition = new Position(1,1);
         cellList = new ArrayList<>();
@@ -26,69 +30,58 @@ public class PlayerTest {
 
     @Test
     public void isInitPlayer() {
-        assertSame(player.getWorker(0).getPlayerNum(), CellOccupation.PLAYER1);
-        assertSame(player.getWorker(1).getPlayerNum(), CellOccupation.PLAYER1);
+        assertTrue(player.getWorker(0).getPlayerNum() == 1);
+        assertTrue(player.getWorker(1).getPlayerNum() == 1);
         assertEquals("Jack", player.getNickName());
-    }
 
-    @Test
-    public void putWorkerTest(){
-
-        //Workers are initialized with no positionOccupied
+        //Workers are initialized with no positionOccupied and no oldPosition
         assertNull(player.getWorker(0).getPositionOccupied());
         assertNull(player.getWorker(1).getPositionOccupied());
-
-        player.putWorker(position, 0);
-
-        //After putWorker(p, i) method, the positionOccupied by the worker number i must be not null and must be the cell c
-        assertNotNull(player.getWorker(0).getPositionOccupied());
-        assertEquals(player.getWorker(0).getPositionOccupied(), position);
-
-        //Same check on the worker[1]
-        player.putWorker(position, 1);
-
-        assertNotNull(player.getWorker(1).getPositionOccupied());
-        assertEquals(player.getWorker(1).getPositionOccupied(), position);
-
-        //Exceptions check
-
-        //Invalid index of worker
-        try{
-            player.putWorker(position, -1);
-        }
-        catch(InvalidIndexPlayerException e){
-            assertEquals("You cannot have a player with index: " + -1, e.getMessage());
-        }
+        assertNull(player.getWorker(0).getOldPosition());
+        assertNull(player.getWorker(1).getOldPosition());
     }
 
     @Test
     public void moveWorkerTest(){
 
-        player.putWorker(position, 0);
+        player.moveWorker(position, 0);
+
+        assertEquals(player.getWorkerPositionOccupied(0), position);
+        assertNull(player.getWorker(0).getOldPosition());
+
         player.moveWorker(newPosition, 0);
 
-        assertEquals(player.getWorker(0).getPositionOccupied(), newPosition);
+        assertEquals(player.getWorkerPositionOccupied(0), newPosition);
+        assertEquals(player.getWorker(0).getOldPosition(), position);
 
-        //Exceptions check
+        //Exceptions check:
 
         //Invalid index of worker
         try{
-            player.putWorker(position, -1);
+            player.moveWorker(position, -1);
         }
-        catch(InvalidIndexPlayerException e){
-            assertEquals("You cannot have a player with index: " + -1, e.getMessage());
+        catch(InvalidIndexWorkerException e){
+            assertEquals("You cannot have a worker with index: " + -1, e.getMessage());
         }
     }
 
     @Test
     public void canMoveTest(){
 
-        //Null adjacentCells is given, exception check
+        //NullPointerException: Null adjacentCells is given, exception check
         try{
             player.canMove(cellList, new Position(0,0), 2);
         }
         catch (NullPointerException e){
             assertEquals("adjacentCells is null!", e.getMessage());
+        }
+
+        //InvalidPositionException: Position given moveToCheck is not a possible position
+        try{
+            player.canMove(cellList, new Position(5,6), 2);
+        }
+        catch(InvalidPositionException e){
+            assertEquals("You cannot have a position in : [" + 5 + "][" + 6 + "]", e.getMessage());
         }
 
         //Initialization of the Cells adjacent, assuming they are actually adjacent (this is tested in BoardTest class)
@@ -141,8 +134,7 @@ public class PlayerTest {
         cellList.add(adjCell21);
         cellList.add(adjCell22);
 
-        //Invalid workerLevel value is given, exception check
-
+        //IllegalArgumentException: Invalid workerLevel value is given, exception check
         try{
             player.canMove(cellList, new Position(0,0), 4);
         }
@@ -217,14 +209,43 @@ public class PlayerTest {
     }
 
     @Test
+    public void buildWorkerTest(){
+        assertTrue(board.getCell(newPosition).getLevel() == 0);
+
+        player.buildWorker(newPosition);
+
+        assertTrue(board.getCell(newPosition).getLevel() == 1);
+
+        player.buildWorker(newPosition);
+
+        assertTrue(board.getCell(newPosition).getLevel() == 2);
+
+        player.buildWorker(newPosition);
+
+        assertTrue(board.getCell(newPosition).getLevel() == 3);
+
+        player.buildWorker(newPosition);
+
+        assertTrue(board.getCell(newPosition).getLevel() == 3);
+        assertTrue(board.getCell(newPosition).getOccupation() == CellOccupation.DOME);
+    }
+
+    @Test
     public void canBuildTest(){
 
-        //Null adjacentCells is given, exception check
+        //NullPointerException: Null adjacentCells is given, exception check
         try{
-            player.canMove(cellList, new Position(0,0), 2);
+            player.canBuild(cellList, new Position(0,0));
         }
         catch (NullPointerException e){
             assertEquals("adjacentCells is null!", e.getMessage());
+        }
+        //InvalidPositionException: Position given buildingPosition is not a possible position
+        try{
+            player.canBuild(cellList, new Position(5,6));
+        }
+        catch(InvalidPositionException e){
+            assertEquals("You cannot have a position in : [" + 5 + "][" + 6 + "]", e.getMessage());
         }
         //Initialization of the Cells adjacent, assuming they are actually adjacent (this is tested in BoardTest class)
         //Assuming adjacentCells of board[1][1] cell
