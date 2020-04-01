@@ -98,7 +98,7 @@ public class Board {
 
     public void updateBoardBuild(Position buildPosition) throws NullPointerException, InvalidPositionException, CellNotFreeException, InvalidIncrementLevelException {
         if (buildPosition == null)
-            throw new NullPointerException("position");
+            throw new NullPointerException("buildPosition");
         if (buildPosition.isIllegal())
             throw new InvalidPositionException(buildPosition.row, buildPosition.col);
         if (this.map[buildPosition.row][buildPosition.col].isOccupied())
@@ -106,5 +106,17 @@ public class Board {
 
         this.map[buildPosition.row][buildPosition.col].incrementLevel();
 
+    }
+
+    public void UpdateBoardBuildDome(Position position) throws NullPointerException, InvalidPositionException, CellNotFreeException, InvalidIncrementLevelException {
+        if (position == null)
+            throw new NullPointerException("position");
+        if (position.isIllegal())
+            throw new InvalidPositionException(position.row, position.col);
+        if (this.map[position.row][position.col].isOccupied())
+            throw new CellNotFreeException(position.row, position.col);
+        if (this.map[position.row][position.col].getOccupation() == CellOccupation.DOME)
+            throw new InvalidIncrementLevelException(position.row, position.col);
+        this.map[position.row][position.col].setOccupation(CellOccupation.DOME);
     }
 }

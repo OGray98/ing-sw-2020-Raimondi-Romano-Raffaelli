@@ -90,7 +90,7 @@ public class BoardTest {
     }
 
     @Test
-    public void isUpdateBoardCorrected() {
+    public void isUpdateBoardMoveCorrected() {
         Position p00 = new Position(0, 0);
         board.putWorker(p00, 0);
         Position p01 = new Position(1, 3);
@@ -117,8 +117,6 @@ public class BoardTest {
         } catch (CellNotFreeException e) {
             assertEquals("Cell in position [" + p11.row + "][" + p11.col + "] isn't free", e.getMessage());
         }
-
-
     }
 
     private boolean isCornerUpLeftCorrected(List<Cell> cells) {
