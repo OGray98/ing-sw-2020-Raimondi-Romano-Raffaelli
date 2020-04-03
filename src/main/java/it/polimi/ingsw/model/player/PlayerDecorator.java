@@ -86,4 +86,14 @@ public abstract class PlayerDecorator implements PlayerInterface {
     public Board getBoard() {
         return player.getBoard();
     }
+
+    @Override
+    public boolean hasWin(int workerIndex) throws NullPointerException{
+        return player.hasWin(workerIndex);
+    }
+
+    @Override
+    public List<Integer> blockedWorkers() throws NullPointerException{
+        return player.blockedWorkers();
+    }
 }

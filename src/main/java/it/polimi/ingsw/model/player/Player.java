@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.board.CellOccupation;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.deck.God;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player implements PlayerInterface {
@@ -143,6 +144,55 @@ public class Player implements PlayerInterface {
     @Override
     public void usePower(Position pos){
 
+    }
+
+    @Override
+    public boolean hasWin(int workerIndex) throws NullPointerException{
+        if(this.workers[workerIndex].getOldPosition() == null
+                || this.workers[workerIndex].getPositionOccupied() == null)
+            throw new NullPointerException("Worker number " +workerIndex + " has never been moved or other unknown problem");
+
+        return this.board.getCell(this.workers[workerIndex].getOldPosition()).getLevel() == 2
+                && this.board.getCell(this.workers[workerIndex].getPositionOccupied()).getLevel() == 3;
+    }
+
+    @Override
+    public List<Integer> blockedWorkers() throws NullPointerException{
+
+        if(this.workers[0].getPositionOccupied() == null
+                || this.workers[1].getPositionOccupied() == null)
+            throw new NullPointerException("Worker not in any position yet!");
+
+        List<Integer> blockedWorkersList = new ArrayList<>();
+
+        boolean blockedWorker0 = true;
+        boolean blockedWorker1 = true;
+        List<Cell> adjCellsWorker0 = this.board.getAdjacentCells(this.workers[0].getPositionOccupied());
+        List<Cell> adjCellsWorker1 = this.board.getAdjacentCells(this.workers[1].getPositionOccupied());
+
+        for(Cell c : adjCellsWorker0){
+            if(this.canMove(adjCellsWorker0, c.getPosition(), this.board.getCell(this.workers[0].getPositionOccupied()).getLevel())){
+                blockedWorker0 = false;
+                break;
+            }
+        }
+
+        if(blockedWorker0){
+            blockedWorkersList.add(0);
+        }
+
+        for(Cell c : adjCellsWorker1){
+            if(this.canMove(adjCellsWorker1, c.getPosition(), this.board.getCell(this.workers[1].getPositionOccupied()).getLevel())){
+                blockedWorker1 = false;
+                break;
+            }
+        }
+
+        if(blockedWorker1){
+            blockedWorkersList.add(1);
+        }
+
+        return blockedWorkersList;
     }
 
     @Override

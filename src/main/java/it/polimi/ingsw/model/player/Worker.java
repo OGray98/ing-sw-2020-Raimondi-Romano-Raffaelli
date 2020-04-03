@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.Position;
+
+import java.util.List;
 
 public class Worker {
 
