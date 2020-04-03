@@ -1,17 +1,14 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.exceptions.InvalidIndexPlayerException;
-import it.polimi.ingsw.exceptions.InvalidIndexWorkerException;
-import it.polimi.ingsw.exceptions.InvalidPositionException;
-import it.polimi.ingsw.exceptions.WorkerNotPresentException;
+
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.Cell;
+
 import it.polimi.ingsw.model.board.Position;
-import it.polimi.ingsw.model.deck.God;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
+
 
 import static org.junit.Assert.*;
 
@@ -26,7 +23,7 @@ public class AtlasDecoratorTest {
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
         board = new Board();
         posWorker = new Position(1,1);
@@ -37,6 +34,7 @@ public class AtlasDecoratorTest {
     }
 
     @Test
+    // verify that the atlasDecorator method return the correct boolean
     public void canBuildAtlasTest() {
 
         player.putWorker(posWorker,0);

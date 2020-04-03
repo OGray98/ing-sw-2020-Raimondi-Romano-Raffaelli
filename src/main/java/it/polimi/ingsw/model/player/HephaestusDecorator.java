@@ -34,7 +34,7 @@ public class HephaestusDecorator extends PlayerBuildDecorator {
     }
 
     @Override
-    public void usePower(Position pos) {
+    public void usePower(Position pos) throws InvalidIncrementLevelException {
         if(player.getBoard().getCell(pos).getOccupation() == CellOccupation.DOME)
             throw new InvalidIncrementLevelException(pos.row,pos.col);
         player.buildWorker(pos);

@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.player;
 
 
-import it.polimi.ingsw.exceptions.InvalidIndexWorkerException;
+
 import it.polimi.ingsw.exceptions.InvalidPositionException;
-import it.polimi.ingsw.model.board.Board;
+
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.Position;
 
@@ -25,11 +25,14 @@ public class AtlasDecorator extends PlayerBuildDecorator {
         return false;
     }
 
+    @Override
+    //Used if can build is true and user doesn't use the power
     public void buildWorker(Position pos){
         player.buildWorker(pos);
     }
 
-
+    @Override
+    //Used if can build is true and user use the power
     public void usePower(Position pos){
         player.getBoard().UpdateBoardBuildDome(pos);
     }
