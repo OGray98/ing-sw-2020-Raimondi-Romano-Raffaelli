@@ -1,23 +1,24 @@
 package it.polimi.ingsw.model.player;
 
 
+import it.polimi.ingsw.exceptions.InvalidIndexWorkerException;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.Position;
 
 import java.util.List;
 
+// Decorator that decorate the special power of Atlas
 public class AtlasDecorator extends PlayerBuildDecorator {
 
-    PlayerInterface player;
 
-    public AtlasDecorator(PlayerInterface playerinterface){
-        this.player = playerinterface;
-    }
+
+    protected AtlasDecorator(PlayerInterface player){ super(player);}
 
     @Override
     public boolean canBuild(List<Cell> adjacentCells, Position buildingPosition) throws InvalidPositionException, NullPointerException {
-        if(player.canBuild(adjacentCells,buildingPosition)){
+        if(super.canBuild(adjacentCells,buildingPosition)){
             //notify();
             return true;
         }
@@ -32,7 +33,6 @@ public class AtlasDecorator extends PlayerBuildDecorator {
     public void usePower(Position pos){
         player.getBoard().UpdateBoardBuildDome(pos);
     }
-
 
 
 }

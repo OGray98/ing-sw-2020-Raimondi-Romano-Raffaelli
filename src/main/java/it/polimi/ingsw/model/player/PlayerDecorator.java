@@ -15,6 +15,8 @@ public abstract class PlayerDecorator implements PlayerInterface {
 
     PlayerInterface player;
 
+    public PlayerDecorator(PlayerInterface player){ this.player = player;}
+
     @Override
     public String getNickName() {
         return player.getNickName();
