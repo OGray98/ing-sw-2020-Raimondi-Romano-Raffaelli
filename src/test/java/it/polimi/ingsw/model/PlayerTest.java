@@ -34,8 +34,8 @@ public class PlayerTest {
 
     @Test
     public void isInitPlayer() {
-        assertTrue(player.getWorker(0).getPlayerNum() == 1);
-        assertTrue(player.getWorker(1).getPlayerNum() == 1);
+        assertEquals(1, player.getWorker(0).getPlayerNum());
+        assertEquals(1, player.getWorker(1).getPlayerNum());
         assertEquals("Jack", player.getNickName());
 
         //Workers are initialized with no positionOccupied and no oldPosition
@@ -241,24 +241,24 @@ public class PlayerTest {
 
     @Test
     public void buildWorkerTest(){
-        assertTrue(board.getCell(newPosition).getLevel() == 0);
+        assertEquals(0, board.getCell(newPosition).getLevel());
 
         player.buildWorker(newPosition);
 
-        assertTrue(board.getCell(newPosition).getLevel() == 1);
+        assertEquals(1, board.getCell(newPosition).getLevel());
 
         player.buildWorker(newPosition);
 
-        assertTrue(board.getCell(newPosition).getLevel() == 2);
+        assertEquals(2, board.getCell(newPosition).getLevel());
 
         player.buildWorker(newPosition);
 
-        assertTrue(board.getCell(newPosition).getLevel() == 3);
+        assertEquals(3, board.getCell(newPosition).getLevel());
 
         player.buildWorker(newPosition);
 
-        assertTrue(board.getCell(newPosition).getLevel() == 3);
-        assertTrue(board.getCell(newPosition).getOccupation() == CellOccupation.DOME);
+        assertEquals(3, board.getCell(newPosition).getLevel());
+        assertSame(board.getCell(newPosition).getOccupation(), CellOccupation.DOME);
     }
 
     @Test
@@ -339,13 +339,13 @@ public class PlayerTest {
 
         //Initialization of the positions related to the adjacent cells
         Position pos00 = new Position(0,0);
-        Position pos01 = new Position(0,1);
-        Position pos02 = new Position(0,2);
+        //Position pos01 = new Position(0,1);
+        //Position pos02 = new Position(0,2);
         Position pos10 = new Position(1,0);
         Position pos12 = new Position(1,2);
         Position pos20 = new Position(2,0);
         Position pos21 = new Position(2,1);
-        Position pos22 = new Position(2,2);
+        //Position pos22 = new Position(2,2);
         //not in adjacent cell position:
         Position pos23 = new Position(2,3);
 
@@ -363,4 +363,96 @@ public class PlayerTest {
         assertFalse(player.canBuild(cellList, pos23));
     }
 
+    @Test
+    public void hasWinTest(){
+
+        //NullPointerException check (oldPosition and positionOccupied of worker are null):
+        try{
+            player.hasWin(0);
+        }
+        catch(NullPointerException e){
+            assertEquals("Worker number 0 has never been moved or other unknown problem", e.getMessage());
+        }
+
+        player.putWorker(position, 0);
+
+        //NullPointerException check (only oldPosition is null):
+        try{
+            player.hasWin(0);
+        }
+        catch (NullPointerException e){
+            assertEquals("Worker number 0 has never been moved or other unknown problem", e.getMessage());
+        }
+
+        //hasWin() after a move level 0 -> level 0
+        player.moveWorker(newPosition, 0);
+
+        assertFalse(player.hasWin(0));
+
+        //hasWin() after a move level 0 -> level 1
+        Position lvl1 = new Position(1,2);
+        board.updateBoardBuild(lvl1);
+
+        player.moveWorker(lvl1, 0);
+
+        assertFalse(player.hasWin(0));
+
+        //hasWin() after a move level 1 -> level 2
+        Position lvl2 = new Position(1,3);
+        board.updateBoardBuild(lvl2);
+        board.updateBoardBuild(lvl2);
+
+        player.moveWorker(lvl2, 0);
+
+        assertFalse(player.hasWin(0));
+
+        //hasWin() after a move level 2 -> level 3 (Win Condition)
+        Position lvl3 = new Position(1,4);
+        board.updateBoardBuild(lvl3);
+        board.updateBoardBuild(lvl3);
+        board.updateBoardBuild(lvl3);
+
+        player.moveWorker(lvl3, 0);
+
+        assertTrue(player.hasWin(0));
+    }
+
+    @Test
+    public void blockedWorkersTest(){
+
+        //NullPointerException check:
+        try{
+            player.blockedWorkers();
+        }
+        catch(NullPointerException e){
+            assertEquals("Worker/s not in any position yet!", e.getMessage());
+        }
+
+        //case with two workers free to move --> blockedWorkers().size == 0
+        Position posWorker1 = new Position(4,4);
+        player.putWorker(position, 0);
+        player.putWorker(posWorker1, 1);
+
+        assertEquals(0, player.blockedWorkers().size());
+
+        //case with one worker blocked --> blockedWorkers().size == 1
+
+        //Put a dome in every cell adjacent to workers[0]
+        for(Cell c : player.getBoard().getAdjacentCells(player.getWorkerPositionOccupied(0))){
+            board.UpdateBoardBuildDome(c.getPosition());
+        }
+
+        assertEquals(1,player.blockedWorkers().size());
+        assertEquals(0, (int) player.blockedWorkers().get(0));
+
+        //case with two workers blocked --> blockedWorkers().size() == 2
+
+        for(Cell c : player.getBoard().getAdjacentCells(player.getWorkerPositionOccupied(1))){
+            board.UpdateBoardBuildDome(c.getPosition());
+        }
+
+        assertEquals(2,player.blockedWorkers().size());
+        assertEquals(0, (int) player.blockedWorkers().get(0));
+        assertEquals(1, (int) player.blockedWorkers().get(1));
+    }
 }
