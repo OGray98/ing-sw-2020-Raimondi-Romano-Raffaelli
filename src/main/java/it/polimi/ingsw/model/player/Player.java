@@ -161,7 +161,7 @@ public class Player implements PlayerInterface {
 
         if(this.workers[0].getPositionOccupied() == null
                 || this.workers[1].getPositionOccupied() == null)
-            throw new NullPointerException("Worker not in any position yet!");
+            throw new NullPointerException("Worker/s not in any position yet!");
 
         List<Integer> blockedWorkersList = new ArrayList<>();
 
@@ -193,6 +193,27 @@ public class Player implements PlayerInterface {
         }
 
         return blockedWorkersList;
+    }
+
+    @Override
+    public boolean isBlockedBuilding(int workerIndex) throws NullPointerException, InvalidIndexWorkerException{
+
+        if (workerIndex < 0 || workerIndex > 1) throw new InvalidIndexWorkerException(workerIndex);
+
+        if(this.workers[workerIndex].getPositionOccupied() == null)
+            throw new NullPointerException("Worker/s not in any position yet!");
+
+        boolean blockedBuilding = true;
+        List<Cell> adjCellsWorker = this.board.getAdjacentCells(this.workers[workerIndex].getPositionOccupied());
+
+        for(Cell c : adjCellsWorker){
+            if(this.canBuild(adjCellsWorker, c.getPosition())){
+                blockedBuilding = false;
+                break;
+            }
+        }
+
+        return blockedBuilding;
     }
 
     @Override

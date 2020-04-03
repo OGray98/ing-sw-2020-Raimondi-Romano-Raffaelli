@@ -67,9 +67,16 @@ public interface PlayerInterface {
 
     /* Method that requires to be called after a moveWorker() ( not a putWorker()! ) and before a buildWorker() operation
     * It returns true if a Player moved the worker number workerIndex from a level 2 cell to a level 3 cell
-    * It returns false in all other cases */
+    * It returns false in all other cases
+    * Throws NullPointerException if the worker has not a oldPosition or a positionOccupied */
     boolean hasWin(int workerIndex) throws NullPointerException;
 
-    /* Method that returns a list with max 2 elements which contains the indexes of the workers blocked of this Player */
+    /* Method that returns a list with max 2 elements which contains the indexes of the workers blocked of this Player
+    * Throws NullPointerException if a worker has not a positionOccupied */
     List<Integer> blockedWorkers() throws  NullPointerException;
+
+    /* Method that returns true if the worker number workerIndex cannot build in any position, false otherwise
+    *  Throws NullPointerException if worker has not a positionOccupied
+    *  Throws InvalidIndexWorkerException if workerIndex is illegal */
+    boolean isBlockedBuilding(int workerIndex) throws NullPointerException, InvalidIndexWorkerException;
 }

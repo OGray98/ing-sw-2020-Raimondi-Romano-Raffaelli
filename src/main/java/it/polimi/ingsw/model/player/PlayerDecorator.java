@@ -96,4 +96,9 @@ public abstract class PlayerDecorator implements PlayerInterface {
     public List<Integer> blockedWorkers() throws NullPointerException{
         return player.blockedWorkers();
     }
+
+    @Override
+    public boolean isBlockedBuilding(int workerIndex){
+        return player.isBlockedBuilding(workerIndex);
+    }
 }

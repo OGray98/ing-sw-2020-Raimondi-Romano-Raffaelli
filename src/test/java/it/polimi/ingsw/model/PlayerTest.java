@@ -455,4 +455,40 @@ public class PlayerTest {
         assertEquals(0, (int) player.blockedWorkers().get(0));
         assertEquals(1, (int) player.blockedWorkers().get(1));
     }
+
+    @Test
+    public void isBlockedBuildingTest(){
+
+        //NullPointerException check:
+        try{
+            player.isBlockedBuilding(0);
+        }
+        catch(NullPointerException e){
+            assertEquals("Worker/s not in any position yet!", e.getMessage());
+        }
+
+        //InvalidIndexWorkerException check:
+        try{
+            player.isBlockedBuilding(4);
+        }
+        catch (InvalidIndexWorkerException e){
+            assertEquals("You cannot have a worker with index: " + 4, e.getMessage());
+        }
+
+        //case worker free to build in all positions
+        player.putWorker(position, 0);
+
+        assertFalse(player.isBlockedBuilding(0));
+
+        //case builds blocked in some positions
+        player.getBoard().UpdateBoardBuildDome(new Position(0,1));
+
+        assertFalse(player.isBlockedBuilding(0));
+
+        //case builds blocked in all positions adjacent to the worker
+        player.getBoard().UpdateBoardBuildDome(new Position(1,0));
+        player.getBoard().UpdateBoardBuildDome(new Position(1,1));
+
+        assertTrue(player.isBlockedBuilding(0));
+    }
 }
