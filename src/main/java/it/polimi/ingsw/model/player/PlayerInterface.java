@@ -1,9 +1,13 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.exceptions.InvalidIndexPlayerException;
 import it.polimi.ingsw.exceptions.InvalidIndexWorkerException;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.exceptions.WorkerNotPresentException;
+import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.Cell;
+import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.deck.God;
 
 import java.util.List;
 
@@ -51,4 +55,13 @@ public interface PlayerInterface {
     //Set godChosen of Player with a God at index godChosenNum in the chosenCards[] array of the Deck
     //Throws IllegalArgumentException if godChosenNum < 0 || godChosenNum > 2
     void chooseGodPower(God godChosen) throws IllegalArgumentException;
+
+    // verify from view if player want to use power
+    boolean canUsePower(Position pos);
+
+
+    void usePower(Position pos);
+
+
+    Board getBoard();
 }

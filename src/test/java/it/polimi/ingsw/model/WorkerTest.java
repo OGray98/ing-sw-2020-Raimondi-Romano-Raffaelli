@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.player.Worker;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

@@ -3,9 +3,13 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.exceptions.InvalidIndexPlayerException;
 import it.polimi.ingsw.exceptions.InvalidIndexWorkerException;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
+import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.Cell;
+import it.polimi.ingsw.model.board.CellOccupation;
+import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.player.Player;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

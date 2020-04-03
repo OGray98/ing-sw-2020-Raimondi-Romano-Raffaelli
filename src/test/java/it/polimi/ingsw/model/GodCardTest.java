@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.deck.God;
+import it.polimi.ingsw.model.deck.GodCard;
+import it.polimi.ingsw.model.deck.PowerType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

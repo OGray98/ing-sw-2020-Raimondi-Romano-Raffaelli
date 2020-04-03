@@ -1,11 +1,14 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.deck.Deck;
+import it.polimi.ingsw.model.deck.God;
+import it.polimi.ingsw.model.deck.GodCard;
+import it.polimi.ingsw.model.deck.PowerType;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static org.junit.Assert.*;
 

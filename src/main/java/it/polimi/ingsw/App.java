@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.board.Board;
 
 /**
  * Hello world!

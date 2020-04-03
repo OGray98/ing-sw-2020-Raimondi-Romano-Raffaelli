@@ -1,9 +1,14 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.exceptions.InvalidIndexPlayerException;
 import it.polimi.ingsw.exceptions.InvalidIndexWorkerException;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.exceptions.WorkerNotPresentException;
+import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.Cell;
+import it.polimi.ingsw.model.board.CellOccupation;
+import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.deck.God;
 
 import java.util.List;
 
@@ -23,6 +28,10 @@ public class Player implements PlayerInterface {
         //Initialize workers with two Worker with CellOccupation related to playerNumber
         this.workers[0] = new Worker(playerNumber);
         this.workers[1] = new Worker(playerNumber);
+    }
+
+    public Board getBoard(){
+        return this.board;
     }
 
     @Override
@@ -94,8 +103,7 @@ public class Player implements PlayerInterface {
         for (Cell cell : adjacentCells) {
             if (cell.getPosition().equals(moveToCheck)) {
                 if (cell.getOccupation() != CellOccupation.EMPTY) return false;
-                if ((cell.getLevel() - workerLevel) > 1) return false;
-                return true;
+                return (cell.getLevel() - workerLevel) <= 1;
             }
         }
         return false;
@@ -124,6 +132,17 @@ public class Player implements PlayerInterface {
     @Override
     public void chooseGodPower(God godChosen){
         this.godChosen = godChosen;
+    }
+
+
+    @Override
+    public boolean canUsePower(Position pos) {
+        return false;
+    }
+
+    @Override
+    public void usePower(Position pos){
+
     }
 
     @Override

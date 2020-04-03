@@ -1,6 +1,10 @@
 package it.polimi.ingsw.model;
 
 
+import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.deck.Deck;
+import it.polimi.ingsw.model.player.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

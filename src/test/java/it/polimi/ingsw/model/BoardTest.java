@@ -2,6 +2,10 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.CellNotFreeException;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
+import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.Cell;
+import it.polimi.ingsw.model.board.CellOccupation;
+import it.polimi.ingsw.model.board.Position;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
