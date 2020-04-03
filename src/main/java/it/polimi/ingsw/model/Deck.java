@@ -30,6 +30,8 @@ public class Deck  {
         Card.setisChoose(true);
     }
 
+    
+
     public void showCards(){
         String out;
         for (GodCard godCard : godCards) {
