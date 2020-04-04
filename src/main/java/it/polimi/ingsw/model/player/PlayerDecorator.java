@@ -1,11 +1,7 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.exceptions.InvalidIndexPlayerException;
-import it.polimi.ingsw.exceptions.InvalidIndexWorkerException;
-import it.polimi.ingsw.exceptions.InvalidPositionException;
-import it.polimi.ingsw.exceptions.WorkerNotPresentException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.deck.God;
 import it.polimi.ingsw.model.board.Position;
 
@@ -16,6 +12,16 @@ public abstract class PlayerDecorator implements PlayerInterface {
     PlayerInterface player;
 
     public PlayerDecorator(PlayerInterface player){ this.player = player;}
+
+    @Override
+    public Board getBoard() {
+        return player.getBoard();
+    }
+
+    @Override
+    public int getSelectedWorker(){
+        return player.getSelectedWorker();
+    }
 
     @Override
     public String getNickName() {
@@ -43,18 +49,23 @@ public abstract class PlayerDecorator implements PlayerInterface {
     }
 
     @Override
+    public void setSelectedWorker(int selectedWorker){
+        player.setSelectedWorker(selectedWorker);
+    }
+
+    @Override
     public void putWorker(Position startingCellPosition, int workerIndex) throws InvalidIndexWorkerException, InvalidPositionException {
         player.putWorker(startingCellPosition,workerIndex);
     }
 
     @Override
-    public void moveWorker(Position newCellPosition, int workerIndex) throws InvalidIndexWorkerException {
-        player.moveWorker(newCellPosition,workerIndex);
+    public void moveWorker(Position newCellPosition) throws InvalidPositionException, NotSelectedWorkerException {
+        player.moveWorker(newCellPosition);
     }
 
     @Override
-    public boolean canMove(List<Cell> adjacentCells, Position moveToCheck, int workerLevel) throws InvalidPositionException, NullPointerException, IllegalArgumentException {
-        return player.canMove(adjacentCells,moveToCheck,workerLevel);
+    public boolean canMove(Position moveToCheck) throws InvalidPositionException, IllegalArgumentException, NotSelectedWorkerException {
+        return player.canMove(moveToCheck);
     }
 
     @Override
@@ -63,8 +74,8 @@ public abstract class PlayerDecorator implements PlayerInterface {
     }
 
     @Override
-    public boolean canBuild(List<Cell> adjacentCells, Position buildingPosition) throws InvalidPositionException, NullPointerException {
-        return player.canBuild(adjacentCells, buildingPosition);
+    public boolean canBuild(Position buildingPosition) throws InvalidPositionException, NotSelectedWorkerException {
+        return player.canBuild(buildingPosition);
     }
 
     @Override
@@ -83,14 +94,9 @@ public abstract class PlayerDecorator implements PlayerInterface {
     }
 
     @Override
-    public Board getBoard() {
-        return player.getBoard();
-    }
-
-    @Override
-    public boolean hasWin(int workerIndex) throws NullPointerException{
-        return player.hasWin(workerIndex);
-    }
+    public boolean hasWin() throws NullPointerException, NotSelectedWorkerException{
+    return player.hasWin();
+}
 
     @Override
     public List<Integer> blockedWorkers() throws NullPointerException{
@@ -98,7 +104,7 @@ public abstract class PlayerDecorator implements PlayerInterface {
     }
 
     @Override
-    public boolean isBlockedBuilding(int workerIndex){
-        return player.isBlockedBuilding(workerIndex);
+    public boolean isBlockedBuilding() throws NullPointerException, NotSelectedWorkerException{
+        return player.isBlockedBuilding();
     }
 }
