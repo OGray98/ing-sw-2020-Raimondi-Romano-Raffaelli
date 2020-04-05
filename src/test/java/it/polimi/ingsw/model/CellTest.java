@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.InvalidPositionException;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.CellOccupation;
 import it.polimi.ingsw.model.board.Position;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -13,8 +14,8 @@ import static org.junit.Assert.*;
 public class CellTest {
     private static Cell cell;
 
-    @BeforeClass
-    public static void initCell() {
+    @Before
+    public void initCell() {
 
         try {
             cell = new Cell(0, 5);
