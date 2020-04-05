@@ -38,8 +38,10 @@ public class AtlasDecoratorTest {
     public void canBuildAtlasTest() {
 
         player.putWorker(posWorker,0);
-        assertTrue(player.canBuild(player.getBoard().getAdjacentCells(player.getWorkerPositionOccupied(0)),posTrue));
-        assertFalse(player.canBuild(player.getBoard().getAdjacentCells(player.getWorkerPositionOccupied(0)),posFalse));
+        player.setSelectedWorker(0);
+
+        assertTrue(player.canBuild(posTrue));
+        assertFalse(player.canBuild(posFalse));
 
     }
 

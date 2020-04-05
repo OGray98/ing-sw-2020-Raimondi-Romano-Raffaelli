@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.Worker;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -17,8 +17,8 @@ public class WorkerTest {
     private static Position position;
     private static final int player1 = 1;
 
-    @BeforeClass
-    public static void initWorkerP1(){
+    @Before
+    public void initWorkerP1(){
         worker = new Worker(1);
         position = new Position(0,0);
     }

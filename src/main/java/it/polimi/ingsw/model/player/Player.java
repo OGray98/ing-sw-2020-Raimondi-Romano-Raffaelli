@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.exceptions.InvalidIndexPlayerException;
-import it.polimi.ingsw.exceptions.InvalidIndexWorkerException;
-import it.polimi.ingsw.exceptions.InvalidPositionException;
-import it.polimi.ingsw.exceptions.WorkerNotPresentException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.CellOccupation;
@@ -19,20 +16,32 @@ public class Player implements PlayerInterface {
     private String nickName;
     private Worker[] workers;
     private God godChosen;
+    //Number of the player in the match
     private int playerNumber;
+    //Index of worker selected for a operation inside a turn
+    private int selectedWorker;
 
     public Player(Board board, String nickName, int playerNumber) {
         this.board = board;
         this.playerNumber = playerNumber;
         this.nickName = nickName;
         this.workers = new Worker[2];
-        //Initialize workers with two Worker with CellOccupation related to playerNumber
+        //Initialize workers with two Worker with playerNumber
         this.workers[0] = new Worker(playerNumber);
         this.workers[1] = new Worker(playerNumber);
+        //Initialize selectedWorker as -1, this value will block operations if user doesn't select any worker
+        //Every turn end it will be set as -1 cause the user in the next turn will select a new worker
+        this.selectedWorker = -1;
     }
 
+    @Override
     public Board getBoard(){
         return this.board;
+    }
+    
+    @Override
+    public int getSelectedWorker(){
+        return this.selectedWorker;
     }
 
     @Override
@@ -76,6 +85,12 @@ public class Player implements PlayerInterface {
         else
             return this.godChosen;
     }
+    
+    @Override
+    public void setSelectedWorker(int selectedWorker) throws InvalidIndexWorkerException{
+        if (selectedWorker < 0 || selectedWorker > 1) throw new InvalidIndexWorkerException(selectedWorker);
+        this.selectedWorker = selectedWorker;
+    }
 
     @Override
     public void putWorker(Position startingCellPosition, int workerIndex) throws InvalidIndexWorkerException, InvalidPositionException {
@@ -88,19 +103,29 @@ public class Player implements PlayerInterface {
     }
 
     @Override
-    public void moveWorker(Position newPosition, int workerIndex) throws InvalidIndexWorkerException {
-        if (workerIndex < 0 || workerIndex > 1) throw new InvalidIndexWorkerException(workerIndex);
+    public void moveWorker(Position newPosition) throws InvalidPositionException, NotSelectedWorkerException{
+        if (newPosition.col > 4 || newPosition.row > 4 || newPosition.col < 0 || newPosition.row < 0)
+            throw new InvalidPositionException(newPosition.row, newPosition.col);
+        if(this.selectedWorker == -1) throw new NotSelectedWorkerException();
 
-        this.workers[workerIndex].move(newPosition);
-        this.board.updateBoardMove(this.workers[workerIndex].getOldPosition(), this.workers[workerIndex].getPositionOccupied(),this.playerNumber);
+        this.workers[this.selectedWorker].move(newPosition);
+        this.board.updateBoardMove(this.workers[this.selectedWorker].getOldPosition(), this.workers[this.selectedWorker].getPositionOccupied(),this.playerNumber);
     }
 
     @Override
-    public boolean canMove(List<Cell> adjacentCells, Position moveToCheck, int workerLevel) throws InvalidPositionException, NullPointerException, IllegalArgumentException{
+    public boolean canMove(Position moveToCheck) throws InvalidPositionException, IllegalArgumentException, NotSelectedWorkerException{
         if (moveToCheck.col > 4 || moveToCheck.row > 4 || moveToCheck.col < 0 || moveToCheck.row < 0)
             throw new InvalidPositionException(moveToCheck.row, moveToCheck.col);
-        if(adjacentCells == null) throw new NullPointerException("adjacentCells is null!");
+
+        if(this.selectedWorker == -1) throw new NotSelectedWorkerException();
+
+        //workerLevel is the level of the Cell where the selected worker is before move
+        int workerLevel = this.board.getCell(this.workers[this.selectedWorker].getPositionOccupied()).getLevel();
         if(workerLevel < 0 || workerLevel > 3) throw new IllegalArgumentException("Impossible value of worker level!");
+
+        //adjacentCells is the list of cells adjacent to the selected worker
+        List<Cell> adjacentCells = this.board.getAdjacentCells(this.workers[this.selectedWorker].getPositionOccupied());
+
         for (Cell cell : adjacentCells) {
             if (cell.getPosition().equals(moveToCheck)) {
                 if (cell.getOccupation() != CellOccupation.EMPTY) return false;
@@ -116,11 +141,13 @@ public class Player implements PlayerInterface {
     }
 
     @Override
-    public boolean canBuild(List<Cell> adjacentCells, Position buildingPosition) throws InvalidPositionException, NullPointerException{
+    public boolean canBuild(Position buildingPosition) throws InvalidPositionException, NotSelectedWorkerException{
         if (buildingPosition.col > 4 || buildingPosition.row > 4 || buildingPosition.col < 0 || buildingPosition.row < 0)
             throw new InvalidPositionException(buildingPosition.row, buildingPosition.col);
 
-        if(adjacentCells == null) throw new NullPointerException("adjacentCells is null!");
+        if(this.selectedWorker == -1) throw new NotSelectedWorkerException();
+
+        List<Cell> adjacentCells = this.board.getAdjacentCells(this.workers[this.selectedWorker].getPositionOccupied());
 
         for (Cell cell : adjacentCells) {
             if (cell.getPosition().equals(buildingPosition)) {
@@ -147,13 +174,15 @@ public class Player implements PlayerInterface {
     }
 
     @Override
-    public boolean hasWin(int workerIndex) throws NullPointerException{
-        if(this.workers[workerIndex].getOldPosition() == null
-                || this.workers[workerIndex].getPositionOccupied() == null)
-            throw new NullPointerException("Worker number " +workerIndex + " has never been moved or other unknown problem");
+    public boolean hasWin() throws NullPointerException, NotSelectedWorkerException{
+        if(this.workers[this.selectedWorker].getOldPosition() == null
+                || this.workers[this.selectedWorker].getPositionOccupied() == null)
+            throw new NullPointerException("Worker number " + this.selectedWorker + " has never been moved or other unknown problem");
 
-        return this.board.getCell(this.workers[workerIndex].getOldPosition()).getLevel() == 2
-                && this.board.getCell(this.workers[workerIndex].getPositionOccupied()).getLevel() == 3;
+        if(this.selectedWorker == -1) throw new NotSelectedWorkerException();
+
+        return this.board.getCell(this.workers[this.selectedWorker].getOldPosition()).getLevel() == 2
+                && this.board.getCell(this.workers[this.selectedWorker].getPositionOccupied()).getLevel() == 3;
     }
 
     @Override
@@ -171,7 +200,7 @@ public class Player implements PlayerInterface {
         List<Cell> adjCellsWorker1 = this.board.getAdjacentCells(this.workers[1].getPositionOccupied());
 
         for(Cell c : adjCellsWorker0){
-            if(this.canMove(adjCellsWorker0, c.getPosition(), this.board.getCell(this.workers[0].getPositionOccupied()).getLevel())){
+            if(this.canMoveIndex(c.getPosition(), 0)){
                 blockedWorker0 = false;
                 break;
             }
@@ -182,7 +211,7 @@ public class Player implements PlayerInterface {
         }
 
         for(Cell c : adjCellsWorker1){
-            if(this.canMove(adjCellsWorker1, c.getPosition(), this.board.getCell(this.workers[1].getPositionOccupied()).getLevel())){
+            if(this.canMoveIndex(c.getPosition(), 1)){
                 blockedWorker1 = false;
                 break;
             }
@@ -195,25 +224,49 @@ public class Player implements PlayerInterface {
         return blockedWorkersList;
     }
 
+    //change
     @Override
-    public boolean isBlockedBuilding(int workerIndex) throws NullPointerException, InvalidIndexWorkerException{
+    public boolean isBlockedBuilding() throws NullPointerException, NotSelectedWorkerException{
 
-        if (workerIndex < 0 || workerIndex > 1) throw new InvalidIndexWorkerException(workerIndex);
-
-        if(this.workers[workerIndex].getPositionOccupied() == null)
+        if(this.workers[this.selectedWorker].getPositionOccupied() == null)
             throw new NullPointerException("Worker/s not in any position yet!");
 
+        if(this.selectedWorker == -1) throw new NotSelectedWorkerException();
+
         boolean blockedBuilding = true;
-        List<Cell> adjCellsWorker = this.board.getAdjacentCells(this.workers[workerIndex].getPositionOccupied());
+        List<Cell> adjCellsWorker = this.board.getAdjacentCells(this.workers[this.selectedWorker].getPositionOccupied());
 
         for(Cell c : adjCellsWorker){
-            if(this.canBuild(adjCellsWorker, c.getPosition())){
+            if(this.canBuild(c.getPosition())){
                 blockedBuilding = false;
                 break;
             }
         }
 
         return blockedBuilding;
+    }
+
+    /*Utility method for blockedWorkers()
+     * It is the same as canMove() but it requires the index of the worker
+     * it is private because it is used only by blockedWorkers() method, inside the same instance of Player */
+    private boolean canMoveIndex(Position moveToCheck, int workerIndex) throws IllegalArgumentException{
+        if (moveToCheck.col > 4 || moveToCheck.row > 4 || moveToCheck.col < 0 || moveToCheck.row < 0)
+            throw new InvalidPositionException(moveToCheck.row, moveToCheck.col);
+
+        //workerLevel is the level of the Cell where the selected worker is before move
+        int workerLevel = this.board.getCell(this.workers[workerIndex].getPositionOccupied()).getLevel();
+        if(workerLevel < 0 || workerLevel > 3) throw new IllegalArgumentException("Impossible value of worker level!");
+
+        //adjacentCells is the list of cells adjacent to the selected worker
+        List<Cell> adjacentCells = this.board.getAdjacentCells(this.workers[workerIndex].getPositionOccupied());
+
+        for (Cell cell : adjacentCells) {
+            if (cell.getPosition().equals(moveToCheck)) {
+                if (cell.getOccupation() != CellOccupation.EMPTY) return false;
+                return (cell.getLevel() - workerLevel) <= 1;
+            }
+        }
+        return false;
     }
 
     @Override

@@ -3,11 +3,8 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.exceptions.InvalidIncrementLevelException;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
-import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.CellOccupation;
 import it.polimi.ingsw.model.board.Position;
-
-import java.util.List;
 
 // Decorator that decorate the special power of Hephaestus
 public class HephaestusDecorator extends PlayerBuildDecorator {
@@ -19,8 +16,8 @@ public class HephaestusDecorator extends PlayerBuildDecorator {
     }
 
     @Override
-    public boolean canBuild(List<Cell> adjacentCells, Position buildingPosition) throws InvalidPositionException, NullPointerException {
-        if(canBuild(adjacentCells, buildingPosition)){
+    public boolean canBuild(Position buildingPosition) throws InvalidPositionException, NullPointerException {
+        if(super.canBuild(buildingPosition)){
             //notify();
             return true;
         }
