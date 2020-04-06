@@ -224,7 +224,6 @@ public class Player implements PlayerInterface {
         return blockedWorkersList;
     }
 
-    //change
     @Override
     public boolean isBlockedBuilding() throws NullPointerException, NotSelectedWorkerException{
 
