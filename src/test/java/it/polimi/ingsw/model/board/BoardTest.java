@@ -1,12 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.exceptions.CellNotFreeException;
-import it.polimi.ingsw.exceptions.InvalidIncrementLevelException;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
-import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.Cell;
-import it.polimi.ingsw.model.board.CellOccupation;
-import it.polimi.ingsw.model.board.Position;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -84,13 +79,13 @@ public class BoardTest {
         p21 = new Position(2, 4);
         board.putWorker(p21, 2);
 
-        assertSame(board.getCell(p00).getOccupation(), CellOccupation.PLAYER1);
-        assertSame(board.getCell(p01).getOccupation(), CellOccupation.PLAYER1);
-        assertSame(board.getCell(p10).getOccupation(), CellOccupation.PLAYER2);
-        assertSame(board.getCell(p11).getOccupation(), CellOccupation.PLAYER2);
-        assertSame(board.getCell(p20).getOccupation(), CellOccupation.PLAYER3);
-        assertSame(board.getCell(p21).getOccupation(), CellOccupation.PLAYER3);
-        assertSame(board.getCell(new Position(0, 1)).getOccupation(), CellOccupation.EMPTY);
+        assertSame(CellOccupation.PLAYER1, board.getCell(p00).getOccupation());
+        assertSame(CellOccupation.PLAYER1, board.getCell(p01).getOccupation());
+        assertSame(CellOccupation.PLAYER2, board.getCell(p10).getOccupation());
+        assertSame(CellOccupation.PLAYER2, board.getCell(p11).getOccupation());
+        assertSame(CellOccupation.PLAYER3, board.getCell(p20).getOccupation());
+        assertSame(CellOccupation.PLAYER3, board.getCell(p21).getOccupation());
+        assertSame(CellOccupation.EMPTY, board.getCell(new Position(0, 1)).getOccupation());
 
     }
 
@@ -114,8 +109,8 @@ public class BoardTest {
 
         Position newP00 = new Position(0, 1);
         board.updateBoardMove(p00, newP00, 0);
-        assertSame(board.getCell(p00).getOccupation(), CellOccupation.EMPTY);
-        assertSame(board.getCell(newP00).getOccupation(), CellOccupation.PLAYER1);
+        assertSame(CellOccupation.EMPTY, board.getCell(p00).getOccupation());
+        assertSame(CellOccupation.PLAYER1, board.getCell(newP00).getOccupation());
 
         try {
             board.updateBoardMove(p10, p11, 1);
@@ -158,12 +153,12 @@ public class BoardTest {
         buildPosition = new Position(4,4);
 
         for (int i = 0; i < 3; i++) {
-            assertEquals(board.getCell(buildPosition).getLevel(), i);
+            assertEquals(i, board.getCell(buildPosition).getLevel());
             board.updateBoardBuild(buildPosition);
         }
-        assertEquals(board.getCell(buildPosition).getLevel(), 3);
+        assertEquals(3, board.getCell(buildPosition).getLevel());
         board.updateBoardBuild(buildPosition);
-        assertEquals(board.getCell(buildPosition).getOccupation(), CellOccupation.DOME);
+        assertEquals(CellOccupation.DOME, board.getCell(buildPosition).getOccupation());
     }
 
     @Test
@@ -197,11 +192,11 @@ public class BoardTest {
             assertEquals("position", e.getMessage());
         }
 
-        buildPosition = new Position(4,4);
+        buildPosition = new Position(4, 4);
 
         board.UpdateBoardBuildDome(buildPosition);
-        assertEquals(board.getCell(buildPosition).getLevel(), 0);
-        assertEquals(board.getCell(buildPosition).getOccupation(), CellOccupation.DOME);
+        assertEquals(0, board.getCell(buildPosition).getLevel());
+        assertEquals(CellOccupation.DOME, board.getCell(buildPosition).getOccupation());
     }
 
     private boolean isCornerUpLeftCorrected(List<Cell> cells) {

@@ -2,11 +2,7 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.exceptions.InvalidIncrementLevelException;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
-import it.polimi.ingsw.model.board.Cell;
-import it.polimi.ingsw.model.board.CellOccupation;
-import it.polimi.ingsw.model.board.Position;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -69,7 +65,6 @@ public class CellTest {
             assertEquals("You cannot build in cell : [1][4]", e.getMessage());
         }
         cell.setOccupation(CellOccupation.EMPTY);
-
         cell.incrementLevel();
         cell.incrementLevel();
         assertEquals(3, cell.getLevel());
