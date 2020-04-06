@@ -11,10 +11,12 @@ public class PanDecorator extends PlayerWinConditionDecorator {
 
     @Override
     public boolean hasWin() throws NullPointerException, NotSelectedWorkerException {
+        //Pan check
         if (player.getBoard().getCell(player.getWorker(getSelectedWorker()).getOldPosition()).getLevel() -
                 player.getBoard().getCell(player.getWorker(getSelectedWorker()).getPositionOccupied()).getLevel()
                 >= 2)
             return true;
+        //Normal check
         return player.hasWin();
     }
 }

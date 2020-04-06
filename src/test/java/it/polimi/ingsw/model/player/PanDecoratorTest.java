@@ -18,7 +18,7 @@ public class PanDecoratorTest {
     @Before
     public void init() {
         board = new Board();
-        pan = new PanDecorator(new Player(board, "Jack", 0));
+        pan = new PanDecorator(new Player(board, "player1", 0));
         Position pos11 = new Position(1, 1);
         indexWorker = 0;
         pan.setSelectedWorker(indexWorker);
