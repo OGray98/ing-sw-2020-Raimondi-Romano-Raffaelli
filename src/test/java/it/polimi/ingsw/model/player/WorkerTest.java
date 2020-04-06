@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.Worker;

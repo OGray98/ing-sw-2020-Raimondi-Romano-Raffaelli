@@ -1,12 +1,8 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.exceptions.CellNotFreeException;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
-import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.Cell;
-import it.polimi.ingsw.model.board.CellOccupation;
-import it.polimi.ingsw.model.board.Position;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -20,8 +16,8 @@ public class BoardTest {
         return board.getCell(new Position(r, c));
     }
 
-    @BeforeClass
-    public static void initBoard(){
+    @Before
+    public void initBoard(){
         board = new Board();
     }
 
@@ -83,13 +79,13 @@ public class BoardTest {
         p21 = new Position(2, 4);
         board.putWorker(p21, 2);
 
-        assertSame(board.getCell(p00).getOccupation(), CellOccupation.PLAYER1);
-        assertSame(board.getCell(p01).getOccupation(), CellOccupation.PLAYER1);
-        assertSame(board.getCell(p10).getOccupation(), CellOccupation.PLAYER2);
-        assertSame(board.getCell(p11).getOccupation(), CellOccupation.PLAYER2);
-        assertSame(board.getCell(p20).getOccupation(), CellOccupation.PLAYER3);
-        assertSame(board.getCell(p21).getOccupation(), CellOccupation.PLAYER3);
-        assertSame(board.getCell(new Position(0, 1)).getOccupation(), CellOccupation.EMPTY);
+        assertSame(CellOccupation.PLAYER1, board.getCell(p00).getOccupation());
+        assertSame(CellOccupation.PLAYER1, board.getCell(p01).getOccupation());
+        assertSame(CellOccupation.PLAYER2, board.getCell(p10).getOccupation());
+        assertSame(CellOccupation.PLAYER2, board.getCell(p11).getOccupation());
+        assertSame(CellOccupation.PLAYER3, board.getCell(p20).getOccupation());
+        assertSame(CellOccupation.PLAYER3, board.getCell(p21).getOccupation());
+        assertSame(CellOccupation.EMPTY, board.getCell(new Position(0, 1)).getOccupation());
 
     }
 
@@ -113,14 +109,94 @@ public class BoardTest {
 
         Position newP00 = new Position(0, 1);
         board.updateBoardMove(p00, newP00, 0);
-        assertSame(board.getCell(p00).getOccupation(), CellOccupation.EMPTY);
-        assertSame(board.getCell(newP00).getOccupation(), CellOccupation.PLAYER1);
+        assertSame(CellOccupation.EMPTY, board.getCell(p00).getOccupation());
+        assertSame(CellOccupation.PLAYER1, board.getCell(newP00).getOccupation());
 
         try {
             board.updateBoardMove(p10, p11, 1);
         } catch (CellNotFreeException e) {
             assertEquals("Cell in position [" + p11.row + "][" + p11.col + "] isn't free", e.getMessage());
         }
+    }
+
+    @Test
+    public void isUpdateBoardBuildCorrected() {
+        Position p00 = new Position(0, 0);
+        board.putWorker(p00, 0);
+        Position p01 = new Position(1, 3);
+        board.putWorker(p01, 0);
+
+        Position p10 = new Position(4, 2);
+        board.putWorker(p10, 1);
+        Position p11 = new Position(3, 3);
+        board.putWorker(p11, 1);
+
+        Position p20 = new Position(1, 2);
+        board.putWorker(p20, 2);
+        Position p21 = new Position(2, 4);
+        board.putWorker(p21, 2);
+
+        Position buildPosition = new Position(2,4);
+        try {
+            board.updateBoardBuild(buildPosition);
+        } catch (CellNotFreeException e) {
+            assertEquals("Cell in position [" + buildPosition.row + "][" + buildPosition.col + "] isn't free", e.getMessage());
+        }
+
+        buildPosition = null;
+        try {
+            board.updateBoardBuild(buildPosition);
+        } catch (NullPointerException e) {
+            assertEquals("buildPosition", e.getMessage());
+        }
+
+        buildPosition = new Position(4,4);
+
+        for (int i = 0; i < 3; i++) {
+            assertEquals(i, board.getCell(buildPosition).getLevel());
+            board.updateBoardBuild(buildPosition);
+        }
+        assertEquals(3, board.getCell(buildPosition).getLevel());
+        board.updateBoardBuild(buildPosition);
+        assertEquals(CellOccupation.DOME, board.getCell(buildPosition).getOccupation());
+    }
+
+    @Test
+    public void isUpdateBoardBuildDomeCorrected() {
+        Position p00 = new Position(0, 0);
+        board.putWorker(p00, 0);
+        Position p01 = new Position(1, 3);
+        board.putWorker(p01, 0);
+
+        Position p10 = new Position(4, 2);
+        board.putWorker(p10, 1);
+        Position p11 = new Position(3, 3);
+        board.putWorker(p11, 1);
+
+        Position p20 = new Position(1, 2);
+        board.putWorker(p20, 2);
+        Position p21 = new Position(2, 4);
+        board.putWorker(p21, 2);
+
+        Position buildPosition = new Position(2,4);
+        try {
+            board.UpdateBoardBuildDome(buildPosition);
+        } catch (CellNotFreeException e) {
+            assertEquals("Cell in position [" + buildPosition.row + "][" + buildPosition.col + "] isn't free", e.getMessage());
+        }
+
+        buildPosition = null;
+        try {
+            board.UpdateBoardBuildDome(buildPosition);
+        } catch (NullPointerException e) {
+            assertEquals("position", e.getMessage());
+        }
+
+        buildPosition = new Position(4, 4);
+
+        board.UpdateBoardBuildDome(buildPosition);
+        assertEquals(0, board.getCell(buildPosition).getLevel());
+        assertEquals(CellOccupation.DOME, board.getCell(buildPosition).getOccupation());
     }
 
     private boolean isCornerUpLeftCorrected(List<Cell> cells) {

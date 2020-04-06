@@ -1,11 +1,8 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.exceptions.InvalidIncrementLevelException;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
-import it.polimi.ingsw.model.board.Cell;
-import it.polimi.ingsw.model.board.CellOccupation;
-import it.polimi.ingsw.model.board.Position;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -13,8 +10,8 @@ import static org.junit.Assert.*;
 public class CellTest {
     private static Cell cell;
 
-    @BeforeClass
-    public static void initCell() {
+    @Before
+    public void initCell() {
 
         try {
             cell = new Cell(0, 5);
@@ -68,7 +65,6 @@ public class CellTest {
             assertEquals("You cannot build in cell : [1][4]", e.getMessage());
         }
         cell.setOccupation(CellOccupation.EMPTY);
-
         cell.incrementLevel();
         cell.incrementLevel();
         assertEquals(3, cell.getLevel());

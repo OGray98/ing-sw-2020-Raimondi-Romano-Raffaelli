@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.exceptions.InvalidIndexWorkerException;
 import it.polimi.ingsw.exceptions.InvalidPositionException;
