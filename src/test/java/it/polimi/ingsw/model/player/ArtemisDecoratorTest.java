@@ -30,12 +30,12 @@ public class ArtemisDecoratorTest {
 
         Position finalPos = new Position(1,3);
 
-        artemis.moveWorker(new Position(1,2));
-        assertEquals(board.getCell(new Position(1,2)).getOccupation(), CellOccupation.PLAYER1);
+        artemis.moveWorker(new Position(1, 2));
+        assertEquals(CellOccupation.PLAYER1, board.getCell(new Position(1, 2)).getOccupation());
         assertFalse(artemis.canUsePower(new Position(1, 1)));
         assertTrue(artemis.canUsePower(finalPos));
         artemis.usePower(finalPos);
 
-        assertEquals(artemis.getWorkerPositionOccupied(indexWorker), finalPos);
+        assertEquals(finalPos, artemis.getWorkerPositionOccupied(indexWorker));
     }
 }

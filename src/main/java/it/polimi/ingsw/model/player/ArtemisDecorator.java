@@ -21,6 +21,5 @@ public class ArtemisDecorator extends PlayerMoveDecorator {
         if(pos == null) throw new NullPointerException("pos");
         if(pos.isIllegal()) throw new InvalidPositionException(pos.row, pos.col);
         player.moveWorker(pos);
-        //TODO: Controllo vincitanel controller
     }
 }
