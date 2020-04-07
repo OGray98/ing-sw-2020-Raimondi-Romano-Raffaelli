@@ -34,6 +34,9 @@ public interface PlayerInterface {
     //Set the selectedWorker, it will be the same for an entire turn ( after the move )
     void setSelectedWorker(int selectedWorker);
 
+    //Set the boolean attribute cantMoveUp to value
+    void setCantMoveUp(boolean value);
+
     void putWorker(Position startingCellPosition, int workerIndex) throws InvalidIndexWorkerException, InvalidPositionException;
 
     /* Move the selected Worker tile on the Position wanted

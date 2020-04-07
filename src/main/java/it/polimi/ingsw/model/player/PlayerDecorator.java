@@ -54,6 +54,11 @@ public abstract class PlayerDecorator implements PlayerInterface {
     }
 
     @Override
+    public void setCantMoveUp(boolean value){
+        player.setCantMoveUp(value);
+    }
+
+    @Override
     public void putWorker(Position startingCellPosition, int workerIndex) throws InvalidIndexWorkerException, InvalidPositionException {
         player.putWorker(startingCellPosition,workerIndex);
     }

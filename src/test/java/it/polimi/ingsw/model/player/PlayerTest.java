@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.CellOccupation;
 import it.polimi.ingsw.model.board.Position;
-import it.polimi.ingsw.model.player.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -101,7 +100,7 @@ public class PlayerTest {
 
     @Test
     public void canMoveTest(){
-
+        /* Check the method canMove when cantMoveUp is false ( normal condition )*/
         //InvalidPositionException: Position given moveToCheck is not a possible position
         try{
             player.canMove(new Position(5,6));
@@ -214,8 +213,8 @@ public class PlayerTest {
         assertTrue(player.canMove(pos00));
         //Check move level 2 -> level 1
         assertTrue(player.canMove(pos01));
-        //Check move level 2 -> level 1
-        assertTrue(player.canMove(pos01));
+        //Check move level 2 -> level 3
+        assertTrue(player.canMove(pos10));
 
         //Upgrade the level of the Cell where worker is to level 3
         player.moveWorker(pos00);
@@ -230,14 +229,103 @@ public class PlayerTest {
         assertTrue(player.canMove(pos02));
         //Check move level 3 -> level 0 + occupation == PLAYER1
         assertFalse(player.canMove(pos20));
+    }
 
-        //IllegalArgumentException: Invalid workerLevel value is given, exception check
-        /*try{
-            player.canMove(cellList, new Position(0,0), 4);
-        }
-        catch (IllegalArgumentException e){
-            assertEquals("Impossible value of worker level!", e.getMessage());
-        }*/
+    @Test
+    public void canMoveWithCantMoveUp(){
+        /* check the method canMove when cantMoveUp is true */
+
+        /* test with cantMoveUp = true */
+
+        Position workerPosition = new Position(1,1);
+
+        player.putWorker(workerPosition, 0);
+        player.setSelectedWorker(0);
+
+        //Initialization of the positions related to the adjacent cells
+        Position pos00 = new Position(0,0);
+        Position pos01 = new Position(0,1);
+        Position pos02 = new Position(0,2);
+        Position pos10 = new Position(1,0);
+        Position pos12 = new Position(1,2);
+        Position pos20 = new Position(2,0);
+        Position pos21 = new Position(2,1);
+        Position pos22 = new Position(2,2);
+
+        //case level 1
+        player.getBoard().updateBoardBuild(pos01);
+
+        //case level 2
+        player.getBoard().updateBoardBuild(pos02);
+        player.getBoard().updateBoardBuild(pos02);
+
+        //case level 3
+        player.getBoard().updateBoardBuild(pos10);
+        player.getBoard().updateBoardBuild(pos10);
+        player.getBoard().updateBoardBuild(pos10);
+
+        //case level 3 + DOME
+        player.getBoard().updateBoardBuild(pos12);
+        player.getBoard().updateBoardBuild(pos12);
+        player.getBoard().updateBoardBuild(pos12);
+        player.getBoard().updateBoardBuild(pos12);
+
+        //case level 0 + occupation = PLAYER1
+        //adjCell20.setOccupation(CellOccupation.PLAYER1);
+        player.putWorker(pos20, 1);
+
+        //case level 1 + occupation = PLAYER2
+        player.getBoard().updateBoardBuild(pos21);
+        Player p2 = new Player(board, "John", 1);
+        p2.putWorker(pos21, 0);
+
+        //case level 2 + occupation = PLAYER3
+        player.getBoard().updateBoardBuild(pos22);
+        player.getBoard().updateBoardBuild(pos22);
+        Player p3 = new Player(board, "Al", 2);
+        p3.putWorker(pos22, 0);
+
+        /*Adjacent cells tested reprasention:
+         *
+         *   0      1      2
+         *   3      X      3+D
+         *   0+P1   1+P2   2+P3
+         *
+         * where X is the current worker cell
+         * */
+
+        player.setCantMoveUp(true);
+
+        //Check move level 0 -> level 0
+        assertTrue(player.canMove(pos00));
+        //Check move level 0 -> level 1
+        assertFalse(player.canMove(pos01));
+        //Check move level 0 -> level 2
+        assertFalse(player.canMove(pos02));
+
+        //Upgrade the level of the Cell where worker is to level 1
+        player.moveWorker(pos00);
+        player.getBoard().updateBoardBuild(workerPosition);
+        player.moveWorker(workerPosition);
+
+        //Check move level 1 -> level 0
+        assertTrue(player.canMove(pos00));
+        //Check move level 1 -> level 2
+        assertFalse(player.canMove(pos02));
+
+        //Upgrade the level of the Cell where worker is to level 2
+        player.moveWorker(pos00);
+        player.getBoard().updateBoardBuild(workerPosition);
+        player.moveWorker(workerPosition);
+
+        //Check move level 2 -> level 3 + occupation == DOME
+        assertFalse(player.canMove(pos12));
+        //Check move level 2 -> level 0
+        assertTrue(player.canMove(pos00));
+        //Check move level 2 -> level 1
+        assertTrue(player.canMove(pos01));
+        //Check move level 2 -> level 3
+        assertFalse(player.canMove(pos10));
     }
 
     @Test

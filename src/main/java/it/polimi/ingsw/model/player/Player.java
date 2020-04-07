@@ -20,6 +20,8 @@ public class Player implements PlayerInterface {
     private int playerNumber;
     //Index of worker selected for a operation inside a turn
     private int selectedWorker;
+    //True if player can't move up in his turn (for Athena power or Prometheus power)
+    private boolean cantMoveUp;
 
     public Player(Board board, String nickName, int playerNumber) {
         this.board = board;
@@ -32,6 +34,7 @@ public class Player implements PlayerInterface {
         //Initialize selectedWorker as -1, this value will block operations if user doesn't select any worker
         //Every turn end it will be set as -1 cause the user in the next turn will select a new worker
         this.selectedWorker = -1;
+        this.cantMoveUp = false;
     }
 
     @Override
@@ -93,6 +96,11 @@ public class Player implements PlayerInterface {
     }
 
     @Override
+    public void setCantMoveUp(boolean value){
+        this.cantMoveUp = value;
+    }
+
+    @Override
     public void putWorker(Position startingCellPosition, int workerIndex) throws InvalidIndexWorkerException, InvalidPositionException {
         if (workerIndex < 0 || workerIndex > 1) throw new InvalidIndexWorkerException(workerIndex);
         if (startingCellPosition.col > 4 || startingCellPosition.row > 4 || startingCellPosition.col < 0 || startingCellPosition.row < 0)
@@ -129,7 +137,15 @@ public class Player implements PlayerInterface {
         for (Cell cell : adjacentCells) {
             if (cell.getPosition().equals(moveToCheck)) {
                 if (cell.getOccupation() != CellOccupation.EMPTY) return false;
+                //if cantMoveUp is true, moves on upper levels are blocked
+                if(this.cantMoveUp){
+                    if(this.board.getCell(moveToCheck).getLevel() >
+                            this.board.getCell(this.workers[this.selectedWorker].getPositionOccupied()).getLevel()){
+                        return false;
+                    }
+                }
                 return (cell.getLevel() - workerLevel) <= 1;
+
             }
         }
         return false;
