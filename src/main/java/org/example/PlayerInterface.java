@@ -32,7 +32,8 @@ public interface PlayerInterface {
      * Throws NullPointerException is adjacentCells or adjacentPlayerList is null*/
     boolean canBuild(List<Cell> adjacentList, Map<Position,PlayerIndex> adjacentPlayerList, Position buildPos) throws InvalidPositionException, NullPointerException;
 
-    /* Method that returns true if is verified a win condition */
+    /* Method that returns true if is verified a win condition
+    * Throws NullPointerException if is not selected any worker */
     boolean hasWin() throws NullPointerException;
 
     boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList);

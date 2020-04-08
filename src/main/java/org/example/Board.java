@@ -12,7 +12,7 @@ public class Board {
     private static final int capacityPlayerPosition = 6;
     private Cell[][] map;
     private Map<Position, PlayerIndex> playerPosition;
-    private boolean canGoUp;
+    private boolean cantGoUp;
 
 
     public Board() {
@@ -23,10 +23,12 @@ public class Board {
         }
         //Entry of playerPosition are added when someone call putWorker
         this.playerPosition = new HashMap<>(capacityPlayerPosition);
-        canGoUp = true;
+        cantGoUp = false;
     }
 
-    //Return if in the cell there is a player or a dome
+    /*Returns true if the cell in Position cellPosition is empty
+    * Returns false if the cell in Position cellPosition cointains a dome or a player
+    * Throws NullPointerException if cellPosition is null */
     public boolean isFreeCell(Position cellPosition) throws NullPointerException {
         if (cellPosition == null)
             throw new NullPointerException("cellPosition");
@@ -40,7 +42,8 @@ public class Board {
         return true;
     }
 
-    //Return a List which contains copy of all adjacentCell
+    /*Given the Position centralPosition returns a List<Cell> that contains all the cells adjacent to centralPosition
+    * Throws NullPointerException if centralPosition is null */
     public List<Cell> getAdjacentCells(Position centralPosition) throws NullPointerException {
         if (centralPosition == null)
             throw new NullPointerException("centralPosition");
@@ -55,12 +58,16 @@ public class Board {
         return adjacentCells;
     }
 
+    /* Returns the Cell in Position position on the board
+    * Throws NullPointerException if position is null */
     public Cell getCell(Position position) throws NullPointerException {
         if (position == null)
             throw new NullPointerException("Position");
         return new Cell(this.map[position.row][position.col]);
     }
 
+    /*Returns the Map<Position, PlayerIndex> that contains all the pairs<Position, PlayerIndex> adjacent to the Position centralPosition
+    * Throws NullPointerException  if centralPosition is null */
     public Map<Position, PlayerIndex> getAdjacentPlayers(Position centralPosition) throws NullPointerException {
         if (centralPosition == null)
             throw new NullPointerException("centralPosition");
@@ -72,7 +79,9 @@ public class Board {
         return adjacentPlayers;
     }
 
-    //Update player position
+    /*Given oldPosition and newPosition move the worker contained in Position oldPosition to the Position newPosition
+    * Throws NotPresentWorkerException if in oldPosition there is not any worker
+    * Throws NullPointerException if oldPosition or newPosition is null*/
     //TODO: controllare qui se la newposition non è vuota? direi di no
     public void changeWorkerPosition(Position oldPosition, Position newPosition) throws NotPresentWorkerException, NullPointerException {
         if (oldPosition == null)
@@ -91,6 +100,9 @@ public class Board {
         throw new NotPresentWorkerException(oldPosition.row, oldPosition.col);
     }
 
+    /*Increment the level of the Cell in Position buildPosition
+    * Throws NullPointerException if buildPosition is null
+    * Throws InvalidIncrementLevelException if building is not allowed*/
     public void constructBlock(Position buildPosition) throws NullPointerException, InvalidIncrementLevelException {
         if (buildPosition == null)
             throw new NullPointerException("buildPosition");
@@ -98,6 +110,9 @@ public class Board {
         this.map[buildPosition.row][buildPosition.col].incrementLevel();
     }
 
+    /*Given the Position putPosition and the PlayerIndex playerIndex put a worker of playerIndex on the board on the Cell in position putPosition
+    * Throws NullPointerException if putPosition is null
+    * Throws InvelidPutWorkerException if there are already two workers of the given player on the board */
     //TODO: controllare qui se la putPosition non è vuota? direi di no
     public void putWorker(Position putPosition, PlayerIndex playerIndex) throws NullPointerException, InvalidPutWorkerException {
         if (putPosition == null)
@@ -116,7 +131,10 @@ public class Board {
         this.playerPosition.put(putPosition, playerIndex);
     }
 
-    public PlayerIndex getOccupierPlayer(Position position) throws NullPointerException, NotPresentWorkerException {
+    /*Returns the PlayerIndex of the worker in Position position
+    * Throws NullPointerException if position is null
+    * Throws NotPresentWorkerException if there is no worker in the Position position */
+    public PlayerIndex getOccupiedPlayer(Position position) throws NullPointerException, NotPresentWorkerException {
         if (position == null)
             throw new NullPointerException("position");
 
@@ -126,5 +144,22 @@ public class Board {
         }
 
         throw new NotPresentWorkerException(position.row, position.col);
+    }
+
+    /*Method that returns the positions of the workers of player playerToCheck
+     * It will be used by Game to check if all the workers of a player are blocked */
+    public List<Position> workerPositions(PlayerIndex playerToCheck) throws MissingWorkerException{
+
+        List<Position> playerWorkersPositions = new ArrayList<>();
+
+        for(Position p : this.playerPosition.keySet()){
+            if(this.playerPosition.get(p).equals(playerToCheck)){
+                playerWorkersPositions.add(p);
+            }
+        }
+
+        if(playerWorkersPositions.size() != 2) throw new MissingWorkerException(playerWorkersPositions.size());
+
+        return playerWorkersPositions;
     }
 }

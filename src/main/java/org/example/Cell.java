@@ -14,7 +14,8 @@ public class Cell {
         position = new Position(row, col);
     }
 
-    //Create a deep copy of cell
+    /*Returns a deep copy of the Cell cell
+    * Throws NullPointerException if cell is null */
     public Cell(Cell cell) throws NullPointerException {
         if (cell == null)
             throw new NullPointerException();
@@ -23,7 +24,8 @@ public class Cell {
         this.position = new Position(cell.position.row, cell.position.col);
     }
 
-    //If cell isn't occupied build another level, else throw exception
+    /*Increment level (during a building action) by 1 or put a dome on a third level
+    * Throws InvalidIncrementException if the cell already has a dome */
     public void incrementLevel() throws InvalidIncrementLevelException {
         if (hasDome) throw new InvalidIncrementLevelException(position.row, position.col);
 

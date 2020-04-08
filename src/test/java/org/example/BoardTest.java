@@ -105,12 +105,6 @@ public class BoardTest {
         Map<Position,PlayerIndex> adjacentPlayerSecondWorker= new HashMap<>();
         adjacentPlayerSecondWorker = board.getAdjacentPlayers(zeroPosition);
         assertEquals(0,adjacentPlayerSecondWorker.size());
-
-
-
-
-
-
     }
 
     @Test
@@ -166,7 +160,7 @@ public class BoardTest {
 
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         board.changeWorkerPosition(workerPosition,freePosition);
-        assertEquals(board.getOccupierPlayer(freePosition),PlayerIndex.PLAYER0);
+        assertEquals(board.getOccupiedPlayer(freePosition),PlayerIndex.PLAYER0);
 
     }
 
@@ -194,7 +188,7 @@ public class BoardTest {
         }
 
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
-        assertEquals(board.getOccupierPlayer(workerPosition),PlayerIndex.PLAYER0);
+        assertEquals(board.getOccupiedPlayer(workerPosition),PlayerIndex.PLAYER0);
         board.putWorker(freePosition,PlayerIndex.PLAYER0);
         try{
             board.putWorker(new Position(1,3),PlayerIndex.PLAYER0);
@@ -204,21 +198,42 @@ public class BoardTest {
     }
 
     @Test
-    public void getOccupierPlayerTest(){
+    public void getOccupiedPlayerTest(){
         try{
-            board.getOccupierPlayer(null);
+            board.getOccupiedPlayer(null);
         }catch (NullPointerException e){
             assertEquals("position",e.getMessage());
         }
 
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
-        assertEquals(PlayerIndex.PLAYER0,board.getOccupierPlayer(workerPosition));
+        assertEquals(PlayerIndex.PLAYER0,board.getOccupiedPlayer(workerPosition));
 
         try{
-            board.getOccupierPlayer(freePosition);
+            board.getOccupiedPlayer(freePosition);
         }catch (NotPresentWorkerException e){
             assertEquals("There isn't a player in : [" + freePosition.row + "][" + freePosition.col + "]",e.getMessage());
         }
+    }
+
+    @Test
+    public void workerPositionsTest(){
+        //MissingWorkersException:
+        try{
+            board.workerPositions(PlayerIndex.PLAYER0);
+        }
+        catch(MissingWorkerException e){
+            assertEquals("A player has" + 0 + "workers on the map, must be 2", e.getMessage());
+        }
+        board.putWorker(new Position(1,1), PlayerIndex.PLAYER1);
+        board.putWorker(new Position(3,3), PlayerIndex.PLAYER1);
+
+        Position pos11 = new Position(1,1);
+        Position pos33 = new Position(3,3);
+
+        assertEquals(board.workerPositions(PlayerIndex.PLAYER1).size(), 2);
+        assertEquals(board.workerPositions(PlayerIndex.PLAYER1).get(1), pos11);
+        assertEquals(board.workerPositions(PlayerIndex.PLAYER1).get(0), pos33);
+
     }
 
 
