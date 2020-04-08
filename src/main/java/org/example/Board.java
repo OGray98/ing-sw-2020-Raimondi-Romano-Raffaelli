@@ -22,7 +22,7 @@ public class Board {
         }
         this.playerPosition = new HashMap<>(capacityPlayerPosition);
         for (int i = 0; i < capacityPlayerPosition; i++) {
-            this.playerPosition.put(new PositionContainer(), PlayerIndex.values()[i]);
+            this.playerPosition.put(new PositionContainer(), PlayerIndex.values()[i % 3]);
         }
     }
 
