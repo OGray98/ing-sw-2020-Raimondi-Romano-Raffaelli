@@ -4,7 +4,8 @@ public class PositionContainer {
     private Position[] pos = new Position[2];
 
     public PositionContainer() {
-        pos[0] = new Position(0, 0);
+        pos[0] = null;
+        pos[1] = null;
     }
 
     public PositionContainer(Position newPosition) {

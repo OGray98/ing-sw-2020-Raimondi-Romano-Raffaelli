@@ -97,4 +97,22 @@ public class Board {
 
         this.map[buildPosition.row][buildPosition.col].incrementLevel();
     }
+
+    //TODO: controllare qui se la putPosition non è vuota? direi di no
+    public void putWorker(Position putPosition, PlayerIndex playerIndex) throws NullPointerException, InvalidPutWorkerException {
+        if (putPosition == null)
+            throw new NullPointerException("putPosition");
+
+        for (Map.Entry<PositionContainer, PlayerIndex> entry : this.playerPosition.entrySet()) {
+            if (entry.getValue() == playerIndex) {
+                if (entry.getKey().getOccupiedPosition() == null) {
+                    entry.getKey().put(putPosition);
+                    return;
+                }
+            }
+        }
+
+        throw new InvalidPutWorkerException(putPosition.row, putPosition.col, playerIndex);
+
+    }
 }
