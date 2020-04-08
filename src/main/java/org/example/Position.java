@@ -4,7 +4,7 @@ public class Position {
     public Integer row;
     public Integer col;
 
-    public Position(int row, int col) {
+    public Position(int row, int col) throws InvalidPositionException {
         if (row < 0 || row > 4 || col < 0 || col > 4)
             throw new InvalidPositionException(row, col);
         this.row = row;

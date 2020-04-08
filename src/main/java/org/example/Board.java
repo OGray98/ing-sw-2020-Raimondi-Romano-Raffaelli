@@ -20,9 +20,9 @@ public class Board {
             for (int j = 0; j < NUM_COLUMNS; j++)
                 this.map[i][j] = new Cell(i, j);
         }
-        playerPosition = new HashMap<>(capacityPlayerPosition);
+        this.playerPosition = new HashMap<>(capacityPlayerPosition);
         for (int i = 0; i < capacityPlayerPosition; i++) {
-            playerPosition.put(new PositionContainer(), PlayerIndex.valueOf("PLAYER" + i));
+            this.playerPosition.put(new PositionContainer(), PlayerIndex.values()[i]);
         }
     }
 
@@ -69,17 +69,46 @@ public class Board {
     }
 
     public Map<Position, PlayerIndex> getAdjacentPlayers(Position centralPosition) throws InvalidPositionException, NullPointerException {
-
-        HashMap<Position, PlayerIndex> adjacentPlayers = new HashMap<>(capacityPlayerPosition);
-
         if (centralPosition == null)
             throw new NullPointerException("centralPosition");
         if (centralPosition.isIllegal())
             throw new InvalidPositionException(centralPosition.row, centralPosition.col);
-        for (Map.Entry<PositionContainer, PlayerIndex> entry : playerPosition.entrySet()) {
+        HashMap<Position, PlayerIndex> adjacentPlayers = new HashMap<>(capacityPlayerPosition);
+        for (Map.Entry<PositionContainer, PlayerIndex> entry : this.playerPosition.entrySet()) {
             if (entry.getKey().getOccupiedPosition().isAdjacent(centralPosition))
                 adjacentPlayers.put(entry.getKey().getOccupiedPosition(), entry.getValue());
         }
         return adjacentPlayers;
+    }
+
+    //Update player position
+    //TODO: controllare qui se la newposition non è vuota? direi di no
+    public void changeWorkerPosition(Position oldPosition, Position newPosition) throws NotPresentWorkerException, InvalidPositionException, NullPointerException {
+        if (oldPosition == null)
+            throw new NullPointerException("oldPosition");
+        if (oldPosition.isIllegal())
+            throw new InvalidPositionException(oldPosition.row, oldPosition.col);
+        if (newPosition == null)
+            throw new NullPointerException("newPosition");
+        if (newPosition.isIllegal())
+            throw new InvalidPositionException(newPosition.row, newPosition.col);
+
+        for (Map.Entry<PositionContainer, PlayerIndex> entry : this.playerPosition.entrySet()) {
+            if (entry.getKey().getOccupiedPosition().equals(oldPosition)) {
+                entry.getKey().put(newPosition);
+                return;
+            }
+        }
+
+        throw new NotPresentWorkerException(oldPosition.row, oldPosition.col);
+    }
+
+    public void constructBlock(Position buildPosition) throws InvalidPositionException, NullPointerException, InvalidIncrementLevelException {
+        if (buildPosition == null)
+            throw new NullPointerException("buildPosition");
+        if (buildPosition.isIllegal())
+            throw new InvalidPositionException(buildPosition.row, buildPosition.col);
+
+        this.map[buildPosition.row][buildPosition.col].incrementLevel();
     }
 }
