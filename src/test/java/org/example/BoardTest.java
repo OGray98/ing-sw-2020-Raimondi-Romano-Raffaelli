@@ -141,8 +141,8 @@ public class BoardTest {
         }
 
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
-        board.changeWorkerPosition(workerPosition,freePosition);
-        //assertEquals(,PlayerIndex.PLAYER0);
+        board.changeWorkerPosition(workerPosition, freePosition);
+        assertTrue(board.isFreeCell(workerPosition));
 
     }
 
