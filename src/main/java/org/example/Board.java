@@ -11,7 +11,7 @@ public class Board {
     private static final int NUM_COLUMNS = 5;
     private static final int capacityPlayerPosition = 6;
     private Cell[][] map;
-    private Map<List<PositionContainer>, PlayerIndex> playerPosition;
+    private Map<PositionContainer, PlayerIndex> playerPosition;
 
 
     public Board() {
@@ -21,11 +21,8 @@ public class Board {
                 this.map[i][j] = new Cell(i, j);
         }
         playerPosition = new HashMap<>(capacityPlayerPosition);
-        for (int i = 0; i < capacityPlayerPosition / 2; i++) {
-            List<PositionContainer> containers = new ArrayList<>();
-            containers.add(new PositionContainer());
-            containers.add(new PositionContainer());
-            playerPosition.put(containers, PlayerIndex.valueOf("PLAYER" + i));
+        for (int i = 0; i < capacityPlayerPosition; i++) {
+            playerPosition.put(new PositionContainer(), PlayerIndex.valueOf("PLAYER" + i));
         }
     }
 
@@ -38,9 +35,9 @@ public class Board {
         if (map[cellPosition.row][cellPosition.col].hasDome())
             return false;
 
-        for (List<PositionContainer> list : playerPosition.keySet()) {
+        for (PositionContainer positionContainer : playerPosition.keySet()) {
             for (int i = 0; i < 2; i++)
-                if (list.get(i).getOccupiedPosition().equals(cellPosition))
+                if (positionContainer.getOccupiedPosition().equals(cellPosition))
                     return false;
         }
         return true;
@@ -71,4 +68,18 @@ public class Board {
         return new Cell(this.map[position.row][position.col]);
     }
 
+    public Map<Position, PlayerIndex> getAdjacentPlayers(Position centralPosition) throws InvalidPositionException, NullPointerException {
+
+        HashMap<Position, PlayerIndex> adjacentPlayers = new HashMap<>(capacityPlayerPosition);
+
+        if (centralPosition == null)
+            throw new NullPointerException("centralPosition");
+        if (centralPosition.isIllegal())
+            throw new InvalidPositionException(centralPosition.row, centralPosition.col);
+        for (Map.Entry<PositionContainer, PlayerIndex> entry : playerPosition.entrySet()) {
+            if (entry.getKey().getOccupiedPosition().isAdjacent(centralPosition))
+                adjacentPlayers.put(entry.getKey().getOccupiedPosition(), entry.getValue());
+        }
+        return adjacentPlayers;
+    }
 }
