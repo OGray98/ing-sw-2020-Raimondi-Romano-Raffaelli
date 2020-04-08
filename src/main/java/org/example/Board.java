@@ -11,7 +11,7 @@ public class Board {
     private static final int NUM_COLUMNS = 5;
     private static final int capacityPlayerPosition = 6;
     private Cell[][] map;
-    private Map<PositionContainer, PlayerIndex> playerPosition;
+    private Map<Position, PlayerIndex> playerPosition;
     private boolean canGoUp;
 
 
@@ -33,8 +33,8 @@ public class Board {
         if (map[cellPosition.row][cellPosition.col].hasDome())
             return false;
 
-        for (PositionContainer positionContainer : playerPosition.keySet()) {
-            if (positionContainer.getOccupiedPosition().equals(cellPosition))
+        for (Position position : playerPosition.keySet()) {
+            if (position.equals(cellPosition))
                 return false;
         }
         return true;
@@ -65,9 +65,9 @@ public class Board {
         if (centralPosition == null)
             throw new NullPointerException("centralPosition");
         HashMap<Position, PlayerIndex> adjacentPlayers = new HashMap<>(capacityPlayerPosition);
-        for (Map.Entry<PositionContainer, PlayerIndex> entry : this.playerPosition.entrySet()) {
-            if (entry.getKey().getOccupiedPosition().isAdjacent(centralPosition))
-                adjacentPlayers.put(entry.getKey().getOccupiedPosition(), entry.getValue());
+        for (Map.Entry<Position, PlayerIndex> entry : this.playerPosition.entrySet()) {
+            if (entry.getKey().isAdjacent(centralPosition))
+                adjacentPlayers.put(entry.getKey(), entry.getValue());
         }
         return adjacentPlayers;
     }
@@ -80,9 +80,10 @@ public class Board {
         if (newPosition == null)
             throw new NullPointerException("newPosition");
 
-        for (Map.Entry<PositionContainer, PlayerIndex> entry : this.playerPosition.entrySet()) {
-            if (entry.getKey().getOccupiedPosition().equals(oldPosition)) {
-                entry.getKey().put(newPosition);
+        for (Map.Entry<Position, PlayerIndex> entry : this.playerPosition.entrySet()) {
+            if (entry.getKey().equals(oldPosition)) {
+                this.playerPosition.remove(oldPosition);
+                this.playerPosition.put(newPosition, entry.getValue());
                 return;
             }
         }
@@ -104,7 +105,7 @@ public class Board {
 
         int cont = 0;
 
-        for (Map.Entry<PositionContainer, PlayerIndex> entry : this.playerPosition.entrySet()) {
+        for (Map.Entry<Position, PlayerIndex> entry : this.playerPosition.entrySet()) {
             if (entry.getValue() == playerIndex) {
                 cont++;
                 if (cont > 1)
@@ -112,15 +113,15 @@ public class Board {
             }
         }
 
-        this.playerPosition.put(new PositionContainer(putPosition), playerIndex);
+        this.playerPosition.put(putPosition, playerIndex);
     }
 
     public PlayerIndex getOccupierPlayer(Position position) throws NullPointerException, NotPresentWorkerException {
         if (position == null)
             throw new NullPointerException("position");
 
-        for (Map.Entry<PositionContainer, PlayerIndex> entry : this.playerPosition.entrySet()) {
-            if (entry.getKey().getOccupiedPosition().equals(position))
+        for (Map.Entry<Position, PlayerIndex> entry : this.playerPosition.entrySet()) {
+            if (entry.getKey().equals(position))
                 return entry.getValue();
         }
 
