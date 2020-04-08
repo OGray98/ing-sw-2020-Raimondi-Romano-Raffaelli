@@ -112,4 +112,16 @@ public class Board {
 
         this.playerPosition.put(new PositionContainer(putPosition), playerIndex);
     }
+
+    public PlayerIndex getOccupierPlayer(Position position) throws NullPointerException, NotPresentWorkerException {
+        if (position == null)
+            throw new NullPointerException("position");
+
+        for (Map.Entry<PositionContainer, PlayerIndex> entry : this.playerPosition.entrySet()) {
+            if (entry.getKey().getOccupiedPosition().equals(position))
+                return entry.getValue();
+        }
+
+        throw new NotPresentWorkerException(position.row, position.col);
+    }
 }
