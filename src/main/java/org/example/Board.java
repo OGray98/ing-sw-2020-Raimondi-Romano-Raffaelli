@@ -12,6 +12,7 @@ public class Board {
     private static final int capacityPlayerPosition = 6;
     private Cell[][] map;
     private Map<PositionContainer, PlayerIndex> playerPosition;
+    private boolean canGoUp;
 
 
     public Board() {
@@ -22,6 +23,7 @@ public class Board {
         }
         //Entry of playerPosition are added when someone call putWorker
         this.playerPosition = new HashMap<>(capacityPlayerPosition);
+        canGoUp = true;
     }
 
     //Return if in the cell there is a player or a dome
