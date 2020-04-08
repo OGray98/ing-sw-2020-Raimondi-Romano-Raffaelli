@@ -27,11 +27,9 @@ public class Board {
     }
 
     //Return if in the cell there is a player or a dome
-    public boolean isFreeCell(Position cellPosition) throws NullPointerException, InvalidPositionException {
+    public boolean isFreeCell(Position cellPosition) throws NullPointerException {
         if (cellPosition == null)
             throw new NullPointerException("cellPosition");
-        if (cellPosition.isIllegal())
-            throw new InvalidPositionException(cellPosition.row, cellPosition.col);
         if (map[cellPosition.row][cellPosition.col].hasDome())
             return false;
 
@@ -44,11 +42,9 @@ public class Board {
     }
 
     //Return a List which contains copy of all adjacentCell
-    public List<Cell> getAdjacentCells(Position centralPosition) throws InvalidPositionException, NullPointerException {
+    public List<Cell> getAdjacentCells(Position centralPosition) throws NullPointerException {
         if (centralPosition == null)
             throw new NullPointerException("centralPosition");
-        if (centralPosition.isIllegal())
-            throw new InvalidPositionException(centralPosition.row, centralPosition.col);
 
         List<Cell> adjacentCells = new ArrayList<>();
         for (int r = centralPosition.row - 1; r <= centralPosition.row + 1; r++) {
@@ -60,19 +56,15 @@ public class Board {
         return adjacentCells;
     }
 
-    public Cell getCell(Position position) throws InvalidPositionException, NullPointerException {
+    public Cell getCell(Position position) throws NullPointerException {
         if (position == null)
             throw new NullPointerException("Position");
-        if (position.isIllegal())
-            throw new InvalidPositionException(position.row, position.col);
         return new Cell(this.map[position.row][position.col]);
     }
 
-    public Map<Position, PlayerIndex> getAdjacentPlayers(Position centralPosition) throws InvalidPositionException, NullPointerException {
+    public Map<Position, PlayerIndex> getAdjacentPlayers(Position centralPosition) throws NullPointerException {
         if (centralPosition == null)
             throw new NullPointerException("centralPosition");
-        if (centralPosition.isIllegal())
-            throw new InvalidPositionException(centralPosition.row, centralPosition.col);
         HashMap<Position, PlayerIndex> adjacentPlayers = new HashMap<>(capacityPlayerPosition);
         for (Map.Entry<PositionContainer, PlayerIndex> entry : this.playerPosition.entrySet()) {
             if (entry.getKey().getOccupiedPosition().isAdjacent(centralPosition))
@@ -83,15 +75,11 @@ public class Board {
 
     //Update player position
     //TODO: controllare qui se la newposition non è vuota? direi di no
-    public void changeWorkerPosition(Position oldPosition, Position newPosition) throws NotPresentWorkerException, InvalidPositionException, NullPointerException {
+    public void changeWorkerPosition(Position oldPosition, Position newPosition) throws NotPresentWorkerException, NullPointerException {
         if (oldPosition == null)
             throw new NullPointerException("oldPosition");
-        if (oldPosition.isIllegal())
-            throw new InvalidPositionException(oldPosition.row, oldPosition.col);
         if (newPosition == null)
             throw new NullPointerException("newPosition");
-        if (newPosition.isIllegal())
-            throw new InvalidPositionException(newPosition.row, newPosition.col);
 
         for (Map.Entry<PositionContainer, PlayerIndex> entry : this.playerPosition.entrySet()) {
             if (entry.getKey().getOccupiedPosition().equals(oldPosition)) {
@@ -103,11 +91,9 @@ public class Board {
         throw new NotPresentWorkerException(oldPosition.row, oldPosition.col);
     }
 
-    public void constructBlock(Position buildPosition) throws InvalidPositionException, NullPointerException, InvalidIncrementLevelException {
+    public void constructBlock(Position buildPosition) throws NullPointerException, InvalidIncrementLevelException {
         if (buildPosition == null)
             throw new NullPointerException("buildPosition");
-        if (buildPosition.isIllegal())
-            throw new InvalidPositionException(buildPosition.row, buildPosition.col);
 
         this.map[buildPosition.row][buildPosition.col].incrementLevel();
     }

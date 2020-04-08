@@ -11,15 +11,9 @@ public class Position {
         this.col = col;
     }
 
-    public boolean isIllegal() {
-        return row < 0 || row > 4 || col < 0 || col > 4;
-    }
-
-    public boolean isAdjacent(Position position) throws InvalidPositionException, NullPointerException {
+    public boolean isAdjacent(Position position) throws NullPointerException {
         if (position == null)
             throw new NullPointerException("Position");
-        if (position.isIllegal())
-            throw new InvalidPositionException(position.row, position.col);
 
         return position.col >= this.col - 1 && position.col <= this.col + 1
                 && position.row >= this.row - 1 && position.row <= this.row + 1;
