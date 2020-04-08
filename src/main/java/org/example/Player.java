@@ -1,0 +1,132 @@
+package org.example;
+
+import java.util.List;
+import java.util.Map;
+
+public class Player implements PlayerInterface{
+
+    private String nickName;
+    private Cell oldCell;
+    private Cell cellOccupied;
+    private boolean cantGoUp;
+    private boolean activePower;
+
+    public Player(String nickName){
+        this.nickName = nickName;
+        this.cantGoUp = false;
+        this.activePower = false;
+    }
+
+    /*Set values of the situation after the first insert of a worker*/
+    @Override
+    public void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp){
+        this.cellOccupied = cellOccupied;
+        this.cantGoUp = cantGoUp;
+    }
+
+    /*Set values of the current information about the selected tile*/
+    @Override
+    public void setWorkerSituation(Cell oldCell, Cell cellOccupied, boolean cantGoUp){
+        this.oldCell = oldCell;
+        this.cellOccupied = cellOccupied;
+        this.cantGoUp = cantGoUp;
+    }
+
+    /*Set values of the situation after a move*/
+    @Override
+    public void setAfterMove(Cell oldCell, Cell cellOccupied){
+        this.oldCell = oldCell;
+        this.cellOccupied = cellOccupied;
+    }
+
+    @Override
+    public void setActivePower(boolean isPowerOn){
+        this.activePower = isPowerOn;
+    }
+
+    @Override
+    public boolean canMove(List<Cell> adjacentCells, Map<Position,PlayerIndex> adjacentPlayerList, Position movePos) throws InvalidPositionException{
+        if(movePos.col > 4 || movePos.row > 4 || movePos.col < 0 || movePos.row < 0) throw new InvalidPositionException(movePos.row, movePos.col);
+        if(adjacentCells == null) throw new NullPointerException("adjacentCells is null!");
+        if(adjacentPlayerList == null) throw new NullPointerException("adjacentPlayerList is null!");
+
+        for(Position p : adjacentPlayerList.keySet()){
+            //check if there is a player
+            if(p.equals(movePos)) return false;
+        }
+
+        for(Cell cell : adjacentCells){
+            if(cell.getPosition().equals(movePos)){
+                //check if there is a dome
+                if(cell.hasDome()) return false;
+                //if cantGoUp is true, check if it is a level up move
+                if(cantGoUp){
+                    if(cell.getLevel() > this.cellOccupied.getLevel()) return false;
+                }
+                return cell.getLevel() - this.cellOccupied.getLevel() <= 1;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canBuild(List<Cell> adjacentCells, Map<Position, PlayerIndex> adjacentPlayerList, Position buildPos){
+        if(buildPos.col > 4 || buildPos.row > 4 || buildPos.col < 0 || buildPos.row < 0) throw new InvalidPositionException(buildPos.row, buildPos.col);
+        if(adjacentCells == null) throw new NullPointerException("adjacentCells is null!");
+        if(adjacentPlayerList == null) throw new NullPointerException("adjacentPlayerList is null!");
+
+        //check if the cell is occupied by a player
+        for(Position p : adjacentPlayerList.keySet()){
+            if(p.equals(buildPos)) return false;
+        }
+
+        for(Cell cell : adjacentCells){
+            if(cell.getPosition().equals(buildPos)){
+                //check if the cell has a dome
+                if(!cell.hasDome()){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hasWin() throws NullPointerException{
+        if(this.oldCell == null) throw new NullPointerException("Worker never moved yet!");
+        if(this.cellOccupied == null) throw new NullPointerException("Worker has not a cell occupation!");
+
+        return this.oldCell.getLevel() == 2 && this.cellOccupied.getLevel() == 3;
+    }
+
+    @Override
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
+        return false;
+    }
+
+    /*@Override
+    public Cell getOldCell(){
+        return this.oldCell;
+    }
+
+    @Override
+    public Cell getCellOccupied(){
+        return this.cellOccupied;
+    }
+
+    @Override
+    public boolean getCantGoUp(){
+        return this.cantGoUp;
+    }
+
+    @Override
+    public boolean getActivePower(){
+        return this.activePower;
+    }*/
+
+    @Override
+    public String toString(){
+        return "Player nickname: "
+                + this.nickName;
+    }
+}
