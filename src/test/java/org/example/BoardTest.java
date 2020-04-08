@@ -23,6 +23,7 @@ public class BoardTest {
         board = new Board();
         domePosition = new Position(1,1);
         freePosition = new Position(3,2);
+        workerPosition = new Position(3,3);
     }
 
     @Test
@@ -62,12 +63,17 @@ public class BoardTest {
             }
         }
 
+
+
         board.constructBlock(domePosition);
         board.constructBlock(domePosition);
         board.constructBlock(domePosition);
         board.constructBlock(domePosition); // set dome
 
         assertFalse(board.isFreeCell(domePosition));
+
+        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
+        assertFalse(board.isFreeCell(workerPosition));
 
     }
 
@@ -134,14 +140,27 @@ public class BoardTest {
             assertEquals("There isn't a player in : [" + freePosition.row + "][" + freePosition.col + "]",e.getMessage());
         }
 
+        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
+        board.changeWorkerPosition(workerPosition,freePosition);
+        //assertEquals(,PlayerIndex.PLAYER0);
 
     }
 
+    @Test
     public void getAdjacentCellTest(){
         try{
             board.getAdjacentCells(null);
         }catch(NullPointerException e){
             assertEquals("centralPosition",e.getMessage());
+        }
+    }
+
+    @Test
+    public void putWorkerTest(){
+        try{
+            board.putWorker(null,PlayerIndex.PLAYER0);
+        }catch(NullPointerException e){
+            assertEquals("putPosition",e.getMessage());
         }
     }
 }
