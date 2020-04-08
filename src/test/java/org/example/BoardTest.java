@@ -16,41 +16,25 @@ public class BoardTest {
     private static Map<PositionContainer, PlayerIndex> playerPosition;
 
 
+
+
     @Before
-    public void init() {
+    public void init(){
         board = new Board();
-        domePosition = new Position(1, 1);
-        freePosition = new Position(3, 2);
+        domePosition = new Position(1,1);
+        freePosition = new Position(3,2);
+        workerPosition = new Position(3,3);
     }
 
     @Test
-    public void isConstructBlockCorrected() {
-        assertEquals(0, board.getCell(freePosition).getLevel());
-
-        board.constructBlock(freePosition);
-        assertEquals(1, board.getCell(freePosition).getLevel());
-
-        board.constructBlock(freePosition);
-        assertEquals(2, board.getCell(freePosition).getLevel());
-
-        board.constructBlock(freePosition);
-        assertEquals(3, board.getCell(freePosition).getLevel());
-        assertFalse(board.getCell(freePosition).hasDome());
-
-        board.constructBlock(freePosition);
-        assertEquals(3, board.getCell(freePosition).getLevel());
-        assertTrue(board.getCell(freePosition).hasDome());
-    }
-
-    @Test
-    public void isBoardInit() {
+    public void isBoardInit(){
         //control if init board is set correctly
-        for (int i = 0; i < 5; i++) {
+        for(int i = 0; i < 5; i++){
             for (int j = 0; j < 5; j++) {
-                assertEquals(0, board.getCell(new Position(i, j)).getLevel());
-                assertEquals(new Position(i, j), board.getCell(new Position(i, j)).getPosition());
-                assertEquals(new Cell(i, j), board.getCell(new Position(i, j)));
-                assertFalse(board.getCell(new Position(i, j)).hasDome());
+                assertEquals(0, board.getCell(new Position(i,j)).getLevel());
+                assertEquals(new Position(i,j),board.getCell(new Position(i,j)).getPosition());
+                assertEquals(new Cell(i,j),board.getCell(new Position(i,j)));
+                assertFalse(board.getCell(new Position(i,j)).hasDome());
             }
         }
     }
@@ -79,12 +63,17 @@ public class BoardTest {
             }
         }
 
+
+
         board.constructBlock(domePosition);
         board.constructBlock(domePosition);
         board.constructBlock(domePosition);
         board.constructBlock(domePosition); // set dome
 
         assertFalse(board.isFreeCell(domePosition));
+
+        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
+        assertFalse(board.isFreeCell(workerPosition));
 
     }
 
@@ -151,9 +140,13 @@ public class BoardTest {
             assertEquals("There isn't a player in : [" + freePosition.row + "][" + freePosition.col + "]",e.getMessage());
         }
 
+        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
+        board.changeWorkerPosition(workerPosition,freePosition);
+        //assertEquals(,PlayerIndex.PLAYER0);
 
     }
 
+    @Test
     public void getAdjacentCellTest(){
         try{
             board.getAdjacentCells(null);
@@ -162,5 +155,12 @@ public class BoardTest {
         }
     }
 
-
+    @Test
+    public void putWorkerTest(){
+        try{
+            board.putWorker(null,PlayerIndex.PLAYER0);
+        }catch(NullPointerException e){
+            assertEquals("putPosition",e.getMessage());
+        }
+    }
 }
