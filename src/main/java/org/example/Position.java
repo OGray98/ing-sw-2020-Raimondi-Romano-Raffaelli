@@ -16,7 +16,8 @@ public class Position {
             throw new NullPointerException("Position");
 
         return position.col >= this.col - 1 && position.col <= this.col + 1
-                && position.row >= this.row - 1 && position.row <= this.row + 1;
+                && position.row >= this.row - 1 && position.row <= this.row + 1
+                && this.equals(position);
     }
 
     @Override
