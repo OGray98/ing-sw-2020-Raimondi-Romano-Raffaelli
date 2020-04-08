@@ -20,10 +20,8 @@ public class Board {
             for (int j = 0; j < NUM_COLUMNS; j++)
                 this.map[i][j] = new Cell(i, j);
         }
+        //Entry of playerPosition are added when someone call putWorker
         this.playerPosition = new HashMap<>(capacityPlayerPosition);
-        for (int i = 0; i < capacityPlayerPosition; i++) {
-            this.playerPosition.put(new PositionContainer(), PlayerIndex.values()[i % 3]);
-        }
     }
 
     //Return if in the cell there is a player or a dome
@@ -34,9 +32,8 @@ public class Board {
             return false;
 
         for (PositionContainer positionContainer : playerPosition.keySet()) {
-            for (int i = 0; i < 2; i++)
-                if (positionContainer.getOccupiedPosition().equals(cellPosition))
-                    return false;
+            if (positionContainer.getOccupiedPosition().equals(cellPosition))
+                return false;
         }
         return true;
     }
@@ -103,16 +100,16 @@ public class Board {
         if (putPosition == null)
             throw new NullPointerException("putPosition");
 
+        int cont = 0;
+
         for (Map.Entry<PositionContainer, PlayerIndex> entry : this.playerPosition.entrySet()) {
             if (entry.getValue() == playerIndex) {
-                if (entry.getKey().getOccupiedPosition() == null) {
-                    entry.getKey().put(putPosition);
-                    return;
-                }
+                cont++;
+                if (cont > 1)
+                    throw new InvalidPutWorkerException(putPosition.row, putPosition.col, playerIndex);
             }
         }
 
-        throw new InvalidPutWorkerException(putPosition.row, putPosition.col, playerIndex);
-
+        this.playerPosition.put(new PositionContainer(putPosition), playerIndex);
     }
 }

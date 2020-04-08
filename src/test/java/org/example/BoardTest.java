@@ -1,11 +1,8 @@
 package org.example;
 
-import org.junit.Test;
 import org.junit.Before;
-import org.junit.Assert.*;
+import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -61,7 +58,7 @@ public class BoardTest {
 
         for(int i = 0; i < 5; i++){
             for (int j = 0; j < 5; j++) {
-            assertTrue(board.isFreeCell(new Position(i,j)));
+                assertTrue(board.isFreeCell(new Position(i, j)));
             }
         }
 
@@ -71,7 +68,6 @@ public class BoardTest {
         board.constructBlock(domePosition); // set dome
 
         assertFalse(board.isFreeCell(domePosition));
-
 
     }
 
