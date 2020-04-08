@@ -16,24 +16,41 @@ public class BoardTest {
     private static Map<PositionContainer, PlayerIndex> playerPosition;
 
 
-
-
     @Before
-    public void init(){
+    public void init() {
         board = new Board();
-        domePosition = new Position(1,1);
-        freePosition = new Position(3,2);
+        domePosition = new Position(1, 1);
+        freePosition = new Position(3, 2);
     }
 
     @Test
-    public void isBoardInit(){
+    public void isConstructBlockCorrected() {
+        assertEquals(0, board.getCell(freePosition).getLevel());
+
+        board.constructBlock(freePosition);
+        assertEquals(1, board.getCell(freePosition).getLevel());
+
+        board.constructBlock(freePosition);
+        assertEquals(2, board.getCell(freePosition).getLevel());
+
+        board.constructBlock(freePosition);
+        assertEquals(3, board.getCell(freePosition).getLevel());
+        assertFalse(board.getCell(freePosition).hasDome());
+
+        board.constructBlock(freePosition);
+        assertEquals(3, board.getCell(freePosition).getLevel());
+        assertTrue(board.getCell(freePosition).hasDome());
+    }
+
+    @Test
+    public void isBoardInit() {
         //control if init board is set correctly
-        for(int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                assertEquals(0, board.getCell(new Position(i,j)).getLevel());
-                assertEquals(new Position(i,j),board.getCell(new Position(i,j)).getPosition());
-                assertEquals(new Cell(i,j),board.getCell(new Position(i,j)));
-                assertFalse(board.getCell(new Position(i,j)).hasDome());
+                assertEquals(0, board.getCell(new Position(i, j)).getLevel());
+                assertEquals(new Position(i, j), board.getCell(new Position(i, j)).getPosition());
+                assertEquals(new Cell(i, j), board.getCell(new Position(i, j)));
+                assertFalse(board.getCell(new Position(i, j)).hasDome());
             }
         }
     }
@@ -144,4 +161,6 @@ public class BoardTest {
             assertEquals("centralPosition",e.getMessage());
         }
     }
+
+
 }
