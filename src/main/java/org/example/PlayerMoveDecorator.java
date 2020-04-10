@@ -5,8 +5,5 @@ public abstract class PlayerMoveDecorator extends PlayerDecorator {
 
     }
 
-    /*public void setPlayer(PlayerInterface player){
-        super.setPlayer(player);
-    }*/
 
 }
