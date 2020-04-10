@@ -23,7 +23,7 @@ public class ApolloDecoratorTest {
 
     @Test
     public void test(){
-        playerint = playerin.setPlayer(new Player("jack"));
+        playerint = playerin.setPlayer(new Player("jack", PlayerIndex.PLAYER0));
 
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         playerint.setStartingWorkerSituation(board.getCell(workerPosition),false);

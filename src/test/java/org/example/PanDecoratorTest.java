@@ -19,7 +19,7 @@ public class PanDecoratorTest {
     public void init(){
         cardPan = new PanDecorator();
         board = new Board();
-        playerPan = cardPan.setPlayer(new Player("jack"));
+        playerPan = cardPan.setPlayer(new Player("jack", PlayerIndex.PLAYER0));
         workerPosition = new Position(1,1);
         buildPositionLevel1 = new Position(1,2);
         buildPositionLevel2 = new Position(2,2);

@@ -19,7 +19,7 @@ public class DemeterDecoratorTest {
     public void init(){
         board = new Board();
         cardDemeter = new DemeterDecorator();
-        playerDemeter = cardDemeter.setPlayer(new Player("Jack"));
+        playerDemeter = cardDemeter.setPlayer(new Player("Jack", PlayerIndex.PLAYER1));
         workerPosition = new Position(2,2);
         firstBuildingPosition = new Position(2,3);
         sameAsFirst = new Position(2,3);
@@ -58,7 +58,7 @@ public class DemeterDecoratorTest {
         board.putWorker(workerPosition, PlayerIndex.PLAYER2);
         playerDemeter.setStartingWorkerSituation(board.getCell(workerPosition), false);
 
-        assertEquals(playerDemeter.usePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), secondBuildPosition).getCanGoUp(), false);
+        assertNull(playerDemeter.usePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), secondBuildPosition).getCanGoUp());
         assertFalse(playerDemeter.getActivePower());
         assertEquals(playerDemeter.usePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), secondBuildPosition).getBuildType(), BuildType.LEVEL);
         assertEquals(playerDemeter.usePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), secondBuildPosition).getPositionBuild(), secondBuildPosition);

@@ -20,7 +20,7 @@ public class HephaestusDecoratorTest {
     public void init(){
         board = new Board();
         cardHephaestus = new HephaestusDecorator();
-        playerHephaestus = cardHephaestus.setPlayer(new Player("jack"));
+        playerHephaestus = cardHephaestus.setPlayer(new Player("jack", PlayerIndex.PLAYER0));
         workerPosition = new Position(1,1);
         buildPosition = new Position(1,2);
         otherPosition = new Position(1,0);

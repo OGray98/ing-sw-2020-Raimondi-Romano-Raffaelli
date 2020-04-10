@@ -94,6 +94,11 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
         return player.getCantGoUp();
     }
 
+    @Override
+    public PlayerIndex getPlayerNum(){
+        return player.getPlayerNum();
+    }
+
 
     public  void setChosenGod(Boolean condition){
         this.chosenGod = condition;

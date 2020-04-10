@@ -22,7 +22,7 @@ public class PlayerTest {
     @Before
     public void init(){
         board = new Board();
-        player = new Player("Jack");
+        player = new Player("Jack", PlayerIndex.PLAYER0);
         oldCell = new Cell(1,2);
         cellOccupied = new Cell(1,1);
         adjacentCells = new ArrayList<>();

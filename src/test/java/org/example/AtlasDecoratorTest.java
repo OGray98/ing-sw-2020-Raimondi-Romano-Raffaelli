@@ -21,7 +21,7 @@ public class AtlasDecoratorTest {
         workerPos = new Position(1,1);
         posTrue = new Position(2,2);
         posFalse = new Position(3,3);
-        playerint = atlasPlayer.setPlayer(new Player("jack"));
+        playerint = atlasPlayer.setPlayer(new Player("jack", PlayerIndex.PLAYER1));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class AtlasDecoratorTest {
 
         assertEquals(playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue).getBuildType(), BuildType.DOME);
         assertEquals(playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue).getPositionBuild(), posTrue);
-        assertFalse(playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue).getCanGoUp());
+        assertNull(playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue).getCanGoUp());
 
         assertFalse(playerint.getActivePower());
     }

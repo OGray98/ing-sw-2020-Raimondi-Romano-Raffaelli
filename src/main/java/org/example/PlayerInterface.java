@@ -58,5 +58,7 @@ public interface PlayerInterface {
 
     boolean getCantGoUp();
 
+    PlayerIndex getPlayerNum();
+
     //public God getGodName();
 }

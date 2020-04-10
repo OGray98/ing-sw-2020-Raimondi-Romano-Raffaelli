@@ -6,14 +6,16 @@ import java.util.Map;
 public class Player implements PlayerInterface{
 
     private String nickName;
+    private PlayerIndex playerNum;
     private Cell oldCell;
     private Cell cellOccupied;
     private boolean cantGoUp;
     private boolean activePower;
 
 
-    public Player(String nickName){
+    public Player(String nickName, PlayerIndex playerNum){
         this.nickName = nickName;
+        this.playerNum = playerNum;
         this.cantGoUp = false;
         this.activePower = false;
 
@@ -146,6 +148,11 @@ public class Player implements PlayerInterface{
     @Override
     public boolean getCantGoUp(){
         return this.cantGoUp;
+    }
+
+    @Override
+    public PlayerIndex getPlayerNum(){
+        return this.playerNum;
     }
 
     @Override
