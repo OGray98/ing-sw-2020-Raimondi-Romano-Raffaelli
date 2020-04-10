@@ -115,12 +115,13 @@ public class Player implements PlayerInterface{
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
         return false;
     }
 
     @Override
-    public void usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
+        return null;
     }
 
     @Override
@@ -137,21 +138,19 @@ public class Player implements PlayerInterface{
         return new Cell(this.cellOccupied);
     }
 
-    /*@Override
-    public boolean getCantGoUp(){
-        return this.cantGoUp;
-    }
-
     @Override
     public boolean getActivePower(){
         return this.activePower;
-    }*/
+    }
+
+    @Override
+    public boolean getCantGoUp(){
+        return this.cantGoUp;
+    }
 
     @Override
     public String toString(){
         return "Player nickname: "
                 + this.nickName;
     }
-
-
 }

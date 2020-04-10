@@ -14,4 +14,12 @@ public class PanDecorator extends PlayerWinConditionDecorator {
     public void setChosenGod(Boolean condition){
         super.setChosenGod(condition);
     }
+
+
+    @Override
+    public boolean hasWin() throws NullPointerException {
+        if((super.getOldCell().getLevel() - super.getCellOccupied().getLevel()) >= 2)
+            return true;
+        return super.hasWin();
+    }
 }

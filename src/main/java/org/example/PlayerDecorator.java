@@ -65,13 +65,13 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) {
-        return player.canUsePower(adjacentList, adjacentPlayerList);
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition) {
+        return player.canUsePower(adjacentList, adjacentPlayerList, powerPosition);
     }
 
     @Override
-    public void usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
-        player.usePower(adjacentList, adjacentPlayerList);
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
+        return player.usePower(adjacentList, adjacentPlayerList, powerPosition);
     }
 
     @Override
@@ -84,7 +84,17 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
         return player.getCellOccupied();
     }
 
-    // aggiunti io
+    @Override
+    public boolean getActivePower(){
+        return player.getActivePower();
+    }
+
+    @Override
+    public boolean getCantGoUp(){
+        return player.getCantGoUp();
+    }
+
+
     public  void setChosenGod(Boolean condition){
         this.chosenGod = condition;
     }
