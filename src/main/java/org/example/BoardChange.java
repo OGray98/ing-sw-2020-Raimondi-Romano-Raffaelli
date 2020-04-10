@@ -6,24 +6,24 @@ public class BoardChange {
     private final Map<PositionContainer, PlayerIndex> playerChanges;
     private final Position positionBuild;
     private final BuildType buildType;
-    private final boolean canGoUp;
+    private final boolean cantGoUp;
 
     BoardChange(boolean canGoUp) {
-        this.canGoUp = canGoUp;
+        this.cantGoUp = canGoUp;
         this.playerChanges = null;
         this.positionBuild = null;
         this.buildType = BuildType.LEVEL;
     }
 
     BoardChange(Map<PositionContainer, PlayerIndex> playerChanges) {
-        this.canGoUp = true;
+        this.cantGoUp = true;
         this.playerChanges = playerChanges;
         this.positionBuild = null;
         this.buildType = BuildType.LEVEL;
     }
 
     public boolean getCanGoUp() {
-        return canGoUp;
+        return cantGoUp;
     }
 
     public Map<PositionContainer, PlayerIndex> getChanges() throws NullPointerException {
