@@ -153,6 +153,4 @@ public class Player implements PlayerInterface{
         return "Player nickname: "
                 + this.nickName;
     }
-
-
 }

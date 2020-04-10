@@ -94,7 +94,7 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
         return player.getCantGoUp();
     }
 
-    // aggiunti io
+
     public  void setChosenGod(Boolean condition){
         this.chosenGod = condition;
     }
@@ -121,10 +121,5 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     @Override
     public void setGodDescription(String description) {
         this.description = description;
-    }
-
-    @Override
-    public boolean getActivePower() {
-        return player.getActivePower();
     }
 }
