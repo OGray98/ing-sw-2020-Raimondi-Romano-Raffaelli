@@ -180,14 +180,24 @@ public class Board {
     /* Method called by this.updateAfterPower() to update the playerPosition.
      * Requires Map<PositionContainer, PlayerIndex> not null, with the changes to update
      */
-    private void updateAfterPowerMove(Map<PositionContainer, PlayerIndex> changes) throws NullPointerException {
+    private void updateAfterPowerMove(Map<PositionContainer, PlayerIndex> changes) throws NullPointerException, NotPresentWorkerException {
         if (changes == null)
             throw new NullPointerException("changes");
+        boolean isFound = false;
+
+        //TODO: correct this
         for (Map.Entry<PositionContainer, PlayerIndex> entryChange : changes.entrySet()) {
             for (Map.Entry<Position, PlayerIndex> entry : this.playerPosition.entrySet()) {
-                if (entryChange.getKey().getOldPosition().equals(entry.getKey()))
-                    changeWorkerPosition(entry.getKey(), entryChange.getKey().getOccupiedPosition());
+                if (entryChange.getKey().getOldPosition().equals(entry.getKey()) &&
+                        entryChange.getValue() == entry.getValue()) {
+                    this.playerPosition.remove(entry.getKey());
+                    this.playerPosition.put(entryChange.getKey().getOccupiedPosition(), entry.getValue());
+                    isFound = true;
+                }
             }
+            if (!isFound)
+                throw new NotPresentWorkerException(entryChange.getKey().getOldPosition().row,
+                        entryChange.getKey().getOldPosition().col, entryChange.getValue());
         }
     }
 
@@ -195,13 +205,20 @@ public class Board {
      * Requires Position not null, with the Position to update
      * Requires BuildType, which indicate if build a normal level or a dome
      */
-    private void updateAfterPowerBuild(Position positionBuild, BuildType buildType) throws NullPointerException {
+    private void updateAfterPowerBuild(Position positionBuild, BuildType buildType) throws NullPointerException, InvalidBuildDomeException {
         if (positionBuild == null)
             throw new NullPointerException("positionBuild");
         if (buildType == BuildType.LEVEL)
             constructBlock(positionBuild);
-        else
+        else {
+            if (this.map[positionBuild.row][positionBuild.col].hasDome())
+                throw new InvalidBuildDomeException(positionBuild.row, positionBuild.col);
             map[positionBuild.row][positionBuild.col].setHasDome(true);
+        }
+    }
+
+    public boolean isCantGoUp() {
+        return cantGoUp;
     }
 
 }
