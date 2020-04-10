@@ -40,9 +40,24 @@ public class AtlasDecoratorTest {
         board.putWorker(workerPos, PlayerIndex.PLAYER1);
         playerint.setStartingWorkerSituation(board.getCell(workerPos), false);
 
+        BoardChange powerResult = playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue);
+
+        try{
+            powerResult.getCantGoUp();
+        }
+        catch(NullPointerException e){
+            assertEquals("cantGoUp", e.getMessage());
+        }
+
         assertEquals(playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue).getBuildType(), BuildType.DOME);
         assertEquals(playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue).getPositionBuild(), posTrue);
-        assertNull(playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue).getCantGoUp());
+
+        try{
+            powerResult.getChanges();
+        }
+        catch(NullPointerException e){
+            assertEquals("playerChanges", e.getMessage());
+        }
 
         assertFalse(playerint.getActivePower());
     }
