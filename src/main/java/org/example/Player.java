@@ -120,7 +120,8 @@ public class Player implements PlayerInterface{
     }
 
     @Override
-    public void usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
+        return null;
     }
 
     @Override

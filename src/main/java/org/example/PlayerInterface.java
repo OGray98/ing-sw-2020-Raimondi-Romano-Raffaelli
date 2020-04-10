@@ -48,7 +48,7 @@ public interface PlayerInterface {
     boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition);
 
     /*Method that implements the power of a specific God, specialized in Decorator*/
-    void usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition);
+    BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition);
 
     Cell getOldCell() throws NullPointerException;
 

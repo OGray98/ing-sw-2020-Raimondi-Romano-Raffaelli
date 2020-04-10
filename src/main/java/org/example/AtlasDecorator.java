@@ -24,6 +24,11 @@ public class AtlasDecorator extends PlayerBuildDecorator {
         return super.canBuild(adjacentList, adjacentPlayerList, powerPosition);
     }
 
+    /*@Override
+    public BoardChange usePower(){
+
+    }*/
+
     @Override
     public void setChosenGod(Boolean condition){
         super.setChosenGod(condition);
