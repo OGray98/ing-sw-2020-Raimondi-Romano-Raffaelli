@@ -26,18 +26,18 @@ public class BoardChange {
             throw new NullPointerException("newPosition");
 
         PositionContainer posCont = new PositionContainer(oldPosition);
+        posCont.put(newPosition);
         playerChanges = new HashMap<>();
         playerChanges.put(posCont, playerIndex);
 
         this.cantGoUp = false;
-        this.playerChanges = null;
         this.positionBuild = null;
         this.buildType = BuildType.LEVEL;
     }
 
     BoardChange(Position buildPosition, BuildType type) throws NullPointerException {
         if (buildPosition == null)
-            throw new NullPointerException("positionBuild");
+            throw new NullPointerException("buildPosition");
         this.positionBuild = buildPosition;
         this.buildType = type;
 
@@ -45,23 +45,13 @@ public class BoardChange {
         this.cantGoUp = false;
     }
 
-    /*
-     * Create a BoardChange with every field null
-     */
-    BoardChange() {
-        this.cantGoUp = false;
-        this.playerChanges = null;
-        this.positionBuild = null;
-        this.buildType = BuildType.LEVEL;
-    }
-
-    public boolean getCanGoUp() {
+    public boolean getCantGoUp() {
         return cantGoUp;
     }
 
     public Map<PositionContainer, PlayerIndex> getChanges() throws NullPointerException {
         if (playerChanges == null)
-            throw new NullPointerException("changes");
+            throw new NullPointerException("playerChanges");
         return playerChanges;
     }
 
@@ -90,8 +80,17 @@ public class BoardChange {
 
         PositionContainer posCont = new PositionContainer(oldPosition);
         posCont.put(newPosition);
+
         if (playerChanges == null)
             playerChanges = new HashMap<>();
+        else {
+            for (Map.Entry<PositionContainer, PlayerIndex> entry : playerChanges.entrySet()) {
+                if (entry.getKey().equals(posCont)) {
+                    throw new SameMovementException(posCont.toString());
+                }
+            }
+        }
+
         playerChanges.put(posCont, playerIndex);
     }
 
