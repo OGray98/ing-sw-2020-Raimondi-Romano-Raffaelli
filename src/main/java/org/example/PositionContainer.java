@@ -13,6 +13,10 @@ public class PositionContainer {
         pos[1] = new Position(0, 0);
     }
 
+    /*
+     * Method that insert a new Position. The old occupiedPosition become oldPosition and the old oldPosition is discarded
+     * It requires a Position, which is the Position to add
+     */
     public void put(Position newPosition) {
         pos[1] = pos[0];
         pos[0] = newPosition;

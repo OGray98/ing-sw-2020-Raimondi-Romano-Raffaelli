@@ -19,10 +19,12 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     }
 
 
+    @Override
     public void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp){
          player.setStartingWorkerSituation(cellOccupied,cantGoUp);
     }
 
+    @Override
     public void setWorkerSituation(Cell oldCell, Cell cellOccupied, boolean cantGoUp){
         player.setWorkerSituation(oldCell,cellOccupied,cantGoUp);
     }
@@ -53,8 +55,33 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     }
 
     @Override
+    public void move(Cell newOccupiedCell) throws NullPointerException{
+        player.move(newOccupiedCell);
+    }
+
+    @Override
+    public void activePowerAfterBuild(){
+        player.activePowerAfterBuild();
+    }
+
+    @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) {
         return player.canUsePower(adjacentList, adjacentPlayerList);
+    }
+
+    @Override
+    public void usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
+        player.usePower(adjacentList, adjacentPlayerList);
+    }
+
+    @Override
+    public Cell getOldCell(){
+        return player.getOldCell();
+    }
+
+    @Override
+    public Cell getCellOccupied(){
+        return player.getCellOccupied();
     }
 
     // aggiunti io
