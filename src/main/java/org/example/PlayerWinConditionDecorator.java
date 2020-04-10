@@ -1,7 +1,10 @@
 package org.example;
 
-public class PlayerWinConditionDecorator extends PlayerDecorator {
-    public PlayerWinConditionDecorator(PlayerInterface player, String godName, String godDescription) {
-        super(player, godName, godDescription);
-    }
+public abstract class PlayerWinConditionDecorator extends PlayerDecorator {
+    public PlayerWinConditionDecorator() {}
+
+
+   /* public void setPlayer(PlayerInterface player){
+        super.setPlayer(player);
+    }*/
 }
