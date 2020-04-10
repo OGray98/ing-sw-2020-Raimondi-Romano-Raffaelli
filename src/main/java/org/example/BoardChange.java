@@ -1,12 +1,13 @@
 package org.example;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class BoardChange {
-    private final Map<PositionContainer, PlayerIndex> playerChanges;
-    private final Position positionBuild;
-    private final BuildType buildType;
-    private final boolean cantGoUp;
+    private Map<PositionContainer, PlayerIndex> playerChanges;
+    private Position positionBuild;
+    private BuildType buildType;
+    private boolean cantGoUp;
 
     BoardChange(boolean canGoUp) {
         this.cantGoUp = canGoUp;
@@ -15,9 +16,9 @@ public class BoardChange {
         this.buildType = BuildType.LEVEL;
     }
 
-    BoardChange(Map<PositionContainer, PlayerIndex> playerChanges) {
-        this.cantGoUp = true;
-        this.playerChanges = playerChanges;
+    BoardChange() {
+        this.cantGoUp = false;
+        this.playerChanges = null;
         this.positionBuild = null;
         this.buildType = BuildType.LEVEL;
     }
@@ -40,5 +41,21 @@ public class BoardChange {
         return buildType;
     }
 
+    public void addPlayerChanges(Position oldPosition, Position newPosition, PlayerIndex playerIndex) {
+        PositionContainer posCont = new PositionContainer(oldPosition);
+        posCont.put(newPosition);
+        if (playerChanges == null)
+            playerChanges = new HashMap<>();
+        playerChanges.put(posCont, playerIndex);
+    }
+
+    public void setBuildPosition(Position buildPosition, BuildType type) {
+        this.positionBuild = buildPosition;
+        this.buildType = type;
+    }
+
+    public void setCantGoUp(boolean cantGoUp) {
+        this.cantGoUp = cantGoUp;
+    }
 
 }
