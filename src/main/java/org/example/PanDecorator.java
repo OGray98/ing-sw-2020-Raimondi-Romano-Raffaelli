@@ -14,4 +14,6 @@ public class PanDecorator extends PlayerWinConditionDecorator {
     public void setChosenGod(Boolean condition){
         super.setChosenGod(condition);
     }
+
+
 }

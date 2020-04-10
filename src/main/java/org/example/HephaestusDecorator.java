@@ -17,6 +17,7 @@ public class HephaestusDecorator extends PlayerBuildDecorator {
 
 
 
+
     public void setChosenGod(Boolean condition){
         super.setChosenGod(condition);
     }
@@ -36,12 +37,15 @@ public class HephaestusDecorator extends PlayerBuildDecorator {
     @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition) {
         if(super.canBuild(adjacentList, adjacentPlayerList, powerPosition) && this.buildPosition == powerPosition)
-        return super.canUsePower(adjacentList, adjacentPlayerList, powerPosition);
+            return true;
         return false;
     }
 
     @Override
     public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition) {
+        super.setActivePower(false);
         return new BoardChange(powerPosition,BuildType.LEVEL);
     }
+
+
 }

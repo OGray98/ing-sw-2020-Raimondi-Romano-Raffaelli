@@ -56,7 +56,7 @@ public interface PlayerInterface {
 
     //public God getGodName();
 
-    /*boolean getCantGoUp();
+    /*boolean getCantGoUp();*/
 
-    boolean getActivePower();*/
+    boolean getActivePower();
 }

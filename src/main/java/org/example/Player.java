@@ -141,12 +141,12 @@ public class Player implements PlayerInterface{
     /*@Override
     public boolean getCantGoUp(){
         return this.cantGoUp;
-    }
+    }*/
 
     @Override
     public boolean getActivePower(){
         return this.activePower;
-    }*/
+    }
 
     @Override
     public String toString(){
