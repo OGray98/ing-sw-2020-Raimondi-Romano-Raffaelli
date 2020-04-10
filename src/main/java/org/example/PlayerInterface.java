@@ -38,6 +38,11 @@ public interface PlayerInterface {
 
     boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList);
 
+
+
+
+    //public God getGodName();
+
     /*Cell getOldCell();
 
     Cell getCellOccupied();

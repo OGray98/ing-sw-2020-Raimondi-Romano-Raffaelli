@@ -3,94 +3,86 @@ package org.example;
 import java.util.List;
 import java.util.Map;
 
-public abstract class PlayerDecorator implements PlayerInterface {
+public abstract class PlayerDecorator implements PlayerInterface, CardInterface {
+
     private PlayerInterface player;
-    private final String godName;
-    private final String godDescription;
+    private String godName;
+    private String description;
+    private boolean chosenGod = false;
 
-    public PlayerDecorator(PlayerInterface player, String godName, String godDescription) {
+
+    public PlayerDecorator() {}
+
+    public PlayerInterface setPlayer(PlayerInterface player){
         this.player = player;
-        this.godName = godName;
-        this.godDescription = godDescription;
+        return this;
     }
 
-    public String getGodDescription() {
-        return godDescription;
+
+    public void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp){
+         player.setStartingWorkerSituation(cellOccupied,cantGoUp);
     }
 
-    public String getGodName() {
-        return godName;
+    public void setWorkerSituation(Cell oldCell, Cell cellOccupied, boolean cantGoUp){
+        player.setWorkerSituation(oldCell,cellOccupied,cantGoUp);
     }
 
-    /* Set the situation when worker has never been moved yet */
-    public void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp) {
-        if (cellOccupied == null)
-            throw new NullPointerException("cellOccupied");
-        if (player == null)
-            throw new NullPointerException("player");
-        player.setStartingWorkerSituation(cellOccupied, cantGoUp);
-    }
-
-    /* Each time a user select a worker tile, Game will set the needed information through this method */
-    public void setWorkerSituation(Cell oldCell, Cell cellOccupied, boolean cantGoUp) {
-        if (cellOccupied == null)
-            throw new NullPointerException("cellOccupied");
-        if (player == null)
-            throw new NullPointerException("player");
-        if (oldCell == null)
-            throw new NullPointerException("oldCell");
-        player.setWorkerSituation(oldCell, cellOccupied, cantGoUp);
-    }
-
-    /* Set the situation after a move */
+    @Override
     public void setAfterMove(Cell oldCell, Cell cellOccupied) {
-        if (cellOccupied == null)
-            throw new NullPointerException("cellOccupied");
-        if (player == null)
-            throw new NullPointerException("player");
-        if (oldCell == null)
-            throw new NullPointerException("oldCell");
         player.setAfterMove(oldCell, cellOccupied);
     }
 
+    @Override
     public void setActivePower(boolean isPowerOn) {
-        if (player == null)
-            throw new NullPointerException("player");
         player.setActivePower(isPowerOn);
     }
 
-    /*Method that returns true if user select a possible move action
-     * It requires a List<Cell> that contains all the cells adjacent to the worker selected
-     * It requires a Map<Position, PlayerIndex> that contains all the players adjacent to the selected worker
-     * It requires a Position that is the position to check
-     * Throws InvalidPositionException if movePos is an illegal position
-     * Throws NullPointerException is adjacentCells or adjacentPlayerList is null*/
+    @Override
     public boolean canMove(List<Cell> adjacentCells, Map<Position, PlayerIndex> adjacentPlayerList, Position movePos) throws InvalidPositionException, NullPointerException {
-        if (player == null)
-            throw new NullPointerException("player");
         return player.canMove(adjacentCells, adjacentPlayerList, movePos);
     }
 
-    /*Method that returns true if user select a possible build action
-     * It requires a List<Cell> that contains all the cells adjacent to the worker selected
-     * It requires a Map<Position, PlayerIndex> that contains all the players adjacent to the selected worker
-     * It requires a Position that is the position to check
-     * Throws InvalidPositionException if movePos is an illegal position
-     * Throws NullPointerException is adjacentCells or adjacentPlayerList is null*/
+    @Override
     public boolean canBuild(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position buildPos) throws InvalidPositionException, NullPointerException {
-        if (player == null)
-            throw new NullPointerException("player");
         return player.canBuild(adjacentList, adjacentPlayerList, buildPos);
     }
 
-    /* Method that returns true if is verified a win condition */
+    @Override
     public boolean hasWin() throws NullPointerException {
-        if (player == null)
-            throw new NullPointerException("player");
         return player.hasWin();
     }
 
+    @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) {
-        return false;
+        return player.canUsePower(adjacentList, adjacentPlayerList);
+    }
+
+    // aggiunti io
+    public  void setChosenGod(Boolean condition){
+        this.chosenGod = condition;
+    }
+
+    public boolean getBoolChosenGod(){
+        return this.chosenGod;
+    }
+
+    @Override
+    public String getGodName() {
+        return this.godName;
+    }
+
+    @Override
+    public String getGodDescription() {
+        return this.description;
+    }
+
+    @Override
+    public void setGodName(String godName) {
+        this.godName = godName;
+    }
+
+    @Override
+    public void setGodDescription(String description) {
+        this.description = description;
     }
 }

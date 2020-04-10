@@ -11,10 +11,12 @@ public class Player implements PlayerInterface{
     private boolean cantGoUp;
     private boolean activePower;
 
+
     public Player(String nickName){
         this.nickName = nickName;
         this.cantGoUp = false;
         this.activePower = false;
+
     }
 
     /*Set values of the situation after the first insert of a worker*/
@@ -129,4 +131,6 @@ public class Player implements PlayerInterface{
         return "Player nickname: "
                 + this.nickName;
     }
+
+
 }
