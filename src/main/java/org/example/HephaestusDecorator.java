@@ -22,11 +22,26 @@ public class HephaestusDecorator extends PlayerBuildDecorator {
     }
 
 
+    @Override
+    public boolean canBuild(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position buildPos) throws InvalidPositionException, NullPointerException {
+        this.buildPosition = buildPos;
+        return super.canBuild(adjacentList, adjacentPlayerList, buildPos);
+    }
 
     @Override
     public void activePowerAfterBuild() {
         super.setActivePower(true);
     }
 
-    
+    @Override
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition) {
+        if(super.canBuild(adjacentList, adjacentPlayerList, powerPosition) && this.buildPosition == powerPosition)
+        return super.canUsePower(adjacentList, adjacentPlayerList, powerPosition);
+        return false;
+    }
+
+    @Override
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition) {
+        return new BoardChange(powerPosition,BuildType.LEVEL);
+    }
 }
