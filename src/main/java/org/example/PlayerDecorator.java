@@ -122,9 +122,4 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     public void setGodDescription(String description) {
         this.description = description;
     }
-
-    @Override
-    public boolean getActivePower() {
-        return player.getActivePower();
-    }
 }

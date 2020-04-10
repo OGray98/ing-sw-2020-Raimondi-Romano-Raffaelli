@@ -10,6 +10,9 @@ public class DemeterDecorator extends PlayerBuildDecorator {
         super.setGodDescription(description);
     }
 
+    //@Override
+    //public
+
     @Override
     public void setChosenGod(Boolean condition){
         super.setChosenGod(condition);
