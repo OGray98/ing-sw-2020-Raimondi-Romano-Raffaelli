@@ -115,12 +115,13 @@ public class Player implements PlayerInterface{
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
         return false;
     }
 
     @Override
-    public void usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
+        return null;
     }
 
     @Override

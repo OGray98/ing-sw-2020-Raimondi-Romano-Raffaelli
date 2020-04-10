@@ -5,9 +5,9 @@ import java.util.Map;
 
 public class BoardChange {
     private Map<PositionContainer, PlayerIndex> playerChanges;
-    private Position positionBuild;
-    private BuildType buildType;
-    private boolean cantGoUp;
+    private final Position positionBuild;
+    private final BuildType buildType;
+    private final boolean cantGoUp;
 
     /*
      * Create a BoardChange with the passed cantGoUp and every other field null
@@ -17,6 +17,32 @@ public class BoardChange {
         this.playerChanges = null;
         this.positionBuild = null;
         this.buildType = BuildType.LEVEL;
+    }
+
+    BoardChange(Position oldPosition, Position newPosition, PlayerIndex playerIndex) throws NullPointerException {
+        if (oldPosition == null)
+            throw new NullPointerException("oldPosition");
+        if (newPosition == null)
+            throw new NullPointerException("newPosition");
+
+        PositionContainer posCont = new PositionContainer(oldPosition);
+        playerChanges = new HashMap<>();
+        playerChanges.put(posCont, playerIndex);
+
+        this.cantGoUp = false;
+        this.playerChanges = null;
+        this.positionBuild = null;
+        this.buildType = BuildType.LEVEL;
+    }
+
+    BoardChange(Position buildPosition, BuildType type) throws NullPointerException {
+        if (buildPosition == null)
+            throw new NullPointerException("positionBuild");
+        this.positionBuild = buildPosition;
+        this.buildType = type;
+
+        this.playerChanges = null;
+        this.cantGoUp = false;
     }
 
     /*
@@ -67,17 +93,6 @@ public class BoardChange {
         if (playerChanges == null)
             playerChanges = new HashMap<>();
         playerChanges.put(posCont, playerIndex);
-    }
-    
-    public void setBuildPosition(Position buildPosition, BuildType type) throws NullPointerException {
-        if (positionBuild == null)
-            throw new NullPointerException("positionBuild");
-        this.positionBuild = buildPosition;
-        this.buildType = type;
-    }
-
-    public void setCantGoUp(boolean cantGoUp) {
-        this.cantGoUp = cantGoUp;
     }
 
 }
