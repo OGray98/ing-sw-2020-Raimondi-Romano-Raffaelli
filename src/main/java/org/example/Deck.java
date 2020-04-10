@@ -37,7 +37,7 @@ public class Deck {
 
         for(int i = 0;i < godCards.size();i++){
             if(godCards.get(i).getBoolChosenGod() && count < this.playersNumber){
-                chosenGodCards[count] = godCards.get(i);
+                this.chosenGodCards[count] = godCards.get(i);
                 count++;
             }
             if( i >= godCards.size() || count > chosenGodCards.length || count < 0)
@@ -45,9 +45,18 @@ public class Deck {
         }
     }
 
+    public List<CardInterface> getGodCards(){
+        return this.godCards;
+    }
+
+    public CardInterface[] getChosenGodCards(){
+        return this.chosenGodCards;
+    }
 
 
-    
+
+
+
 
 
 }
