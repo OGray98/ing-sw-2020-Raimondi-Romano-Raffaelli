@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 public class PositionContainerTest {
 
@@ -14,7 +13,6 @@ public class PositionContainerTest {
 
     @Before
     public void init() {
-        positionContainer = new PositionContainer();
         pos1 = new Position(1, 2);
         pos2 = new Position(3, 4);
     }
@@ -23,7 +21,7 @@ public class PositionContainerTest {
     public void isConstructorWithPositionCorrected() {
         positionContainer = new PositionContainer(pos1);
         assertEquals(pos1, positionContainer.getOccupiedPosition());
-        assertNull(positionContainer.getOldPosition());
+        assertEquals(new Position(0, 0), positionContainer.getOldPosition());
 
         try {
             positionContainer = new PositionContainer(null);
@@ -36,24 +34,34 @@ public class PositionContainerTest {
     @Test
     public void isPutCorrected() {
 
-
-        assertNull(positionContainer.getOldPosition());
-        assertNull(positionContainer.getOccupiedPosition());
-
-        positionContainer.put(pos1);
+        positionContainer = new PositionContainer(pos1);
 
         assertEquals(pos1, positionContainer.getOccupiedPosition());
-        assertNull(positionContainer.getOldPosition());
+        assertEquals(new Position(0, 0), positionContainer.getOldPosition());
+
+        PositionContainer posCont = new PositionContainer(pos1);
+        assertEquals(posCont, positionContainer);
+
 
         positionContainer.put(pos2);
         assertEquals(pos2, positionContainer.getOccupiedPosition());
         assertEquals(pos1, positionContainer.getOldPosition());
+
 
         try {
             positionContainer.put(null);
         } catch (NullPointerException e) {
             assertEquals("newPosition", e.getMessage());
         }
+    }
+
+    @Test
+    public void isToStringCorrected() {
+        positionContainer = new PositionContainer(pos2);
+        positionContainer.put(pos1);
+
+        assertEquals("PositionContainer{ oldPosition = " + pos2 + ", newPosition = " + pos1 + "}",
+                positionContainer.toString());
     }
 
 }
