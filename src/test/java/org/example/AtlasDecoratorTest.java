@@ -42,7 +42,7 @@ public class AtlasDecoratorTest {
 
         assertEquals(playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue).getBuildType(), BuildType.DOME);
         assertEquals(playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue).getPositionBuild(), posTrue);
-        assertNull(playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue).getCanGoUp());
+        assertNull(playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue).getCantGoUp());
 
         assertFalse(playerint.getActivePower());
     }

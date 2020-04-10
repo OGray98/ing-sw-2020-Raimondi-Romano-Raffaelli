@@ -15,7 +15,7 @@ public class Cell {
     }
 
     /*Returns a deep copy of the Cell cell
-    * Throws NullPointerException if cell is null */
+     * Throws NullPointerException if cell is null */
     public Cell(Cell cell) throws NullPointerException {
         if (cell == null)
             throw new NullPointerException();
@@ -25,7 +25,7 @@ public class Cell {
     }
 
     /*Increment level (during a building action) by 1 or put a dome on a third level
-    * Throws InvalidIncrementException if the cell already has a dome */
+     * Throws InvalidIncrementException if the cell already has a dome */
     public void incrementLevel() throws InvalidIncrementLevelException {
         if (hasDome) throw new InvalidIncrementLevelException(position.row, position.col);
 
@@ -44,7 +44,7 @@ public class Cell {
         return hasDome;
     }
 
-    public void setOccupation(boolean hasDome) {
+    public void setHasDome(boolean hasDome) {
         this.hasDome = hasDome;
     }
 

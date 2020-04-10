@@ -34,8 +34,8 @@ public class CellTest {
 
     @Test
     public void setDomeTest(){
-        cellDome.setOccupation(true);
-        cellNotDome.setOccupation(false);
+        cellDome.setHasDome(true);
+        cellNotDome.setHasDome(false);
         assertTrue(cellDome.hasDome());
         assertFalse(cellNotDome.hasDome());
     }

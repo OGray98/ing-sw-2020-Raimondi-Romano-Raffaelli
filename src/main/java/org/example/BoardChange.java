@@ -7,7 +7,10 @@ public class BoardChange {
     private Map<PositionContainer, PlayerIndex> playerChanges;
     private final Position positionBuild;
     private final BuildType buildType;
-    private final boolean cantGoUp;
+    private final Boolean cantGoUp;
+    private final boolean isPlayerChangesNull;
+    private final boolean isPositionBuildNull;
+    private final boolean isCantGoUpNull;
 
     /*
      * Create a BoardChange with the passed cantGoUp and every other field null
@@ -17,6 +20,10 @@ public class BoardChange {
         this.playerChanges = null;
         this.positionBuild = null;
         this.buildType = BuildType.LEVEL;
+
+        isPlayerChangesNull = true;
+        isPositionBuildNull = true;
+        isCantGoUpNull = false;
     }
 
     BoardChange(Position oldPosition, Position newPosition, PlayerIndex playerIndex) throws NullPointerException {
@@ -30,9 +37,13 @@ public class BoardChange {
         playerChanges = new HashMap<>();
         playerChanges.put(posCont, playerIndex);
 
-        this.cantGoUp = false;
+        this.cantGoUp = null;
         this.positionBuild = null;
         this.buildType = BuildType.LEVEL;
+
+        isPlayerChangesNull = false;
+        isPositionBuildNull = true;
+        isCantGoUpNull = true;
     }
 
     BoardChange(Position buildPosition, BuildType type) throws NullPointerException {
@@ -42,10 +53,28 @@ public class BoardChange {
         this.buildType = type;
 
         this.playerChanges = null;
-        this.cantGoUp = false;
+        this.cantGoUp = null;
+
+        isPlayerChangesNull = true;
+        isPositionBuildNull = false;
+        isCantGoUpNull = true;
     }
 
-    public boolean getCantGoUp() {
+    public boolean isPlayerChangesNull() {
+        return isPlayerChangesNull;
+    }
+
+    public boolean isPositionBuildNull() {
+        return isPositionBuildNull;
+    }
+
+    public boolean isCantGoUpNull() {
+        return isCantGoUpNull;
+    }
+
+    public boolean getCantGoUp() throws NullPointerException {
+        if (cantGoUp == null)
+            throw new NullPointerException("cantGoUp");
         return cantGoUp;
     }
 

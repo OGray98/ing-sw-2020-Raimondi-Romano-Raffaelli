@@ -34,6 +34,10 @@ public class BoardChangesTest {
         }
         assertEquals(BuildType.LEVEL, boardChange.getBuildType());
         assertFalse(boardChange.getCantGoUp());
+
+        assertFalse(boardChange.isCantGoUpNull());
+        assertTrue(boardChange.isPlayerChangesNull());
+        assertTrue(boardChange.isPositionBuildNull());
     }
 
     @Test
@@ -51,13 +55,21 @@ public class BoardChangesTest {
         assertEquals(buildPosition, boardChange.getPositionBuild());
 
         assertEquals(buildType, boardChange.getBuildType());
-        assertFalse(boardChange.getCantGoUp());
+        try {
+            boardChange.getCantGoUp();
+        } catch (NullPointerException e) {
+            assertEquals("cantGoUp", e.getMessage());
+        }
 
         try {
             boardChange = new BoardChange(null, buildType);
         } catch (NullPointerException e) {
             assertEquals("buildPosition", e.getMessage());
         }
+
+        assertTrue(boardChange.isCantGoUpNull());
+        assertTrue(boardChange.isPlayerChangesNull());
+        assertFalse(boardChange.isPositionBuildNull());
     }
 
     @Test
@@ -82,7 +94,11 @@ public class BoardChangesTest {
         }
         assertTrue(thereIs);
 
-        assertFalse(boardChange.getCantGoUp());
+        try {
+            boardChange.getCantGoUp();
+        } catch (NullPointerException e) {
+            assertEquals("cantGoUp", e.getMessage());
+        }
 
         try {
             boardChange.getPositionBuild();
@@ -103,6 +119,10 @@ public class BoardChangesTest {
         } catch (NullPointerException e) {
             assertEquals("newPosition", e.getMessage());
         }
+
+        assertTrue(boardChange.isCantGoUpNull());
+        assertFalse(boardChange.isPlayerChangesNull());
+        assertTrue(boardChange.isPositionBuildNull());
     }
 
     @Test
@@ -151,3 +171,4 @@ public class BoardChangesTest {
     }
 
 }
+

@@ -27,8 +27,8 @@ public class Board {
     }
 
     /*Returns true if the cell in Position cellPosition is empty
-    * Returns false if the cell in Position cellPosition cointains a dome or a player
-    * Throws NullPointerException if cellPosition is null */
+     * Returns false if the cell in Position cellPosition cointains a dome or a player
+     * Throws NullPointerException if cellPosition is null */
     public boolean isFreeCell(Position cellPosition) throws NullPointerException {
         if (cellPosition == null)
             throw new NullPointerException("cellPosition");
@@ -43,7 +43,7 @@ public class Board {
     }
 
     /*Given the Position centralPosition returns a List<Cell> that contains all the cells adjacent to centralPosition
-    * Throws NullPointerException if centralPosition is null */
+     * Throws NullPointerException if centralPosition is null */
     public List<Cell> getAdjacentCells(Position centralPosition) throws NullPointerException {
         if (centralPosition == null)
             throw new NullPointerException("centralPosition");
@@ -59,7 +59,7 @@ public class Board {
     }
 
     /* Returns the Cell in Position position on the board
-    * Throws NullPointerException if position is null */
+     * Throws NullPointerException if position is null */
     public Cell getCell(Position position) throws NullPointerException {
         if (position == null)
             throw new NullPointerException("Position");
@@ -67,7 +67,7 @@ public class Board {
     }
 
     /*Returns the Map<Position, PlayerIndex> that contains all the pairs<Position, PlayerIndex> adjacent to the Position centralPosition
-    * Throws NullPointerException  if centralPosition is null */
+     * Throws NullPointerException  if centralPosition is null */
     public Map<Position, PlayerIndex> getAdjacentPlayers(Position centralPosition) throws NullPointerException {
         if (centralPosition == null)
             throw new NullPointerException("centralPosition");
@@ -80,8 +80,8 @@ public class Board {
     }
 
     /*Given oldPosition and newPosition move the worker contained in Position oldPosition to the Position newPosition
-    * Throws NotPresentWorkerException if in oldPosition there is not any worker
-    * Throws NullPointerException if oldPosition or newPosition is null*/
+     * Throws NotPresentWorkerException if in oldPosition there is not any worker
+     * Throws NullPointerException if oldPosition or newPosition is null*/
     //TODO: controllare qui se la newposition non è vuota? direi di no
     public void changeWorkerPosition(Position oldPosition, Position newPosition) throws NotPresentWorkerException, NullPointerException {
         if (oldPosition == null)
@@ -101,8 +101,8 @@ public class Board {
     }
 
     /*Increment the level of the Cell in Position buildPosition
-    * Throws NullPointerException if buildPosition is null
-    * Throws InvalidIncrementLevelException if building is not allowed*/
+     * Throws NullPointerException if buildPosition is null
+     * Throws InvalidIncrementLevelException if building is not allowed*/
     public void constructBlock(Position buildPosition) throws NullPointerException, InvalidIncrementLevelException {
         if (buildPosition == null)
             throw new NullPointerException("buildPosition");
@@ -111,8 +111,8 @@ public class Board {
     }
 
     /*Given the Position putPosition and the PlayerIndex playerIndex put a worker of playerIndex on the board on the Cell in position putPosition
-    * Throws NullPointerException if putPosition is null
-    * Throws InvelidPutWorkerException if there are already two workers of the given player on the board */
+     * Throws NullPointerException if putPosition is null
+     * Throws InvelidPutWorkerException if there are already two workers of the given player on the board */
     //TODO: controllare qui se la putPosition non è vuota? direi di no
     public void putWorker(Position putPosition, PlayerIndex playerIndex) throws NullPointerException, InvalidPutWorkerException {
         if (putPosition == null)
@@ -132,8 +132,8 @@ public class Board {
     }
 
     /*Returns the PlayerIndex of the worker in Position position
-    * Throws NullPointerException if position is null
-    * Throws NotPresentWorkerException if there is no worker in the Position position */
+     * Throws NullPointerException if position is null
+     * Throws NotPresentWorkerException if there is no worker in the Position position */
     public PlayerIndex getOccupiedPlayer(Position position) throws NullPointerException, NotPresentWorkerException {
         if (position == null)
             throw new NullPointerException("position");
@@ -152,14 +152,56 @@ public class Board {
 
         List<Position> playerWorkersPositions = new ArrayList<>();
 
-        for(Position p : this.playerPosition.keySet()){
-            if(this.playerPosition.get(p).equals(playerToCheck)){
+        for (Position p : this.playerPosition.keySet()) {
+            if (this.playerPosition.get(p).equals(playerToCheck)) {
                 playerWorkersPositions.add(p);
             }
         }
 
-        if(playerWorkersPositions.size() != 2) throw new MissingWorkerException(playerWorkersPositions.size());
-
+        if (playerWorkersPositions.size() != 2) throw new MissingWorkerException(playerWorkersPositions.size());
         return playerWorkersPositions;
     }
+
+    /* Method used after PlayerInterface.usePower() to update the board with the new changes.
+     * Depending on the content of boardChange, it can update playerPosition, modifies map or set cantGoUp
+     * Requires BoardChange not null, with the changes to update
+     */
+    public void updateAfterPower(BoardChange boardChange) throws NullPointerException {
+        if (boardChange == null)
+            throw new NullPointerException("boardChange");
+        if (!boardChange.isCantGoUpNull())
+            this.cantGoUp = boardChange.getCantGoUp();
+        if (!boardChange.isPlayerChangesNull())
+            updateAfterPowerMove(boardChange.getChanges());
+        if (!boardChange.isPositionBuildNull())
+            updateAfterPowerBuild(boardChange.getPositionBuild(), boardChange.getBuildType());
+    }
+
+    /* Method called by this.updateAfterPower() to update the playerPosition.
+     * Requires Map<PositionContainer, PlayerIndex> not null, with the changes to update
+     */
+    private void updateAfterPowerMove(Map<PositionContainer, PlayerIndex> changes) throws NullPointerException {
+        if (changes == null)
+            throw new NullPointerException("changes");
+        for (Map.Entry<PositionContainer, PlayerIndex> entryChange : changes.entrySet()) {
+            for (Map.Entry<Position, PlayerIndex> entry : this.playerPosition.entrySet()) {
+                if (entryChange.getKey().getOldPosition().equals(entry.getKey()))
+                    changeWorkerPosition(entry.getKey(), entryChange.getKey().getOccupiedPosition());
+            }
+        }
+    }
+
+    /* Method called by this.updateAfterPower() to update map.
+     * Requires Position not null, with the Position to update
+     * Requires BuildType, which indicate if build a normal level or a dome
+     */
+    private void updateAfterPowerBuild(Position positionBuild, BuildType buildType) throws NullPointerException {
+        if (positionBuild == null)
+            throw new NullPointerException("positionBuild");
+        if (buildType == BuildType.LEVEL)
+            constructBlock(positionBuild);
+        else
+            map[positionBuild.row][positionBuild.col].setHasDome(true);
+    }
+
 }

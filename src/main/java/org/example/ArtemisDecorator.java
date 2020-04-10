@@ -20,7 +20,7 @@ public class ArtemisDecorator extends PlayerMoveDecorator {
 
     @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
-        return super.canMove(adjacentList, adjacentPlayerList, powerPosition) && !powerPosition.equals(super.getOldCell());
+        return super.canMove(adjacentList, adjacentPlayerList, powerPosition) && !powerPosition.equals(super.getOldCell().getPosition());
     }
 
     @Override
