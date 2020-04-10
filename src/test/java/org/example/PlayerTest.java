@@ -395,6 +395,29 @@ public class PlayerTest {
     }
 
     @Test
+    public void moveTest(){
+        try{
+            player.move(cellOccupied);
+        }
+        catch (NullPointerException e){
+            assertEquals("cellOccupied is null!", e.getMessage());
+        }
+
+        player.setStartingWorkerSituation(oldCell, false);
+        try{
+            player.move(null);
+        }
+        catch (NullPointerException e){
+            assertEquals("newOccupiedCell is null!", e.getMessage());
+        }
+
+        player.move(cellOccupied);
+
+        assertEquals(player.getOldCell(), oldCell);
+        assertEquals(player.getCellOccupied(), cellOccupied);
+    }
+
+    @Test
     public void toStringTest(){
         assertEquals(player.toString(), "Player nickname: Jack");
     }

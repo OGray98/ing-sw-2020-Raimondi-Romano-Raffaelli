@@ -14,6 +14,7 @@ public interface PlayerInterface {
     /* Set the situation after a move */
     void setAfterMove(Cell oldCell, Cell cellOccupied);
 
+    /*When a Player can use a God power activePower will be set true, false otherwise*/
     void setActivePower(boolean isPowerOn);
 
     /*Method that returns true if user select a possible move action
@@ -36,18 +37,26 @@ public interface PlayerInterface {
     * Throws NullPointerException if is not selected any worker */
     boolean hasWin() throws NullPointerException;
 
+    /* Update the occupiedCell after a move, so the hasWin() method can runs correctly
+    * in Decorator class can set activePower */
+    void move(Cell newOccupiedCell) throws NullPointerException;
+
+    /*In Decorator classes can set active power, called after a build action*/
+    void activePowerAfterBuild();
+
+    /*Method that will be specialized in the Decorator class, it refers to a specific God power*/
     boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList);
 
+    /*Method that implements the power of a specific God, specialized in Decorator*/
+    void usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList);
 
+    Cell getOldCell() throws NullPointerException;
 
+    Cell getCellOccupied() throws NullPointerException;
 
     //public God getGodName();
 
-    /*Cell getOldCell();
-
-    Cell getCellOccupied();
-
-    boolean getCantGoUp();
+    /*boolean getCantGoUp();
 
     boolean getActivePower();*/
 }

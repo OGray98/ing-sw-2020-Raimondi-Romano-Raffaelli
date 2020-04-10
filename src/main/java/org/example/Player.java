@@ -102,21 +102,42 @@ public class Player implements PlayerInterface{
     }
 
     @Override
+    public void move(Cell newOccupiedCell) throws NullPointerException{
+        if(newOccupiedCell == null) throw new NullPointerException("newOccupiedCell is null!");
+        if(this.cellOccupied == null) throw new NullPointerException("cellOccupied is null!");
+
+        this.oldCell = this.cellOccupied;
+        this.cellOccupied = newOccupiedCell;
+    }
+
+    @Override
+    public void activePowerAfterBuild(){
+    }
+
+    @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
         return false;
     }
 
+    @Override
+    public void usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
+    }
+
+    @Override
+    public Cell getOldCell() throws NullPointerException{
+        if(this.cellOccupied == null) throw new NullPointerException("Worker has not an old cell");
+
+        return new Cell(this.oldCell);
+    }
+
+    @Override
+    public Cell getCellOccupied() throws NullPointerException{
+        if(this.cellOccupied == null) throw new NullPointerException("Worker has not a cell occupied");
+
+        return new Cell(this.cellOccupied);
+    }
+
     /*@Override
-    public Cell getOldCell(){
-        return this.oldCell;
-    }
-
-    @Override
-    public Cell getCellOccupied(){
-        return this.cellOccupied;
-    }
-
-    @Override
     public boolean getCantGoUp(){
         return this.cantGoUp;
     }
