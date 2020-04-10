@@ -54,9 +54,9 @@ public interface PlayerInterface {
 
     Cell getCellOccupied() throws NullPointerException;
 
+    boolean getActivePower();
+
+    boolean getCantGoUp();
+
     //public God getGodName();
-
-    /*boolean getCantGoUp();
-
-    boolean getActivePower();*/
 }

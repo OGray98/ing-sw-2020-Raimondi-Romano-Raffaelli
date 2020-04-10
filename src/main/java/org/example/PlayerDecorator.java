@@ -84,6 +84,16 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
         return player.getCellOccupied();
     }
 
+    @Override
+    public boolean getActivePower(){
+        return player.getActivePower();
+    }
+
+    @Override
+    public boolean getCantGoUp(){
+        return player.getCantGoUp();
+    }
+
     // aggiunti io
     public  void setChosenGod(Boolean condition){
         this.chosenGod = condition;

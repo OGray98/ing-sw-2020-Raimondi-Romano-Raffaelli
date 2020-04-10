@@ -138,15 +138,15 @@ public class Player implements PlayerInterface{
         return new Cell(this.cellOccupied);
     }
 
-    /*@Override
-    public boolean getCantGoUp(){
-        return this.cantGoUp;
-    }
-
     @Override
     public boolean getActivePower(){
         return this.activePower;
-    }*/
+    }
+
+    @Override
+    public boolean getCantGoUp(){
+        return this.cantGoUp;
+    }
 
     @Override
     public String toString(){

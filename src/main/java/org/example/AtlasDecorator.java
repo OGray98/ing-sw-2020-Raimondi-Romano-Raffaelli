@@ -24,10 +24,11 @@ public class AtlasDecorator extends PlayerBuildDecorator {
         return super.canBuild(adjacentList, adjacentPlayerList, powerPosition);
     }
 
-    /*@Override
-    public BoardChange usePower(){
-
-    }*/
+    @Override
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
+        super.setActivePower(false);
+        return new BoardChange(powerPosition, BuildType.DOME);
+    }
 
     @Override
     public void setChosenGod(Boolean condition){
