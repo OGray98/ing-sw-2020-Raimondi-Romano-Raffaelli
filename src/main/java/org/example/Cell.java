@@ -6,7 +6,7 @@ public class Cell {
     private int level;
     private boolean hasDome;
 
-    public Cell(int row, int col) throws IllegalArgumentException {
+    public Cell(int row, int col) throws InvalidPositionException {
         if (row < 0 || row > 4 || col < 0 || col > 4)
             throw new InvalidPositionException(row, col);
         this.level = 0;
@@ -18,7 +18,7 @@ public class Cell {
      * Throws NullPointerException if cell is null */
     public Cell(Cell cell) throws NullPointerException {
         if (cell == null)
-            throw new NullPointerException();
+            throw new NullPointerException("cell");
         this.level = cell.level;
         this.hasDome = cell.hasDome;
         this.position = new Position(cell.position.row, cell.position.col);

@@ -70,6 +70,12 @@ public class BoardChangesTest {
         assertTrue(boardChange.isCantGoUpNull());
         assertTrue(boardChange.isPlayerChangesNull());
         assertFalse(boardChange.isPositionBuildNull());
+
+        try {
+            new BoardChange(null, BuildType.LEVEL);
+        } catch (NullPointerException e) {
+            assertEquals("buildPosition", e.getMessage());
+        }
     }
 
     @Test
@@ -123,6 +129,18 @@ public class BoardChangesTest {
         assertTrue(boardChange.isCantGoUpNull());
         assertFalse(boardChange.isPlayerChangesNull());
         assertTrue(boardChange.isPositionBuildNull());
+
+        try {
+            new BoardChange(null, newPos, PlayerIndex.PLAYER2);
+        } catch (NullPointerException e) {
+            assertEquals("oldPosition", e.getMessage());
+        }
+
+        try {
+            new BoardChange(newPos, null, PlayerIndex.PLAYER2);
+        } catch (NullPointerException e) {
+            assertEquals("newPosition", e.getMessage());
+        }
     }
 
     @Test
