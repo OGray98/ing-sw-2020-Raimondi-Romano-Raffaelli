@@ -27,6 +27,12 @@ public class PanDecoratorTest {
 
     }
 
+    @Test
+    public void setChosenGodTest(){
+        cardPan.setChosenGod(true);
+        assertTrue(cardPan.getBoolChosenGod());
+    }
+
 
     @Test
     public void hasWinTest(){

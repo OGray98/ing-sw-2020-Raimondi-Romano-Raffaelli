@@ -26,6 +26,12 @@ public class AthenaDecoratorTest {
     }
 
     @Test
+    public void setChosenGodTest(){
+        cardAthena.setChosenGod(true);
+        assertTrue(cardAthena.getBoolChosenGod());
+    }
+
+    @Test
     public void moveAthenaTest(){
         board.putWorker(workerPos, PlayerIndex.PLAYER0);
         playerAthena.setStartingWorkerSituation(board.getCell(workerPos), false);

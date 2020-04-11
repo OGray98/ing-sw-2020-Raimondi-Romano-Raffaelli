@@ -41,6 +41,12 @@ public class ApolloDecoratorTest {
     }
 
     @Test
+    public void setChosenGodTest(){
+        cardApollo.setChosenGod(true);
+        assertTrue(cardApollo.getBoolChosenGod());
+    }
+
+    @Test
     public void canMoveTest(){
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         board.putWorker(secondWorkerPosition,PlayerIndex.PLAYER0);
@@ -112,6 +118,22 @@ public class ApolloDecoratorTest {
         board.updateAfterPower(boardChange);
         assertEquals(PlayerIndex.PLAYER0,board.getOccupiedPlayer(workerOpponentPosition));
         assertEquals(PlayerIndex.PLAYER1,board.getOccupiedPlayer(workerPosition));
+    }
+
+    @Test
+    public void usePowerTestPart2(){
+        board.constructBlock(workerPosition);
+        board.constructBlock(workerPosition);
+        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
+        playerApollo.setStartingWorkerSituation(board.getCell(workerPosition),false);
+        board.putWorker(workerOpponentPosition,PlayerIndex.PLAYER1);
+        playerOpponent.setStartingWorkerSituation(board.getCell(workerOpponentPosition),false);
+        BoardChange boardChange = playerApollo.usePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),workerOpponentPosition);
+        board.updateAfterPower(boardChange);
+        assertEquals(PlayerIndex.PLAYER0,board.getOccupiedPlayer(workerOpponentPosition));
+        assertEquals(PlayerIndex.PLAYER1,board.getOccupiedPlayer(workerPosition));
+
+
     }
 
 }

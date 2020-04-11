@@ -27,6 +27,12 @@ public class HephaestusDecoratorTest {
     }
 
     @Test
+    public void setChosenGodTest(){
+        cardHephaestus.setChosenGod(true);
+        assertTrue(cardHephaestus.getBoolChosenGod());
+    }
+
+    @Test
     public void activePowerAfterBuildTest(){
         playerHephaestus.activePowerAfterBuild();
         assertTrue(playerHephaestus.getActivePower());

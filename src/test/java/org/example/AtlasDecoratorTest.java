@@ -25,6 +25,12 @@ public class AtlasDecoratorTest {
     }
 
     @Test
+    public void setChosenGodTest(){
+        atlasPlayer.setChosenGod(true);
+        assertTrue(atlasPlayer.getBoolChosenGod());
+    }
+
+    @Test
     public void canBuildAtlasTest(){
         board.putWorker(workerPos, PlayerIndex.PLAYER1);
         playerint.setStartingWorkerSituation(board.getCell(workerPos), false);

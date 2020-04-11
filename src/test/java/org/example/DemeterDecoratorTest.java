@@ -27,6 +27,12 @@ public class DemeterDecoratorTest {
     }
 
     @Test
+    public void setChosenGodTest(){
+        cardDemeter.setChosenGod(true);
+        assertTrue(cardDemeter.getBoolChosenGod());
+    }
+
+    @Test
     public void canBuildDemeterTest(){
         board.putWorker(workerPosition, PlayerIndex.PLAYER2);
         playerDemeter.setStartingWorkerSituation(board.getCell(workerPosition), false);

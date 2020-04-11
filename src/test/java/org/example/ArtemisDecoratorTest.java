@@ -20,12 +20,19 @@ public class ArtemisDecoratorTest {
     public void init(){
         board = new Board();
         cardArtemis = new ArtemisDecorator();
-        cardArtemis.setPlayer(playerArtemis);
         playerArtemis = cardArtemis.setPlayer(new Player("Jack", PlayerIndex.PLAYER2));
         workerPos = new Position(1,1);
         firstMovePosition = new Position(2,2);
         secondMovePosition = new Position(1,3);
     }
+
+    @Test
+    public void setChosenGodTest(){
+        cardArtemis.setChosenGod(true);
+        assertTrue(cardArtemis.getBoolChosenGod());
+    }
+
+
 
     @Test
     public void canUsePowerArtemisTest(){
