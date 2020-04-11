@@ -109,8 +109,6 @@ public class ApolloDecoratorTest {
         board.putWorker(workerOpponentPosition,PlayerIndex.PLAYER1);
         playerOpponent.setStartingWorkerSituation(board.getCell(workerOpponentPosition),false);
         BoardChange boardChange = playerApollo.usePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),workerOpponentPosition);
-        Map<PositionContainer,PlayerIndex> lista = boardChange.getChanges();
-        //System.out.print(lista.toString());
         board.updateAfterPower(boardChange);
         assertEquals(PlayerIndex.PLAYER0,board.getOccupiedPlayer(workerOpponentPosition));
         assertEquals(PlayerIndex.PLAYER1,board.getOccupiedPlayer(workerPosition));
