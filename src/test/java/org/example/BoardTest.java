@@ -3,7 +3,6 @@ package org.example;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,13 +95,13 @@ public class BoardTest {
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         board.putWorker(freePosition,PlayerIndex.PLAYER1);
         board.putWorker(opponentAdjacentWorkerPosition,PlayerIndex.PLAYER2);
-        Map<Position,PlayerIndex> adjacentPlayer= new HashMap<>();
+        Map<Position, PlayerIndex> adjacentPlayer;
         adjacentPlayer = board.getAdjacentPlayers(workerPosition);
         assertEquals(adjacentPlayer.get(freePosition),PlayerIndex.PLAYER1);
         assertEquals(adjacentPlayer.get(opponentAdjacentWorkerPosition),PlayerIndex.PLAYER2);
 
         board.putWorker(zeroPosition,PlayerIndex.PLAYER0);
-        Map<Position,PlayerIndex> adjacentPlayerSecondWorker= new HashMap<>();
+        Map<Position, PlayerIndex> adjacentPlayerSecondWorker;
         adjacentPlayerSecondWorker = board.getAdjacentPlayers(zeroPosition);
         assertEquals(0,adjacentPlayerSecondWorker.size());
     }
@@ -230,8 +229,8 @@ public class BoardTest {
         Position pos33 = new Position(3, 3);
 
         assertEquals(board.workerPositions(PlayerIndex.PLAYER1).size(), 2);
-        assertEquals(board.workerPositions(PlayerIndex.PLAYER1).get(1), pos11);
-        assertEquals(board.workerPositions(PlayerIndex.PLAYER1).get(0), pos33);
+        assertTrue(board.workerPositions(PlayerIndex.PLAYER1).contains(pos11));
+        assertTrue(board.workerPositions(PlayerIndex.PLAYER1).contains(pos33));
 
     }
 
@@ -283,7 +282,7 @@ public class BoardTest {
         boardChange = new BoardChange(buildPos, BuildType.DOME);
         board.updateAfterPower(boardChange);
 
-        assertEquals(2, board.getCell(buildPos).getLevel());
+        assertEquals(1, board.getCell(buildPos).getLevel());
         assertTrue(board.getCell(buildPos).hasDome());
 
         assertTrue(boardChange.isCantGoUpNull());
@@ -304,6 +303,13 @@ public class BoardTest {
             assertEquals("boardChange", e.getMessage());
         }
 
+        boardChange = new BoardChange(new Position(4, 4), new01, PlayerIndex.PLAYER2);
+        try {
+            board.updateAfterPower(boardChange);
+        } catch (NotPresentWorkerException e) {
+            assertEquals("There isn't a worker of " + PlayerIndex.PLAYER2 + " in : [" + 4 + "][" + 4 + "]",
+                    e.getMessage());
+        }
     }
 
 

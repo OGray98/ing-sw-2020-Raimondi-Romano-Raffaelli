@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 public class Board {
-
+    //TODO: questa rep passa i test, vedere se non si crea casino a fare la Map.put dentro ad un for each
     private static final int NUM_ROW = 5;
     private static final int NUM_COLUMNS = 5;
-    private static final int capacityPlayerPosition = 6;
+    private static final int capacityPlayerPosition = 3;
     private Cell[][] map;
-    private Map<Position, PlayerIndex> playerPosition;
+    private Map<PlayerIndex, List<Position>> playerPosition;
     private boolean cantGoUp;
 
 
@@ -35,10 +35,9 @@ public class Board {
         if (map[cellPosition.row][cellPosition.col].hasDome())
             return false;
 
-        for (Position position : playerPosition.keySet()) {
-            if (position.equals(cellPosition))
+        for (List<Position> positions : playerPosition.values())
+            if (positions.contains(cellPosition))
                 return false;
-        }
         return true;
     }
 
@@ -72,9 +71,11 @@ public class Board {
         if (centralPosition == null)
             throw new NullPointerException("centralPosition");
         HashMap<Position, PlayerIndex> adjacentPlayers = new HashMap<>(capacityPlayerPosition);
-        for (Map.Entry<Position, PlayerIndex> entry : this.playerPosition.entrySet()) {
-            if (entry.getKey().isAdjacent(centralPosition))
-                adjacentPlayers.put(entry.getKey(), entry.getValue());
+        for (Map.Entry<PlayerIndex, List<Position>> entry : this.playerPosition.entrySet()) {
+            for (Position position : entry.getValue()) {
+                if (position.isAdjacent(centralPosition))
+                    adjacentPlayers.put(position, entry.getKey());
+            }
         }
         return adjacentPlayers;
     }
@@ -89,14 +90,18 @@ public class Board {
         if (newPosition == null)
             throw new NullPointerException("newPosition");
 
-        for (Map.Entry<Position, PlayerIndex> entry : this.playerPosition.entrySet()) {
-            if (entry.getKey().equals(oldPosition)) {
-                this.playerPosition.remove(oldPosition);
-                this.playerPosition.put(newPosition, entry.getValue());
-                return;
+        for (Map.Entry<PlayerIndex, List<Position>> entry : this.playerPosition.entrySet()) {
+            List<Position> list = entry.getValue();
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).equals(oldPosition)) {
+                    list.remove(oldPosition);
+                    List<Position> newPositions = new ArrayList<>(list);
+                    newPositions.add(newPosition);
+                    this.playerPosition.put(entry.getKey(), newPositions);
+                    return;
+                }
             }
         }
-
         throw new NotPresentWorkerException(oldPosition.row, oldPosition.col);
     }
 
@@ -118,17 +123,20 @@ public class Board {
         if (putPosition == null)
             throw new NullPointerException("putPosition");
 
-        int cont = 0;
-
-        for (Map.Entry<Position, PlayerIndex> entry : this.playerPosition.entrySet()) {
-            if (entry.getValue() == playerIndex) {
-                cont++;
-                if (cont > 1)
+        for (Map.Entry<PlayerIndex, List<Position>> entry : this.playerPosition.entrySet()) {
+            if (entry.getKey() == playerIndex) {
+                if (entry.getValue().size() == 1) {
+                    List<Position> list = new ArrayList<>(entry.getValue());
+                    list.add(putPosition);
+                    this.playerPosition.put(playerIndex, list);
+                    return;
+                } else
                     throw new InvalidPutWorkerException(putPosition.row, putPosition.col, playerIndex);
             }
         }
-
-        this.playerPosition.put(putPosition, playerIndex);
+        List<Position> list = new ArrayList<>();
+        list.add(putPosition);
+        this.playerPosition.put(playerIndex, list);
     }
 
     /*Returns the PlayerIndex of the worker in Position position
@@ -138,9 +146,9 @@ public class Board {
         if (position == null)
             throw new NullPointerException("position");
 
-        for (Map.Entry<Position, PlayerIndex> entry : this.playerPosition.entrySet()) {
-            if (entry.getKey().equals(position))
-                return entry.getValue();
+        for (Map.Entry<PlayerIndex, List<Position>> entry : this.playerPosition.entrySet()) {
+            if (entry.getValue().contains(position))
+                return entry.getKey();
         }
 
         throw new NotPresentWorkerException(position.row, position.col);
@@ -148,14 +156,13 @@ public class Board {
 
     /*Method that returns the positions of the workers of player playerToCheck
      * It will be used by Game to check if all the workers of a player are blocked */
-    public List<Position> workerPositions(PlayerIndex playerToCheck) throws MissingWorkerException{
+    public List<Position> workerPositions(PlayerIndex playerToCheck) throws MissingWorkerException {
 
         List<Position> playerWorkersPositions = new ArrayList<>();
 
-        for (Position p : this.playerPosition.keySet()) {
-            if (this.playerPosition.get(p).equals(playerToCheck)) {
-                playerWorkersPositions.add(p);
-            }
+        for (Map.Entry<PlayerIndex, List<Position>> entry : this.playerPosition.entrySet()) {
+            if (entry.getKey() == playerToCheck)
+                playerWorkersPositions.addAll(entry.getValue());
         }
 
         if (playerWorkersPositions.size() != 2) throw new MissingWorkerException(playerWorkersPositions.size());
@@ -187,11 +194,13 @@ public class Board {
 
         //TODO: correct this
         for (Map.Entry<PositionContainer, PlayerIndex> entryChange : changes.entrySet()) {
-            for (Map.Entry<Position, PlayerIndex> entry : this.playerPosition.entrySet()) {
-                if (entryChange.getKey().getOldPosition().equals(entry.getKey()) &&
-                        entryChange.getValue() == entry.getValue()) {
-                    this.playerPosition.remove(entry.getKey());
-                    this.playerPosition.put(entryChange.getKey().getOccupiedPosition(), entry.getValue());
+            for (Map.Entry<PlayerIndex, List<Position>> entry : this.playerPosition.entrySet()) {
+                if (entry.getValue().contains(entryChange.getKey().getOldPosition()) &&
+                        entryChange.getValue() == entry.getKey()) {
+                    List<Position> positions = new ArrayList<>(entry.getValue());
+                    positions.remove(entryChange.getKey().getOldPosition());
+                    positions.add(entryChange.getKey().getOccupiedPosition());
+                    this.playerPosition.put(entry.getKey(), positions);
                     isFound = true;
                 }
             }
