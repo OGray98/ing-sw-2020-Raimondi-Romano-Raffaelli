@@ -3,6 +3,7 @@ package org.example;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class CellTest {
@@ -26,9 +27,9 @@ public class CellTest {
             assertEquals("You cannot have a position in : [5][5]",e.getMessage());
         }
         try{
-            cell = null;
+            new Cell(null);
         }catch (NullPointerException e){
-            assertEquals("",e.getMessage());
+            assertEquals("cell", e.getMessage());
         }
     }
 

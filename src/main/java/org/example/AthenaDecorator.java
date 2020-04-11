@@ -1,5 +1,8 @@
 package org.example;
 
+import java.util.List;
+import java.util.Map;
+
 public class AthenaDecorator extends PlayerOpponentTurnDecorator {
 
 
@@ -10,8 +13,26 @@ public class AthenaDecorator extends PlayerOpponentTurnDecorator {
         super.setGodDescription(description);
     }
 
+    @Override
+    public void move(Cell newOccupiedCell){
+        if(newOccupiedCell.getLevel() > super.getCellOccupied().getLevel()){
+            super.setActivePower(true);
+        }
+        super.move(newOccupiedCell);
+    }
 
+    @Override
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
+        return true;
+    }
 
+    @Override
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
+        super.setActivePower(false);
+        return new BoardChange(true);
+    }
+
+    @Override
     public void setChosenGod(Boolean condition){
         super.setChosenGod(condition);
     }

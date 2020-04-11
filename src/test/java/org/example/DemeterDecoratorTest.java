@@ -58,15 +58,23 @@ public class DemeterDecoratorTest {
         board.putWorker(workerPosition, PlayerIndex.PLAYER2);
         playerDemeter.setStartingWorkerSituation(board.getCell(workerPosition), false);
 
-        assertNull(playerDemeter.usePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), secondBuildPosition).getCantGoUp());
+        BoardChange powerResult = playerDemeter.usePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), secondBuildPosition);
+
+        try{
+            powerResult.getCantGoUp();
+        }
+        catch(NullPointerException e){
+            assertEquals("cantGoUp", e.getMessage());
+        }
+
         assertFalse(playerDemeter.getActivePower());
         assertEquals(playerDemeter.usePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), secondBuildPosition).getBuildType(), BuildType.LEVEL);
         assertEquals(playerDemeter.usePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), secondBuildPosition).getPositionBuild(), secondBuildPosition);
         try{
-            playerDemeter.usePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), secondBuildPosition).getChanges();
+            powerResult.getChanges();
         }
         catch(NullPointerException e){
-            assertEquals("changes", e.getMessage());
+            assertEquals("playerChanges", e.getMessage());
         }
 
         assertFalse(playerDemeter.getActivePower());

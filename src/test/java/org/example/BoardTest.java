@@ -3,7 +3,6 @@ package org.example;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,13 +95,13 @@ public class BoardTest {
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         board.putWorker(freePosition,PlayerIndex.PLAYER1);
         board.putWorker(opponentAdjacentWorkerPosition,PlayerIndex.PLAYER2);
-        Map<Position,PlayerIndex> adjacentPlayer= new HashMap<>();
+        Map<Position, PlayerIndex> adjacentPlayer;
         adjacentPlayer = board.getAdjacentPlayers(workerPosition);
         assertEquals(adjacentPlayer.get(freePosition),PlayerIndex.PLAYER1);
         assertEquals(adjacentPlayer.get(opponentAdjacentWorkerPosition),PlayerIndex.PLAYER2);
 
         board.putWorker(zeroPosition,PlayerIndex.PLAYER0);
-        Map<Position,PlayerIndex> adjacentPlayerSecondWorker= new HashMap<>();
+        Map<Position, PlayerIndex> adjacentPlayerSecondWorker;
         adjacentPlayerSecondWorker = board.getAdjacentPlayers(zeroPosition);
         assertEquals(0,adjacentPlayerSecondWorker.size());
     }
@@ -218,31 +217,108 @@ public class BoardTest {
     @Test
     public void workerPositionsTest(){
         //MissingWorkersException:
-        try{
+        try {
             board.workerPositions(PlayerIndex.PLAYER0);
-        }
-        catch(MissingWorkerException e){
+        } catch (MissingWorkerException e) {
             assertEquals("A player has" + 0 + "workers on the map, must be 2", e.getMessage());
         }
-        board.putWorker(new Position(1,1), PlayerIndex.PLAYER1);
-        board.putWorker(new Position(3,3), PlayerIndex.PLAYER1);
+        board.putWorker(new Position(1, 1), PlayerIndex.PLAYER1);
+        board.putWorker(new Position(3, 3), PlayerIndex.PLAYER1);
 
-        Position pos11 = new Position(1,1);
-        Position pos33 = new Position(3,3);
+        Position pos11 = new Position(1, 1);
+        Position pos33 = new Position(3, 3);
 
         assertEquals(board.workerPositions(PlayerIndex.PLAYER1).size(), 2);
-        assertEquals(board.workerPositions(PlayerIndex.PLAYER1).get(1), pos11);
-        assertEquals(board.workerPositions(PlayerIndex.PLAYER1).get(0), pos33);
+        assertTrue(board.workerPositions(PlayerIndex.PLAYER1).contains(pos11));
+        assertTrue(board.workerPositions(PlayerIndex.PLAYER1).contains(pos33));
 
+    }
+
+    @Test
+    public void isUpdateAfterPowerCorrected() {
+        Position old01 = new Position(1, 2);
+        Position new01 = new Position(1, 3);
+        Position old10 = new Position(2, 4);
+        Position new10 = new Position(0, 4);
+
+        Position buildPos = new Position(3, 3);
+
+        board.putWorker(old01, PlayerIndex.PLAYER0);
+        board.putWorker(old10, PlayerIndex.PLAYER1);
+
+        BoardChange boardChange = new BoardChange(old01, new01, PlayerIndex.PLAYER0);
+        boardChange.addPlayerChanges(old10, new10, PlayerIndex.PLAYER1);
+        board.updateAfterPower(boardChange);
+
+        assertTrue(board.isFreeCell(old01));
+        assertTrue(board.isFreeCell(old10));
+        assertEquals(PlayerIndex.PLAYER0, board.getOccupiedPlayer(new01));
+        assertEquals(PlayerIndex.PLAYER1, board.getOccupiedPlayer(new10));
+
+        assertTrue(boardChange.isCantGoUpNull());
+        assertFalse(boardChange.isPlayerChangesNull());
+        assertTrue(boardChange.isPositionBuildNull());
+
+        boardChange = new BoardChange(true);
+        board.updateAfterPower(boardChange);
+
+        assertTrue(board.isCantGoUp());
+
+        assertFalse(boardChange.isCantGoUpNull());
+        assertTrue(boardChange.isPlayerChangesNull());
+        assertTrue(boardChange.isPositionBuildNull());
+
+        boardChange = new BoardChange(buildPos, BuildType.LEVEL);
+        board.updateAfterPower(boardChange);
+
+        assertEquals(1, board.getCell(buildPos).getLevel());
+        assertFalse(board.getCell(buildPos).hasDome());
+
+        assertTrue(boardChange.isCantGoUpNull());
+        assertTrue(boardChange.isPlayerChangesNull());
+        assertFalse(boardChange.isPositionBuildNull());
+
+
+        boardChange = new BoardChange(buildPos, BuildType.DOME);
+        board.updateAfterPower(boardChange);
+
+        assertEquals(1, board.getCell(buildPos).getLevel());
+        assertTrue(board.getCell(buildPos).hasDome());
+
+        assertTrue(boardChange.isCantGoUpNull());
+        assertTrue(boardChange.isPlayerChangesNull());
+        assertFalse(boardChange.isPositionBuildNull());
+
+        boardChange = new BoardChange(buildPos, BuildType.DOME);
+        try {
+            board.updateAfterPower(boardChange);
+        } catch (InvalidBuildDomeException e) {
+            assertEquals("There already is a dome in position [" + buildPos.row + "][" + buildPos.col + "]",
+                    e.getMessage());
+        }
+
+        try {
+            board.updateAfterPower(null);
+        } catch (NullPointerException e) {
+            assertEquals("boardChange", e.getMessage());
+        }
+
+        boardChange = new BoardChange(new Position(4, 4), new01, PlayerIndex.PLAYER2);
+        try {
+            board.updateAfterPower(boardChange);
+        } catch (NotPresentWorkerException e) {
+            assertEquals("There isn't a worker of " + PlayerIndex.PLAYER2 + " in : [" + 4 + "][" + 4 + "]",
+                    e.getMessage());
+        }
     }
 
 
     private boolean isCornerUpLeftCorrected(List<Cell> cells) {
-        return cells.size() == 3 && board.getCell(new Position(0, 1)).equals(cells.get(0)) && board.getCell(new Position(1,0)).equals(cells.get(1)) && board.getCell(new Position(1,1)).equals(cells.get(2));
+        return cells.size() == 3 && board.getCell(new Position(0, 1)).equals(cells.get(0)) && board.getCell(new Position(1, 0)).equals(cells.get(1)) && board.getCell(new Position(1, 1)).equals(cells.get(2));
     }
 
     private boolean isCornerDownRightCorrected(List<Cell> cells) {
-        return cells.size() == 3 && board.getCell(new Position(3,3)).equals(cells.get(0)) && board.getCell(new Position(3,4)).equals(cells.get(1)) && board.getCell(new Position(4,3)).equals(cells.get(2));
+        return cells.size() == 3 && board.getCell(new Position(3, 3)).equals(cells.get(0)) && board.getCell(new Position(3, 4)).equals(cells.get(1)) && board.getCell(new Position(4, 3)).equals(cells.get(2));
     }
 
     private boolean isCornerUpRightCorrected(List<Cell> cells) {
