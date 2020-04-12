@@ -60,6 +60,7 @@ public class ApolloDecorator extends PlayerMoveDecorator {
 
     @Override
     public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition) {
+        super.setActivePower(false);
         Position startPosition = super.getCellOccupied().getPosition();
         PlayerIndex opponent = adjacentPlayerList.get(powerPosition);
         BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(),powerPosition,super.getPlayerNum());
