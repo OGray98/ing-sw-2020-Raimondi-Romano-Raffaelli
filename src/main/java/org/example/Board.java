@@ -26,8 +26,24 @@ public class Board {
         cantGoUp = false;
     }
 
+    public Board(Board that) throws NullPointerException {
+        if (that == null)
+            throw new NullPointerException("that");
+        this.map = new Cell[NUM_ROW][NUM_COLUMNS];
+        for (int i = 0; i < NUM_ROW; i++) {
+            for (int j = 0; j < NUM_COLUMNS; j++)
+                this.map[i][j] = new Cell(that.getCell(new Position(i, j)));
+        }
+        //Entry of playerPosition are added when someone call putWorker
+        this.playerPosition = new HashMap<>(capacityPlayerPosition);
+        this.playerPosition.put(PlayerIndex.PLAYER0, new ArrayList<>(that.playerPosition.get(PlayerIndex.PLAYER0)));
+        this.playerPosition.put(PlayerIndex.PLAYER1, new ArrayList<>(that.playerPosition.get(PlayerIndex.PLAYER1)));
+        this.playerPosition.put(PlayerIndex.PLAYER2, new ArrayList<>(that.playerPosition.get(PlayerIndex.PLAYER2)));
+        cantGoUp = false;
+    }
+
     /*Returns true if the cell in Position cellPosition is empty
-     * Returns false if the cell in Position cellPosition cointains a dome or a player
+     * Returns false if the cell in Position cellPosition contains a dome or a player
      * Throws NullPointerException if cellPosition is null */
     public boolean isFreeCell(Position cellPosition) throws NullPointerException {
         if (cellPosition == null)
