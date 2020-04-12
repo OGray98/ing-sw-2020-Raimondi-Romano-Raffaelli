@@ -32,67 +32,40 @@ public class PrometheusDecoratorTest {
         assertTrue(cardPrometheus.getBoolChosenGod());
     }
 
-    /*@Test
-    public void canMoveAfterActivePowerTest(){
-        board.constructBlock(towerOnePosition);
+   @Test
+    public void setWorkerSituationTest(){
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
-        playerPrometheus.setWorkerSituation(board.getCell(towerOnePosition), board.getCell(workerPosition),false);
+        playerPrometheus.setStartingWorkerSituation(board.getCell(workerPosition),false);
+        playerPrometheus.setWorkerSituation(null,board.getCell(workerPosition),false);
         assertTrue(playerPrometheus.getActivePower());
-        assertTrue(playerPrometheus.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerTwoPosition));
-        assertTrue(playerPrometheus.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerOnePosition));
-    }
+   }
 
-    @Test
-    public void canMoveAfterActivePowerTestPart2(){
-        board.constructBlock(workerPosition);
-        board.constructBlock(workerPosition);
+   @Test
+    public void moveTest(){
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         playerPrometheus.setStartingWorkerSituation(board.getCell(workerPosition),false);
-        playerPrometheus.setActivePower(true);
-        assertTrue(playerPrometheus.getActivePower());
-        assertTrue(playerPrometheus.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerTwoPosition));
-        assertTrue(playerPrometheus.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerOnePosition));
-
-    }
-
-    @Test
-    public void canMoveAfterNoActivePowerTest(){
-        board.constructBlock(towerOnePosition);
-        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
-        playerPrometheus.setStartingWorkerSituation(board.getCell(workerPosition),false);
-        playerPrometheus.setActivePower(false);
-        assertFalse(playerPrometheus.getActivePower());
-        assertTrue(playerPrometheus.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerTwoPosition));
-        assertTrue(playerPrometheus.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerOnePosition));
-    }
-
-    @Test
-    public void afterMoveTest(){
-        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
-        playerPrometheus.setStartingWorkerSituation(board.getCell(workerPosition),false);
-        playerPrometheus.setActivePower(true);
-        assertTrue(playerPrometheus.getActivePower());
-        playerPrometheus.move(board.getCell(towerTwoPosition));
-        assertFalse(playerPrometheus.getActivePower());
-    }
-
-    @Test
-    public void canUsePowerTest(){
-        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
-        playerPrometheus.setStartingWorkerSituation(board.getCell(workerPosition),false);
-        playerPrometheus.setActivePower(true);
-        assertTrue(playerPrometheus.canUsePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerTwoPosition));
-        playerPrometheus.setActivePower(false);
-        assertFalse(playerPrometheus.canUsePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerTwoPosition));;
+        playerPrometheus.move(board.getCell(towerOnePosition));
+        assertFalse(playerPrometheus.getCantGoUp());
     }
 
     @Test
     public void usePowerTest(){
+        board.constructBlock(towerTwoPosition);
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         playerPrometheus.setStartingWorkerSituation(board.getCell(workerPosition),false);
-        BoardChange boardChange = playerPrometheus.usePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerTwoPosition);
+        BoardChange boardChange = playerPrometheus.usePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerOnePosition);
+        assertEquals(towerOnePosition,boardChange.getPositionBuild());
+        assertTrue(playerPrometheus.getCantGoUp());
+        assertFalse(playerPrometheus.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerTwoPosition));
+        assertFalse(playerPrometheus.getActivePower());
         board.updateAfterPower(boardChange);
-        assertEquals(1,board.getCell(towerTwoPosition).getLevel());
-    }*/
+        assertEquals(1,board.getCell(towerOnePosition).getLevel());
+        playerPrometheus.move(board.getCell(towerOnePosition));
+        assertFalse(playerPrometheus.getCantGoUp());
+        assertTrue(playerPrometheus.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerTwoPosition));
+
+    }
+
+
 
 }
