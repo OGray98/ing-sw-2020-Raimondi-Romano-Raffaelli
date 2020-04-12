@@ -17,6 +17,9 @@ public interface PlayerInterface {
     /*When a Player can use a God power activePower will be set true, false otherwise*/
     void setActivePower(boolean isPowerOn);
 
+    /*Setter of cantGoUp*/
+    void setCantGoUp(boolean cantGoUp);
+
     /*Method that returns true if user select a possible move action
     * It requires a List<Cell> that contains all the cells adjacent to the worker selected
     * It requires a Map<Position, PlayerIndex> that contains all the players adjacent to the selected worker

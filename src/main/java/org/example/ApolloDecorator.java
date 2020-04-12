@@ -26,6 +26,7 @@ public class ApolloDecorator extends PlayerMoveDecorator {
         if (adjacentCells == null) throw new NullPointerException("adjacentCells is null!");
         if (adjacentPlayerList == null) throw new NullPointerException("adjacentPlayerList is null!");
 
+        super.setActivePower(false);
 
         for (Cell cell : adjacentCells) {
             if (cell.getPosition().equals(movePos)) {

@@ -49,6 +49,11 @@ public class Player implements PlayerInterface{
     }
 
     @Override
+    public void setCantGoUp(boolean cantGoUp){
+        this.cantGoUp = cantGoUp;
+    }
+
+    @Override
     public boolean canMove(List<Cell> adjacentCells, Map<Position,PlayerIndex> adjacentPlayerList, Position movePos) throws InvalidPositionException{
         if(movePos.col > 4 || movePos.row > 4 || movePos.col < 0 || movePos.row < 0) throw new InvalidPositionException(movePos.row, movePos.col);
         if(adjacentCells == null) throw new NullPointerException("adjacentCells is null!");

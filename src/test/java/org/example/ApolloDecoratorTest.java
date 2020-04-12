@@ -135,4 +135,20 @@ public class ApolloDecoratorTest {
 
     }
 
+    @Test
+    public void twoCanMoveTest(){
+        /*if player refuse to use power, active power must become false*/
+        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
+        playerApollo.setStartingWorkerSituation(board.getCell(workerPosition),false);
+        board.constructBlock(thirdWorkerPosition);
+        board.putWorker(thirdWorkerPosition,PlayerIndex.PLAYER2);
+        otherPlayerOpponent.setStartingWorkerSituation(board.getCell(thirdWorkerPosition),false);
+
+        assertFalse(playerApollo.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),thirdWorkerPosition));
+        assertTrue(playerApollo.getActivePower());
+
+        assertTrue(playerApollo.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition), new Position(0,1)));
+        assertFalse(playerApollo.getActivePower());
+    }
+
 }
