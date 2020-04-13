@@ -5,6 +5,8 @@ import java.util.Map;
 
 public class ApolloDecorator extends PlayerMoveDecorator {
 
+    private PlayerIndex playerOpponent;
+
 
     public ApolloDecorator() {
         String godName = "Apollo";
@@ -52,18 +54,18 @@ public class ApolloDecorator extends PlayerMoveDecorator {
 
     @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) {
-        if(super.getActivePower())
-            return true;
+        if(super.getActivePower()){
+            this.playerOpponent = adjacentPlayerList.get(adjacentList.get(0));
+            return true;}
         return false;
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) {
+    public BoardChange usePower(Cell powerCell) {
         super.setActivePower(false);
         Position startPosition = super.getCellOccupied().getPosition();
-        PlayerIndex opponent = adjacentPlayerList.get(adjacentList.get(0));
-        BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(),adjacentList.get(0).getPosition(),super.getPlayerNum());
-        boardChange.addPlayerChanges(adjacentList.get(0).getPosition(),startPosition,opponent);
+        BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(),powerCell.getPosition(),super.getPlayerNum());
+        boardChange.addPlayerChanges(powerCell.getPosition(),startPosition,playerOpponent);
         return boardChange;
 
     }

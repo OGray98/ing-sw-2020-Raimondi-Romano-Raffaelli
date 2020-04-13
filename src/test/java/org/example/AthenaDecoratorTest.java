@@ -3,6 +3,9 @@ package org.example;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class AthenaDecoratorTest {
@@ -46,7 +49,9 @@ public class AthenaDecoratorTest {
 
     @Test
     public void canUsePowerAthenaTest(){
-        assertTrue(playerAthena.canUsePower(board.getAdjacentCells(workerPos), board.getAdjacentPlayers(workerPos), workerPos));
+        List<Cell> powers = new ArrayList<>();
+        powers.add(board.getCell(workerPos));
+        assertTrue(playerAthena.canUsePower(powers, board.getAdjacentPlayers(workerPos)));
     }
 
     @Test
@@ -54,7 +59,7 @@ public class AthenaDecoratorTest {
         board.putWorker(workerPos, PlayerIndex.PLAYER0);
         playerAthena.setStartingWorkerSituation(board.getCell(workerPos), false);
 
-        BoardChange powerResult = playerAthena.usePower(board.getAdjacentCells(lvlUpPos), board.getAdjacentPlayers(lvlUpPos), lvlUpPos);
+        BoardChange powerResult = playerAthena.usePower(board.getCell(lvlUpPos));
 
         assertTrue(powerResult.getCantGoUp());
 

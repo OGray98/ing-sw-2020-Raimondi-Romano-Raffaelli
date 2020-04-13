@@ -14,6 +14,11 @@ public class AthenaDecorator extends PlayerOpponentTurnDecorator {
     }
 
     @Override
+    public int getPowerListDimension() {
+        return 1;
+    }
+
+    @Override
     public void move(Cell newOccupiedCell){
         if(newOccupiedCell.getLevel() > super.getCellOccupied().getLevel()){
             super.setActivePower(true);
@@ -22,12 +27,12 @@ public class AthenaDecorator extends PlayerOpponentTurnDecorator {
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
         return true;
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
+    public BoardChange usePower(Cell powerCell){
         super.setActivePower(false);
         return new BoardChange(true);
     }
