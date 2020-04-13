@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Game {
 
@@ -46,11 +47,13 @@ public class Game {
     /* Method that return a map with of all cards in deck
      */
     public Map<String, String> getCards() {
-        Map<String, String> cards = new HashMap<>(Deck.size);
-        for (CardInterface card : deck.getGodCards()) {
-            cards.put(card.getGodName(), card.getGodDescription());
-        }
-        return cards;
+        return deck.getGodCards().stream()
+                .collect(Collectors.toMap(
+                        CardInterface::getGodName,
+                        CardInterface::getGodDescription,
+                        (a, b) -> b,
+                        HashMap::new
+                ));
     }
 
     /* Method that set the chosen cards in deck.
