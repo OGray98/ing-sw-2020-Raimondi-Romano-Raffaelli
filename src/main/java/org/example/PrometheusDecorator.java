@@ -40,4 +40,9 @@ public class PrometheusDecorator extends PlayerYourTurnDecorator {
         super.setActivePower(false);
         return new BoardChange(powerCell.getPosition(),BuildType.LEVEL);
     }
+
+    @Override
+    public int getPowerListDimension(){
+        return 1;
+    }
 }

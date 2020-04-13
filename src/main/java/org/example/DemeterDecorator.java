@@ -40,4 +40,10 @@ public class DemeterDecorator extends PlayerBuildDecorator {
     public void setChosenGod(Boolean condition){
         super.setChosenGod(condition);
     }
+
+    @Override
+    public int getPowerListDimension(){
+        return 1;
+    }
 }
+

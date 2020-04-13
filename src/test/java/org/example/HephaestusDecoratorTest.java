@@ -45,7 +45,7 @@ public class HephaestusDecoratorTest {
     public void canUsePowerTest(){
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         playerHephaestus.setStartingWorkerSituation(board.getCell(workerPosition),false);
-        playerHephaestus.canBuild(board.getAdjacentPlayers(workerPosition), board.getCell(buildPosition));
+        assertTrue(playerHephaestus.canBuild(board.getAdjacentPlayers(workerPosition), board.getCell(buildPosition)));
 
         List<Cell> power = new ArrayList<>();
         power.add(board.getCell(buildPosition));
@@ -66,7 +66,10 @@ public class HephaestusDecoratorTest {
 
     }
 
-
+    @Test
+    public void getPowerListDimensionTest(){
+        assertEquals(1,playerHephaestus.getPowerListDimension());
+    }
 
 
 }
