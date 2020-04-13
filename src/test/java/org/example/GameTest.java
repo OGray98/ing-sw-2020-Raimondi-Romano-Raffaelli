@@ -16,7 +16,7 @@ public class GameTest {
     private static Board board;
     private static Position firstPos;
 
-    @BeforeClass
+   /* @BeforeClass
     public static void init() {
         players = new ArrayList<>(List.of(
                 new Player("p_apo", PlayerIndex.PLAYER0),
@@ -46,6 +46,6 @@ public class GameTest {
         } catch (NullPointerException e) {
             assertEquals("putPosition", e.getMessage());
         }
-    }
+    }*/
 
 }
