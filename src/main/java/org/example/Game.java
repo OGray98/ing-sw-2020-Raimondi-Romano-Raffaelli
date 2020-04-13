@@ -161,12 +161,30 @@ public class Game {
             throw new NullPointerException("powerPos");
 
         boolean res = currentPlayer.canUsePower(
-                board.getAdjacentCells(currentPosition),
-                board.getAdjacentPlayers(currentPosition),
-                powerPos
+                getPowerCellList(powerPos),
+                board.getAdjacentPlayers(currentPosition)
         );
         currentPosition = currentPlayer.getCellOccupied().getPosition();
         return res;
+    }
+
+    /* Method that use currentPlayer power and update the board.
+     * Requires a not null Position where use the power.
+     * Modifies currentPosition
+     */
+    public void usePowerWorker(Position powerPos) throws NullPointerException {
+        if (powerPos == null)
+            throw new NullPointerException("powerPos");
+
+        BoardChange changes = currentPlayer.usePower(board.getCell(powerPos));
+        board.updateAfterPower(changes);
+        if (!changes.isPlayerChangesNull()) {
+            Map<PositionContainer, PlayerIndex> positionsUpdated = changes.getChanges();
+            for (Map.Entry<PositionContainer, PlayerIndex> entry : positionsUpdated.entrySet()) {
+                if (entry.getValue().compareTo(currentPlayer.getPlayerNum()) == 0)
+                    currentPosition = entry.getKey().getOccupiedPosition();
+            }
+        }
     }
 
     public List<PlayerInterface> getPlayers() {
@@ -180,7 +198,7 @@ public class Game {
     /* Private method that return a List<Cell> which will be used in Player::canUsePower() and Player::UsePower()
      * Requires a not null powerPos
      */
-    private List<Cell> powerCellList(Position powerPos) throws NullPointerException {
+    private List<Cell> getPowerCellList(Position powerPos) throws NullPointerException {
         if (powerPos == null)
             throw new NullPointerException("powerPos");
 
