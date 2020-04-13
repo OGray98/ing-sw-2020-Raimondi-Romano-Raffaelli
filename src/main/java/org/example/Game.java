@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Game {
 
@@ -14,6 +15,8 @@ public class Game {
     private int numPlayer;
     private PlayerInterface currentPlayer;
     private Position currentPosition;
+    private int contCurrentPlayer;
+    private Map<PlayerInterface, CardInterface> playersCards;
 
     private Game(List<PlayerInterface> players) throws NullPointerException {
         if (players == null)
@@ -26,6 +29,7 @@ public class Game {
         deck = new Deck(players.size());
         numPlayer = players.size();
         contEffect = 0;
+        contCurrentPlayer = 0;
         currentPlayer = players.get(0);
     }
 
@@ -51,6 +55,7 @@ public class Game {
         board.putWorker(putPosition, currentPlayer.getPlayerNum());
         currentPlayer.setStartingWorkerSituation(board.getCell(putPosition), false);
     }
+
 
     /* Method that check if a worker of currentPlayer can move in movePos
      * Requires a not null Position where move the worker
