@@ -53,16 +53,19 @@ public class PrometheusDecoratorTest {
         board.constructBlock(towerTwoPosition);
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         playerPrometheus.setStartingWorkerSituation(board.getCell(workerPosition),false);
-        BoardChange boardChange = playerPrometheus.usePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerOnePosition);
+
+        BoardChange boardChange = playerPrometheus.usePower(board.getCell(towerOnePosition));
         assertEquals(towerOnePosition,boardChange.getPositionBuild());
         assertTrue(playerPrometheus.getCantGoUp());
-        assertFalse(playerPrometheus.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerTwoPosition));
+
+        assertFalse(playerPrometheus.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(towerTwoPosition)));
         assertFalse(playerPrometheus.getActivePower());
         board.updateAfterPower(boardChange);
         assertEquals(1,board.getCell(towerOnePosition).getLevel());
         playerPrometheus.move(board.getCell(towerOnePosition));
         assertFalse(playerPrometheus.getCantGoUp());
-        assertTrue(playerPrometheus.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),towerTwoPosition));
+
+        assertTrue(playerPrometheus.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(towerTwoPosition)));
 
     }
 

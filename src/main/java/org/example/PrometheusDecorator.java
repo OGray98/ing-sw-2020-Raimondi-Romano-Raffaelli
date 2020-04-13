@@ -30,12 +30,12 @@ public class PrometheusDecorator extends PlayerYourTurnDecorator {
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell) {
-        return super.canBuild(adjacentPlayerList, powerCell);
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) {
+        return super.canBuild(adjacentPlayerList, adjacentList.get(0));
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell) {
+    public BoardChange usePower(Cell powerCell) {
         super.setCantGoUp(true);
         super.setActivePower(false);
         return new BoardChange(powerCell.getPosition(),BuildType.LEVEL);
