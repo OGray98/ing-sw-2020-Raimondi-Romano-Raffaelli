@@ -96,6 +96,22 @@ public class Board {
         return adjacentPlayers;
     }
 
+    /*Returns the Map<Position, PlayerIndex> that contains all the pairs<Position, PlayerIndex> for the occupied cell
+     * which their position is in positions.
+     * Throws NullPointerException  if positions is null */
+    public Map<Position, PlayerIndex> getPlayersOccupations(List<Position> positions) throws NullPointerException {
+        if (positions == null)
+            throw new NullPointerException("positions");
+        HashMap<Position, PlayerIndex> adjacentPlayers = new HashMap<>();
+        for (Position pos : positions) {
+            for (Map.Entry<PlayerIndex, List<Position>> entry : this.playerPosition.entrySet()) {
+                if (entry.getValue().contains(pos))
+                    adjacentPlayers.put(pos, entry.getKey());
+            }
+        }
+        return adjacentPlayers;
+    }
+
     /*Given oldPosition and newPosition move the worker contained in Position oldPosition to the Position newPosition
      * Throws NotPresentWorkerException if in oldPosition there is not any worker
      * Throws NullPointerException if oldPosition or newPosition is null*/

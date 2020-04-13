@@ -7,13 +7,14 @@ public class Game {
     private static Game gameInstance;
 
     private List<PlayerInterface> players;
-    private int contEffect;
     private Board board;
     private Deck deck;
     private int numPlayer;
     private PlayerInterface currentPlayer;
     private Position currentPosition;
     private int contCurrentPlayer;
+
+    //TODO aggiungere robe per atena
 
     private Game(List<PlayerInterface> players) throws NullPointerException {
         if (players == null)
@@ -25,7 +26,6 @@ public class Game {
         board = new Board();
         deck = new Deck(players.size());
         numPlayer = players.size();
-        contEffect = 0;
         contCurrentPlayer = 0;
         currentPlayer = players.get(0);
     }
@@ -53,32 +53,43 @@ public class Game {
         return cards;
     }
 
-    public void setGodsChosen(List<String> godNames) throws NullPointerException {
+    /* Method that set the chosen cards in deck.
+     * Requires a not null List<String> which contains the name of the god chosen by player god like
+     * Throw IllegalArgumentException if List<String> contains equal values.
+     */
+    public void setGodsChosenByGodLike(List<String> godNames) throws NullPointerException, IllegalArgumentException {
         if (godNames == null)
             throw new NullPointerException("godNames");
-
+        for (int i = 0; i < godNames.size(); i++) {
+            for (int j = 0; j < godNames.size(); j++) {
+                if (j != i && godNames.get(i).equals(godNames.get(j)))
+                    throw new IllegalArgumentException("There are two element with name " + godNames.get(i));
+            }
+        }
+        deck.setChosenGodCards(godNames);
+        contCurrentPlayer = 0;
+        currentPlayer = players.get(contCurrentPlayer);
     }
 
-
-    /* Method called when is necessary to init game (before first turn).
-     * It decorated the players with selected CardInterface and reorder list using PlayerIndex.
-     * Requires a Map<PlayerIndex, CardInterface> not null with the association PlayerIndex <-> CardInterface
-     * Modify players and contCurrentPlayer and contEffect
+    /* Method that decorate currentPlayer with his divinity.
+     * Modifies currentPlayer and contCurrentPlayer
+     * Requires not null String which contains the god's name
      */
-    public void initGame(Map<PlayerIndex, CardInterface> playersCards) throws NullPointerException {
-        if (playersCards == null)
-            throw new NullPointerException("playersCards");
+    public void setPlayerCard(String godName) throws NullPointerException, WrongGodNameException {
+        if (godName == null)
+            throw new NullPointerException("godName");
+        CardInterface card = deck.getGodCard(godName);
+        currentPlayer = card.setPlayer(currentPlayer);
+        players.set(contCurrentPlayer, currentPlayer);
+        updateCurrentPlayer();
+    }
 
-        //Create list of PlayerDecorator and reorder the list
-        List<PlayerInterface> aus = new ArrayList<>(players);
-        players.clear();
-        for (Map.Entry<PlayerIndex, CardInterface> entry : playersCards.entrySet()) {
-            players.add(entry.getValue().setPlayer(aus.get(entry.getKey().ordinal())));
-        }
-        players.sort(Comparator.comparing(PlayerInterface::getPlayerNum));
-
+    /* Method which set first player and ordinate the list of players
+     *
+     */
+    public void chooseFirstPlayer(PlayerIndex playerIndex) {
+        Collections.rotate(players, playerIndex.ordinal());
         contCurrentPlayer = 2;
-        contEffect = 0;
     }
 
 
@@ -97,12 +108,8 @@ public class Game {
      * Modify contCurrentPlayer, currentPlayer, contEffect and currentPosition.
      */
     public void startTurn() {
-        contCurrentPlayer = (contCurrentPlayer + 1) % 3;
-        currentPlayer = players.get(contCurrentPlayer);
+        updateCurrentPlayer();
         currentPosition = currentPlayer.getCellOccupied().getPosition();
-        contEffect++;
-        if (contEffect == 3)
-            board.updateAfterPower(new BoardChange(false));
     }
 
 
@@ -119,7 +126,7 @@ public class Game {
                 board.isCantGoUp()
         );
         return currentPlayer.canMove(
-                board.getAdjacentPlayers(currentPosition),
+                board.getPlayersOccupations(new ArrayList<>(List.of(currentPosition))),
                 board.getCell(movePos)
         );
     }
@@ -145,7 +152,7 @@ public class Game {
         if (buildPos == null)
             throw new NullPointerException("buildPos");
         return currentPlayer.canBuild(
-                board.getAdjacentPlayers(currentPosition),
+                board.getPlayersOccupations(new ArrayList<>(List.of(currentPosition))),
                 board.getCell(buildPos)
         );
     }
@@ -176,7 +183,7 @@ public class Game {
 
         boolean res = currentPlayer.canUsePower(
                 getPowerCellList(powerPos),
-                board.getAdjacentPlayers(currentPosition)
+                getPowerPlayerOccupations(powerPos)
         );
         currentPosition = currentPlayer.getCellOccupied().getPosition();
         return res;
@@ -209,7 +216,7 @@ public class Game {
         return new Board(board);
     }
 
-    /* Private method that return a List<Cell> which will be used in Player::canUsePower() and Player::UsePower()
+    /* Private method that return a List<Cell> which will be used in Player::canUsePower()
      * Requires a not null powerPos
      */
     private List<Cell> getPowerCellList(Position powerPos) throws NullPointerException {
@@ -222,8 +229,40 @@ public class Game {
         if (sizeList == 2) {
             int diffRow = powerPos.row - currentPosition.row;
             int diffCol = powerPos.col - currentPosition.col;
-            cells.add(board.getCell(new Position(powerPos.row + diffRow, powerPos.col + diffCol)));
+            int newRow = powerPos.row + diffRow;
+            int newCol = powerPos.col + diffCol;
+            if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))
+                cells.add(board.getCell(new Position(newRow, newCol)));
         }
         return cells;
+    }
+
+    /* Private method that return a Map<Position, PlayerIndex> which will be used in Player::canUsePower()
+     * Requires a not null powerPos
+     */
+    private Map<Position, PlayerIndex> getPowerPlayerOccupations(Position powerPos) throws NullPointerException {
+        if (powerPos == null)
+            throw new NullPointerException("powerPos");
+
+        int sizeMap = currentPlayer.getPowerListDimension();
+        List<Position> positions = new ArrayList<>();
+        positions.add(powerPos);
+        if (sizeMap == 2) {
+            int diffRow = powerPos.row - currentPosition.row;
+            int diffCol = powerPos.col - currentPosition.col;
+            int newRow = powerPos.row + diffRow;
+            int newCol = powerPos.col + diffCol;
+            if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))
+                positions.add(new Position(newRow, newCol));
+        }
+        return board.getPlayersOccupations(positions);
+    }
+
+    /* Private method called when change current player.
+     * Modifies contCurrentPlayer and currentPlayer
+     */
+    private void updateCurrentPlayer() {
+        contCurrentPlayer = (contCurrentPlayer + 1) % 3;
+        currentPlayer = players.get(contCurrentPlayer);
     }
 }
