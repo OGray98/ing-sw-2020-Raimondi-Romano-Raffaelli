@@ -20,8 +20,8 @@ public class AtlasDecorator extends PlayerBuildDecorator {
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
-        return super.canBuild(adjacentList, adjacentPlayerList, powerCell);
+    public boolean canUsePower(Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
+        return super.canBuild(adjacentPlayerList, powerCell);
     }
 
     @Override
