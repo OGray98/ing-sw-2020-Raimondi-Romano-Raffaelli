@@ -19,14 +19,14 @@ public class ArtemisDecorator extends PlayerMoveDecorator {
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
-        return super.canMove(adjacentList, adjacentPlayerList, powerPosition) && !powerPosition.equals(super.getOldCell().getPosition());
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
+        return super.canMove(adjacentPlayerList, powerCell) && !powerCell.equals(super.getOldCell());
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
         super.setActivePower(false);
-        return new BoardChange(super.getCellOccupied().getPosition(), powerPosition, super.getPlayerNum());
+        return new BoardChange(super.getCellOccupied().getPosition(), powerCell.getPosition(), super.getPlayerNum());
     }
 
     @Override

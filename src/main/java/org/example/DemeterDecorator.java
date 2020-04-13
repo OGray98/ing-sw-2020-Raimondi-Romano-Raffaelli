@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class DemeterDecorator extends PlayerBuildDecorator {
 
-    private Position firstBuildPosition;
+    private Cell firstBuildCell;
 
     public DemeterDecorator(){
         String godName = "Demeter";
@@ -15,9 +15,9 @@ public class DemeterDecorator extends PlayerBuildDecorator {
     }
 
     @Override
-    public boolean canBuild(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position buildPos){
-        this.firstBuildPosition = buildPos;
-        return super.canBuild(adjacentList, adjacentPlayerList, buildPos);
+    public boolean canBuild(Map<Position, PlayerIndex> adjacentPlayerList, Cell buildCell){
+        this.firstBuildCell = buildCell;
+        return super.canBuild(adjacentPlayerList, buildCell);
     }
 
     @Override
@@ -26,14 +26,14 @@ public class DemeterDecorator extends PlayerBuildDecorator {
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
-        return super.canBuild(adjacentList, adjacentPlayerList, powerPosition) && !powerPosition.equals(this.firstBuildPosition);
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
+        return super.canBuild(adjacentPlayerList, powerCell) && !powerCell.equals(this.firstBuildCell);
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
         super.setActivePower(false);
-        return new BoardChange(powerPosition, BuildType.LEVEL);
+        return new BoardChange(powerCell.getPosition(), BuildType.LEVEL);
     }
 
     @Override
