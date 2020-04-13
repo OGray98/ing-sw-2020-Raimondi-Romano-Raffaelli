@@ -75,8 +75,8 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
-        return player.usePower(adjacentList, adjacentPlayerList);
+    public BoardChange usePower(Cell powerCell){
+        return player.usePower(powerCell);
     }
 
     @Override
