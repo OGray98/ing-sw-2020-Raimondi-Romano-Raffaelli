@@ -80,11 +80,12 @@ public class Game {
 
 
     /* Method called a turn start and do the setup of turn.
-     * Modify contCurrentPlayer, currentPlayer and contEffect.
+     * Modify contCurrentPlayer, currentPlayer, contEffect and currentPosition.
      */
     public void startTurn() {
         contCurrentPlayer = (contCurrentPlayer + 1) % 3;
         currentPlayer = players.get(contCurrentPlayer);
+        currentPosition = currentPlayer.getCellOccupied().getPosition();
         contEffect++;
         if (contEffect == 3)
             board.updateAfterPower(new BoardChange(false));
@@ -158,6 +159,7 @@ public class Game {
     public boolean canUsePowerWorker(Position powerPos) throws NullPointerException {
         if (powerPos == null)
             throw new NullPointerException("powerPos");
+
         boolean res = currentPlayer.canUsePower(
                 board.getAdjacentCells(currentPosition),
                 board.getAdjacentPlayers(currentPosition),
@@ -173,5 +175,23 @@ public class Game {
 
     public Board getBoard() {
         return new Board(board);
+    }
+
+    /* Private method that return a List<Cell> which will be used in Player::canUsePower() and Player::UsePower()
+     * Requires a not null powerPos
+     */
+    private List<Cell> powerCellList(Position powerPos) throws NullPointerException {
+        if (powerPos == null)
+            throw new NullPointerException("powerPos");
+
+        int sizeList = currentPlayer.getPowerListDimension();
+        List<Cell> cells = new ArrayList<>(sizeList);
+        cells.add(board.getCell(powerPos));
+        if (sizeList == 2) {
+            int diffRow = powerPos.row - currentPosition.row;
+            int diffCol = powerPos.col - currentPosition.col;
+            cells.add(board.getCell(new Position(powerPos.row + diffRow, powerPos.col + diffCol)));
+        }
+        return cells;
     }
 }
