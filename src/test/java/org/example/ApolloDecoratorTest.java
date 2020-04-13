@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -53,19 +55,21 @@ public class ApolloDecoratorTest {
         playerApollo.setStartingWorkerSituation(board.getCell(workerPosition),false);
         board.putWorker(workerOpponentPosition,PlayerIndex.PLAYER1);
         playerOpponent.setStartingWorkerSituation(board.getCell(workerOpponentPosition),false);
-        assertFalse(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),new Cell(3,3)));
+        List<Cell>  powers = new ArrayList<>();
+        powers.add(board.getCell(new Position(3,3)));
+        assertFalse(playerApollo.canMove(board.getAdjacentPlayers(workerPosition)));
         assertFalse(playerApollo.getActivePower());
         assertTrue(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),new Cell(0,1)));
         assertFalse(playerApollo.getActivePower());
-        assertFalse(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),new Cell(0,0)));
+        assertFalse(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(secondWorkerPosition)));
         assertFalse(playerApollo.getActivePower());
 
 
-        /*board.constructBlock(secondOpponentWorkerPosition);
+        board.constructBlock(secondOpponentWorkerPosition);
         board.constructBlock(secondOpponentWorkerPosition);
         board.putWorker(secondOpponentWorkerPosition,PlayerIndex.PLAYER1);
         playerOpponent.setStartingWorkerSituation(board.getCell(secondOpponentWorkerPosition),false);
-        assertFalse(playerApollo.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),secondOpponentWorkerPosition));
+        assertFalse(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(secondOpponentWorkerPosition)));
         assertFalse(playerApollo.getActivePower());
 
         board.constructBlock(towerWorkerTwo);
@@ -75,8 +79,8 @@ public class ApolloDecoratorTest {
         playerApollo.setWorkerSituation(board.getCell(workerPosition),board.getCell(towerWorkerOne),false);
         board.changeWorkerPosition(towerWorkerOne,towerWorkerTwo);
         playerApollo.setWorkerSituation(board.getCell(towerWorkerOne),board.getCell(towerWorkerTwo),false);
-        assertFalse(playerApollo.canMove(board.getAdjacentCells(towerWorkerTwo),board.getAdjacentPlayers(towerWorkerTwo),workerOpponentPosition));
-        assertTrue(playerApollo.getActivePower());*/
+        assertFalse(playerApollo.canMove(board.getAdjacentPlayers(towerWorkerTwo),board.getCell(workerOpponentPosition)));
+        assertTrue(playerApollo.getActivePower());
 
     }
 
@@ -88,7 +92,7 @@ public class ApolloDecoratorTest {
         board.constructBlock(thirdWorkerPosition);
         board.putWorker(thirdWorkerPosition,PlayerIndex.PLAYER2);
         otherPlayerOpponent.setStartingWorkerSituation(board.getCell(thirdWorkerPosition),false);
-        assertFalse(playerApollo.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),thirdWorkerPosition));
+        assertFalse(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(thirdWorkerPosition)));
         assertTrue(playerApollo.getActivePower());
 
     }
@@ -97,12 +101,12 @@ public class ApolloDecoratorTest {
     public void canUsePowerTest(){
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         playerApollo.setStartingWorkerSituation(board.getCell(workerPosition),false);
-        playerApollo.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),new Position(0,2));
-        assertFalse(playerApollo.canUsePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),new Position(0,2)));
+        playerApollo.canMove(board.getAdjacentPlayers(workerPosition),new Cell(0,2));
+        assertFalse(playerApollo.canUsePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),new Cell(0,2)));
         board.putWorker(thirdWorkerPosition,PlayerIndex.PLAYER2);
         otherPlayerOpponent.setStartingWorkerSituation(board.getCell(thirdWorkerPosition),false);
-        playerApollo.canMove(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),thirdWorkerPosition);
-        assertTrue(playerApollo.canUsePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),thirdWorkerPosition));
+        playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(thirdWorkerPosition));
+        assertTrue(playerApollo.canUsePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),board.getCell(thirdWorkerPosition)));
     }
 
     @Test

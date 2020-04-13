@@ -18,6 +18,10 @@ public class ApolloDecorator extends PlayerMoveDecorator {
         super.setChosenGod(condition);
     }
 
+    @Override
+    public int getPowerListDimension() {
+        return 1;
+    }
 
     @Override
     public boolean canMove(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell) throws InvalidPositionException {
@@ -47,19 +51,19 @@ public class ApolloDecorator extends PlayerMoveDecorator {
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell) {
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) {
         if(super.getActivePower())
             return true;
         return false;
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell) {
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) {
         super.setActivePower(false);
         Position startPosition = super.getCellOccupied().getPosition();
-        PlayerIndex opponent = adjacentPlayerList.get(powerCell.getPosition());
-        BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(),powerCell.getPosition(),super.getPlayerNum());
-        boardChange.addPlayerChanges(powerCell.getPosition(),startPosition,opponent);
+        PlayerIndex opponent = adjacentPlayerList.get(adjacentList.get(0));
+        BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(),adjacentList.get(0).getPosition(),super.getPlayerNum());
+        boardChange.addPlayerChanges(adjacentList.get(0).getPosition(),startPosition,opponent);
         return boardChange;
 
     }
