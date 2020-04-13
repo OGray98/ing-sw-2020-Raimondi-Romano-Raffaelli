@@ -35,6 +35,11 @@ public class AthenaDecoratorTest {
     }
 
     @Test
+    public void getPowerListDimensionTest(){
+        assertEquals(1,playerAthena.getPowerListDimension());
+    }
+
+    @Test
     public void moveAthenaTest(){
         board.putWorker(workerPos, PlayerIndex.PLAYER0);
         playerAthena.setStartingWorkerSituation(board.getCell(workerPos), false);

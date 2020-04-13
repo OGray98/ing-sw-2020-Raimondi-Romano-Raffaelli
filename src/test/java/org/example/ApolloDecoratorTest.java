@@ -48,6 +48,11 @@ public class ApolloDecoratorTest {
     }
 
     @Test
+    public void getPowerListDimensionTest(){
+        assertEquals(1,playerApollo.getPowerListDimension());
+    }
+
+    @Test
     public void canMoveTest(){
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         board.putWorker(secondWorkerPosition,PlayerIndex.PLAYER0);
@@ -120,6 +125,11 @@ public class ApolloDecoratorTest {
         playerApollo.setStartingWorkerSituation(board.getCell(workerPosition),false);
         board.putWorker(workerOpponentPosition,PlayerIndex.PLAYER1);
         playerOpponent.setStartingWorkerSituation(board.getCell(workerOpponentPosition),false);
+        List<Cell> power = new ArrayList<>();
+        power.add(board.getCell(workerOpponentPosition));
+        assertFalse(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(workerOpponentPosition)));
+        assertTrue(playerApollo.getActivePower());
+        assertTrue(playerApollo.canUsePower(power,board.getAdjacentPlayers(workerPosition)));
         BoardChange boardChange = playerApollo.usePower(board.getCell(workerOpponentPosition));
         board.updateAfterPower(boardChange);
         assertEquals(PlayerIndex.PLAYER0,board.getOccupiedPlayer(workerOpponentPosition));
@@ -134,6 +144,10 @@ public class ApolloDecoratorTest {
         playerApollo.setStartingWorkerSituation(board.getCell(workerPosition),false);
         board.putWorker(workerOpponentPosition,PlayerIndex.PLAYER1);
         playerOpponent.setStartingWorkerSituation(board.getCell(workerOpponentPosition),false);
+        List<Cell> power = new ArrayList<>();
+        power.add(board.getCell(workerOpponentPosition));
+        assertFalse(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(workerOpponentPosition)));
+        assertTrue(playerApollo.canUsePower(power,board.getAdjacentPlayers(workerPosition)));
         BoardChange boardChange = playerApollo.usePower(board.getCell(workerOpponentPosition));
         board.updateAfterPower(boardChange);
         assertEquals(PlayerIndex.PLAYER0,board.getOccupiedPlayer(workerOpponentPosition));

@@ -34,6 +34,10 @@ public class ArtemisDecoratorTest {
         assertTrue(cardArtemis.getBoolChosenGod());
     }
 
+    @Test
+    public void getPowerListDimensionTest(){
+        assertEquals(1,playerArtemis.getPowerListDimension());
+    }
 
 
     @Test

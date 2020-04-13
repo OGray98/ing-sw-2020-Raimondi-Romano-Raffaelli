@@ -31,10 +31,11 @@ public class ApolloDecorator extends PlayerMoveDecorator {
         if(moveCell.getPosition().col > 4 || moveCell.getPosition().row > 4 || moveCell.getPosition().col < 0 || moveCell.getPosition().row < 0) throw new InvalidPositionException(moveCell.getPosition().row, moveCell.getPosition().col);
         if(adjacentPlayerList == null) throw new NullPointerException("adjacentPlayerList is null!");
 
+        super.setActivePower(false);
         for(Position p : adjacentPlayerList.keySet()){
             //check if there is a player
-            if ((p.equals(moveCell)) && ((moveCell.getLevel() - super.getCellOccupied().getLevel()) <= 1)) {
-                if(!adjacentPlayerList.get(moveCell).equals(super.getPlayerNum())){
+            if ((p.equals(moveCell.getPosition())) && ((moveCell.getLevel() - super.getCellOccupied().getLevel()) <= 1)) {
+                if(!(adjacentPlayerList.get(p).equals(super.getPlayerNum()))){
                     super.setActivePower(true);}
                 return false;
             }
@@ -55,8 +56,13 @@ public class ApolloDecorator extends PlayerMoveDecorator {
     @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) {
         if(super.getActivePower()){
-            this.playerOpponent = adjacentPlayerList.get(adjacentList.get(0));
-            return true;}
+            for(Position p : adjacentPlayerList.keySet()){
+                if(adjacentList.get(0).getPosition().equals(p)){
+                    this.playerOpponent = adjacentPlayerList.get(p);
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -65,7 +71,7 @@ public class ApolloDecorator extends PlayerMoveDecorator {
         super.setActivePower(false);
         Position startPosition = super.getCellOccupied().getPosition();
         BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(),powerCell.getPosition(),super.getPlayerNum());
-        boardChange.addPlayerChanges(powerCell.getPosition(),startPosition,playerOpponent);
+        boardChange.addPlayerChanges(powerCell.getPosition(),startPosition,this.playerOpponent);
         return boardChange;
 
     }

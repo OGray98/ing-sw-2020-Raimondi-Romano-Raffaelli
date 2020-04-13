@@ -14,6 +14,11 @@ public class AtlasDecorator extends PlayerBuildDecorator {
     }
 
     @Override
+    public int getPowerListDimension() {
+        return 1;
+    }
+
+    @Override
     public boolean canBuild(Map<Position,PlayerIndex> adjacentPlayerList, Cell buildCell){
         if(super.canBuild(adjacentPlayerList, buildCell)) super.setActivePower(true);
         return super.canBuild(adjacentPlayerList, buildCell);
