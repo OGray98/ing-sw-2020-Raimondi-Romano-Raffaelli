@@ -60,7 +60,7 @@ public class PlayerTest {
         board.constructBlock(new Position(2,2));
         board.putWorker(new Position(2,2), PlayerIndex.PLAYER2);
 
-        adjacentCells = board.getAdjacentCells(cellOccupied.getPosition());
+        //adjacentCells = board.getAdjacentCells(cellOccupied.getPosition());
 
         adjacentPlayerList = board.getAdjacentPlayers(cellOccupied.getPosition());
 

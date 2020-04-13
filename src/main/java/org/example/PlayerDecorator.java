@@ -50,8 +50,8 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     }
 
     @Override
-    public boolean canBuild(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position buildPos) throws InvalidPositionException, NullPointerException {
-        return player.canBuild(adjacentList, adjacentPlayerList, buildPos);
+    public boolean canBuild(Map<Position, PlayerIndex> adjacentPlayerList, Cell buildCell) throws InvalidPositionException, NullPointerException {
+        return player.canBuild(adjacentPlayerList, buildCell);
     }
 
     @Override

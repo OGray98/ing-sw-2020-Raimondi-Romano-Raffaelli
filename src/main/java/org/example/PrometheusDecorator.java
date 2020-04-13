@@ -31,7 +31,7 @@ public class PrometheusDecorator extends PlayerYourTurnDecorator {
 
     @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell) {
-        return super.canBuild(adjacentList, adjacentPlayerList, powerCell);
+        return super.canBuild(adjacentPlayerList, powerCell);
     }
 
     @Override
