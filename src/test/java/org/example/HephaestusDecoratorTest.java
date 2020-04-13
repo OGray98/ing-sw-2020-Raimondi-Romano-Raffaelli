@@ -3,6 +3,9 @@ package org.example;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class HephaestusDecoratorTest {
@@ -43,14 +46,21 @@ public class HephaestusDecoratorTest {
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         playerHephaestus.setStartingWorkerSituation(board.getCell(workerPosition),false);
         playerHephaestus.canBuild(board.getAdjacentPlayers(workerPosition), board.getCell(buildPosition));
-        assertTrue(playerHephaestus.canUsePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),board.getCell(buildPosition)));
-        assertFalse(playerHephaestus.canUsePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),board.getCell(otherPosition)));
+
+        List<Cell> power = new ArrayList<>();
+        power.add(board.getCell(buildPosition));
+        assertTrue(playerHephaestus.canUsePower(power, board.getAdjacentPlayers(workerPosition)));
+
+        List<Cell> power2 = new ArrayList<>();
+        power2.add(board.getCell(otherPosition));
+        assertFalse(playerHephaestus.canUsePower(power2,board.getAdjacentPlayers(workerPosition)));
+
         assertTrue(playerHephaestus.canBuild(board.getAdjacentPlayers(workerPosition),board.getCell(otherPosition)));
     }
 
     @Test
     public void usePowerTest(){
-        boardChange = playerHephaestus.usePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),board.getCell(buildPosition));
+        boardChange = playerHephaestus.usePower(board.getCell(buildPosition));
         assertFalse(playerHephaestus.getActivePower());
         assertEquals(BuildType.LEVEL,boardChange.getBuildType());
 

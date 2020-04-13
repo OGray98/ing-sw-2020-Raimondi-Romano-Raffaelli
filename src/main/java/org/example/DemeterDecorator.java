@@ -31,9 +31,9 @@ public class DemeterDecorator extends PlayerBuildDecorator {
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
+    public BoardChange usePower(Cell powerCell){
         super.setActivePower(false);
-        return new BoardChange(adjacentList.get(0).getPosition(), BuildType.LEVEL);
+        return new BoardChange(powerCell.getPosition(), BuildType.LEVEL);
     }
 
     @Override
