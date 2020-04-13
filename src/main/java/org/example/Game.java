@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,6 @@ public class Game {
     private PlayerInterface currentPlayer;
     private Position currentPosition;
     private int contCurrentPlayer;
-    private Map<PlayerInterface, CardInterface> playersCards;
 
     private Game(List<PlayerInterface> players) throws NullPointerException {
         if (players == null)
@@ -46,6 +46,28 @@ public class Game {
         return gameInstance;
     }
 
+    /* Method called when is necessary to init game (before first turn).
+     * It decorated the players with selected CardInterface and reorder list using PlayerIndex.
+     * Requires a Map<PlayerIndex, CardInterface> not null with the association PlayerIndex <-> CardInterface
+     * Modify players and contCurrentPlayer and contEffect
+     */
+    public void initGame(Map<PlayerIndex, CardInterface> playersCards) throws NullPointerException {
+        if (playersCards == null)
+            throw new NullPointerException("playersCards");
+
+        //Create list of PlayerDecorator and reorder the list
+        List<PlayerInterface> aus = new ArrayList<>(players);
+        players.clear();
+        for (Map.Entry<PlayerIndex, CardInterface> entry : playersCards.entrySet()) {
+            players.add(entry.getValue().setPlayer(aus.get(entry.getKey().ordinal())));
+        }
+        players.sort(Comparator.comparing(PlayerInterface::getPlayerNum));
+
+        contCurrentPlayer = 2;
+        contEffect = 0;
+    }
+
+
     /* Method that put a worker of currentPlayer in board
      * Requires a not null Position where put the worker
      */
@@ -54,6 +76,18 @@ public class Game {
             throw new NullPointerException("putPosition");
         board.putWorker(putPosition, currentPlayer.getPlayerNum());
         currentPlayer.setStartingWorkerSituation(board.getCell(putPosition), false);
+    }
+
+
+    /* Method called a turn start and do the setup of turn.
+     * Modify contCurrentPlayer, currentPlayer and contEffect.
+     */
+    public void startTurn() {
+        contCurrentPlayer = (contCurrentPlayer + 1) % 3;
+        currentPlayer = players.get(contCurrentPlayer);
+        contEffect++;
+        if (contEffect == 3)
+            board.updateAfterPower(new BoardChange(false));
     }
 
 
@@ -75,6 +109,7 @@ public class Game {
                 movePos
         );
     }
+
 
     /* Method that move worker of currentPlayer in movePos, before change the worker position in board, then the cell in
      * currentPlayer

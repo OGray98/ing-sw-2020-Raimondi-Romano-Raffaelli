@@ -40,16 +40,26 @@ public class Deck {
                 this.chosenGodCards[count] = godCards.get(i);
                 count++;
             }
-            if( i >= godCards.size() || count > chosenGodCards.length || count < 0)
+            if (i >= godCards.size() || count > chosenGodCards.length || count < 0)
                 throw new ArrayIndexOutOfBoundsException();
         }
     }
 
-    public List<CardInterface> getGodCards(){
+    public List<CardInterface> getGodCards() {
         return this.godCards;
     }
 
-    public CardInterface[] getChosenGodCards(){
+    public CardInterface getGodCard(String name) throws NullPointerException, WrongGodNameException {
+        if (name == null)
+            throw new NullPointerException("name");
+        for (CardInterface card : godCards) {
+            if (card.getGodName().equals(name))
+                return card;
+        }
+        throw new WrongGodNameException(name);
+    }
+
+    public CardInterface[] getChosenGodCards() {
         return this.chosenGodCards;
     }
 

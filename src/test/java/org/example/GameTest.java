@@ -4,7 +4,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -15,6 +17,7 @@ public class GameTest {
     private static List<PlayerInterface> players;
     private static Board board;
     private static Position firstPos;
+    private static Map<PlayerIndex, CardInterface> playersCards;
 
     @BeforeClass
     public static void init() {
@@ -26,6 +29,11 @@ public class GameTest {
         game = Game.getInstance(players);
         board = new Board();
         firstPos = new Position(1, 1);
+        playersCards = new HashMap<>(3);
+        /*
+        playersCards.put(PlayerIndex.PLAYER0, game.)
+        game.initGame();
+        */
     }
 
     @Test
