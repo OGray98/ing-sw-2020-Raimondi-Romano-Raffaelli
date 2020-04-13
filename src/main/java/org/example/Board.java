@@ -51,10 +51,7 @@ public class Board {
         if (map[cellPosition.row][cellPosition.col].hasDome())
             return false;
 
-        for (List<Position> positions : playerPosition.values())
-            if (positions.contains(cellPosition))
-                return false;
-        return true;
+        return playerPosition.values().stream().noneMatch(positions -> positions.contains(cellPosition));
     }
 
     /*Given the Position centralPosition returns a List<Cell> that contains all the cells adjacent to centralPosition
