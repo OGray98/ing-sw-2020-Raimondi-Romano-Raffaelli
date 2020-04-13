@@ -74,4 +74,12 @@ public class PrometheusDecoratorTest {
         assertEquals(1,playerPrometheus.getPowerListDimension());
     }
 
+    @Test
+    public void notUsedPowerTest(){
+        playerPrometheus.setWorkerSituation(board.getCell(towerOnePosition), board.getCell(workerPosition), false);
+        assertTrue(playerPrometheus.getActivePower());
+
+        assertTrue(playerPrometheus.canMove(board.getAdjacentPlayers(workerPosition), board.getCell(towerTwoPosition)));
+        assertFalse(playerPrometheus.getActivePower());
+    }
 }

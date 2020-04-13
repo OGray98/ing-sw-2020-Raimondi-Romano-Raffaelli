@@ -52,4 +52,9 @@ public class HephaestusDecorator extends PlayerBuildDecorator {
         return 1;
     }
 
+    @Override
+    public boolean hasWin(){
+        super.setActivePower(false);
+        return super.hasWin();
+    }
 }

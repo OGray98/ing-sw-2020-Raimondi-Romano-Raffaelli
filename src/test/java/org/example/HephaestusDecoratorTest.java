@@ -71,5 +71,15 @@ public class HephaestusDecoratorTest {
         assertEquals(1,playerHephaestus.getPowerListDimension());
     }
 
+    @Test
+    public void notUsedPowerTest(){
+        board.putWorker(workerPosition, PlayerIndex.PLAYER0);
+        playerHephaestus.setWorkerSituation(board.getCell(otherPosition), board.getCell(workerPosition), false);
+        playerHephaestus.activePowerAfterBuild();
+        assertTrue(playerHephaestus.getActivePower());
+
+        playerHephaestus.hasWin();
+        assertFalse(playerHephaestus.getActivePower());
+    }
 
 }

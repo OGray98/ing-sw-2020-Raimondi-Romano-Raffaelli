@@ -100,4 +100,15 @@ public class DemeterDecoratorTest {
     public void getPowerListDimensionTest(){
         assertEquals(1,playerDemeter.getPowerListDimension());
     }
+
+    @Test
+    public void notUsedPowerTest(){
+        board.putWorker(workerPosition, PlayerIndex.PLAYER2);
+        playerDemeter.setWorkerSituation(board.getCell(firstBuildingPosition), board.getCell(workerPosition), false);
+        playerDemeter.activePowerAfterBuild();
+        assertTrue(playerDemeter.getActivePower());
+
+        playerDemeter.hasWin();
+        assertFalse(playerDemeter.getActivePower());
+    }
 }

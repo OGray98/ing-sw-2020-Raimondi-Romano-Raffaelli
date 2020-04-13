@@ -24,6 +24,12 @@ public class PrometheusDecorator extends PlayerYourTurnDecorator {
     }
 
     @Override
+    public boolean canMove(Map<Position,PlayerIndex> adjacentPlayerList, Cell moveCell){
+        super.setActivePower(false);
+        return super.canMove(adjacentPlayerList, moveCell);
+    }
+
+    @Override
     public void move(Cell newOccupiedCell) throws NullPointerException {
         super.setCantGoUp(false);
         super.move(newOccupiedCell);

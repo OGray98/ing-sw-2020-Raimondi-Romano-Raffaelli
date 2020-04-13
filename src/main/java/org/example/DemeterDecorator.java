@@ -45,5 +45,11 @@ public class DemeterDecorator extends PlayerBuildDecorator {
     public int getPowerListDimension(){
         return 1;
     }
+
+    @Override
+    public boolean hasWin(){
+        super.setActivePower(false);
+        return super.hasWin();
+    }
 }
 
