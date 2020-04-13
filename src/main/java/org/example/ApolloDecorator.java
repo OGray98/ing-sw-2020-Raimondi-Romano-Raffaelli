@@ -53,19 +53,19 @@ public class ApolloDecorator extends PlayerMoveDecorator {
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition) {
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell) {
         if(super.getActivePower())
             return true;
         return false;
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition) {
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell) {
         super.setActivePower(false);
         Position startPosition = super.getCellOccupied().getPosition();
-        PlayerIndex opponent = adjacentPlayerList.get(powerPosition);
-        BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(),powerPosition,super.getPlayerNum());
-        boardChange.addPlayerChanges(powerPosition,startPosition,opponent);
+        PlayerIndex opponent = adjacentPlayerList.get(powerCell.getPosition());
+        BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(),powerCell.getPosition(),super.getPlayerNum());
+        boardChange.addPlayerChanges(powerCell.getPosition(),startPosition,opponent);
         return boardChange;
 
     }
