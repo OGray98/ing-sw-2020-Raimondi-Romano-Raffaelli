@@ -1,9 +1,6 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Game {
 
@@ -45,6 +42,23 @@ public class Game {
             throw new NullPointerException("Call getInstance(List<PlayerInterface>)");
         return gameInstance;
     }
+
+    /* Method that return a map with of all cards in deck
+     */
+    public Map<String, String> getCards() {
+        Map<String, String> cards = new HashMap<>(Deck.size);
+        for (CardInterface card : deck.getGodCards()) {
+            cards.put(card.getGodName(), card.getGodDescription());
+        }
+        return cards;
+    }
+
+    public void setGodsChosen(List<String> godNames) throws NullPointerException {
+        if (godNames == null)
+            throw new NullPointerException("godNames");
+
+    }
+
 
     /* Method called when is necessary to init game (before first turn).
      * It decorated the players with selected CardInterface and reorder list using PlayerIndex.

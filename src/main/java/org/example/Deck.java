@@ -7,6 +7,7 @@ public class Deck {
 
     private final List<CardInterface> godCards;
     private CardInterface[] chosenGodCards;
+    public final static int size = 9;
     private int playersNumber;
 
     public Deck(int playersNumber){
@@ -20,28 +21,33 @@ public class Deck {
         CardInterface cardMinotaur = new MinotaurDecorator();
         CardInterface cardPan = new PanDecorator();
         CardInterface cardPrometheus = new PrometheusDecorator();
-        godCards = new ArrayList<>(List.of(cardApollo,cardArtemis,cardAthena,cardAtlas,cardDemeter,cardHephaestus,cardMinotaur,cardPan,cardPrometheus));
+        godCards = new ArrayList<>(List.of(cardApollo, cardArtemis, cardAthena, cardAtlas, cardDemeter, cardHephaestus, cardMinotaur, cardPan, cardPrometheus));
         chosenGodCards = new CardInterface[this.playersNumber];
     }
 
-    public void playerGodLikeChoose(CardInterface card) throws NullPointerException{
-        if(card == null)
+    public void playerGodLikeChoose(CardInterface card) throws NullPointerException {
+        if (card == null)
             throw new NullPointerException("Card is null");
         card.setChosenGod(true);
     }
 
-    public void setChosenGodCards() throws NullPointerException, ArrayIndexOutOfBoundsException{
-        int count = 0;
-        if(godCards.size() == 0)
-            throw new NullPointerException("Deck is empty");
+    public void setChosenGodCards(List<String> gods) throws NullPointerException, ArrayIndexOutOfBoundsException {
+        if (gods == null)
+            throw new NullPointerException("gods");
+        if (gods.size() != playersNumber)
+            throw new InvalidNumberCardsChosenException(playersNumber, gods.size());
 
-        for(int i = 0;i < godCards.size();i++){
-            if(godCards.get(i).getBoolChosenGod() && count < this.playersNumber){
-                this.chosenGodCards[count] = godCards.get(i);
-                count++;
+        boolean thereIs = false;
+
+        for (String name : gods) {
+            for (int i = 0; i < gods.size(); i++) {
+                if (godCards.get(i).getGodName().equals(name)) {
+                    godCards.get(i).setChosenGod(true);
+                    thereIs = true;
+                }
+                if (!thereIs)
+                    throw new WrongGodNameException(name);
             }
-            if (i >= godCards.size() || count > chosenGodCards.length || count < 0)
-                throw new ArrayIndexOutOfBoundsException();
         }
     }
 

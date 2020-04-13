@@ -30,10 +30,10 @@ public class GameTest {
         board = new Board();
         firstPos = new Position(1, 1);
         playersCards = new HashMap<>(3);
-        /*
+/*
         playersCards.put(PlayerIndex.PLAYER0, game.)
         game.initGame();
-        */
+*/
     }
 
     @Test
