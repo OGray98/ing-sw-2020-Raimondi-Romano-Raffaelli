@@ -82,21 +82,13 @@ public class GameTest {
     @Test
     public void setChosenGodTest(){
         try{
-            game.setGodsChosen(null);
+            game.setGodsChosenByGodLike(null);
         }catch(NullPointerException e){
             assertEquals("godNames",e.getMessage());
         }
     }
 
-    @Test
-    public void initGameTest(){
-        try{
-            game.initGame(null);
-        }catch (NullPointerException e){
-            assertEquals("playersCards",e.getMessage());
-        }
 
-    }
 
     @Test
     public void putWorkerTest(){

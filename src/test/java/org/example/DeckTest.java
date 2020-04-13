@@ -3,6 +3,9 @@ package org.example;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 
@@ -48,27 +51,61 @@ public class DeckTest {
     @Test
     public void setChosenCardTest(){
         // remove all cards in a deck to verify NullPointerException(deck.size == 0)
-        for(int i = 0;i<deckEmpty.getGodCards().size();i++){
-            deckEmpty.getGodCards().remove(i);
-        }
+        List<String> notGod = new ArrayList<>();
+        int twoPlayers = 2;
         try{
             deckEmpty.setChosenGodCards(null);
         }catch(NullPointerException e){
             assertEquals("gods",e.getMessage());
         }
+        try{
+            deckEmpty.setChosenGodCards(notGod);
+        }catch(InvalidNumberCardsChosenException e){
+            assertEquals("There are " + twoPlayers + " players, you chose " + notGod.size() + "cards",e.getMessage());
+        }
 
-        deckTwoPlayers.playerGodLikeChoose(deckTwoPlayers.getGodCards().get(2));
-        deckTwoPlayers.playerGodLikeChoose(deckTwoPlayers.getGodCards().get(3));
-        assertEquals(2,deckTwoPlayers.getChosenGodCards().length);
+        List<String> threeGodsOneWrong = new ArrayList<>(3);
+        threeGodsOneWrong.add("Apollo");
+        threeGodsOneWrong.add("Artemis");
+        threeGodsOneWrong.add("Atheena");
 
-        deckThreePlayers.playerGodLikeChoose(deckThreePlayers.getGodCards().get(2));
-        deckThreePlayers.playerGodLikeChoose(deckThreePlayers.getGodCards().get(3));
-        deckThreePlayers.playerGodLikeChoose(deckThreePlayers.getGodCards().get(4));
-        assertEquals(3,deckThreePlayers.getChosenGodCards().length);
+        try {
+            deckThreePlayers.setChosenGodCards(threeGodsOneWrong);
+        }catch (WrongGodNameException e){
+            assertEquals("There isn't a god named " + threeGodsOneWrong.get(2),e.getMessage());
+        }
 
-        // verify that if there are more true GodCard of players in any case the deck is set correctly
-        deckThreePlayers.playerGodLikeChoose(deckThreePlayers.getGodCards().get(5));
-        assertEquals(3,deckThreePlayers.getChosenGodCards().length);
+        List<String> threeGods = new ArrayList<>(3);
+        threeGods.add("Apollo");
+        threeGods.add("Artemis");
+        threeGods.add("Athena");
+        deckThreePlayers.setChosenGodCards(threeGods);
+        assertTrue(deckThreePlayers.getGodCard("Apollo").getBoolChosenGod());
+        assertTrue(deckThreePlayers.getGodCard("Artemis").getBoolChosenGod());
+        assertTrue(deckThreePlayers.getGodCard("Athena").getBoolChosenGod());
+
+    }
+
+    @Test
+    public void getGodCardTest(){
+        try {
+            deckThreePlayers.getGodCard(null);
+        }catch(NullPointerException e){
+            assertEquals("name",e.getMessage());
+        }
+        try{
+            deckThreePlayers.getGodCard("Appollo");
+        } catch (WrongGodNameException e){
+            assertEquals("There isn't a god named " + "Appollo" , e.getMessage());
+        }
+        assertEquals("Apollo",deckThreePlayers.getGodCard("Apollo").getGodName());
+        assertEquals("Artemis",deckThreePlayers.getGodCard("Artemis").getGodName());
+        assertEquals("Athena",deckThreePlayers.getGodCard("Athena").getGodName());
+        assertEquals("Minotaur",deckThreePlayers.getGodCard("Minotaur").getGodName());
+        assertEquals("Demeter",deckThreePlayers.getGodCard("Demeter").getGodName());
+        assertEquals("Pan",deckThreePlayers.getGodCard("Pan").getGodName());
+        assertEquals("Prometheus",deckThreePlayers.getGodCard("Prometheus").getGodName());
+        assertEquals("Atlas",deckThreePlayers.getGodCard("Atlas").getGodName());
 
     }
 
