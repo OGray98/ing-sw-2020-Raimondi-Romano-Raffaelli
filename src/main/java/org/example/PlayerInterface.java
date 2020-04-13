@@ -34,7 +34,7 @@ public interface PlayerInterface {
      * It requires a Position that is the position to check
      * Throws InvalidPositionException if movePos is an illegal position
      * Throws NullPointerException is adjacentCells or adjacentPlayerList is null*/
-    boolean canBuild(List<Cell> adjacentList, Map<Position,PlayerIndex> adjacentPlayerList, Position buildPos) throws InvalidPositionException, NullPointerException;
+    boolean canBuild(Map<Position, PlayerIndex> adjacentPlayerList, Cell buildCell) throws InvalidPositionException, NullPointerException;
 
     /* Method that returns true if is verified a win condition
     * Throws NullPointerException if is not selected any worker */
