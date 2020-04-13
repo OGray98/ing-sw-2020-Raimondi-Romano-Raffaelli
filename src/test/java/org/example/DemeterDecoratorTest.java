@@ -73,9 +73,7 @@ public class DemeterDecoratorTest {
         board.putWorker(workerPosition, PlayerIndex.PLAYER2);
         playerDemeter.setStartingWorkerSituation(board.getCell(workerPosition), false);
 
-        List<Cell> power = new ArrayList<>();
-        power.add(board.getCell(secondBuildPosition));
-        BoardChange powerResult = playerDemeter.usePower(power, board.getAdjacentPlayers(workerPosition));
+        BoardChange powerResult = playerDemeter.usePower(board.getCell(secondBuildPosition));
 
         try{
             powerResult.getCantGoUp();
@@ -86,10 +84,8 @@ public class DemeterDecoratorTest {
 
         assertFalse(playerDemeter.getActivePower());
 
-        List<Cell> power2 = new ArrayList<>();
-        power2.add(board.getCell(secondBuildPosition));
-        assertEquals(playerDemeter.usePower(power2, board.getAdjacentPlayers(workerPosition), board.getCell(secondBuildPosition)).getBuildType(), BuildType.LEVEL);
-        assertEquals(playerDemeter.usePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), board.getCell(secondBuildPosition)).getPositionBuild(), secondBuildPosition);
+        assertEquals(playerDemeter.usePower(board.getCell(secondBuildPosition)).getBuildType(), BuildType.LEVEL);
+        assertEquals(playerDemeter.usePower(board.getCell(secondBuildPosition)).getPositionBuild(), secondBuildPosition);
         try{
             powerResult.getChanges();
         }
@@ -97,6 +93,22 @@ public class DemeterDecoratorTest {
             assertEquals("playerChanges", e.getMessage());
         }
 
+        assertFalse(playerDemeter.getActivePower());
+    }
+
+    @Test
+    public void getPowerListDimensionTest(){
+        assertEquals(1,playerDemeter.getPowerListDimension());
+    }
+
+    @Test
+    public void notUsedPowerTest(){
+        board.putWorker(workerPosition, PlayerIndex.PLAYER2);
+        playerDemeter.setWorkerSituation(board.getCell(firstBuildingPosition), board.getCell(workerPosition), false);
+        playerDemeter.activePowerAfterBuild();
+        assertTrue(playerDemeter.getActivePower());
+
+        playerDemeter.hasWin();
         assertFalse(playerDemeter.getActivePower());
     }
 }

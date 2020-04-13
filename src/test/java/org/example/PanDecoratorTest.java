@@ -85,4 +85,9 @@ public class PanDecoratorTest {
 
 
     }
+
+    @Test
+    public void getPowerListDimensionTest(){
+        assertEquals(0,playerPan.getPowerListDimension());
+    }
 }

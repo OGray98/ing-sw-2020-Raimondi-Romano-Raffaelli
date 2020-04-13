@@ -3,6 +3,9 @@ package org.example;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class HephaestusDecoratorTest {
@@ -42,21 +45,41 @@ public class HephaestusDecoratorTest {
     public void canUsePowerTest(){
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         playerHephaestus.setStartingWorkerSituation(board.getCell(workerPosition),false);
-        playerHephaestus.canBuild(board.getAdjacentPlayers(workerPosition), board.getCell(buildPosition));
-        assertTrue(playerHephaestus.canUsePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),board.getCell(buildPosition)));
-        assertFalse(playerHephaestus.canUsePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),board.getCell(otherPosition)));
+        assertTrue(playerHephaestus.canBuild(board.getAdjacentPlayers(workerPosition), board.getCell(buildPosition)));
+
+        List<Cell> power = new ArrayList<>();
+        power.add(board.getCell(buildPosition));
+        assertTrue(playerHephaestus.canUsePower(power, board.getAdjacentPlayers(workerPosition)));
+
+        List<Cell> power2 = new ArrayList<>();
+        power2.add(board.getCell(otherPosition));
+        assertFalse(playerHephaestus.canUsePower(power2,board.getAdjacentPlayers(workerPosition)));
+
         assertTrue(playerHephaestus.canBuild(board.getAdjacentPlayers(workerPosition),board.getCell(otherPosition)));
     }
 
     @Test
     public void usePowerTest(){
-        boardChange = playerHephaestus.usePower(board.getAdjacentCells(workerPosition),board.getAdjacentPlayers(workerPosition),board.getCell(buildPosition));
+        boardChange = playerHephaestus.usePower(board.getCell(buildPosition));
         assertFalse(playerHephaestus.getActivePower());
         assertEquals(BuildType.LEVEL,boardChange.getBuildType());
 
     }
 
+    @Test
+    public void getPowerListDimensionTest(){
+        assertEquals(1,playerHephaestus.getPowerListDimension());
+    }
 
+    @Test
+    public void notUsedPowerTest(){
+        board.putWorker(workerPosition, PlayerIndex.PLAYER0);
+        playerHephaestus.setWorkerSituation(board.getCell(otherPosition), board.getCell(workerPosition), false);
+        playerHephaestus.activePowerAfterBuild();
+        assertTrue(playerHephaestus.getActivePower());
 
+        playerHephaestus.hasWin();
+        assertFalse(playerHephaestus.getActivePower());
+    }
 
 }

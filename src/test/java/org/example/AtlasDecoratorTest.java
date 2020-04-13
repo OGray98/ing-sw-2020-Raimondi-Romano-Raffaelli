@@ -31,12 +31,23 @@ public class AtlasDecoratorTest {
     }
 
     @Test
+    public void getPowerListDimensionTest(){
+        assertEquals(1,playerint.getPowerListDimension());
+    }
+
+    @Test
+    public void activePowerAfterBuilFalseTest(){
+        playerint.activePowerAfterBuild();
+        assertFalse(playerint.getActivePower());
+    }
+
+    @Test
     public void canBuildAtlasTest(){
         board.putWorker(workerPos, PlayerIndex.PLAYER1);
         playerint.setStartingWorkerSituation(board.getCell(workerPos), false);
 
-        assertTrue(playerint.canBuild(board.getAdjacentCells(workerPos), board.getAdjacentPlayers(workerPos), posTrue));
-        assertFalse(playerint.canBuild(board.getAdjacentCells(workerPos), board.getAdjacentPlayers(workerPos), posFalse));
+        assertTrue(playerint.canBuild(board.getAdjacentPlayers(workerPos), board.getCell(posTrue)));
+        assertFalse(playerint.canBuild(board.getAdjacentPlayers(workerPos), board.getCell(posFalse)));
 
         assertTrue(playerint.getActivePower());
     }
@@ -46,7 +57,7 @@ public class AtlasDecoratorTest {
         board.putWorker(workerPos, PlayerIndex.PLAYER1);
         playerint.setStartingWorkerSituation(board.getCell(workerPos), false);
 
-        BoardChange powerResult = playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue);
+        BoardChange powerResult = playerint.usePower(board.getCell(posTrue));
 
         try{
             powerResult.getCantGoUp();
@@ -55,8 +66,8 @@ public class AtlasDecoratorTest {
             assertEquals("cantGoUp", e.getMessage());
         }
 
-        assertEquals(playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue).getBuildType(), BuildType.DOME);
-        assertEquals(playerint.usePower(board.getAdjacentCells(playerint.getCellOccupied().getPosition()), board.getAdjacentPlayers(playerint.getCellOccupied().getPosition()), posTrue).getPositionBuild(), posTrue);
+        assertEquals(playerint.usePower(board.getCell(posTrue)).getBuildType(), BuildType.DOME);
+        assertEquals(playerint.usePower(board.getCell(posTrue)).getPositionBuild(), posTrue);
 
         try{
             powerResult.getChanges();

@@ -14,18 +14,29 @@ public class AtlasDecorator extends PlayerBuildDecorator {
     }
 
     @Override
+    public int getPowerListDimension() {
+        return 1;
+    }
+
+    @Override
     public boolean canBuild(Map<Position,PlayerIndex> adjacentPlayerList, Cell buildCell){
         if(super.canBuild(adjacentPlayerList, buildCell)) super.setActivePower(true);
         return super.canBuild(adjacentPlayerList, buildCell);
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
-        return super.canBuild(adjacentPlayerList, powerCell);
+    public void activePowerAfterBuild() {
+        super.setActivePower(false);
+        super.activePowerAfterBuild();
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
+        return super.canBuild(adjacentPlayerList, adjacentList.get(0));
+    }
+
+    @Override
+    public BoardChange usePower(Cell powerCell){
         super.setActivePower(false);
         return new BoardChange(powerCell.getPosition(), BuildType.DOME);
     }

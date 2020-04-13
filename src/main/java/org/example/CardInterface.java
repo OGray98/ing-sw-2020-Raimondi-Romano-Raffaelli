@@ -2,6 +2,7 @@ package org.example;
 
 public interface CardInterface {
 
+    //TODO: si può migliorare con metodo void
     PlayerInterface setPlayer(PlayerInterface player);
 
     void setChosenGod(Boolean condition);

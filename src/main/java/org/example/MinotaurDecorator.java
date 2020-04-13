@@ -11,6 +11,10 @@ public class MinotaurDecorator extends PlayerMoveDecorator {
     }
 
 
+    @Override
+    public int getPowerListDimension(){
+        return 2;
+    }
 
     public void setChosenGod(Boolean condition){
         super.setChosenGod(condition);
