@@ -14,20 +14,20 @@ public class AtlasDecorator extends PlayerBuildDecorator {
     }
 
     @Override
-    public boolean canBuild(List<Cell> adjacentList, Map<Position,PlayerIndex> adjacentPlayerList, Position buildPos){
-        if(super.canBuild(adjacentList, adjacentPlayerList, buildPos)) super.setActivePower(true);
-        return super.canBuild(adjacentList, adjacentPlayerList, buildPos);
+    public boolean canBuild(Map<Position,PlayerIndex> adjacentPlayerList, Cell buildCell){
+        if(super.canBuild(adjacentPlayerList, buildCell)) super.setActivePower(true);
+        return super.canBuild(adjacentPlayerList, buildCell);
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
-        return super.canBuild(adjacentList, adjacentPlayerList, powerPosition);
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
+        return super.canBuild(adjacentPlayerList, powerCell);
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
         super.setActivePower(false);
-        return new BoardChange(powerPosition, BuildType.DOME);
+        return new BoardChange(powerCell.getPosition(), BuildType.DOME);
     }
 
     @Override

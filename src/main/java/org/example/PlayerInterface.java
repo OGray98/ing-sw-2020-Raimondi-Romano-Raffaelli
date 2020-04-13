@@ -26,7 +26,7 @@ public interface PlayerInterface {
     * It requires a Position that is the position to check
     * Throws InvalidPositionException if movePos is an illegal position
     * Throws NullPointerException is adjacentCells or adjacentPlayerList is null*/
-    boolean canMove(List<Cell> adjacentCells, Map<Position,PlayerIndex> adjacentPlayerList, Position movePos)throws InvalidPositionException, NullPointerException;
+    boolean canMove(Map<Position,PlayerIndex> adjacentPlayerList, Cell moveCell)throws InvalidPositionException, NullPointerException;
 
     /*Method that returns true if user select a possible build action
      * It requires a List<Cell> that contains all the cells adjacent to the worker selected
@@ -34,7 +34,7 @@ public interface PlayerInterface {
      * It requires a Position that is the position to check
      * Throws InvalidPositionException if movePos is an illegal position
      * Throws NullPointerException is adjacentCells or adjacentPlayerList is null*/
-    boolean canBuild(List<Cell> adjacentList, Map<Position,PlayerIndex> adjacentPlayerList, Position buildPos) throws InvalidPositionException, NullPointerException;
+    boolean canBuild(Map<Position, PlayerIndex> adjacentPlayerList, Cell buildCell) throws InvalidPositionException, NullPointerException;
 
     /* Method that returns true if is verified a win condition
     * Throws NullPointerException if is not selected any worker */
@@ -48,10 +48,10 @@ public interface PlayerInterface {
     void activePowerAfterBuild();
 
     /*Method that will be specialized in the Decorator class, it refers to a specific God power*/
-    boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition);
+    boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell);
 
     /*Method that implements the power of a specific God, specialized in Decorator*/
-    BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition);
+    BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell);
 
     Cell getOldCell() throws NullPointerException;
 
