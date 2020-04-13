@@ -45,8 +45,8 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     }
 
     @Override
-    public boolean canMove(List<Cell> adjacentCells, Map<Position, PlayerIndex> adjacentPlayerList, Position movePos) throws InvalidPositionException, NullPointerException {
-        return player.canMove(adjacentCells, adjacentPlayerList, movePos);
+    public boolean canMove(Map<Position,PlayerIndex> adjacentPlayerList, Cell moveCell) throws InvalidPositionException, NullPointerException {
+        return player.canMove(adjacentPlayerList, moveCell);
     }
 
     @Override
@@ -70,13 +70,13 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition) {
-        return player.canUsePower(adjacentList, adjacentPlayerList, powerPosition);
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell) {
+        return player.canUsePower(adjacentList, adjacentPlayerList, powerCell);
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
-        return player.usePower(adjacentList, adjacentPlayerList, powerPosition);
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
+        return player.usePower(adjacentList, adjacentPlayerList, powerCell);
     }
 
     @Override
