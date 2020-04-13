@@ -95,4 +95,9 @@ public class DemeterDecoratorTest {
 
         assertFalse(playerDemeter.getActivePower());
     }
+
+    @Test
+    public void getPowerListDimensionTest(){
+        assertEquals(1,playerDemeter.getPowerListDimension());
+    }
 }

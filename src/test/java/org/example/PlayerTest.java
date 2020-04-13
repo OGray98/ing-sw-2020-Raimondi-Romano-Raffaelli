@@ -76,19 +76,19 @@ public class PlayerTest {
         /* Test when cantGoUp is false! */
 
         //Check move level 0 -> level 0
-        assertTrue(player.canMove(adjacentPlayerList, cell00));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell00.getPosition())));
         //Check move level 0 -> level 1
-        assertTrue(player.canMove(adjacentPlayerList, cell01));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell01.getPosition())));
         //Check move level 0 -> level 2
-        assertFalse(player.canMove(adjacentPlayerList, cell02));
+        assertFalse(player.canMove(adjacentPlayerList, board.getCell(cell02.getPosition())));
         //Check move level 0 -> level 3
-        assertFalse(player.canMove(adjacentPlayerList, cell10));
+        assertFalse(player.canMove(adjacentPlayerList, board.getCell(cell10.getPosition())));
         //Check move level 0 -> level 0 + occupation == PLAYER1
-        assertFalse(player.canMove(adjacentPlayerList, cell20));
+        assertFalse(player.canMove(adjacentPlayerList, board.getCell(cell20.getPosition())));
         //Check move level 0 -> level 1 + occupation == PLAYER2
-        assertFalse(player.canMove(adjacentPlayerList, cell21));
+        assertFalse(player.canMove(adjacentPlayerList, board.getCell(cell21.getPosition())));
         //Check move level 0 -> level 2 + occupation == PLAYER3
-        assertFalse(player.canMove(adjacentPlayerList, cell22));
+        assertFalse(player.canMove(adjacentPlayerList, board.getCell(cell22.getPosition())));
 
         //Upgrade the level of the Cell where worker is to level 1
         board.constructBlock(cellOccupied.getPosition());
@@ -96,11 +96,11 @@ public class PlayerTest {
         assertEquals(board.getCell(cellOccupied.getPosition()).getLevel(), 1);
 
         //Check move level 1 -> level 0
-        assertTrue(player.canMove(adjacentPlayerList, cell00));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell00.getPosition())));
         //Check move level 1 -> level 2
-        assertTrue(player.canMove(adjacentPlayerList, cell02));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell02.getPosition())));
         //Check move level 1 -> level 3
-        assertFalse(player.canMove(adjacentPlayerList, cell10));
+        assertFalse(player.canMove(adjacentPlayerList, board.getCell(cell10.getPosition())));
 
         //Upgrade the level of the Cell where worker is to level 2
         board.constructBlock(cellOccupied.getPosition());
@@ -108,13 +108,13 @@ public class PlayerTest {
         assertEquals(board.getCell(cellOccupied.getPosition()).getLevel(), 2);
 
         //Check move level 2 -> level 3 + occupation == DOME
-        assertFalse(player.canMove(adjacentPlayerList, cell12));
+        assertFalse(player.canMove(adjacentPlayerList, board.getCell(cell12.getPosition())));
         //Check move level 2 -> level 0
-        assertTrue(player.canMove(adjacentPlayerList, cell00));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell00.getPosition())));
         //Check move level 2 -> level 1
-        assertTrue(player.canMove(adjacentPlayerList, cell01));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell01.getPosition())));
         //Check move level 2 -> level 3
-        assertTrue(player.canMove(adjacentPlayerList, cell10));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell10.getPosition())));
 
         //Upgrade the level of the Cell where worker is to level 3
         board.constructBlock(cellOccupied.getPosition());
@@ -122,13 +122,13 @@ public class PlayerTest {
         assertEquals(board.getCell(cellOccupied.getPosition()).getLevel(), 3);
 
         //Check move level 3 -> level 0
-        assertTrue(player.canMove(adjacentPlayerList, cell00));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell00.getPosition())));
         //Check move level 3 -> level 1
-        assertTrue(player.canMove(adjacentPlayerList, cell01));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell01.getPosition())));
         //Check move level 3 -> level 2
-        assertTrue(player.canMove(adjacentPlayerList, cell02));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell02.getPosition())));
         //Check move level 3 -> level 0 + occupation == PLAYER1
-        assertFalse(player.canMove(adjacentPlayerList, cell20));
+        assertFalse(player.canMove(adjacentPlayerList, board.getCell(cell20.getPosition())));
 
         //Check move on a not in adjacentCells cell
         Cell notAdj = new Cell(2,3);
@@ -181,7 +181,7 @@ public class PlayerTest {
         board.constructBlock(new Position(2,2));
         board.putWorker(new Position(2,2), PlayerIndex.PLAYER2);
 
-        adjacentCells = board.getAdjacentCells(cellOccupied.getPosition());
+        //adjacentCells = board.getAdjacentCells(cellOccupied.getPosition());
 
         adjacentPlayerList = board.getAdjacentPlayers(cellOccupied.getPosition());
 
@@ -197,11 +197,11 @@ public class PlayerTest {
         /* Test when cantGoUp is true! */
 
         //Check move level 0 -> level 0
-        assertTrue(player.canMove(adjacentPlayerList, cell00));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell00.getPosition())));
         //Check move level 0 -> level 1
-        assertFalse(player.canMove(adjacentPlayerList, cell01));
+        assertFalse(player.canMove(adjacentPlayerList, board.getCell(cell01.getPosition())));
         //Check move level 0 -> level 2
-        assertFalse(player.canMove(adjacentPlayerList, cell02));
+        assertFalse(player.canMove(adjacentPlayerList, board.getCell(cell02.getPosition())));
 
         //Upgrade the level of the Cell where worker is to level 1
         board.constructBlock(cellOccupied.getPosition());
@@ -209,9 +209,9 @@ public class PlayerTest {
         assertEquals(board.getCell(cellOccupied.getPosition()).getLevel(), 1);
 
         //Check move level 1 -> level 0
-        assertTrue(player.canMove(adjacentPlayerList, cell00));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell00.getPosition())));
         //Check move level 1 -> level 2
-        assertFalse(player.canMove(adjacentPlayerList, cell02));
+        assertFalse(player.canMove(adjacentPlayerList, board.getCell(cell02.getPosition())));
 
         //Upgrade the level of the Cell where worker is to level 2
         board.constructBlock(cellOccupied.getPosition());
@@ -219,13 +219,13 @@ public class PlayerTest {
         assertEquals(board.getCell(cellOccupied.getPosition()).getLevel(), 2);
 
         //Check move level 2 -> level 3 + occupation == DOME
-        assertFalse(player.canMove(adjacentPlayerList, cell12));
+        assertFalse(player.canMove(adjacentPlayerList, board.getCell(cell12.getPosition())));
         //Check move level 2 -> level 0
-        assertTrue(player.canMove(adjacentPlayerList, cell00));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell00.getPosition())));
         //Check move level 2 -> level 1
-        assertTrue(player.canMove(adjacentPlayerList, cell01));
+        assertTrue(player.canMove(adjacentPlayerList, board.getCell(cell01.getPosition())));
         //Check move level 2 -> level 3
-        assertFalse(player.canMove(adjacentPlayerList, cell10));
+        assertFalse(player.canMove(adjacentPlayerList, board.getCell(cell10.getPosition())));
     }
 
     @Test
@@ -273,15 +273,15 @@ public class PlayerTest {
          * */
 
         //Check build on level 0
-        assertTrue(player.canBuild(adjacentPlayerList, cell00));
+        assertTrue(player.canBuild(adjacentPlayerList, board.getCell(cell00.getPosition())));
         //Check build on level 3
-        assertTrue(player.canBuild(adjacentPlayerList, cell10));
+        assertTrue(player.canBuild(adjacentPlayerList, board.getCell(cell10.getPosition())));
         //Check build on level 3 + DOME
-        assertFalse(player.canBuild(adjacentPlayerList, cell12));
+        assertFalse(player.canBuild(adjacentPlayerList, board.getCell(cell12.getPosition())));
         //Check build on level 0 + PLAYER1
-        assertFalse(player.canBuild(adjacentPlayerList, cell20));
+        assertFalse(player.canBuild(adjacentPlayerList, board.getCell(cell20.getPosition())));
         //Check build on level 1 + PLAYER2
-        assertFalse(player.canBuild(adjacentPlayerList, cell21));
+        assertFalse(player.canBuild(adjacentPlayerList, board.getCell(cell21.getPosition())));
 
         //Check build on a not in adjacentCells cell
         Cell notAdj = new Cell(2,3);
@@ -301,7 +301,7 @@ public class PlayerTest {
         assertEquals(board.getCell(cellOccupied.getPosition()).getLevel(), 3);
 
         //Check build from level 3 to level 0
-        assertTrue(player.canBuild(adjacentPlayerList, cell00));
+        assertTrue(player.canBuild(adjacentPlayerList, board.getCell(cell00.getPosition())));
 
         //InvalidPositionException check:
         try{
