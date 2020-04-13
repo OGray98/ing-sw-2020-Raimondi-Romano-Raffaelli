@@ -56,7 +56,7 @@ public class Game {
      * Requires a not null Position where move the worker
      * Modifies currentPosition
      */
-    public boolean canMoveWorker(Position movePos) throws NullPointerException {
+    /*public boolean canMoveWorker(Position movePos) throws NullPointerException {
         if (movePos == null)
             throw new NullPointerException("movePos");
         currentPosition = currentPlayer.getCellOccupied().getPosition();
@@ -69,7 +69,7 @@ public class Game {
                 board.getAdjacentPlayers(currentPosition),
                 movePos
         );
-    }
+    }*/
 
     /* Method that move worker of currentPlayer in movePos, before change the worker position in board, then the cell in
      * currentPlayer

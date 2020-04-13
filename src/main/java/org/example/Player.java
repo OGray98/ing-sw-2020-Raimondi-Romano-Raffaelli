@@ -54,17 +54,26 @@ public class Player implements PlayerInterface{
     }
 
     @Override
-    public boolean canMove(List<Cell> adjacentCells, Map<Position,PlayerIndex> adjacentPlayerList, Position movePos) throws InvalidPositionException{
-        if(movePos.col > 4 || movePos.row > 4 || movePos.col < 0 || movePos.row < 0) throw new InvalidPositionException(movePos.row, movePos.col);
-        if(adjacentCells == null) throw new NullPointerException("adjacentCells is null!");
+    public boolean canMove(Map<Position,PlayerIndex> adjacentPlayerList, Cell moveCell) throws InvalidPositionException{
+        if(moveCell.getPosition().col > 4 || moveCell.getPosition().row > 4 || moveCell.getPosition().col < 0 || moveCell.getPosition().row < 0) throw new InvalidPositionException(moveCell.getPosition().row, moveCell.getPosition().col);
         if(adjacentPlayerList == null) throw new NullPointerException("adjacentPlayerList is null!");
 
         for(Position p : adjacentPlayerList.keySet()){
             //check if there is a player
-            if(p.equals(movePos)) return false;
+            if(p.equals(moveCell.getPosition())) return false;
         }
 
-        for(Cell cell : adjacentCells){
+        if(this.cellOccupied.getPosition().isAdjacent(moveCell.getPosition())){
+            //check if there is a dome
+            if(moveCell.hasDome()) return false;
+            //if cantGoUp is true, check if it is a level up move
+            if(this.cantGoUp){
+                if(moveCell.getLevel() > this.cellOccupied.getLevel()) return false;
+            }
+            return moveCell.getLevel() - this.cellOccupied.getLevel() <= 1;
+        }
+
+        /*for(Cell cell : adjacentCells){
             if(cell.getPosition().equals(movePos)){
                 //check if there is a dome
                 if(cell.hasDome()) return false;
@@ -74,7 +83,7 @@ public class Player implements PlayerInterface{
                 }
                 return cell.getLevel() - this.cellOccupied.getLevel() <= 1;
             }
-        }
+        }*/
         return false;
     }
 
@@ -122,12 +131,12 @@ public class Player implements PlayerInterface{
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
         return false;
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Position powerPosition){
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
         return null;
     }
 
