@@ -26,14 +26,14 @@ public class DemeterDecorator extends PlayerBuildDecorator {
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
-        return super.canBuild(adjacentPlayerList, powerCell) && !powerCell.equals(this.firstBuildCell);
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
+        return super.canBuild(adjacentPlayerList, adjacentList.get(0)) && !adjacentList.get(0).equals(this.firstBuildCell);
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
         super.setActivePower(false);
-        return new BoardChange(powerCell.getPosition(), BuildType.LEVEL);
+        return new BoardChange(adjacentList.get(0).getPosition(), BuildType.LEVEL);
     }
 
     @Override

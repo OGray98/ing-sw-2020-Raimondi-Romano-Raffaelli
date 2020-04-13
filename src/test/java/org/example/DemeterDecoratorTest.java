@@ -3,6 +3,9 @@ package org.example;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class DemeterDecoratorTest {
@@ -54,9 +57,15 @@ public class DemeterDecoratorTest {
         assertTrue(playerDemeter.canBuild(board.getAdjacentPlayers(workerPosition), new Cell(2,1)));
         assertTrue(playerDemeter.canBuild(board.getAdjacentPlayers(workerPosition), board.getCell(firstBuildingPosition)));
 
-        assertFalse(playerDemeter.canUsePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), board.getCell(sameAsFirst)));
-        assertFalse(playerDemeter.canUsePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), new Cell(2,4)));
-        assertTrue(playerDemeter.canUsePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), board.getCell(secondBuildPosition)));
+        List<Cell> power = new ArrayList<>();
+        power.add(board.getCell(sameAsFirst));
+        assertFalse(playerDemeter.canUsePower(power, board.getAdjacentPlayers(workerPosition)));
+        List<Cell> power2 = new ArrayList<>();
+        power2.add(new Cell(2,4));
+        assertFalse(playerDemeter.canUsePower(power2, board.getAdjacentPlayers(workerPosition)));
+        List<Cell> power3 = new ArrayList<>();
+        power3.add(board.getCell(secondBuildPosition));
+        assertTrue(playerDemeter.canUsePower(power3, board.getAdjacentPlayers(workerPosition)));
     }
 
     @Test
@@ -64,7 +73,9 @@ public class DemeterDecoratorTest {
         board.putWorker(workerPosition, PlayerIndex.PLAYER2);
         playerDemeter.setStartingWorkerSituation(board.getCell(workerPosition), false);
 
-        BoardChange powerResult = playerDemeter.usePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), board.getCell(secondBuildPosition));
+        List<Cell> power = new ArrayList<>();
+        power.add(board.getCell(secondBuildPosition));
+        BoardChange powerResult = playerDemeter.usePower(power, board.getAdjacentPlayers(workerPosition));
 
         try{
             powerResult.getCantGoUp();
@@ -74,7 +85,10 @@ public class DemeterDecoratorTest {
         }
 
         assertFalse(playerDemeter.getActivePower());
-        assertEquals(playerDemeter.usePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), board.getCell(secondBuildPosition)).getBuildType(), BuildType.LEVEL);
+
+        List<Cell> power2 = new ArrayList<>();
+        power2.add(board.getCell(secondBuildPosition));
+        assertEquals(playerDemeter.usePower(power2, board.getAdjacentPlayers(workerPosition), board.getCell(secondBuildPosition)).getBuildType(), BuildType.LEVEL);
         assertEquals(playerDemeter.usePower(board.getAdjacentCells(workerPosition), board.getAdjacentPlayers(workerPosition), board.getCell(secondBuildPosition)).getPositionBuild(), secondBuildPosition);
         try{
             powerResult.getChanges();
