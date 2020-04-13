@@ -40,6 +40,14 @@ public class AthenaDecoratorTest {
     }
 
     @Test
+    public void canBuildSetFalseActivePowerTest(){
+        board.putWorker(workerPos, PlayerIndex.PLAYER0);
+        playerAthena.setStartingWorkerSituation(board.getCell(workerPos), false);
+        playerAthena.canBuild(board.getAdjacentPlayers(workerPos),new Cell(3,4));
+        assertFalse(playerAthena.getActivePower());
+    }
+
+    @Test
     public void moveAthenaTest(){
         board.putWorker(workerPos, PlayerIndex.PLAYER0);
         playerAthena.setStartingWorkerSituation(board.getCell(workerPos), false);

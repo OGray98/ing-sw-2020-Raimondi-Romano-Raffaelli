@@ -36,6 +36,12 @@ public class AtlasDecoratorTest {
     }
 
     @Test
+    public void activePowerAfterBuilFalseTest(){
+        playerint.activePowerAfterBuild();
+        assertFalse(playerint.getActivePower());
+    }
+
+    @Test
     public void canBuildAtlasTest(){
         board.putWorker(workerPos, PlayerIndex.PLAYER1);
         playerint.setStartingWorkerSituation(board.getCell(workerPos), false);

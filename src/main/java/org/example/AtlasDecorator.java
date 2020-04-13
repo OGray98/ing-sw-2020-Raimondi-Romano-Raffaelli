@@ -25,6 +25,12 @@ public class AtlasDecorator extends PlayerBuildDecorator {
     }
 
     @Override
+    public void activePowerAfterBuild() {
+        super.setActivePower(false);
+        super.activePowerAfterBuild();
+    }
+
+    @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
         return super.canBuild(adjacentPlayerList, adjacentList.get(0));
     }

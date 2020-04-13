@@ -24,6 +24,12 @@ public class ArtemisDecorator extends PlayerMoveDecorator {
     }
 
     @Override
+    public boolean canBuild(Map<Position, PlayerIndex> adjacentPlayerList, Cell buildCell) throws InvalidPositionException, NullPointerException {
+        super.setActivePower(false);
+        return super.canBuild(adjacentPlayerList, buildCell);
+    }
+
+    @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
         return super.canMove(adjacentPlayerList, adjacentList.get(0)) && !adjacentList.get(0).equals(super.getOldCell());
     }

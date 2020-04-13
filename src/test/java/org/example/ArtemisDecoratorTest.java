@@ -39,6 +39,14 @@ public class ArtemisDecoratorTest {
         assertEquals(1,playerArtemis.getPowerListDimension());
     }
 
+    @Test
+    public void canBuildSetFalsePower(){
+        board.putWorker(workerPos, playerArtemis.getPlayerNum());
+        playerArtemis.setStartingWorkerSituation(board.getCell(workerPos), false);
+        playerArtemis.canBuild(board.getAdjacentPlayers(workerPos),new Cell(1,2));
+        assertFalse(playerArtemis.getActivePower());
+    }
+
 
     @Test
     public void canUsePowerArtemisTest(){
