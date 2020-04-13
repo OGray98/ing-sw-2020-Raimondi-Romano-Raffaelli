@@ -273,19 +273,19 @@ public class PlayerTest {
          * */
 
         //Check build on level 0
-        assertTrue(player.canBuild(adjacentCells, adjacentPlayerList, cell00.getPosition()));
+        assertTrue(player.canBuild(adjacentPlayerList, cell00));
         //Check build on level 3
-        assertTrue(player.canBuild(adjacentCells, adjacentPlayerList, cell10.getPosition()));
+        assertTrue(player.canBuild(adjacentPlayerList, cell10));
         //Check build on level 3 + DOME
-        assertFalse(player.canBuild(adjacentCells, adjacentPlayerList, cell12.getPosition()));
+        assertFalse(player.canBuild(adjacentPlayerList, cell12));
         //Check build on level 0 + PLAYER1
-        assertFalse(player.canBuild(adjacentCells, adjacentPlayerList, cell20.getPosition()));
+        assertFalse(player.canBuild(adjacentPlayerList, cell20));
         //Check build on level 1 + PLAYER2
-        assertFalse(player.canBuild(adjacentCells, adjacentPlayerList, cell21.getPosition()));
+        assertFalse(player.canBuild(adjacentPlayerList, cell21));
 
         //Check build on a not in adjacentCells cell
         Cell notAdj = new Cell(2,3);
-        assertFalse(player.canBuild(adjacentCells, adjacentPlayerList, notAdj.getPosition()));
+        assertFalse(player.canBuild(adjacentPlayerList, notAdj));
 
         //Upgrade the level of the Cell where worker is to level 1
         board.constructBlock(cellOccupied.getPosition());
@@ -301,26 +301,19 @@ public class PlayerTest {
         assertEquals(board.getCell(cellOccupied.getPosition()).getLevel(), 3);
 
         //Check build from level 3 to level 0
-        assertTrue(player.canBuild(adjacentCells, adjacentPlayerList, cell00.getPosition()));
+        assertTrue(player.canBuild(adjacentPlayerList, cell00));
 
         //InvalidPositionException check:
         try{
-            player.canBuild(adjacentCells, adjacentPlayerList, new Position(5,4));
+            player.canBuild(adjacentPlayerList, new Cell(5,4));
         }
         catch(InvalidPositionException e){
             assertEquals("You cannot have a position in : [" + 5 + "][" + 4 + "]", e.getMessage());
         }
 
-        //NullPointerException for adjacentCells check:
-        try{
-            player.canBuild(new ArrayList<Cell>(), adjacentPlayerList, new Position(3,2));
-        }
-        catch(NullPointerException e){
-            assertEquals("adjacentCells is null!", e.getMessage());
-        }
         //NullPointerException for adjacentPlayerList check:
         try{
-            player.canBuild(adjacentCells, new HashMap<Position,PlayerIndex>(), new Position(3,2));
+            player.canBuild(new HashMap<Position,PlayerIndex>(), new Cell(3,2));
         }
         catch(NullPointerException e){
             assertEquals("adjacentPlayerList is null!", e.getMessage());

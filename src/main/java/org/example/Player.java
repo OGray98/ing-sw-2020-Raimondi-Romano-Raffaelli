@@ -12,13 +12,11 @@ public class Player implements PlayerInterface{
     private boolean cantGoUp;
     private boolean activePower;
 
-
     public Player(String nickName, PlayerIndex playerNum){
         this.nickName = nickName;
         this.playerNum = playerNum;
         this.cantGoUp = false;
         this.activePower = false;
-
     }
 
     /*Set values of the situation after the first insert of a worker*/
@@ -115,12 +113,12 @@ public class Player implements PlayerInterface{
     }
 
     @Override
-    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
+    public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
         return false;
     }
 
     @Override
-    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList, Cell powerCell){
+    public BoardChange usePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
         return null;
     }
 
@@ -151,6 +149,11 @@ public class Player implements PlayerInterface{
     @Override
     public PlayerIndex getPlayerNum(){
         return this.playerNum;
+    }
+
+    @Override
+    public int getPowerListDimension(){
+        return 0;
     }
 
     @Override
