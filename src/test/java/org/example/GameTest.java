@@ -18,6 +18,7 @@ public class GameTest {
     private static Board board;
     private static Position firstPos;
     private static Map<PlayerIndex, CardInterface> playersCards;
+    private static Deck deck;
 
     @BeforeClass
     public static void init() {
@@ -30,6 +31,8 @@ public class GameTest {
         board = new Board();
         firstPos = new Position(1, 1);
         playersCards = new HashMap<>(3);
+        deck = new Deck(3);
+        board = new Board();
 /*
         playersCards.put(PlayerIndex.PLAYER0, game.)
         game.initGame();
@@ -38,6 +41,7 @@ public class GameTest {
 
     @Test
     public void isCorrectedConstructor() {
+
         try {
             Game.getInstance(players);
         } catch (AlreadyPresentGameException e) {
@@ -47,13 +51,63 @@ public class GameTest {
         assertSame(game, Game.getInstance());
     }
 
+    /*@Test
+    public void isCorrectedConstructorNull(){
+        try{
+            Game.getInstance(null);
+        }catch(NullPointerException e){
+            assertEquals("players",e.getMessage());
+        }
+    }*/
+
     @Test
     public void isPutWorkerCorrected() {
+
         try {
             game.putWorker(null);
         } catch (NullPointerException e) {
             assertEquals("putPosition", e.getMessage());
         }
     }
+
+    @Test
+    public void getCardsTest(){
+        assertEquals(9,game.getCards().size());
+        Map<String,String> decks = game.getCards();
+        for(String godName : decks.keySet()){
+            assertEquals(decks.get(godName),deck.getGodCard(godName).getGodDescription());
+        }
+    }
+
+    @Test
+    public void setChosenGodTest(){
+        try{
+            game.setGodsChosen(null);
+        }catch(NullPointerException e){
+            assertEquals("godNames",e.getMessage());
+        }
+    }
+
+    @Test
+    public void initGameTest(){
+        try{
+            game.initGame(null);
+        }catch (NullPointerException e){
+            assertEquals("playersCards",e.getMessage());
+        }
+
+    }
+
+    @Test
+    public void putWorkerTest(){
+        try{
+            game.putWorker(null);
+        }catch (NullPointerException e){
+            assertEquals("putPosition",e.getMessage());
+        }
+
+    }
+
+
 
 }

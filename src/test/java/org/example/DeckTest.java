@@ -52,9 +52,9 @@ public class DeckTest {
             deckEmpty.getGodCards().remove(i);
         }
         try{
-            deckEmpty.setChosenGodCards();
+            deckEmpty.setChosenGodCards(null);
         }catch(NullPointerException e){
-            assertEquals("Deck is empty",e.getMessage());
+            assertEquals("gods",e.getMessage());
         }
 
         deckTwoPlayers.playerGodLikeChoose(deckTwoPlayers.getGodCards().get(2));
