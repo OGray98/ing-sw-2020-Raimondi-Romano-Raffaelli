@@ -33,7 +33,7 @@ public class Game {
         currentPlayer = players.get(0);
         cantGoUp = false;
         contEffect = 0;
-        contCurrentWorker = 2;
+        contCurrentWorker = 0;
     }
 
     public static Game getInstance(List<PlayerInterface> players) {
@@ -96,8 +96,9 @@ public class Game {
      *
      */
     public void chooseFirstPlayer(PlayerIndex playerIndex) {
-        Collections.rotate(players, playerIndex.ordinal());
-        contCurrentPlayer = 2;
+        Collections.rotate(players, -playerIndex.ordinal());
+        contCurrentPlayer = 0;
+        currentPlayer = players.get(contCurrentPlayer);
     }
 
 
@@ -107,14 +108,13 @@ public class Game {
     public void putWorker(Position putPosition) throws NullPointerException {
         if (putPosition == null)
             throw new NullPointerException("putPosition");
+        board.putWorker(putPosition, currentPlayer.getPlayerNum());
+        currentPlayer.setStartingWorkerSituation(board.getCell(putPosition), false);
+        contCurrentWorker++;
         if (contCurrentWorker == 2) {
             contCurrentWorker = 0;
             updateCurrentPlayer();
         }
-        board.putWorker(putPosition, currentPlayer.getPlayerNum());
-        currentPlayer.setStartingWorkerSituation(board.getCell(putPosition), false);
-        contCurrentWorker++;
-
     }
 
 
@@ -122,18 +122,11 @@ public class Game {
      * Modify contCurrentPlayer, currentPlayer, contEffect and currentPosition.
      */
     public void startTurn() {
-        //updateCurrentPlayer();
-        currentPosition = currentPlayer.getCellOccupied().getPosition();
-        contEffect--;
-        if (contEffect <= 0) {
-            contEffect = 0;
-            cantGoUp = false;
+        if (contEffect > 0) {
+            contEffect--;
+            if (contEffect == 0)
+                cantGoUp = false;
         }
-    }
-
-    //Method called after WinPlayer to change te currentPlayer
-    public void endTurn(){
-        updateCurrentPlayer();
     }
 
     /* Method that do initial operation for player before call his method
@@ -158,7 +151,6 @@ public class Game {
     public boolean canMoveWorker(Position movePos) throws NullPointerException, NotPresentWorkerException {
         if (movePos == null)
             throw new NullPointerException("movePos");
-
 
         return currentPlayer.canMove(
                 board.getPlayersOccupations(new ArrayList<>(List.of(currentPosition))),
@@ -249,12 +241,17 @@ public class Game {
         }
     }
 
+    //Method called when finished turn to change the currentPlayer
+    public void endTurn() {
+        updateCurrentPlayer();
+    }
+
     public List<PlayerInterface> getPlayers() {
         return new ArrayList<>(players);
     }
 
     public Board getBoard() {
-        return /*new Board(*/this.board/*)*/; //TODO non funziona costruttore copia board
+        return new Board(this.board); //TODO non funziona costruttore copia board
     }
 
     /* Private method that return a List<Cell> which will be used in Player::canUsePower()

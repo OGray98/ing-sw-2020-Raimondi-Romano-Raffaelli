@@ -1,11 +1,9 @@
 package org.example;
 
-import com.sun.security.auth.NTUserPrincipal;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +34,7 @@ public class GameTest {
         players.add(new Player("Creed",PlayerIndex.PLAYER2));
         game = Game.getInstance(players);
         board = new Board();
+        /*
         firstPlayerFirstWorkerPos = new Position(1, 1);
         playersCards = new HashMap<>(3);
         board = new Board();
@@ -68,6 +67,7 @@ public class GameTest {
 */
     }
 
+    /*
     @Test
     public void isCorrectedConstructor() {
 
@@ -79,15 +79,6 @@ public class GameTest {
 
         assertSame(game, Game.getInstance());
     }
-
-    /*@Test
-    public void isCorrectedConstructorNull(){
-        try{
-            Game.getInstance(null);
-        }catch(NullPointerException e){
-            assertEquals("players",e.getMessage());
-        }
-    }*/
 
 
     @Test
@@ -147,8 +138,8 @@ public class GameTest {
 
     @Test
     public void setFirstPlayerTest(){
-        game.chooseFirstPlayer(PlayerIndex.PLAYER0);
-        assertEquals(PlayerIndex.PLAYER0,game.getPlayers().get(0).getPlayerNum());
+        game.chooseFirstPlayer(PlayerIndex.PLAYER1);
+        assertEquals(PlayerIndex.PLAYER1,game.getPlayers().get(0).getPlayerNum());
         // player0 -> player0
         // player1 -> player2
         // player2 -> player1
@@ -230,10 +221,7 @@ public class GameTest {
 
     @Test
     public void canUsePowerTest(){
-       /* game.setPlayerCard("Prometheus");
-        game.setPlayerCard("Pan");
-        game.setPlayerCard("Atlas");
-        game.putWorker(firstPos);*/
+
 
         System.out.println(game.getPlayers().get(0).getPlayerNum());
         try{
@@ -250,10 +238,6 @@ public class GameTest {
 
     @Test
     public void usePowerTest(){
-       /* game.setPlayerCard("Prometheus");
-        game.setPlayerCard("Pan");
-        game.setPlayerCard("Atlas");
-        game.putWorker(firstPos);*/
         try{
             game.usePowerWorker(null);
         }catch (NullPointerException e){
@@ -286,14 +270,80 @@ public class GameTest {
         game.moveWorker(towerLevel3);
         assertTrue(game.hasWonCurrentPlayer());
     }
-
+*/
 
 
     /*@Test
     public void startTurnTest(){
     }*/
 
+    @Test
+    public void totalTest() {
+        //god Like sceglie le carte
+        List<String> gods = new ArrayList<>(List.of("Pan", "Artemis", "Demeter"));
+        game.setGodsChosenByGodLike(gods);
+        assertTrue(game.getDeck().getGodCard("Pan").getBoolChosenGod());
+        assertTrue(game.getDeck().getGodCard("Artemis").getBoolChosenGod());
+        assertTrue(game.getDeck().getGodCard("Demeter").getBoolChosenGod());
 
+        for (int i = 0; i < gods.size(); i++) {
+            game.setPlayerCard(gods.get(i));
+            assertEquals(gods.get(i), game.getPlayers().get(i).getGodName());
+        }
+
+        game.chooseFirstPlayer(PlayerIndex.PLAYER2);
+        assertEquals(PlayerIndex.PLAYER2, game.getPlayers().get(0).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER0, game.getPlayers().get(1).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER1, game.getPlayers().get(2).getPlayerNum());
+
+        List<Position> pos = new ArrayList<>(List.of(
+                new Position(0, 0),
+                new Position(0, 3),
+                new Position(1, 1),
+                new Position(1, 3),
+                new Position(2, 0),
+                new Position(2, 4)
+        ));
+
+        for (Position p : pos)
+            game.putWorker(p);
+        for (int i = 0; i < pos.size(); i++)
+            assertEquals(game.getPlayers().get(i / 2).getPlayerNum(), game.getBoard().getOccupiedPlayer(pos.get(i)));
+
+        List<Position> posMosse = new ArrayList<>(List.of(
+                new Position(0, 1),
+                new Position(0, 0),
+                new Position(2, 1),
+                new Position(1, 1),
+                new Position(3, 0),
+                new Position(4, 1)
+        ));
+
+        int cont = 0;
+        while (cont < 3) {
+            game.startTurn();
+            game.setStartingWorker(pos.get(cont * 2));
+            game.canMoveWorker(posMosse.get(cont * 2));
+            game.moveWorker(posMosse.get(cont * 2));
+            assertEquals(game.getPlayers().get(cont).getPlayerNum(), game.getBoard().getOccupiedPlayer(posMosse.get(cont * 2)));
+            assertFalse(game.hasWonCurrentPlayer());
+            //Se sono artemide attivo il potere
+            if (cont == 1) {
+                Position powerPos = new Position(0, 2);
+                game.canUsePowerWorker(powerPos);
+                game.usePowerWorker(powerPos);
+                assertEquals(game.getPlayers().get(cont).getPlayerNum(), game.getBoard().getOccupiedPlayer(powerPos));
+            }
+            game.canBuild(posMosse.get(cont * 2 + 1));
+            game.build(posMosse.get(cont * 2 + 1));
+            assertEquals(1, game.getBoard().getCell(posMosse.get(cont * 2 + 1)).getLevel());
+            game.endTurn();
+            cont++;
+        }
+
+        game.startTurn();
+        game.setStartingWorker(posMosse.get(0));
+    }
 
 
 

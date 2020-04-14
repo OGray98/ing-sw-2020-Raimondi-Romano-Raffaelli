@@ -65,5 +65,7 @@ public interface PlayerInterface {
 
     int getPowerListDimension();
 
+    String getGodName();
+
     //public God getGodName();
 }

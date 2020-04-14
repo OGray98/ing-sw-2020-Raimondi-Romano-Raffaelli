@@ -30,7 +30,7 @@ public class Board {
         this.map = new Cell[NUM_ROW][NUM_COLUMNS];
         for (int i = 0; i < NUM_ROW; i++) {
             for (int j = 0; j < NUM_COLUMNS; j++)
-                this.map[i][j] = new Cell(that.getCell(new Position(i, j)));
+                this.map[i][j] = that.getCell(new Position(i, j));
         }
         //Entry of playerPosition are added when someone call putWorker
         this.playerPosition = new HashMap<>(capacityPlayerPosition);

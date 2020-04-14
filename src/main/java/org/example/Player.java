@@ -147,17 +147,22 @@ public class Player implements PlayerInterface{
     }
 
     @Override
-    public PlayerIndex getPlayerNum(){
+    public PlayerIndex getPlayerNum() {
         return this.playerNum;
     }
 
     @Override
-    public int getPowerListDimension(){
+    public int getPowerListDimension() {
         return 0;
     }
 
     @Override
-    public String toString(){
+    public String getGodName() {
+        return null;
+    }
+
+    @Override
+    public String toString() {
         return "Player nickname: "
                 + this.nickName;
     }
