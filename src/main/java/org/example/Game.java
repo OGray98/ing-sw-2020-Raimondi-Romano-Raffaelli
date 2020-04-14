@@ -139,6 +139,10 @@ public class Game {
         if (board.getOccupiedPlayer(startPos).compareTo(currentPlayer.getPlayerNum()) != 0)
             throw new NotPresentWorkerException(startPos.row, startPos.col, currentPlayer.getPlayerNum());
         currentPosition = startPos;
+        currentPlayer.setStartingWorkerSituation(
+                board.getCell(currentPosition),
+                cantGoUp
+        );
     }
 
 
@@ -150,10 +154,7 @@ public class Game {
         if (movePos == null)
             throw new NullPointerException("movePos");
 
-        currentPlayer.setStartingWorkerSituation(
-                board.getCell(currentPosition),
-                cantGoUp
-        );
+
         return currentPlayer.canMove(
                 board.getPlayersOccupations(new ArrayList<>(List.of(currentPosition))),
                 board.getCell(movePos)
