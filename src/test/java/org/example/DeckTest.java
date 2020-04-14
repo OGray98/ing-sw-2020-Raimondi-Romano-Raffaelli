@@ -76,13 +76,13 @@ public class DeckTest {
         }
 
         List<String> threeGods = new ArrayList<>(3);
-        threeGods.add("Apollo");
+        threeGods.add("Demeter");
         threeGods.add("Artemis");
-        threeGods.add("Athena");
+        threeGods.add("Pan");
         deckThreePlayers.setChosenGodCards(threeGods);
-        assertTrue(deckThreePlayers.getGodCard("Apollo").getBoolChosenGod());
+        assertTrue(deckThreePlayers.getGodCard("Demeter").getBoolChosenGod());
         assertTrue(deckThreePlayers.getGodCard("Artemis").getBoolChosenGod());
-        assertTrue(deckThreePlayers.getGodCard("Athena").getBoolChosenGod());
+        assertTrue(deckThreePlayers.getGodCard("Pan").getBoolChosenGod());
 
     }
 

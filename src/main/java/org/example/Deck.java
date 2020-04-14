@@ -37,17 +37,18 @@ public class Deck {
         if (gods.size() != playersNumber)
             throw new InvalidNumberCardsChosenException(playersNumber, gods.size());
 
-        boolean thereIs = false;
+
 
         for (String name : gods) {
-            for (int i = 0; i < gods.size(); i++) {
-                if (godCards.get(i).getGodName().equals(name)) {
-                    godCards.get(i).setChosenGod(true);
+            boolean thereIs = false;
+            for (CardInterface god : godCards) {
+                if (name.equals(god.getGodName())){
+                    god.setChosenGod(true);
                     thereIs = true;
                 }
-                if (!thereIs)
-                    throw new WrongGodNameException(name);
             }
+            if (!thereIs)
+                throw new WrongGodNameException(name);
         }
     }
 

@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Game {
 
@@ -13,8 +14,10 @@ public class Game {
     private PlayerInterface currentPlayer;
     private Position currentPosition;
     private int contCurrentPlayer;
+    private boolean cantGoUp;
+    private int contEffect;
+    private int contCurrentWorker;
 
-    //TODO aggiungere robe per atena
 
     private Game(List<PlayerInterface> players) throws NullPointerException {
         if (players == null)
@@ -28,6 +31,9 @@ public class Game {
         numPlayer = players.size();
         contCurrentPlayer = 0;
         currentPlayer = players.get(0);
+        cantGoUp = false;
+        contEffect = 0;
+        contCurrentWorker = 2;
     }
 
     public static Game getInstance(List<PlayerInterface> players) {
@@ -46,11 +52,13 @@ public class Game {
     /* Method that return a map with of all cards in deck
      */
     public Map<String, String> getCards() {
-        Map<String, String> cards = new HashMap<>(Deck.size);
-        for (CardInterface card : deck.getGodCards()) {
-            cards.put(card.getGodName(), card.getGodDescription());
-        }
-        return cards;
+        return deck.getGodCards().stream()
+                .collect(Collectors.toMap(
+                        CardInterface::getGodName,
+                        CardInterface::getGodDescription,
+                        (a, b) -> b,
+                        HashMap::new
+                ));
     }
 
     /* Method that set the chosen cards in deck.
@@ -99,8 +107,14 @@ public class Game {
     public void putWorker(Position putPosition) throws NullPointerException {
         if (putPosition == null)
             throw new NullPointerException("putPosition");
+        if (contCurrentWorker == 2) {
+            contCurrentWorker = 0;
+            updateCurrentPlayer();
+        }
         board.putWorker(putPosition, currentPlayer.getPlayerNum());
         currentPlayer.setStartingWorkerSituation(board.getCell(putPosition), false);
+        contCurrentWorker++;
+
     }
 
 
@@ -108,8 +122,32 @@ public class Game {
      * Modify contCurrentPlayer, currentPlayer, contEffect and currentPosition.
      */
     public void startTurn() {
-        updateCurrentPlayer();
+        //updateCurrentPlayer();
         currentPosition = currentPlayer.getCellOccupied().getPosition();
+        contEffect--;
+        if (contEffect <= 0) {
+            contEffect = 0;
+            cantGoUp = false;
+        }
+    }
+
+    //Method called after WinPlayer to change te currentPlayer
+    public void endTurn(){
+        updateCurrentPlayer();
+    }
+
+    /* Method that do initial operation for player before call his method
+     */
+    public void setStartingWorker(Position startPos) throws NullPointerException, NotPresentWorkerException {
+        if (startPos == null)
+            throw new NullPointerException("startPos");
+        if (board.getOccupiedPlayer(startPos).compareTo(currentPlayer.getPlayerNum()) != 0)
+            throw new NotPresentWorkerException(startPos.row, startPos.col, currentPlayer.getPlayerNum());
+        currentPosition = startPos;
+        currentPlayer.setStartingWorkerSituation( // setWorkerSituation
+                board.getCell(currentPosition),
+                cantGoUp
+        );
     }
 
 
@@ -117,14 +155,11 @@ public class Game {
      * Requires a not null Position where move the worker
      * Modifies currentPosition
      */
-    public boolean canMoveWorker(Position movePos) throws NullPointerException {
+    public boolean canMoveWorker(Position movePos) throws NullPointerException, NotPresentWorkerException {
         if (movePos == null)
             throw new NullPointerException("movePos");
-        currentPosition = currentPlayer.getCellOccupied().getPosition();
-        currentPlayer.setStartingWorkerSituation(
-                board.getCell(currentPosition),
-                board.isCantGoUp()
-        );
+
+
         return currentPlayer.canMove(
                 board.getPlayersOccupations(new ArrayList<>(List.of(currentPosition))),
                 board.getCell(movePos)
@@ -140,6 +175,7 @@ public class Game {
     public void moveWorker(Position movePos) throws NullPointerException {
         if (movePos == null)
             throw new NullPointerException("movePos");
+        //currentPosition = currentPlayer.getCellOccupied().getPosition();//TODO guarda la modifica
         board.changeWorkerPosition(currentPosition, movePos);
         currentPlayer.move(board.getCell(movePos));
         currentPosition = movePos;
@@ -151,6 +187,7 @@ public class Game {
     public boolean canBuild(Position buildPos) throws NullPointerException {
         if (buildPos == null)
             throw new NullPointerException("buildPos");
+        //currentPosition = currentPlayer.getCellOccupied().getPosition(); //TODO guarda la modifica
         return currentPlayer.canBuild(
                 board.getPlayersOccupations(new ArrayList<>(List.of(currentPosition))),
                 board.getCell(buildPos)
@@ -206,6 +243,10 @@ public class Game {
                     currentPosition = entry.getKey().getOccupiedPosition();
             }
         }
+        if (!changes.isCantGoUpNull()) {
+            cantGoUp = changes.getCantGoUp();
+            contEffect = numPlayer - 1;
+        }
     }
 
     public List<PlayerInterface> getPlayers() {
@@ -213,7 +254,7 @@ public class Game {
     }
 
     public Board getBoard() {
-        return new Board(board);
+        return /*new Board(*/this.board/*)*/; //TODO non funziona costruttore copia board
     }
 
     /* Private method that return a List<Cell> which will be used in Player::canUsePower()
@@ -264,5 +305,9 @@ public class Game {
     private void updateCurrentPlayer() {
         contCurrentPlayer = (contCurrentPlayer + 1) % 3;
         currentPlayer = players.get(contCurrentPlayer);
+    }
+
+    public Deck getDeck() {
+        return this.deck;
     }
 }
