@@ -131,20 +131,25 @@ public class Game {
         }
     }
 
+    /* Method that do initial operation for player before call his method
+     */
+    public void setStartingWorker(Position startPos) throws NullPointerException, NotPresentWorkerException {
+        if (startPos == null)
+            throw new NullPointerException("startPos");
+        if (board.getOccupiedPlayer(startPos).compareTo(currentPlayer.getPlayerNum()) != 0)
+            throw new NotPresentWorkerException(startPos.row, startPos.col, currentPlayer.getPlayerNum());
+        currentPosition = startPos;
+    }
+
 
     /* Method that check if a worker of currentPlayer can move in movePos
      * Requires a not null Position where move the worker
      * Modifies currentPosition
      */
-    public boolean canMoveWorker(Position startPos, Position movePos) throws NullPointerException, NotPresentWorkerException {
+    public boolean canMoveWorker(Position movePos) throws NullPointerException, NotPresentWorkerException {
         if (movePos == null)
             throw new NullPointerException("movePos");
-        if (startPos == null)
-            throw new NullPointerException("startPos");
-        if (board.getOccupiedPlayer(startPos).compareTo(currentPlayer.getPlayerNum()) != 0)
-            throw new NotPresentWorkerException(startPos.row, startPos.col, currentPlayer.getPlayerNum());
 
-        currentPosition = startPos;
         currentPlayer.setStartingWorkerSituation(
                 board.getCell(currentPosition),
                 cantGoUp
