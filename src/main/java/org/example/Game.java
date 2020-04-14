@@ -16,8 +16,9 @@ public class Game {
     private int contCurrentPlayer;
     private boolean cantGoUp;
     private int contEffect;
+    private int contCurrentWorker;
 
-    
+
     private Game(List<PlayerInterface> players) throws NullPointerException {
         if (players == null)
             throw new NullPointerException("players");
@@ -32,6 +33,7 @@ public class Game {
         currentPlayer = players.get(0);
         cantGoUp = false;
         contEffect = 0;
+        contCurrentWorker = 0;
     }
 
     public static Game getInstance(List<PlayerInterface> players) {
@@ -107,6 +109,11 @@ public class Game {
             throw new NullPointerException("putPosition");
         board.putWorker(putPosition, currentPlayer.getPlayerNum());
         currentPlayer.setStartingWorkerSituation(board.getCell(putPosition), false);
+        contCurrentWorker++;
+        if (contCurrentWorker == 2) {
+            contCurrentWorker = 0;
+            updateCurrentPlayer();
+        }
     }
 
 
