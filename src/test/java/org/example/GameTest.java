@@ -78,7 +78,7 @@ public class GameTest {
             assertEquals(decks.get(godName),deck.getGodCard(godName).getGodDescription());
         }
     }
-
+/*
     @Test
     public void setChosenGodTest(){
         try{
@@ -100,6 +100,6 @@ public class GameTest {
 
     }
 
-
+*/
 
 }

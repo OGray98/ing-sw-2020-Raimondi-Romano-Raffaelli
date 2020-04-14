@@ -12,7 +12,6 @@ public class Board {
     private static final int capacityPlayerPosition = 3;
     private Cell[][] map;
     private Map<PlayerIndex, List<Position>> playerPosition;
-    private boolean cantGoUp;
 
 
     public Board() {
@@ -23,7 +22,6 @@ public class Board {
         }
         //Entry of playerPosition are added when someone call putWorker
         this.playerPosition = new HashMap<>(capacityPlayerPosition);
-        cantGoUp = false;
     }
 
     public Board(Board that) throws NullPointerException {
@@ -39,7 +37,6 @@ public class Board {
         this.playerPosition.put(PlayerIndex.PLAYER0, new ArrayList<>(that.playerPosition.get(PlayerIndex.PLAYER0)));
         this.playerPosition.put(PlayerIndex.PLAYER1, new ArrayList<>(that.playerPosition.get(PlayerIndex.PLAYER1)));
         this.playerPosition.put(PlayerIndex.PLAYER2, new ArrayList<>(that.playerPosition.get(PlayerIndex.PLAYER2)));
-        cantGoUp = false;
     }
 
     /*Returns true if the cell in Position cellPosition is empty
@@ -51,10 +48,7 @@ public class Board {
         if (map[cellPosition.row][cellPosition.col].hasDome())
             return false;
 
-        for (List<Position> positions : playerPosition.values())
-            if (positions.contains(cellPosition))
-                return false;
-        return true;
+        return playerPosition.values().stream().noneMatch(positions -> positions.contains(cellPosition));
     }
 
     /*Given the Position centralPosition returns a List<Cell> that contains all the cells adjacent to centralPosition
@@ -208,8 +202,6 @@ public class Board {
     public void updateAfterPower(BoardChange boardChange) throws NullPointerException {
         if (boardChange == null)
             throw new NullPointerException("boardChange");
-        if (!boardChange.isCantGoUpNull())
-            this.cantGoUp = boardChange.getCantGoUp();
         if (!boardChange.isPlayerChangesNull())
             updateAfterPowerMove(boardChange.getChanges());
         if (!boardChange.isPositionBuildNull())
@@ -256,10 +248,6 @@ public class Board {
                 throw new InvalidBuildDomeException(positionBuild.row, positionBuild.col);
             map[positionBuild.row][positionBuild.col].setHasDome(true);
         }
-    }
-
-    public boolean isCantGoUp() {
-        return cantGoUp;
     }
 
 }
