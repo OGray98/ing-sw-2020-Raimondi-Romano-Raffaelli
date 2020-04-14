@@ -136,10 +136,15 @@ public class Game {
      * Requires a not null Position where move the worker
      * Modifies currentPosition
      */
-    public boolean canMoveWorker(Position movePos) throws NullPointerException {
+    public boolean canMoveWorker(Position startPos, Position movePos) throws NullPointerException, NotPresentWorkerException {
         if (movePos == null)
             throw new NullPointerException("movePos");
-        currentPosition = currentPlayer.getCellOccupied().getPosition();
+        if (startPos == null)
+            throw new NullPointerException("startPos");
+        if (board.getOccupiedPlayer(startPos).compareTo(currentPlayer.getPlayerNum()) != 0)
+            throw new NotPresentWorkerException(startPos.row, startPos.col, currentPlayer.getPlayerNum());
+
+        currentPosition = startPos;
         currentPlayer.setStartingWorkerSituation(
                 board.getCell(currentPosition),
                 cantGoUp
@@ -159,6 +164,7 @@ public class Game {
     public void moveWorker(Position movePos) throws NullPointerException {
         if (movePos == null)
             throw new NullPointerException("movePos");
+        //currentPosition = currentPlayer.getCellOccupied().getPosition();//TODO guarda la modifica
         board.changeWorkerPosition(currentPosition, movePos);
         currentPlayer.move(board.getCell(movePos));
         currentPosition = movePos;
@@ -170,6 +176,7 @@ public class Game {
     public boolean canBuild(Position buildPos) throws NullPointerException {
         if (buildPos == null)
             throw new NullPointerException("buildPos");
+        //currentPosition = currentPlayer.getCellOccupied().getPosition(); //TODO guarda la modifica
         return currentPlayer.canBuild(
                 board.getPlayersOccupations(new ArrayList<>(List.of(currentPosition))),
                 board.getCell(buildPos)
@@ -236,7 +243,7 @@ public class Game {
     }
 
     public Board getBoard() {
-        return new Board(board);
+        return /*new Board(*/this.board/*)*/; //TODO non funziona costruttore copia board
     }
 
     /* Private method that return a List<Cell> which will be used in Player::canUsePower()
@@ -287,5 +294,9 @@ public class Game {
     private void updateCurrentPlayer() {
         contCurrentPlayer = (contCurrentPlayer + 1) % 3;
         currentPlayer = players.get(contCurrentPlayer);
+    }
+
+    public Deck getDeck() {
+        return this.deck;
     }
 }
