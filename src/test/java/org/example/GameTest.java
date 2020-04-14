@@ -320,6 +320,7 @@ public class GameTest {
         ));
 
         Position powerPos = new Position(0, 2);
+        Position powerPos2 = new Position(2, 2);
 
         int cont = 0;
         while (cont < 3) {
@@ -339,6 +340,12 @@ public class GameTest {
             game.canBuild(posMosse.get(cont * 2 + 1));
             game.build(posMosse.get(cont * 2 + 1));
             assertEquals(1, game.getBoard().getCell(posMosse.get(cont * 2 + 1)).getLevel());
+            if (game.getPlayers().get(cont).getGodName().equals("Demeter")) {
+
+                game.canUsePowerWorker(powerPos2);
+                game.usePowerWorker(powerPos2);
+                assertEquals(1, game.getBoard().getCell(powerPos2).getLevel());
+            }
             game.endTurn();
             cont++;
         }
