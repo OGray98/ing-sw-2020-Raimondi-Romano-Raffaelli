@@ -282,8 +282,8 @@ public class GameTest {
         //god Like sceglie le carte
         List<String> gods = new ArrayList<>(List.of("Pan", "Artemis", "Demeter"));
         game.setGodsChosenByGodLike(gods);
-        assertTrue(game.getDeck().getGodCard("Pan").getBoolChosenGod());
         assertTrue(game.getDeck().getGodCard("Artemis").getBoolChosenGod());
+        assertTrue(game.getDeck().getGodCard("Pan").getBoolChosenGod());
         assertTrue(game.getDeck().getGodCard("Demeter").getBoolChosenGod());
 
         for (int i = 0; i < gods.size(); i++) {
@@ -291,10 +291,10 @@ public class GameTest {
             assertEquals(gods.get(i), game.getPlayers().get(i).getGodName());
         }
 
-        game.chooseFirstPlayer(PlayerIndex.PLAYER2);
-        assertEquals(PlayerIndex.PLAYER2, game.getPlayers().get(0).getPlayerNum());
-        assertEquals(PlayerIndex.PLAYER0, game.getPlayers().get(1).getPlayerNum());
-        assertEquals(PlayerIndex.PLAYER1, game.getPlayers().get(2).getPlayerNum());
+        game.chooseFirstPlayer(PlayerIndex.PLAYER1);
+        assertEquals(PlayerIndex.PLAYER1, game.getPlayers().get(0).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER2, game.getPlayers().get(1).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER0, game.getPlayers().get(2).getPlayerNum());
 
         List<Position> pos = new ArrayList<>(List.of(
                 new Position(0, 0),
@@ -319,6 +319,8 @@ public class GameTest {
                 new Position(4, 1)
         ));
 
+        Position powerPos = new Position(0, 2);
+
         int cont = 0;
         while (cont < 3) {
             game.startTurn();
@@ -328,8 +330,8 @@ public class GameTest {
             assertEquals(game.getPlayers().get(cont).getPlayerNum(), game.getBoard().getOccupiedPlayer(posMosse.get(cont * 2)));
             assertFalse(game.hasWonCurrentPlayer());
             //Se sono artemide attivo il potere
-            if (cont == 1) {
-                Position powerPos = new Position(0, 2);
+            if (game.getPlayers().get(cont).getGodName().equals("Artemis")) {
+
                 game.canUsePowerWorker(powerPos);
                 game.usePowerWorker(powerPos);
                 assertEquals(game.getPlayers().get(cont).getPlayerNum(), game.getBoard().getOccupiedPlayer(powerPos));
@@ -342,7 +344,7 @@ public class GameTest {
         }
 
         game.startTurn();
-        game.setStartingWorker(posMosse.get(0));
+        game.setStartingWorker(powerPos);
     }
 
 

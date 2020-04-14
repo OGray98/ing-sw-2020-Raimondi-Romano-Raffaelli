@@ -210,12 +210,10 @@ public class Game {
         if (powerPos == null)
             throw new NullPointerException("powerPos");
 
-        boolean res = currentPlayer.canUsePower(
+        return currentPlayer.canUsePower(
                 getPowerCellList(powerPos),
                 getPowerPlayerOccupations(powerPos)
         );
-        currentPosition = currentPlayer.getCellOccupied().getPosition();
-        return res;
     }
 
     /* Method that use currentPlayer power and update the board.
