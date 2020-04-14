@@ -16,9 +16,6 @@ public class BoardTest {
     private static Position zeroPosition;
     private static Position opponentAdjacentWorkerPosition;
     private static Board board;
-    private static Map<PositionContainer, PlayerIndex> playerPosition;
-
-
 
 
     @Before
@@ -261,8 +258,6 @@ public class BoardTest {
 
         boardChange = new BoardChange(true);
         board.updateAfterPower(boardChange);
-
-        assertTrue(board.isCantGoUp());
 
         assertFalse(boardChange.isCantGoUpNull());
         assertTrue(boardChange.isPlayerChangesNull());
