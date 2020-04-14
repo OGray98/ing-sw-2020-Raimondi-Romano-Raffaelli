@@ -33,7 +33,7 @@ public class Game {
         currentPlayer = players.get(0);
         cantGoUp = false;
         contEffect = 0;
-        contCurrentWorker = 0;
+        contCurrentWorker = 2;
     }
 
     public static Game getInstance(List<PlayerInterface> players) {
@@ -107,13 +107,14 @@ public class Game {
     public void putWorker(Position putPosition) throws NullPointerException {
         if (putPosition == null)
             throw new NullPointerException("putPosition");
-        board.putWorker(putPosition, currentPlayer.getPlayerNum());
-        currentPlayer.setStartingWorkerSituation(board.getCell(putPosition), false);
-        contCurrentWorker++;
         if (contCurrentWorker == 2) {
             contCurrentWorker = 0;
             updateCurrentPlayer();
         }
+        board.putWorker(putPosition, currentPlayer.getPlayerNum());
+        currentPlayer.setStartingWorkerSituation(board.getCell(putPosition), false);
+        contCurrentWorker++;
+
     }
 
 
