@@ -14,9 +14,10 @@ public class Game {
     private PlayerInterface currentPlayer;
     private Position currentPosition;
     private int contCurrentPlayer;
+    private boolean cantGoUp;
+    private int contEffect;
 
-    //TODO aggiungere robe per atena
-
+    
     private Game(List<PlayerInterface> players) throws NullPointerException {
         if (players == null)
             throw new NullPointerException("players");
@@ -29,6 +30,8 @@ public class Game {
         numPlayer = players.size();
         contCurrentPlayer = 0;
         currentPlayer = players.get(0);
+        cantGoUp = false;
+        contEffect = 0;
     }
 
     public static Game getInstance(List<PlayerInterface> players) {
@@ -113,6 +116,11 @@ public class Game {
     public void startTurn() {
         updateCurrentPlayer();
         currentPosition = currentPlayer.getCellOccupied().getPosition();
+        contEffect--;
+        if (contEffect <= 0) {
+            contEffect = 0;
+            cantGoUp = false;
+        }
     }
 
 
@@ -126,7 +134,7 @@ public class Game {
         currentPosition = currentPlayer.getCellOccupied().getPosition();
         currentPlayer.setStartingWorkerSituation(
                 board.getCell(currentPosition),
-                board.isCantGoUp()
+                cantGoUp
         );
         return currentPlayer.canMove(
                 board.getPlayersOccupations(new ArrayList<>(List.of(currentPosition))),
@@ -208,6 +216,10 @@ public class Game {
                 if (entry.getValue().compareTo(currentPlayer.getPlayerNum()) == 0)
                     currentPosition = entry.getKey().getOccupiedPosition();
             }
+        }
+        if (!changes.isCantGoUpNull()) {
+            cantGoUp = changes.getCantGoUp();
+            contEffect = numPlayer - 1;
         }
     }
 
