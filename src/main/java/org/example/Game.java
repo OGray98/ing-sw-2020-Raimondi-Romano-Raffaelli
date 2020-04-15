@@ -153,7 +153,7 @@ public class Game {
             throw new NullPointerException("movePos");
 
         return currentPlayer.canMove(
-                board.getPlayersOccupations(new ArrayList<>(List.of(currentPosition))),
+                board.getPlayersOccupations(new ArrayList<>(List.of(movePos))),
                 board.getCell(movePos)
         );
     }
@@ -181,7 +181,7 @@ public class Game {
             throw new NullPointerException("buildPos");
         //currentPosition = currentPlayer.getCellOccupied().getPosition(); //TODO guarda la modifica
         return currentPlayer.canBuild(
-                board.getPlayersOccupations(new ArrayList<>(List.of(currentPosition))),
+                board.getPlayersOccupations(new ArrayList<>(List.of(buildPos))),
                 board.getCell(buildPos)
         );
     }
@@ -210,12 +210,10 @@ public class Game {
         if (powerPos == null)
             throw new NullPointerException("powerPos");
 
-        boolean res = currentPlayer.canUsePower(
+        return currentPlayer.canUsePower(
                 getPowerCellList(powerPos),
                 getPowerPlayerOccupations(powerPos)
         );
-        currentPosition = currentPlayer.getCellOccupied().getPosition();
-        return res;
     }
 
     /* Method that use currentPlayer power and update the board.
@@ -237,7 +235,7 @@ public class Game {
         }
         if (!changes.isCantGoUpNull()) {
             cantGoUp = changes.getCantGoUp();
-            contEffect = numPlayer - 1;
+            contEffect = numPlayer;
         }
     }
 

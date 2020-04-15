@@ -35,11 +35,7 @@ public class HephaestusDecoratorTest {
         assertTrue(cardHephaestus.getBoolChosenGod());
     }
 
-    @Test
-    public void activePowerAfterBuildTest(){
-        playerHephaestus.activePowerAfterBuild();
-        assertTrue(playerHephaestus.getActivePower());
-    }
+
 
     @Test
     public void canUsePowerTest(){
@@ -60,9 +56,25 @@ public class HephaestusDecoratorTest {
 
     @Test
     public void usePowerTest(){
+        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
+        playerHephaestus.setStartingWorkerSituation(board.getCell(workerPosition),false);
+        assertTrue(playerHephaestus.canBuild(board.getAdjacentPlayers(workerPosition),board.getCell(buildPosition)));
+        board.constructBlock(buildPosition);
+        assertEquals(1,board.getCell(buildPosition).getLevel());
+        List<Cell> power = new ArrayList<>();
+        power.add(board.getCell(buildPosition));
+        playerHephaestus.activePowerAfterBuild();
+        assertTrue(playerHephaestus.getActivePower());
+        assertTrue(playerHephaestus.canUsePower(power,board.getAdjacentPlayers(workerPosition)));
         boardChange = playerHephaestus.usePower(board.getCell(buildPosition));
+        board.updateAfterPower(boardChange);
         assertFalse(playerHephaestus.getActivePower());
         assertEquals(BuildType.LEVEL,boardChange.getBuildType());
+        assertEquals(2,board.getCell(buildPosition).getLevel());
+        playerHephaestus.move(new Cell(1,0));
+        board.changeWorkerPosition(workerPosition,new Cell(1,0).getPosition());// only to verify if after player.hasWin activePower is set false
+        playerHephaestus.hasWin();
+        assertFalse(playerHephaestus.getActivePower());
 
     }
 
@@ -71,15 +83,6 @@ public class HephaestusDecoratorTest {
         assertEquals(1,playerHephaestus.getPowerListDimension());
     }
 
-    @Test
-    public void notUsedPowerTest(){
-        board.putWorker(workerPosition, PlayerIndex.PLAYER0);
-        playerHephaestus.setWorkerSituation(board.getCell(otherPosition), board.getCell(workerPosition), false);
-        playerHephaestus.activePowerAfterBuild();
-        assertTrue(playerHephaestus.getActivePower());
 
-        playerHephaestus.hasWin();
-        assertFalse(playerHephaestus.getActivePower());
-    }
 
 }

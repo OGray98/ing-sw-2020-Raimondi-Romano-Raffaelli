@@ -18,6 +18,12 @@ public class PrometheusDecorator extends PlayerYourTurnDecorator {
     }
 
     @Override
+    public void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp) {
+        super.setActivePower(true);
+        super.setStartingWorkerSituation(cellOccupied, cantGoUp);
+    }
+
+    @Override
     public void setWorkerSituation(Cell oldCell, Cell cellOccupied, boolean cantGoUp){
         super.setActivePower(true);
         super.setWorkerSituation(oldCell, cellOccupied, cantGoUp);

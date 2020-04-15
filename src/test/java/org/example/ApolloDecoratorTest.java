@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -28,7 +29,7 @@ public class ApolloDecoratorTest {
     public void init(){
         cardApollo = new ApolloDecorator();
         board = new Board();
-        playerApollo = cardApollo.setPlayer(new Player("jack",PlayerIndex.PLAYER0));
+        playerApollo = cardApollo.setPlayer(new Player("jack", PlayerIndex.PLAYER0));
         playerOpponent = new Player("Rocky",PlayerIndex.PLAYER1);
         workerPosition = new Position(1,1);
         workerOpponentPosition = new Position(1,2);
