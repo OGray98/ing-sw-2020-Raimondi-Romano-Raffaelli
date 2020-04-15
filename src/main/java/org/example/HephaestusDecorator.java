@@ -31,6 +31,7 @@ public class HephaestusDecorator extends PlayerBuildDecorator {
 
     @Override
     public void activePowerAfterBuild() {
+        this.buildCell.incrementLevel();
         super.setActivePower(true);
     }
 
