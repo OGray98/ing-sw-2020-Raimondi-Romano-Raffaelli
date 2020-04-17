@@ -1,9 +1,18 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.deck.God;
 
 // Decorator that decorate the special power of Atlas
 public class AtlasDecorator extends PlayerBuildDecorator {
+
+    private God godName;
+    private String godDescription;
+
+    public AtlasDecorator(){
+        this.godName = God.ATLAS;
+        this.godDescription = God.ATLAS.GetGodDescription();
+    }
 
     protected AtlasDecorator(PlayerInterface player){ super(player);}
 
@@ -28,6 +37,14 @@ public class AtlasDecorator extends PlayerBuildDecorator {
         player.getBoard().UpdateBoardBuildDome(pos);
     }
 
+    @Override
+    public God getGodName() {
+        return this.godName;
+    }
 
+    @Override
+    public String getGodDescription(){
+        return this.godDescription;
+    }
 }
 

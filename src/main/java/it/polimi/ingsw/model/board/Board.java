@@ -119,4 +119,22 @@ public class Board {
             throw new InvalidIncrementLevelException(position.row, position.col);
         this.map[position.row][position.col].setOccupation(CellOccupation.DOME);
     }
+
+    public void UpdateBoardSwapPlayer(Position startPosition,Position endPosition) throws NullPointerException, InvalidPositionException, InvalidIndexPlayerException{
+        if(startPosition == null || endPosition == null)
+            throw new NullPointerException("position");
+        if(startPosition.isIllegal())
+            throw new InvalidPositionException(startPosition.row,startPosition.col);
+        if(endPosition.isIllegal())
+            throw new InvalidPositionException(endPosition.row,endPosition.col);
+        if(this.map[startPosition.row][startPosition.col].getOccupation() == this.map[endPosition.row][endPosition.col].getOccupation())
+            throw new InvalidIndexPlayerException(1); //creane una nuova
+        if(this.map[startPosition.row][startPosition.col].getOccupation() == CellOccupation.DOME || this.map[startPosition.row][startPosition.col].getOccupation() == CellOccupation.EMPTY)
+            throw new InvalidPositionException(startPosition.row,startPosition.col);
+        if(this.map[endPosition.row][endPosition.col].getOccupation() == CellOccupation.DOME || this.map[endPosition.row][endPosition.col].getOccupation() == CellOccupation.EMPTY)
+            throw new InvalidPositionException(endPosition.row,endPosition.col);
+        CellOccupation transfer = this.map[startPosition.row][startPosition.col].getOccupation();
+        this.map[startPosition.row][startPosition.col].setOccupation(this.map[endPosition.row][endPosition.col].getOccupation());
+        this.map[endPosition.row][endPosition.col].setOccupation(transfer);
+    }
 }

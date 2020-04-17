@@ -1,10 +1,18 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.deck.God;
 
 public class DemeterDecorator extends PlayerBuildDecorator {
 
     private Position firstBuildingPosition;
+    private God godName;
+    private String godDescription;
+
+    public DemeterDecorator(){
+        this.godName = God.DEMETER;
+        this.godDescription = God.DEMETER.GetGodDescription();
+    }
 
     public DemeterDecorator(PlayerInterface player){ super(player);}
 
@@ -28,5 +36,15 @@ public class DemeterDecorator extends PlayerBuildDecorator {
     @Override
     public void usePower(Position secondBuildingPosition){
         player.buildWorker(secondBuildingPosition);
+    }
+
+    @Override
+    public God getGodName() {
+        return this.godName;
+    }
+
+    @Override
+    public String getGodDescription(){
+        return this.godDescription;
     }
 }

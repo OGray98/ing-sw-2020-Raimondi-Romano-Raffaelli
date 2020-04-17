@@ -6,11 +6,20 @@ import it.polimi.ingsw.exceptions.InvalidIncrementLevelException;
 import it.polimi.ingsw.exceptions.NotSamePositionException;
 import it.polimi.ingsw.model.board.CellOccupation;
 import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.deck.God;
 
 // Decorator that decorate the special power of Hephaestus
 public class HephaestusDecorator extends PlayerBuildDecorator {
 
     private Position position;
+    private God godName;
+    private String godDescription;
+
+
+    public HephaestusDecorator(){
+        this.godName = God.HEPHAESTUS;
+        this.godDescription = God.HEPHAESTUS.GetGodDescription();
+    }
 
     public HephaestusDecorator(PlayerInterface player){
         super(player);
@@ -39,5 +48,15 @@ public class HephaestusDecorator extends PlayerBuildDecorator {
     @Override
     public void usePower(Position pos) {
         player.buildWorker(pos);
+    }
+
+    @Override
+    public God getGodName() {
+        return this.godName;
+    }
+
+    @Override
+    public String getGodDescription() {
+        return this.godDescription;
     }
 }

@@ -10,7 +10,10 @@ import java.util.List;
 public abstract class PlayerDecorator implements PlayerInterface {
 
     PlayerInterface player;
+    God godName;
+    String godDescription;
 
+    public PlayerDecorator(){}
     public PlayerDecorator(PlayerInterface player){ this.player = player;}
 
     @Override
@@ -106,5 +109,13 @@ public abstract class PlayerDecorator implements PlayerInterface {
     @Override
     public boolean isBlockedBuilding() throws NullPointerException, NotSelectedWorkerException{
         return player.isBlockedBuilding();
+    }
+
+    public God getGodName() {
+        return this.godName;
+    }
+
+    public String getGodDescription(){
+        return this.godDescription;
     }
 }

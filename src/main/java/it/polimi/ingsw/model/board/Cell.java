@@ -45,9 +45,7 @@ public class Cell {
         return this.level;
     }
 
-    public CellOccupation getOccupation() {
-        return this.occupation;
-    }
+    public CellOccupation getOccupation() { return this.occupation; }
 
     public void setOccupation(CellOccupation occupation) {
         this.occupation = occupation;
