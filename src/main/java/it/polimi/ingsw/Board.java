@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class Board {
     //TODO: questa rep passa i test, vedere se non si crea casino a fare la Map.put dentro ad un for each
     private static final int NUM_ROW = 5;
