@@ -26,12 +26,14 @@ public interface PlayerInterface {
     void setCantGoUp(boolean cantGoUp);
 
     /*Method that returns true if user select a possible move action
-    * It requires a List<Cell> that contains all the cells adjacent to the worker selected
-    * It requires a Map<Position, PlayerIndex> that contains all the players adjacent to the selected worker
-    * It requires a Position that is the position to check
-    * Throws InvalidPositionException if movePos is an illegal position
-    * Throws NullPointerException is adjacentCells or adjacentPlayerList is null*/
-    boolean canMove(Map<Position,PlayerIndex> adjacentPlayerList, Cell moveCell)throws InvalidPositionException, NullPointerException;
+     * It requires a List<Cell> that contains all the cells adjacent to the worker selected
+     * It requires a Map<Position, PlayerIndex> that contains all the players adjacent to the selected worker
+     * It requires a Position that is the position to check
+     * Throws InvalidPositionException if movePos is an illegal position
+     * Throws NullPointerException is adjacentCells or adjacentPlayerList is null*/
+    boolean canMove(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell) throws InvalidPositionException, NullPointerException;
+
+    boolean canMove(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell, Cell occupiedCell, boolean cantGoUp) throws InvalidPositionException, NullPointerException;
 
     /*Method that returns true if user select a possible build action
      * It requires a List<Cell> that contains all the cells adjacent to the worker selected

@@ -159,7 +159,10 @@ public class Game {
                             return adjacentCells.stream()
                                     .anyMatch(cell -> currentPlayer.canMove(
                                             board.getPlayersOccupations(new ArrayList<>(List.of(cell.getPosition()))),
-                                            cell));
+                                            cell,
+                                            board.getCell(workerPos),
+                                            this.cantGoUp
+                                    ));
                         }
                 )
                 .collect(Collectors.toList());

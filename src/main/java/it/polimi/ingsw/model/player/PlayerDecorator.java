@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.model.deck.CardInterface;
 import it.polimi.ingsw.exception.InvalidPositionException;
 import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.deck.CardInterface;
 
 import java.util.List;
 import java.util.Map;
@@ -46,12 +46,18 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     }
 
     @Override
-    public void setCantGoUp(boolean cantGoUp){
+    public void setCantGoUp(boolean cantGoUp) {
         player.setCantGoUp(cantGoUp);
     }
 
     @Override
-    public boolean canMove(Map<Position,PlayerIndex> adjacentPlayerList, Cell moveCell) throws InvalidPositionException, NullPointerException {
+    public boolean canMove(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell) throws InvalidPositionException, NullPointerException {
+        return player.canMove(adjacentPlayerList, moveCell);
+    }
+
+    @Override
+    public boolean canMove(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell, Cell occupiedCell, boolean cantGoUp) throws InvalidPositionException, NullPointerException {
+        player.setStartingWorkerSituation(occupiedCell, cantGoUp);
         return player.canMove(adjacentPlayerList, moveCell);
     }
 
