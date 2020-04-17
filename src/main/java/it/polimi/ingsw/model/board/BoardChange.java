@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.board;
 
-import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.exception.SameMovementException;
+import it.polimi.ingsw.model.player.PlayerIndex;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class BoardChange {
     /*
      * Create a BoardChange with the passed cantGoUp and every other field null
      */
-    BoardChange(boolean cantGoUp) {
+    public BoardChange(boolean cantGoUp) {
         this.cantGoUp = cantGoUp;
         this.playerChanges = null;
         this.positionBuild = null;
@@ -29,7 +29,7 @@ public class BoardChange {
         isCantGoUpNull = false;
     }
 
-    BoardChange(Position oldPosition, Position newPosition, PlayerIndex playerIndex) throws NullPointerException {
+    public BoardChange(Position oldPosition, Position newPosition, PlayerIndex playerIndex) throws NullPointerException {
         if (oldPosition == null)
             throw new NullPointerException("oldPosition");
         if (newPosition == null)
@@ -49,7 +49,7 @@ public class BoardChange {
         isCantGoUpNull = true;
     }
 
-    BoardChange(Position buildPosition, BuildType type) throws NullPointerException {
+    public BoardChange(Position buildPosition, BuildType type) throws NullPointerException {
         if (buildPosition == null)
             throw new NullPointerException("buildPosition");
         this.positionBuild = buildPosition;

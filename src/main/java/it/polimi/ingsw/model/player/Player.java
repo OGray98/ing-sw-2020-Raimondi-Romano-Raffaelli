@@ -68,10 +68,10 @@ public class Player implements PlayerInterface{
 
         if(this.cellOccupied.getPosition().isAdjacent(moveCell.getPosition())){
             //check if there is a dome
-            if(moveCell.hasDome()) return false;
+            if (moveCell.hasDome()) return false;
             //if cantGoUp is true, check if it is a level up move
-            if(this.cantGoUp){
-                if(moveCell.getLevel() > this.cellOccupied.getLevel()) return false;
+            if (this.cantGoUp) {
+                if (moveCell.getLevel() > this.cellOccupied.getLevel()) return false;
             }
             return moveCell.getLevel() - this.cellOccupied.getLevel() <= 1;
         }
@@ -80,17 +80,24 @@ public class Player implements PlayerInterface{
     }
 
     @Override
-    public boolean canBuild(Map<Position, PlayerIndex> adjacentPlayerList, Cell buildCell){
-        if(buildCell.getPosition().col > 4 || buildCell.getPosition().row > 4 || buildCell.getPosition().col < 0 || buildCell.getPosition().row < 0) throw new InvalidPositionException(buildCell.getPosition().row, buildCell.getPosition().col);
-        if(adjacentPlayerList == null) throw new NullPointerException("adjacentPlayerList is null!");
+    public boolean canMove(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell, Cell occupiedCell, boolean cantGoUp) throws InvalidPositionException, NullPointerException {
+        this.setStartingWorkerSituation(occupiedCell, cantGoUp);
+        return canMove(adjacentPlayerList, moveCell);
+    }
+
+    @Override
+    public boolean canBuild(Map<Position, PlayerIndex> adjacentPlayerList, Cell buildCell) {
+        if (buildCell.getPosition().col > 4 || buildCell.getPosition().row > 4 || buildCell.getPosition().col < 0 || buildCell.getPosition().row < 0)
+            throw new InvalidPositionException(buildCell.getPosition().row, buildCell.getPosition().col);
+        if (adjacentPlayerList == null) throw new NullPointerException("adjacentPlayerList is null!");
 
         //check if the cell is occupied by a player
-        for(Position p : adjacentPlayerList.keySet()){
-            if(p.equals(buildCell.getPosition())) return false;
+        for (Position p : adjacentPlayerList.keySet()) {
+            if (p.equals(buildCell.getPosition())) return false;
         }
 
-        if(this.cellOccupied.getPosition().isAdjacent(buildCell.getPosition())){
-            if(!buildCell.hasDome()) return true;
+        if (this.cellOccupied.getPosition().isAdjacent(buildCell.getPosition())) {
+            if (!buildCell.hasDome()) return true;
         }
 
         return false;
