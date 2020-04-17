@@ -2,11 +2,11 @@ package it.polimi.ingsw;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Deck {
 
     private final List<CardInterface> godCards;
-    private CardInterface[] chosenGodCards;
     public final static int size = 9;
     private int playersNumber;
 
@@ -22,7 +22,6 @@ public class Deck {
         CardInterface cardPan = new PanDecorator();
         CardInterface cardPrometheus = new PrometheusDecorator();
         godCards = new ArrayList<>(List.of(cardApollo, cardArtemis, cardAthena, cardAtlas, cardDemeter, cardHephaestus, cardMinotaur, cardPan, cardPrometheus));
-        chosenGodCards = new CardInterface[this.playersNumber];
     }
 
     public void playerGodLikeChoose(CardInterface card) throws NullPointerException {
@@ -36,8 +35,6 @@ public class Deck {
             throw new NullPointerException("gods");
         if (gods.size() != playersNumber)
             throw new InvalidNumberCardsChosenException(playersNumber, gods.size());
-
-
 
         for (String name : gods) {
             boolean thereIs = false;
@@ -66,14 +63,10 @@ public class Deck {
         throw new WrongGodNameException(name);
     }
 
-    public CardInterface[] getChosenGodCards() {
-        return this.chosenGodCards;
+    public List<CardInterface> getChosenGodCards() {
+        return godCards.stream()
+                .filter(CardInterface::getBoolChosenGod)
+                .collect(Collectors.toList());
     }
-
-
-
-
-
-
 
 }

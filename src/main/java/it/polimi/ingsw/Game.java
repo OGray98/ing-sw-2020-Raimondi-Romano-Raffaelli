@@ -89,6 +89,10 @@ public class Game {
     public void setPlayerCard(String godName) throws NullPointerException, WrongGodNameException {
         if (godName == null)
             throw new NullPointerException("godName");
+
+        if (deck.getChosenGodCards().stream().noneMatch(card -> card.getGodName().equals(godName)))
+            throw new NotSelectedGodException(godName);
+
         CardInterface card = deck.getGodCard(godName);
         currentPlayer = card.setPlayer(currentPlayer);
         players.set(contCurrentPlayer, currentPlayer);
