@@ -71,11 +71,47 @@ public class HephaestusDecoratorTest {
         assertFalse(playerHephaestus.getActivePower());
         assertEquals(BuildType.LEVEL,boardChange.getBuildType());
         assertEquals(2,board.getCell(buildPosition).getLevel());
-        playerHephaestus.move(new Cell(1,0));
-        board.changeWorkerPosition(workerPosition,new Cell(1,0).getPosition());// only to verify if after player.hasWin activePower is set false
-        playerHephaestus.hasWin();
-        assertFalse(playerHephaestus.getActivePower());
 
+
+        assertFalse(playerHephaestus.getActivePower());
+    }
+
+    @Test
+    public void notUsePowerTestPart(){
+        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
+        playerHephaestus.setStartingWorkerSituation(board.getCell(workerPosition),false);
+        assertTrue(playerHephaestus.canBuild(board.getAdjacentPlayers(workerPosition),board.getCell(buildPosition)));
+        board.constructBlock(buildPosition);
+        assertEquals(1,board.getCell(buildPosition).getLevel());
+        List<Cell> power = new ArrayList<>();
+        power.add(board.getCell(buildPosition));
+        playerHephaestus.activePowerAfterBuild();
+        assertTrue(playerHephaestus.getActivePower());
+
+
+        // start another Hephaestus turn
+        assertTrue(playerHephaestus.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(otherPosition)));
+        playerHephaestus.move(board.getCell(otherPosition));
+        playerHephaestus.setWorkerSituation(board.getCell(workerPosition),board.getCell(otherPosition),false);
+        assertFalse(playerHephaestus.getActivePower());
+    }
+
+    @Test
+    public void notUsePowerTestPart2(){
+        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
+        playerHephaestus.setStartingWorkerSituation(board.getCell(workerPosition),false);
+        assertTrue(playerHephaestus.canBuild(board.getAdjacentPlayers(workerPosition),board.getCell(buildPosition)));
+        board.constructBlock(buildPosition);
+        assertEquals(1,board.getCell(buildPosition).getLevel());
+        List<Cell> power = new ArrayList<>();
+        power.add(board.getCell(buildPosition));
+        playerHephaestus.activePowerAfterBuild();
+        assertTrue(playerHephaestus.getActivePower());
+
+        // start another Hephaestus turn
+        board.putWorker(new Position(3,4),PlayerIndex.PLAYER0);
+        playerHephaestus.setStartingWorkerSituation(board.getCell(new Position(3,4)),false);
+        assertFalse(playerHephaestus.getActivePower());
     }
 
     @Test

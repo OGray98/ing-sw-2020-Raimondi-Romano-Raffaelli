@@ -108,7 +108,21 @@ public class DemeterDecoratorTest {
         playerDemeter.activePowerAfterBuild();
         assertTrue(playerDemeter.getActivePower());
 
-        playerDemeter.hasWin();
+        board.putWorker(new Position(4,4),PlayerIndex.PLAYER2);
+        playerDemeter.setStartingWorkerSituation(board.getCell(new Position(4,4)),false);
+        assertFalse(playerDemeter.getActivePower());
+    }
+
+    @Test
+    public void notUsedPowerTestPart2(){
+        board.putWorker(workerPosition, PlayerIndex.PLAYER2);
+        playerDemeter.setWorkerSituation(board.getCell(firstBuildingPosition), board.getCell(workerPosition), false);
+        playerDemeter.activePowerAfterBuild();
+        assertTrue(playerDemeter.getActivePower());
+
+        assertTrue(playerDemeter.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(new Position(2,1))));
+        playerDemeter.move(board.getCell(new Position(2,1)));
+        playerDemeter.setWorkerSituation(board.getCell(workerPosition),board.getCell(new Position(2,1)),false);
         assertFalse(playerDemeter.getActivePower());
     }
 }

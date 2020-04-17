@@ -16,6 +16,17 @@ public class HephaestusDecorator extends PlayerBuildDecorator {
     }
 
 
+    @Override
+    public void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp) {
+        super.setActivePower(false);
+        super.setStartingWorkerSituation(cellOccupied, cantGoUp);
+    }
+
+    @Override
+    public void setWorkerSituation(Cell oldCell, Cell cellOccupied, boolean cantGoUp){
+        super.setActivePower(false);
+        super.setWorkerSituation(oldCell, cellOccupied, cantGoUp);
+    }
 
 
     public void setChosenGod(Boolean condition){
@@ -53,9 +64,5 @@ public class HephaestusDecorator extends PlayerBuildDecorator {
         return 1;
     }
 
-    @Override
-    public boolean hasWin(){
-        super.setActivePower(false);
-        return super.hasWin();
-    }
+
 }
