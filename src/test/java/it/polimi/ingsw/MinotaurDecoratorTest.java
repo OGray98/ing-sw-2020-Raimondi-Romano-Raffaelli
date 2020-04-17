@@ -52,19 +52,19 @@ public class MinotaurDecoratorTest {
         assertFalse(playerMinotaur.getActivePower());
         assertTrue(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos),new Cell(0,1)));
         assertFalse(playerMinotaur.getActivePower());
-        assertFalse(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos),board.getCell(workerTwoPos)));
+        assertTrue(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos),board.getCell(workerTwoPos)));
         assertFalse(playerMinotaur.getActivePower());
 
         board.putWorker(workerOpponentPos1,PlayerIndex.PLAYER1);
         playerOpponent.setStartingWorkerSituation(board.getCell(workerOpponentPos1),false);
 
-        assertFalse(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos),board.getCell(workerOpponentPos1)));
+        assertTrue(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos),board.getCell(workerOpponentPos1)));
         assertTrue(playerMinotaur.getActivePower());
 
         board.putWorker(workerOpponentPos2,PlayerIndex.PLAYER1);
         playerOpponent.setStartingWorkerSituation(board.getCell(workerOpponentPos2),false);
 
-        assertFalse(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos),board.getCell(workerOpponentPos1)));
+        assertTrue(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos),board.getCell(workerOpponentPos1)));
         assertTrue(playerMinotaur.getActivePower());
 
         board.constructBlock(workerOpponentPos1);
@@ -75,7 +75,7 @@ public class MinotaurDecoratorTest {
 
         board.constructBlock(workerOnePos);
         board.constructBlock(workerOnePos);
-        assertFalse(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos), board.getCell(workerOpponentPos2)));
+        assertTrue(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos), board.getCell(workerOpponentPos2)));
         assertTrue(playerMinotaur.getActivePower());
         assertTrue(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos), board.getCell(new Position(0,1))));
     }
@@ -122,7 +122,7 @@ public class MinotaurDecoratorTest {
 
         normalUsePlayer.put(workerOpponentPos1, PlayerIndex.PLAYER1);
 
-        assertFalse(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos), board.getCell(workerOpponentPos1)));
+        assertTrue(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos), board.getCell(workerOpponentPos1)));
         assertTrue(playerMinotaur.getActivePower());
 
         assertTrue(playerMinotaur.canUsePower(normalUse, normalUsePlayer));
@@ -205,7 +205,7 @@ public class MinotaurDecoratorTest {
         otherPlayerOpponent.setStartingWorkerSituation(board.getCell(workerOpponentPos1),false);
 
 
-        assertFalse(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos),board.getCell(workerOpponentPos1)));
+        assertTrue(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos),board.getCell(workerOpponentPos1)));
         assertTrue(playerMinotaur.getActivePower());
 
         assertTrue(playerMinotaur.canMove(board.getAdjacentPlayers(workerOnePos),board.getCell(new Position(0,1))));

@@ -37,7 +37,7 @@ public class ApolloDecorator extends PlayerMoveDecorator {
             if ((p.equals(moveCell.getPosition())) && ((moveCell.getLevel() - super.getCellOccupied().getLevel()) <= 1)) {
                 if(!(adjacentPlayerList.get(p).equals(super.getPlayerNum()))){
                     super.setActivePower(true);}
-                return false;
+                return true;
             }
         }
 
