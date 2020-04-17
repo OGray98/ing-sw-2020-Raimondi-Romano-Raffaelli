@@ -3,6 +3,9 @@ package it.polimi.ingsw;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Game is a singleton which contains every object of model
+ */
 public class Game {
 
     private static Game gameInstance;
@@ -129,6 +132,25 @@ public class Game {
         }
     }
 
+
+    /**
+     * @return List which contains position of currentPlayer's worker able to move
+     */
+    public List<Position> canPlayerMoveAWorker() {
+        List<Position> workersPos = board.workerPositions(currentPlayer.getPlayerNum());
+
+        return workersPos.stream()
+                .filter(workerPos -> {
+                            List<Cell> adjacentCells = board.getAdjacentCells(workerPos);
+                            return adjacentCells.stream()
+                                    .anyMatch(cell -> currentPlayer.canMove(
+                                            board.getPlayersOccupations(new ArrayList<>(List.of(cell.getPosition()))),
+                                            cell));
+                        }
+                )
+                .collect(Collectors.toList());
+    }
+
     /* Method that do initial operation for player before call his method
      */
     public void setStartingWorker(Position startPos) throws NullPointerException, NotPresentWorkerException {
@@ -171,6 +193,17 @@ public class Game {
         board.changeWorkerPosition(currentPosition, movePos);
         currentPlayer.move(board.getCell(movePos));
         currentPosition = movePos;
+    }
+
+
+    /**
+     * @return true iff currentPlayer can build with his selected worker in an adjacent cell.
+     */
+    public boolean canPlayerBuildWithSelectedWorker() {
+        return board.getAdjacentCells(currentPlayer.getCellOccupied().getPosition()).stream()
+                .anyMatch(cell -> currentPlayer.canBuild(
+                        board.getPlayersOccupations(new ArrayList<>(List.of(cell.getPosition()))),
+                        cell));
     }
 
     /* Method that check if a worker of currentPlayer can build in buildPos

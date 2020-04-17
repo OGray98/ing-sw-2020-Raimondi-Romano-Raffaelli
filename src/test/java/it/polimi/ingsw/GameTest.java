@@ -388,6 +388,7 @@ public class GameTest {
 
 
         game.startTurn(); // Atlas turn
+        assertTrue(game.canPlayerMoveAWorker().size() > 0);
         game.setStartingWorker(pos.get(0));
         assertTrue(game.canMoveWorker(new Position(1,0)));
         game.moveWorker(new Position(1,0));
@@ -398,14 +399,16 @@ public class GameTest {
         assertTrue(game.getBoard().getCell(new Position(1,1)).hasDome());
         game.endTurn();
         game.startTurn(); // Apollo turn
+        assertTrue(game.canPlayerMoveAWorker().size() > 0);
         game.setStartingWorker(pos.get(2));
         assertFalse(game.canMoveWorker(pos.get(1)));
         assertTrue(game.getPlayers().get(1).getActivePower());
         assertTrue(game.canUsePowerWorker(pos.get(1)));
         game.usePowerWorker(pos.get(1));
         assertEquals(PlayerIndex.PLAYER0,game.getBoard().getOccupiedPlayer(pos.get(2)));
-        assertEquals(PlayerIndex.PLAYER1,game.getBoard().getOccupiedPlayer(pos.get(1)));
-        assertTrue(game.canBuild(new Position(1,2)));
+        assertEquals(PlayerIndex.PLAYER1, game.getBoard().getOccupiedPlayer(pos.get(1)));
+        assertTrue(game.canPlayerBuildWithSelectedWorker());
+        assertTrue(game.canBuild(new Position(1, 2)));
         game.build(new Position(1,2));
         assertEquals(1,game.getBoard().getCell(new Position(1,2)).getLevel());
         game.endTurn();
