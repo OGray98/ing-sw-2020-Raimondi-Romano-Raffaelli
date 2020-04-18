@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.InvalidPositionException;
 import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.Cell;
@@ -171,6 +172,16 @@ public class Player implements PlayerInterface{
     @Override
     public String getGodName() {
         return null;
+    }
+
+    @Override
+    public GameState getPowerState(){
+        return GameState.NULL;
+    }
+
+    @Override
+    public GameState getNextState(){
+        return GameState.NULL;
     }
 
     @Override

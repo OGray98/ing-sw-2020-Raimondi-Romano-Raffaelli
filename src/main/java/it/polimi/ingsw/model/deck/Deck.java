@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.deck;
 
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.InvalidNumberCardsChosenException;
 import it.polimi.ingsw.exception.WrongGodNameException;
 import it.polimi.ingsw.model.player.*;
@@ -16,15 +17,15 @@ public class Deck {
 
     public Deck(int playersNumber){
         this.playersNumber = playersNumber;
-        CardInterface cardApollo = new ApolloDecorator();
-        CardInterface cardArtemis = new ArtemisDecorator();
-        CardInterface cardAthena = new AthenaDecorator();
-        CardInterface cardAtlas = new AtlasDecorator();
-        CardInterface cardDemeter = new DemeterDecorator();
-        CardInterface cardHephaestus = new HephaestusDecorator();
-        CardInterface cardMinotaur = new MinotaurDecorator();
-        CardInterface cardPan = new PanDecorator();
-        CardInterface cardPrometheus = new PrometheusDecorator();
+        CardInterface cardApollo = new ApolloDecorator("Apollo","Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.",GameState.MOVE,GameState.CHECKWIN);
+        CardInterface cardArtemis = new ArtemisDecorator("Artemis","Your Worker may move one additional time, but not back to its initial space.",GameState.MOVE,GameState.CHECKWIN);
+        CardInterface cardAthena = new AthenaDecorator("Athena","If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.",GameState.MOVE,GameState.CHECKWIN);
+        CardInterface cardAtlas = new AtlasDecorator("Atlas", "Your Worker may build a dome at any level.",GameState.BUILD,GameState.ENDTURN);
+        CardInterface cardDemeter = new DemeterDecorator("Demeter","Your Worker may build one additional time, but not on the same space.",GameState.BUILD,GameState.ENDTURN);
+        CardInterface cardHephaestus = new HephaestusDecorator("Hephaestus","Your Worker may build one additional block (not dome) on top of your first block.",GameState.BUILD,GameState.ENDTURN);
+        CardInterface cardMinotaur = new MinotaurDecorator("Minotaur","our Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.",GameState.MOVE,GameState.CHECKWIN);
+        CardInterface cardPan = new PanDecorator("Pan","You also win if your Worker moves down two or more levels.",GameState.MOVE,GameState.CHECKWIN);
+        CardInterface cardPrometheus = new PrometheusDecorator("Prometheus","If your Worker does not move up, it may build both before and after moving.",GameState.BUILD,GameState.CANMOVE);
         godCards = new ArrayList<>(List.of(cardApollo, cardArtemis, cardAthena, cardAtlas, cardDemeter, cardHephaestus, cardMinotaur, cardPan, cardPrometheus));
     }
 

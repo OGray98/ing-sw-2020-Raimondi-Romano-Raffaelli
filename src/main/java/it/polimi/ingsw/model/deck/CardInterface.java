@@ -15,7 +15,7 @@ public interface CardInterface {
 
     String getGodDescription();
 
-    void setGodName(String nome);
 
-    void setGodDescription(String description);
+
+
 }
