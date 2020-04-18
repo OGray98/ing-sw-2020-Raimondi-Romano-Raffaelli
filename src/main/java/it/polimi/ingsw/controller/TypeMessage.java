@@ -5,5 +5,7 @@ public enum TypeMessage {
     NICKNAME, NUMBER_PLAYER_GAME,
     //Used in setup
     GODLIKE_CHOOSE_CARDS, SELECT_CARD,
-    MOVE, USE_POWER, BUILD
+    MOVE, USE_POWER, BUILD,
+    //Management message
+    ERROR
 }

@@ -31,6 +31,7 @@ public abstract class Message {
             throw new NullPointerException("correctedType");
 
         this.correctedType = new ArrayList<>(correctedType);
+        this.correctedType.add(TypeMessage.ERROR);
 
         if (isInvalidString(sender))
             throw new InvalidCommunicatorStringException("sender", sender);
