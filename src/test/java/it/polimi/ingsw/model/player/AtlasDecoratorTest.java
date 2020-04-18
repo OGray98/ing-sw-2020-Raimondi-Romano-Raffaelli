@@ -25,7 +25,7 @@ public class AtlasDecoratorTest {
 
     @Before
     public void init(){
-        atlasPlayer = new AtlasDecorator();
+        //atlasPlayer = new AtlasDecorator();
         board = new Board();
         workerPos = new Position(1,1);
         posTrue = new Position(2,2);

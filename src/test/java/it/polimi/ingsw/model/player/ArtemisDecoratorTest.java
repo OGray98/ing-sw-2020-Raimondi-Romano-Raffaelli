@@ -27,7 +27,7 @@ public class ArtemisDecoratorTest {
     @Before
     public void init(){
         board = new Board();
-        cardArtemis = new ArtemisDecorator();
+        //cardArtemis = new ArtemisDecorator();
         playerArtemis = cardArtemis.setPlayer(new Player("Jack", PlayerIndex.PLAYER2));
         workerPos = new Position(1,1);
         firstMovePosition = new Position(2,2);

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.deck.CardInterface;
+import it.polimi.ingsw.model.deck.Deck;
 import it.polimi.ingsw.model.player.DemeterDecorator;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
@@ -16,6 +17,7 @@ import static org.junit.Assert.*;
 
 public class DemeterDecoratorTest {
 
+    private static Deck deck;
     private static CardInterface cardDemeter;
     private static PlayerInterface playerDemeter;
     private static Board board;
@@ -26,8 +28,9 @@ public class DemeterDecoratorTest {
 
     @Before
     public void init(){
+        deck = new Deck(2);
         board = new Board();
-        cardDemeter = new DemeterDecorator();
+        cardDemeter = deck.getGodCard("Demeter");
         playerDemeter = cardDemeter.setPlayer(new Player("Jack", PlayerIndex.PLAYER1));
         workerPosition = new Position(2,2);
         firstBuildingPosition = new Position(2,3);
@@ -35,12 +38,14 @@ public class DemeterDecoratorTest {
         secondBuildPosition = new Position(3,2);
     }
 
+    /*Check if the card is no more available because it has been chosen*/
     @Test
     public void setChosenGodTest(){
         cardDemeter.setChosenGod(true);
         assertTrue(cardDemeter.getBoolChosenGod());
     }
 
+    //Simple check on the canBuild method
     @Test
     public void canBuildDemeterTest(){
         board.putWorker(workerPosition, PlayerIndex.PLAYER2);
@@ -49,12 +54,7 @@ public class DemeterDecoratorTest {
         assertTrue(playerDemeter.canBuild(board.getAdjacentPlayers(workerPosition), board.getCell(firstBuildingPosition)));
     }
 
-    @Test
-    public void activePowerAfterBuildTest(){
-        playerDemeter.activePowerAfterBuild();
-        assertTrue(playerDemeter.getActivePower());
-    }
-
+    /*Check if canUsePower is correct in different cases*/
     @Test
     public void canUsePowerTest(){
         board.putWorker(workerPosition, PlayerIndex.PLAYER2);
@@ -74,6 +74,7 @@ public class DemeterDecoratorTest {
         assertTrue(playerDemeter.canUsePower(power3, board.getAdjacentPlayers(workerPosition)));
     }
 
+    /*Check usePower() exceptions and correctness*/
     @Test
     public void usePowerTest(){
         board.putWorker(workerPosition, PlayerIndex.PLAYER2);
@@ -102,33 +103,9 @@ public class DemeterDecoratorTest {
         assertFalse(playerDemeter.getActivePower());
     }
 
+    //Simple check for the powerListDimension
     @Test
     public void getPowerListDimensionTest(){
         assertEquals(1,playerDemeter.getPowerListDimension());
-    }
-
-    @Test
-    public void notUsedPowerTest(){
-        board.putWorker(workerPosition, PlayerIndex.PLAYER2);
-        playerDemeter.setWorkerSituation(board.getCell(firstBuildingPosition), board.getCell(workerPosition), false);
-        playerDemeter.activePowerAfterBuild();
-        assertTrue(playerDemeter.getActivePower());
-
-        board.putWorker(new Position(4,4),PlayerIndex.PLAYER2);
-        playerDemeter.setStartingWorkerSituation(board.getCell(new Position(4,4)),false);
-        assertFalse(playerDemeter.getActivePower());
-    }
-
-    @Test
-    public void notUsedPowerTestPart2(){
-        board.putWorker(workerPosition, PlayerIndex.PLAYER2);
-        playerDemeter.setWorkerSituation(board.getCell(firstBuildingPosition), board.getCell(workerPosition), false);
-        playerDemeter.activePowerAfterBuild();
-        assertTrue(playerDemeter.getActivePower());
-
-        assertTrue(playerDemeter.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(new Position(2,1))));
-        playerDemeter.move(board.getCell(new Position(2,1)));
-        playerDemeter.setWorkerSituation(board.getCell(workerPosition),board.getCell(new Position(2,1)),false);
-        assertFalse(playerDemeter.getActivePower());
     }
 }

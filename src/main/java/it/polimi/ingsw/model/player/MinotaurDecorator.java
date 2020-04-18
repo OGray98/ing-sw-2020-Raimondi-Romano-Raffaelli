@@ -91,12 +91,12 @@ public class MinotaurDecorator extends PlayerMoveDecorator {
         Position opponentNewCell = this.playerOpponentAfterPowerCell.getPosition();
         BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(),powerCell.getPosition(),super.getPlayerNum());
         boardChange.addPlayerChanges(powerCell.getPosition(),opponentNewCell,this.playerOpponent);
+        super.move(powerCell);
         return boardChange;
     }
 
     public void setChosenGod(Boolean condition){
         super.setChosenGod(condition);
     }
-
 
 }

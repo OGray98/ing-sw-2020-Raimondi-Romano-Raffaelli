@@ -21,7 +21,11 @@ public class PrometheusDecorator extends PlayerYourTurnDecorator {
         super.setChosenGod(condition);
     }
 
-
+    @Override
+    public void move(Cell newCellOccupied){
+        super.setCantGoUp(false);
+        super.move(newCellOccupied);
+    }
     @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) {
         return super.canBuild(adjacentPlayerList, adjacentList.get(0));

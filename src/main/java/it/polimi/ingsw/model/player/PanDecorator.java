@@ -23,6 +23,7 @@ public class PanDecorator extends PlayerWinConditionDecorator {
         super.setChosenGod(condition);
     }
 
+    /*Pan canMove() returns true only in cells where his power is not active, the other cells will return false*/
     @Override
     public boolean canMove(Map<Position,PlayerIndex> adjacentPlayerList, Cell moveCell) throws InvalidPositionException {
         if(moveCell.getPosition().col > 4 || moveCell.getPosition().row > 4 || moveCell.getPosition().col < 0 || moveCell.getPosition().row < 0) throw new InvalidPositionException(moveCell.getPosition().row, moveCell.getPosition().col);
@@ -47,6 +48,7 @@ public class PanDecorator extends PlayerWinConditionDecorator {
     }
 
 
+    /*Pan canUsePower() return true in all the cells where his power is active*/
     @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) throws InvalidPositionException{
         if(adjacentList.get(0).getPosition().col > 4 || adjacentList.get(0).getPosition().row > 4 || adjacentList.get(0).getPosition().col < 0 || adjacentList.get(0).getPosition().row < 0) throw new InvalidPositionException(adjacentList.get(0).getPosition().row, adjacentList.get(0).getPosition().col);
@@ -65,13 +67,14 @@ public class PanDecorator extends PlayerWinConditionDecorator {
 
     @Override
     public boolean hasWin() throws NullPointerException {
-       if(super.getOldCell().getLevel() - super.getCellOccupied().getLevel() > 2)
+       if(super.getOldCell().getLevel() - super.getCellOccupied().getLevel() >= 2)
             return true;
         return super.hasWin();
     }
 
     @Override
     public BoardChange usePower(Cell powerCell) {
+        super.move(powerCell);
         return new BoardChange(super.getCellOccupied().getPosition(),powerCell.getPosition(),super.getPlayerNum());
 
     }

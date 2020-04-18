@@ -26,7 +26,7 @@ public class AthenaDecoratorTest {
     @Before
     public void init(){
         board = new Board();
-        cardAthena = new AthenaDecorator();
+        //cardAthena = new AthenaDecorator();
         playerAthena = cardAthena.setPlayer(new Player("Jack", PlayerIndex.PLAYER0));
         workerPos = new Position(3,3);
         lvlUpPos = new Position(3,4);
