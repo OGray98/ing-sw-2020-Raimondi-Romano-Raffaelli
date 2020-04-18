@@ -34,7 +34,7 @@ public class MinotaurDecoratorTest {
     @Before
     public void init(){
         board = new Board();
-        cardMinotaur = new MinotaurDecorator();
+        //cardMinotaur = new MinotaurDecorator();
         playerMinotaur = cardMinotaur.setPlayer(new Player("Jack", PlayerIndex.PLAYER0));
         playerOpponent = new Player("Bob", PlayerIndex.PLAYER1);
         workerOnePos = new Position(1,1);

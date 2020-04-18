@@ -29,6 +29,26 @@ public class BoardChange {
         isCantGoUpNull = false;
     }
 
+    public BoardChange(Position oldPosition, Position newPosition, PlayerIndex playerIndex, boolean cantGoUp) throws NullPointerException {
+        if (oldPosition == null)
+            throw new NullPointerException("oldPosition");
+        if (newPosition == null)
+            throw new NullPointerException("newPosition");
+
+        PositionContainer posCont = new PositionContainer(oldPosition);
+        posCont.put(newPosition);
+        playerChanges = new HashMap<>();
+        playerChanges.put(posCont, playerIndex);
+
+        this.cantGoUp = cantGoUp;
+        this.positionBuild = null;
+        this.buildType = BuildType.LEVEL;
+
+        isPlayerChangesNull = false;
+        isPositionBuildNull = true;
+        isCantGoUpNull = true;
+    }
+
     public BoardChange(Position oldPosition, Position newPosition, PlayerIndex playerIndex) throws NullPointerException {
         if (oldPosition == null)
             throw new NullPointerException("oldPosition");

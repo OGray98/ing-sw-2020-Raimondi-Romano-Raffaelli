@@ -25,7 +25,7 @@ public class Deck {
         CardInterface cardHephaestus = new HephaestusDecorator("Hephaestus","Your Worker may build one additional block (not dome) on top of your first block.",GameState.BUILD,GameState.ENDTURN);
         CardInterface cardMinotaur = new MinotaurDecorator("Minotaur","our Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.",GameState.MOVE,GameState.CHECKWIN);
         CardInterface cardPan = new PanDecorator("Pan","You also win if your Worker moves down two or more levels.",GameState.MOVE,GameState.CHECKWIN);
-        CardInterface cardPrometheus = new PrometheusDecorator("Prometheus","If your Worker does not move up, it may build both before and after moving.",GameState.BUILD,GameState.CANMOVE);
+        CardInterface cardPrometheus = new PrometheusDecorator("Prometheus","If your Worker does not move up, it may build both before and after moving.",GameState.INITURN,GameState.CANMOVE);
         godCards = new ArrayList<>(List.of(cardApollo, cardArtemis, cardAthena, cardAtlas, cardDemeter, cardHephaestus, cardMinotaur, cardPan, cardPrometheus));
     }
 

@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.deck.CardInterface;
+import it.polimi.ingsw.model.deck.Deck;
 import it.polimi.ingsw.model.player.ApolloDecorator;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
@@ -32,10 +33,12 @@ public class ApolloDecoratorTest {
     private static Position towerWorkerTwo;
     private static Position towerWorkerOne;
     PlayerInterface otherPlayerOpponent;
+    private static Deck deck;
 
     @Before
     public void init(){
-        cardApollo = new ApolloDecorator();
+        deck = new Deck(3);
+        cardApollo = deck.getGodCard("Apollo");
         board = new Board();
         playerApollo = cardApollo.setPlayer(new Player("jack", PlayerIndex.PLAYER0));
         playerOpponent = new Player("Rocky",PlayerIndex.PLAYER1);
@@ -62,7 +65,7 @@ public class ApolloDecoratorTest {
     }
 
     @Test
-    public void canMoveTest(){
+    public void canUsePowerTest(){
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         board.putWorker(secondWorkerPosition,PlayerIndex.PLAYER0);
         playerApollo.setStartingWorkerSituation(board.getCell(secondWorkerPosition),false);
@@ -70,21 +73,34 @@ public class ApolloDecoratorTest {
         board.putWorker(workerOpponentPosition,PlayerIndex.PLAYER1);
         playerOpponent.setStartingWorkerSituation(board.getCell(workerOpponentPosition),false);
 
-        assertFalse(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(new Position(3,3))));
+        //Verify some case where apollo can move in free adjacent cells
+        List<Cell> powers = new ArrayList<>();
+        powers.add(board.getCell(new Position(3,3)));
+        assertFalse(playerApollo.canUsePower(powers,board.getAdjacentPlayers(workerPosition)));
+        List<Cell> powers1 = new ArrayList<>();
+        powers1.add(board.getCell(new Position(0,1)));
+        assertFalse(playerApollo.canUsePower(powers1,board.getAdjacentPlayers(workerPosition)));
         assertFalse(playerApollo.getActivePower());
-        assertTrue(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),new Cell(0,1)));
-        assertFalse(playerApollo.getActivePower());
-        assertTrue(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(secondWorkerPosition)));
-        assertFalse(playerApollo.getActivePower());
+        List<Cell> powers2 = new ArrayList<>();
+        powers2.add(board.getCell(secondWorkerPosition));
+        //Case when Apollo selected other worker of his team
+        assertFalse(playerApollo.canUsePower(powers2,board.getAdjacentPlayers(workerPosition)));
+        //Case when Apollo selected enemy worker
+        List<Cell> powers3 = new ArrayList<>();
+        powers3.add(board.getCell(workerOpponentPosition));
+        assertTrue(playerApollo.canUsePower(powers3,board.getAdjacentPlayers(workerPosition)));
 
 
+        //Case when the enemy worker is more then one level high
         board.constructBlock(secondOpponentWorkerPosition);
         board.constructBlock(secondOpponentWorkerPosition);
         board.putWorker(secondOpponentWorkerPosition,PlayerIndex.PLAYER1);
         playerOpponent.setStartingWorkerSituation(board.getCell(secondOpponentWorkerPosition),false);
-        assertFalse(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(secondOpponentWorkerPosition)));
-        assertFalse(playerApollo.getActivePower());
+        List<Cell> powers4 = new ArrayList<>();
+        powers4.add(board.getCell(secondOpponentWorkerPosition));
+        assertFalse(playerApollo.canUsePower(powers4,board.getAdjacentPlayers(workerPosition)));
 
+        //Case when Apollo is high more then two level from enemy worker
         board.constructBlock(towerWorkerTwo);
         board.constructBlock(towerWorkerTwo);
         board.constructBlock(towerWorkerOne);
@@ -92,52 +108,40 @@ public class ApolloDecoratorTest {
         playerApollo.setWorkerSituation(board.getCell(workerPosition),board.getCell(towerWorkerOne),false);
         board.changeWorkerPosition(towerWorkerOne,towerWorkerTwo);
         playerApollo.setWorkerSituation(board.getCell(towerWorkerOne),board.getCell(towerWorkerTwo),false);
-        assertTrue(playerApollo.canMove(board.getAdjacentPlayers(towerWorkerTwo),board.getCell(workerOpponentPosition)));
-        assertTrue(playerApollo.getActivePower());
+
+        assertTrue(playerApollo.canUsePower(powers3,board.getAdjacentPlayers(towerWorkerTwo)));
+
 
     }
 
     @Test
-    public void canMoveTestPart2(){
+    public void canUsePowerTestPart2(){
 
+        //Case when the worker enemy is high one level from Apollo's worker
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         playerApollo.setStartingWorkerSituation(board.getCell(workerPosition),false);
         board.constructBlock(thirdWorkerPosition);
         board.putWorker(thirdWorkerPosition,PlayerIndex.PLAYER2);
         otherPlayerOpponent.setStartingWorkerSituation(board.getCell(thirdWorkerPosition),false);
-        assertTrue(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(thirdWorkerPosition)));
-        assertTrue(playerApollo.getActivePower());
-
-    }
-
-    @Test
-    public void canUsePowerTest(){
-        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
-        playerApollo.setStartingWorkerSituation(board.getCell(workerPosition),false);
-        playerApollo.canMove(board.getAdjacentPlayers(workerPosition),new Cell(0,2));
         List<Cell> powers = new ArrayList<>();
-        powers.add(board.getCell(new Position(0,2)));
-        assertFalse(playerApollo.canUsePower(powers,board.getAdjacentPlayers(workerPosition)));
-        board.putWorker(thirdWorkerPosition,PlayerIndex.PLAYER2);
-        otherPlayerOpponent.setStartingWorkerSituation(board.getCell(thirdWorkerPosition),false);
-        playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(thirdWorkerPosition));
-        List<Cell> powers1 = new ArrayList<>();
-        powers1.add(board.getCell(thirdWorkerPosition));
-        assertTrue(playerApollo.canUsePower(powers1,board.getAdjacentPlayers(workerPosition)));
+        powers.add(board.getCell(thirdWorkerPosition));
+        assertTrue(playerApollo.canUsePower(powers,board.getAdjacentPlayers(workerPosition)));
+
+
     }
+
+
 
     @Test
     public void usePowerTest(){
 
-
+        //Case when Apollo can change his position with enemy worker position
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         playerApollo.setStartingWorkerSituation(board.getCell(workerPosition),false);
         board.putWorker(workerOpponentPosition,PlayerIndex.PLAYER1);
         playerOpponent.setStartingWorkerSituation(board.getCell(workerOpponentPosition),false);
         List<Cell> power = new ArrayList<>();
         power.add(board.getCell(workerOpponentPosition));
-        assertTrue(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(workerOpponentPosition)));
-        assertTrue(playerApollo.getActivePower());
         assertTrue(playerApollo.canUsePower(power,board.getAdjacentPlayers(workerPosition)));
         BoardChange boardChange = playerApollo.usePower(board.getCell(workerOpponentPosition));
         board.updateAfterPower(boardChange);
@@ -147,6 +151,8 @@ public class ApolloDecoratorTest {
 
     @Test
     public void usePowerTestPart2(){
+
+        //Case when Apollo his high more level then enemy worker and he can change his position with enemy worker position
         board.constructBlock(workerPosition);
         board.constructBlock(workerPosition);
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
@@ -155,31 +161,17 @@ public class ApolloDecoratorTest {
         playerOpponent.setStartingWorkerSituation(board.getCell(workerOpponentPosition),false);
         List<Cell> power = new ArrayList<>();
         power.add(board.getCell(workerOpponentPosition));
-        assertTrue(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(workerOpponentPosition)));
         assertTrue(playerApollo.canUsePower(power,board.getAdjacentPlayers(workerPosition)));
         BoardChange boardChange = playerApollo.usePower(board.getCell(workerOpponentPosition));
         board.updateAfterPower(boardChange);
         assertEquals(PlayerIndex.PLAYER0,board.getOccupiedPlayer(workerOpponentPosition));
         assertEquals(PlayerIndex.PLAYER1,board.getOccupiedPlayer(workerPosition));
-
-
     }
 
     @Test
-    public void twoCanMoveTest(){
-        /*if player refuse to use power, active power must become false*/
-        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
-        playerApollo.setStartingWorkerSituation(board.getCell(workerPosition),false);
-        board.constructBlock(thirdWorkerPosition);
-        board.putWorker(thirdWorkerPosition,PlayerIndex.PLAYER2);
-        otherPlayerOpponent.setStartingWorkerSituation(board.getCell(thirdWorkerPosition),false);
-
-
-        assertTrue(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(thirdWorkerPosition)));
-        assertTrue(playerApollo.getActivePower());
-
-        assertTrue(playerApollo.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(new Position(0,1))));
-        assertFalse(playerApollo.getActivePower());
+    public void checkWinAfterPowerMoveTest(){
+        
     }
+
 
 }

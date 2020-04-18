@@ -25,7 +25,7 @@ public class PrometheusDecoratorTest {
 
     @Before
     public void init(){
-         cardPrometheus = new PrometheusDecorator();
+         //cardPrometheus = new PrometheusDecorator();
          playerPrometheus = cardPrometheus.setPlayer(new Player("Jack", PlayerIndex.PLAYER0));
          board = new Board();
          workerPosition = new Position(1,1);

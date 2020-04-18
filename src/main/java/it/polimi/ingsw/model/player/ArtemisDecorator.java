@@ -30,7 +30,9 @@ public class ArtemisDecorator extends PlayerMoveDecorator {
 
     @Override
     public BoardChange usePower(Cell powerCell){
-        return new BoardChange(super.getCellOccupied().getPosition(), powerCell.getPosition(), super.getPlayerNum());
+        BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(), powerCell.getPosition(), super.getPlayerNum());
+        super.move(powerCell);
+        return boardChange;
     }
 
     @Override

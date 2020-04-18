@@ -24,7 +24,6 @@ public class AtlasDecorator extends PlayerBuildDecorator {
     }
 
 
-
     @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
         return super.canBuild(adjacentPlayerList, adjacentList.get(0));

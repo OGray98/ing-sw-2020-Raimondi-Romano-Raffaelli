@@ -27,7 +27,7 @@ public class DemeterDecoratorTest {
     @Before
     public void init(){
         board = new Board();
-        cardDemeter = new DemeterDecorator();
+        //cardDemeter = new DemeterDecorator();
         playerDemeter = cardDemeter.setPlayer(new Player("Jack", PlayerIndex.PLAYER1));
         workerPosition = new Position(2,2);
         firstBuildingPosition = new Position(2,3);
