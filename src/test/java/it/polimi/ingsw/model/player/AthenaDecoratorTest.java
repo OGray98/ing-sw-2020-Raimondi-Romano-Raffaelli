@@ -11,7 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -106,5 +108,29 @@ public class AthenaDecoratorTest {
 
 
 
+    }
+
+    @Test
+    public void hasWinAfterPowerTest(){
+        board.constructBlock(workerPos);
+        board.constructBlock(workerPos);
+
+        board.putWorker(workerPos, PlayerIndex.PLAYER0);
+        playerAthena.setStartingWorkerSituation(board.getCell(workerPos), false);
+
+        board.constructBlock(lvlUpPos);
+        board.constructBlock(lvlUpPos);
+
+        List<Cell> list = new ArrayList<>();
+        Map<Position, PlayerIndex> plist = new HashMap<>();
+
+        list.add(board.getCell(lvlUpPos));
+
+        assertTrue(playerAthena.canUsePower(list, plist));
+
+        BoardChange powerRes = playerAthena.usePower(board.getCell(lvlUpPos));
+
+        board.updateAfterPower(powerRes);
+        assertTrue(playerAthena.hasWin());
     }
 }
