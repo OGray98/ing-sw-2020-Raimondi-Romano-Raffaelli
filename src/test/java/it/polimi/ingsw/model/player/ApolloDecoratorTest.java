@@ -171,6 +171,23 @@ public class ApolloDecoratorTest {
     @Test
     public void checkWinAfterPowerMoveTest(){
 
+        //Check if Apollo win using his power move
+        board.constructBlock(workerPosition);
+        board.constructBlock(workerPosition);
+        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
+        playerApollo.setStartingWorkerSituation(board.getCell(workerPosition),false);
+        board.constructBlock(workerOpponentPosition);
+        board.constructBlock(workerOpponentPosition);
+        board.constructBlock(workerOpponentPosition);
+        board.putWorker(workerOpponentPosition,PlayerIndex.PLAYER1);
+        playerOpponent.setStartingWorkerSituation(board.getCell(workerOpponentPosition),false);
+        List<Cell> power = new ArrayList<>();
+        power.add(board.getCell(workerOpponentPosition));
+        assertTrue(playerApollo.canUsePower(power,board.getAdjacentPlayers(workerPosition)));
+        playerApollo.usePower(board.getCell(workerOpponentPosition));
+        assertTrue(playerApollo.hasWin());
+
+
     }
 
 

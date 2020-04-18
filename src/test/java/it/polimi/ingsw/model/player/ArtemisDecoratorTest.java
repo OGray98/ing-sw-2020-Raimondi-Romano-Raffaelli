@@ -115,4 +115,30 @@ public class ArtemisDecoratorTest {
 
     }
 
+    @Test
+    public void checkWinAfterPowerMoveTest(){
+
+        //Check the case when artemis win with his power move
+        board.constructBlock(workerPos);
+        board.putWorker(workerPos,PlayerIndex.PLAYER2);
+        playerArtemis.setStartingWorkerSituation(board.getCell(workerPos),false);
+        Position towerLvl2 = new Position(1,2);
+        Position towerLvl3 = new Position(1,3);
+        board.constructBlock(towerLvl2);
+        board.constructBlock(towerLvl2);
+        board.constructBlock(towerLvl3);
+        board.constructBlock(towerLvl3);
+        board.constructBlock(towerLvl3);
+        assertTrue(playerArtemis.canMove(board.getAdjacentPlayers(workerPos),board.getCell(towerLvl2)));
+        playerArtemis.move(board.getCell(towerLvl2));
+        board.changeWorkerPosition(workerPos,towerLvl2);
+        List<Cell> powers = new ArrayList<>();
+        powers.add(board.getCell(towerLvl3));
+        assertTrue(playerArtemis.canUsePower(powers,board.getAdjacentPlayers(towerLvl2)));
+        playerArtemis.usePower(board.getCell(towerLvl3));
+        assertTrue(playerArtemis.hasWin());
+
+
+    }
+
 }
