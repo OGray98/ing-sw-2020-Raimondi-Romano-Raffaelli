@@ -5,8 +5,11 @@ import it.polimi.ingsw.exception.InvalidTypeMessage;
 
 import java.util.List;
 
-public class LobbyMessage extends Message {
 
+/**
+ * LobbyMessage extends Message and represent an exchanged Message when players are connecting in the lobby
+ */
+public class LobbyMessage extends Message {
 
     public LobbyMessage(String sender, String receiver, TypeMessage type, String content) throws NullPointerException, InvalidCommunicatorStringException, InvalidTypeMessage {
         super(sender, receiver, type, content, List.of(TypeMessage.NICKNAME, TypeMessage.NUMBER_PLAYER_GAME));
