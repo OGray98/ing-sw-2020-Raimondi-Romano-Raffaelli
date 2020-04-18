@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.InvalidPositionException;
 import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.Cell;
@@ -12,24 +13,30 @@ import java.util.Map;
 public abstract class PlayerDecorator implements PlayerInterface, CardInterface {
 
     private PlayerInterface player;
-    private String godName;
-    private String description;
+    private final String godName;
+    private final String description;
     private boolean chosenGod = false;
-    private final GameState currentState;
+    private final GameState powerState;
     private final GameState nextState;
 
 
-    public PlayerDecorator() {}
+    public PlayerDecorator(String godName, String description, GameState powerState, GameState nextState) {
 
-    public PlayerInterface setPlayer(PlayerInterface player){
+        this.godName = godName;
+        this.description = description;
+        this.powerState = powerState;
+        this.nextState = nextState;
+    }
+
+    public PlayerInterface setPlayer(PlayerInterface player) {
         this.player = player;
         return this;
     }
 
 
     @Override
-    public void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp){
-         player.setStartingWorkerSituation(cellOccupied,cantGoUp);
+    public void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp) {
+        player.setStartingWorkerSituation(cellOccupied, cantGoUp);
     }
 
     @Override
@@ -141,12 +148,12 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     }
 
     @Override
-    public void setGodName(String godName) {
-        this.godName = godName;
+    public GameState getPowerState() {
+        return this.powerState;
     }
 
     @Override
-    public void setGodDescription(String description) {
-        this.description = description;
+    public GameState getNextState() {
+        return this.nextState;
     }
 }
