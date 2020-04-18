@@ -408,7 +408,7 @@ public class GameTest {
         game.startTurn(); // Apollo turn
         assertTrue(game.canPlayerMoveAWorker().size() > 0);
         game.setStartingWorker(pos.get(2));
-        assertFalse(game.canMoveWorker(pos.get(1)));
+        assertTrue(game.canMoveWorker(pos.get(1)));
         assertTrue(game.getPlayers().get(1).getActivePower());
         assertTrue(game.canUsePowerWorker(pos.get(1)));
         game.usePowerWorker(pos.get(1));
@@ -436,7 +436,7 @@ public class GameTest {
         game.endTurn();
         game.startTurn(); // Apollo turn
         game.setStartingWorker(new Position(1,3));
-        assertFalse(game.canMoveWorker(new Position(0,2)));
+        assertTrue(game.canMoveWorker(new Position(0,2)));
         assertFalse(game.getPlayers().get(1).getActivePower());
         game.endTurn();
         game.startTurn(); // Prometheus turn
@@ -500,7 +500,7 @@ public class GameTest {
             game.canMoveWorker(posMosse.get(cont * 2));
             //If Minotaur actives the power
             if (game.getPlayers().get(cont).getGodName().equals("Minotaur")){
-                assertFalse(game.canMoveWorker(posMosse.get(cont*2)));
+                assertTrue(game.canMoveWorker(posMosse.get(cont*2)));
                 assertTrue(game.getPlayers().get(cont).getActivePower());
                 assertTrue(game.canUsePowerWorker(powerPos2));
                 game.usePowerWorker(powerPos2);
