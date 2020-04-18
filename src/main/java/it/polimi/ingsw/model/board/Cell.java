@@ -1,12 +1,13 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.exception.InvalidIncrementLevelException;
 import it.polimi.ingsw.exception.InvalidPositionException;
 
 /**
  * Cell is a class which form a space in board
  */
-public class Cell {
+public class Cell extends Observable {
 
     private final Position position;
     private int level;
@@ -47,11 +48,14 @@ public class Cell {
     public void incrementLevel() throws InvalidIncrementLevelException {
         if (hasDome) throw new InvalidIncrementLevelException(position.row, position.col);
 
+        int oldLevel = this.level;
+
         if (this.level < 3)
             this.level++;
 
         else if (this.level == 3)
             hasDome = true;
+        notify("CELL_ALL_VALUE", oldLevel + " " + false, this.level + " " + this.hasDome);
     }
 
     public int getLevel() {
@@ -63,7 +67,9 @@ public class Cell {
     }
 
     public void setHasDome(boolean hasDome) {
+        boolean oldHasDome = this.hasDome;
         this.hasDome = hasDome;
+        notify("CELL_HAS_DOME", "" + oldHasDome, "" + this.hasDome);
     }
 
     public Position getPosition() {
@@ -80,4 +86,12 @@ public class Cell {
                 position.equals(cell.position);
     }
 
+    @Override
+    public String toString() {
+        return "Cell{" +
+                "position=" + position +
+                ", level=" + level +
+                ", hasDome=" + hasDome +
+                '}';
+    }
 }

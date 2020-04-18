@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model.board;
 
-import it.polimi.ingsw.model.player.PlayerIndex;
+import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.exception.*;
+import it.polimi.ingsw.model.player.PlayerIndex;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Board {
-    //TODO: questa rep passa i test, vedere se non si crea casino a fare la Map.put dentro ad un for each
+public class Board extends Observable {
+
     private static final int NUM_ROW = 5;
     private static final int NUM_COLUMNS = 5;
     private static final int capacityPlayerPosition = 3;
@@ -128,6 +129,7 @@ public class Board {
                     List<Position> newPositions = new ArrayList<>(list);
                     newPositions.add(newPosition);
                     this.playerPosition.put(entry.getKey(), newPositions);
+                    notifyPlayerMovement(oldPosition, newPosition, entry.getKey());
                     return;
                 }
             }
@@ -135,12 +137,15 @@ public class Board {
         throw new NotPresentWorkerException(oldPosition.row, oldPosition.col);
     }
 
+
     /*Increment the level of the Cell in Position buildPosition
      * Throws NullPointerException if buildPosition is null
      * Throws InvalidIncrementLevelException if building is not allowed*/
     public void constructBlock(Position buildPosition) throws NullPointerException, InvalidIncrementLevelException {
         if (buildPosition == null)
             throw new NullPointerException("buildPosition");
+
+        Cell oldCell = new Cell(this.map[buildPosition.row][buildPosition.col]);
 
         this.map[buildPosition.row][buildPosition.col].incrementLevel();
     }
@@ -167,6 +172,7 @@ public class Board {
         List<Position> list = new ArrayList<>();
         list.add(putPosition);
         this.playerPosition.put(playerIndex, list);
+        notifyPlayerPut(putPosition, playerIndex);
     }
 
     /*Returns the PlayerIndex of the worker in Position position
@@ -229,6 +235,11 @@ public class Board {
                     positions.remove(entryChange.getKey().getOldPosition());
                     positions.add(entryChange.getKey().getOccupiedPosition());
                     this.playerPosition.put(entry.getKey(), positions);
+                    notifyPlayerMovement(
+                            entryChange.getKey().getOldPosition(),
+                            entryChange.getKey().getOccupiedPosition(),
+                            entry.getKey()
+                    );
                     isFound = true;
                 }
             }
@@ -252,6 +263,28 @@ public class Board {
                 throw new InvalidBuildDomeException(positionBuild.row, positionBuild.col);
             map[positionBuild.row][positionBuild.col].setHasDome(true);
         }
+    }
+
+    private void notifyPlayerMovement(Position oldPosition, Position newPosition, PlayerIndex index) throws NullPointerException {
+        if (oldPosition == null)
+            throw new NullPointerException("oldPosition");
+        if (newPosition == null)
+            throw new NullPointerException("newPosition");
+        notify(
+                "Player " + index,
+                oldPosition.toString(),
+                newPosition.toString()
+        );
+    }
+
+    private void notifyPlayerPut(Position putPosition, PlayerIndex index) throws NullPointerException {
+        if (putPosition == null)
+            throw new NullPointerException("putPosition");
+        notify(
+                "Player " + index,
+                "null",
+                putPosition.toString()
+        );
     }
 
 }
