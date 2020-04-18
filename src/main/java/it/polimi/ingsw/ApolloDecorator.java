@@ -8,6 +8,7 @@ public class ApolloDecorator extends PlayerMoveDecorator {
     private PlayerIndex playerOpponent;
 
 
+
     public ApolloDecorator() {
         String godName = "Apollo";
         super.setGodName(godName);

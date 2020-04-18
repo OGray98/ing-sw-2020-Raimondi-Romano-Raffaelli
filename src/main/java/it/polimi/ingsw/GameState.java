@@ -1,0 +1,8 @@
+package it.polimi.ingsw;
+
+public enum GameState {
+
+    INITURN, CANMOVE, MOVE, CHECKWIN, CANBUILD, BUILD, CANUSEPOWER, USEPOWER, CHECKIFUSEPOWER, ENDTURN
+
+
+}

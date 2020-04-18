@@ -9,6 +9,8 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     private String godName;
     private String description;
     private boolean chosenGod = false;
+    private final GameState currentState;
+    private final GameState nextState;
 
 
     public PlayerDecorator() {}
