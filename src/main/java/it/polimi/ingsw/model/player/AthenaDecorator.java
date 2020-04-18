@@ -63,7 +63,7 @@ public class AthenaDecorator extends PlayerOpponentTurnDecorator {
             if (adjacentList.get(0).hasDome()) return false;
             //if cantGoUp is true, check if it is a level up move
 
-            return adjacentList.get(0).getLevel() - super.getCellOccupied().getLevel() == 1;
+            return (adjacentList.get(0).getLevel() - super.getCellOccupied().getLevel()) == 1;
         }
 
         return false;
@@ -71,9 +71,9 @@ public class AthenaDecorator extends PlayerOpponentTurnDecorator {
 
     @Override
     public BoardChange usePower(Cell powerCell){
-       BoardChange boardChange = new BoardChange(true);
-       boardChange.addPlayerChanges(super.getOldCell().getPosition(),powerCell.getPosition(),super.getPlayerNum());
-       return boardChange;
+        BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(),powerCell.getPosition(),super.getPlayerNum(),true);
+        super.move(powerCell);
+        return boardChange;
     }
 
     @Override

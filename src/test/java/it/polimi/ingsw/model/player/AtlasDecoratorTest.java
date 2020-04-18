@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.BuildType;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.deck.CardInterface;
+import it.polimi.ingsw.model.deck.Deck;
 import it.polimi.ingsw.model.player.AtlasDecorator;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
@@ -22,10 +23,12 @@ public class AtlasDecoratorTest {
     private static Position workerPos;
     private static Position posTrue;
     private static Position posFalse;
+    private static Deck deck;
 
     @Before
     public void init(){
-        //atlasPlayer = new AtlasDecorator();
+        deck = new Deck(3);
+        atlasPlayer = deck.getGodCard("Atlas");
         board = new Board();
         workerPos = new Position(1,1);
         posTrue = new Position(2,2);
@@ -44,22 +47,8 @@ public class AtlasDecoratorTest {
         assertEquals(1,playerint.getPowerListDimension());
     }
 
-    @Test
-    public void activePowerAfterBuilFalseTest(){
-        playerint.activePowerAfterBuild();
-        assertFalse(playerint.getActivePower());
-    }
 
-    @Test
-    public void canBuildAtlasTest(){
-        board.putWorker(workerPos, PlayerIndex.PLAYER1);
-        playerint.setStartingWorkerSituation(board.getCell(workerPos), false);
 
-        assertTrue(playerint.canBuild(board.getAdjacentPlayers(workerPos), board.getCell(posTrue)));
-        assertFalse(playerint.canBuild(board.getAdjacentPlayers(workerPos), board.getCell(posFalse)));
-
-        assertTrue(playerint.getActivePower());
-    }
 
     @Test
     public void usePowerAtlasTest(){
