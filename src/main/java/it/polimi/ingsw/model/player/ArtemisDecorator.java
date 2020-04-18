@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.InvalidPositionException;
 import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.Cell;
@@ -10,11 +11,9 @@ import java.util.Map;
 
 public class ArtemisDecorator extends PlayerMoveDecorator {
 
-    public ArtemisDecorator(){
-        String godName = "Artemis";
-        super.setGodName(godName);
-        String description = "Your Worker may move one additional time, but not back to its initial space.";
-        super.setGodDescription(description);
+    public ArtemisDecorator(String godName, String description, GameState powerState, GameState nextState){
+
+        super(godName, description, powerState, nextState);
     }
 
     @Override
@@ -22,17 +21,7 @@ public class ArtemisDecorator extends PlayerMoveDecorator {
         return 1;
     }
 
-    @Override
-    public void move(Cell newOccupiedCell){
-        super.setActivePower(true);
-        super.move(newOccupiedCell);
-    }
 
-    @Override
-    public boolean canBuild(Map<Position, PlayerIndex> adjacentPlayerList, Cell buildCell) throws InvalidPositionException, NullPointerException {
-        super.setActivePower(false);
-        return super.canBuild(adjacentPlayerList, buildCell);
-    }
 
     @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
@@ -41,8 +30,9 @@ public class ArtemisDecorator extends PlayerMoveDecorator {
 
     @Override
     public BoardChange usePower(Cell powerCell){
-        super.setActivePower(false);
-        return new BoardChange(super.getCellOccupied().getPosition(), powerCell.getPosition(), super.getPlayerNum());
+        BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(), powerCell.getPosition(), super.getPlayerNum());
+        super.move(powerCell);
+        return boardChange;
     }
 
     @Override

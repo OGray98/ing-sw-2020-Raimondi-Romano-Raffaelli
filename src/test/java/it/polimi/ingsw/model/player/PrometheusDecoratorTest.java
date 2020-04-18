@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.deck.CardInterface;
+import it.polimi.ingsw.model.deck.Deck;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
@@ -15,6 +16,7 @@ import static org.junit.Assert.*;
 
 public class PrometheusDecoratorTest {
 
+    private static Deck deck;
     private static CardInterface cardPrometheus;
     private static PlayerInterface playerPrometheus;
     private static Board board;
@@ -25,7 +27,8 @@ public class PrometheusDecoratorTest {
 
     @Before
     public void init(){
-         cardPrometheus = new PrometheusDecorator();
+         deck = new Deck(3);
+         cardPrometheus = deck.getGodCard("Prometheus");
          playerPrometheus = cardPrometheus.setPlayer(new Player("Jack", PlayerIndex.PLAYER0));
          board = new Board();
          workerPosition = new Position(1,1);
@@ -34,19 +37,12 @@ public class PrometheusDecoratorTest {
 
     }
 
+    /*Check if the card is no more available because it has been chosen*/
     @Test
     public void setChosenGodTest(){
         cardPrometheus.setChosenGod(true);
         assertTrue(cardPrometheus.getBoolChosenGod());
     }
-
-   @Test
-    public void setWorkerSituationTest(){
-        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
-        playerPrometheus.setStartingWorkerSituation(board.getCell(workerPosition),false);
-        playerPrometheus.setWorkerSituation(null,board.getCell(workerPosition),false);
-        assertTrue(playerPrometheus.getActivePower());
-   }
 
    @Test
     public void moveTest(){
@@ -56,6 +52,7 @@ public class PrometheusDecoratorTest {
         assertFalse(playerPrometheus.getCantGoUp());
     }
 
+    /*Check usePower() exceptions and correctness*/
     @Test
     public void usePowerTest(){
         board.constructBlock(towerTwoPosition);
@@ -80,14 +77,5 @@ public class PrometheusDecoratorTest {
     @Test
     public void getPowerListDimensionTest(){
         assertEquals(1,playerPrometheus.getPowerListDimension());
-    }
-
-    @Test
-    public void notUsedPowerTest(){
-        playerPrometheus.setWorkerSituation(board.getCell(towerOnePosition), board.getCell(workerPosition), false);
-        assertTrue(playerPrometheus.getActivePower());
-
-        assertTrue(playerPrometheus.canMove(board.getAdjacentPlayers(workerPosition), board.getCell(towerTwoPosition)));
-        assertFalse(playerPrometheus.getActivePower());
     }
 }

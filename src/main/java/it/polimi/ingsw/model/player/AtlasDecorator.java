@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.BuildType;
 import it.polimi.ingsw.model.board.Cell;
@@ -11,11 +12,10 @@ import java.util.Map;
 public class AtlasDecorator extends PlayerBuildDecorator {
 
 
-    public AtlasDecorator(){
-        String godName = "Atlas";
-        super.setGodName(godName);
-        String description = "Your Worker may build a dome at any level.";
-        super.setGodDescription(description);
+    public AtlasDecorator(String godName, String description, GameState powerState, GameState nextState){
+
+        super(godName, description, powerState, nextState);
+
     }
 
     @Override
@@ -23,17 +23,6 @@ public class AtlasDecorator extends PlayerBuildDecorator {
         return 1;
     }
 
-    @Override
-    public boolean canBuild(Map<Position,PlayerIndex> adjacentPlayerList, Cell buildCell){
-        if(super.canBuild(adjacentPlayerList, buildCell)) super.setActivePower(true);
-        return super.canBuild(adjacentPlayerList, buildCell);
-    }
-
-    @Override
-    public void activePowerAfterBuild() {
-        super.setActivePower(false);
-        super.activePowerAfterBuild();
-    }
 
     @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
@@ -42,7 +31,6 @@ public class AtlasDecorator extends PlayerBuildDecorator {
 
     @Override
     public BoardChange usePower(Cell powerCell){
-        super.setActivePower(false);
         return new BoardChange(powerCell.getPosition(), BuildType.DOME);
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.InvalidPositionException;
 import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.Cell;
@@ -73,6 +74,11 @@ public interface PlayerInterface {
     int getPowerListDimension();
 
     String getGodName();
+
+    GameState getPowerState();
+
+    GameState getNextState();
+
 
     //public God getGodName();
 }

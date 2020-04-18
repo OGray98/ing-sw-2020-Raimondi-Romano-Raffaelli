@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.deck.CardInterface;
+import it.polimi.ingsw.model.deck.Deck;
 import it.polimi.ingsw.model.player.ArtemisDecorator;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
@@ -23,11 +24,13 @@ public class ArtemisDecoratorTest {
     private static Position workerPos;
     private static Position firstMovePosition;
     private static Position secondMovePosition;
+    private static Deck deck;
 
     @Before
     public void init(){
+        deck = new Deck(3);
         board = new Board();
-        cardArtemis = new ArtemisDecorator();
+        cardArtemis = deck.getGodCard("Artemis");
         playerArtemis = cardArtemis.setPlayer(new Player("Jack", PlayerIndex.PLAYER2));
         workerPos = new Position(1,1);
         firstMovePosition = new Position(2,2);
@@ -45,17 +48,13 @@ public class ArtemisDecoratorTest {
         assertEquals(1,playerArtemis.getPowerListDimension());
     }
 
-    @Test
-    public void canBuildSetFalsePower(){
-        board.putWorker(workerPos, playerArtemis.getPlayerNum());
-        playerArtemis.setStartingWorkerSituation(board.getCell(workerPos), false);
-        playerArtemis.canBuild(board.getAdjacentPlayers(workerPos),new Cell(1,2));
-        assertFalse(playerArtemis.getActivePower());
-    }
+
 
 
     @Test
     public void canUsePowerArtemisTest(){
+
+        //Verify if Artemis canUsePower want to move on different cell after his normal move
         board.putWorker(workerPos, playerArtemis.getPlayerNum());
         playerArtemis.setStartingWorkerSituation(board.getCell(workerPos), false);
 
@@ -63,8 +62,6 @@ public class ArtemisDecoratorTest {
 
         board.changeWorkerPosition(workerPos, firstMovePosition);
         playerArtemis.move(board.getCell(firstMovePosition));
-
-        assertTrue(playerArtemis.getActivePower());
 
         List<Cell> powers = new ArrayList<>();
         powers.add(board.getCell(workerPos));
@@ -81,6 +78,8 @@ public class ArtemisDecoratorTest {
 
     @Test
     public void usePowerArtemisTest(){
+
+        //Verify if Artemis UsePower work, testing if on the board artemis was moved after usePower
         board.putWorker(workerPos, playerArtemis.getPlayerNum());
         playerArtemis.setStartingWorkerSituation(board.getCell(workerPos), false);
 
@@ -113,7 +112,33 @@ public class ArtemisDecoratorTest {
         }
         assertTrue(thereIs);
         assertTrue(powerResult.getChanges().containsValue(playerArtemis.getPlayerNum()));
-        assertFalse(playerArtemis.getActivePower());
+
+    }
+
+    @Test
+    public void checkWinAfterPowerMoveTest(){
+
+        //Check the case when artemis win with his power move
+        board.constructBlock(workerPos);
+        board.putWorker(workerPos,PlayerIndex.PLAYER2);
+        playerArtemis.setStartingWorkerSituation(board.getCell(workerPos),false);
+        Position towerLvl2 = new Position(1,2);
+        Position towerLvl3 = new Position(1,3);
+        board.constructBlock(towerLvl2);
+        board.constructBlock(towerLvl2);
+        board.constructBlock(towerLvl3);
+        board.constructBlock(towerLvl3);
+        board.constructBlock(towerLvl3);
+        assertTrue(playerArtemis.canMove(board.getAdjacentPlayers(workerPos),board.getCell(towerLvl2)));
+        playerArtemis.move(board.getCell(towerLvl2));
+        board.changeWorkerPosition(workerPos,towerLvl2);
+        List<Cell> powers = new ArrayList<>();
+        powers.add(board.getCell(towerLvl3));
+        assertTrue(playerArtemis.canUsePower(powers,board.getAdjacentPlayers(towerLvl2)));
+        playerArtemis.usePower(board.getCell(towerLvl3));
+        assertTrue(playerArtemis.hasWin());
+
+
     }
 
 }
