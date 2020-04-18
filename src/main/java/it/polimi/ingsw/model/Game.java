@@ -198,6 +198,29 @@ public class Game {
     }
 
 
+    /**
+     * Method that return a list of Position where the player can move
+     *
+     * @param workerPos Position occupied by worker that player want to move
+     * @return List of Position that contains Position where the player can move
+     * @throws NullPointerException if workerPos is null
+     */
+    public List<Position> getMovePositions(Position workerPos) throws NullPointerException {
+        if (workerPos == null)
+            throw new NullPointerException("workerPos");
+        return this.board.getAdjacentCells(workerPos).stream()
+                .filter(cell -> currentPlayer.canMove(
+                        board.getPlayersOccupations(new ArrayList<>(List.of(cell.getPosition()))),
+                        cell,
+                        board.getCell(workerPos),
+                        this.cantGoUp
+                        )
+                )
+                .map(Cell::getPosition)
+                .collect(Collectors.toList());
+    }
+
+
     /* Method that move worker of currentPlayer in movePos, before change the worker position in board, then the cell in
      * currentPlayer
      * Requires a not null Position where move the worker
@@ -222,6 +245,27 @@ public class Game {
                         board.getPlayersOccupations(new ArrayList<>(List.of(cell.getPosition()))),
                         cell));
     }
+
+    /**
+     * Method that return a list of Position where the player can build
+     *
+     * @param workerPos Position occupied by worker that player want to build
+     * @return List of Position that contains Position where the player can build
+     * @throws NullPointerException if workerPos is null
+     */
+    public List<Position> getBuildPositions(Position workerPos) throws NullPointerException {
+        if (workerPos == null)
+            throw new NullPointerException("workerPos");
+        return this.board.getAdjacentCells(workerPos).stream()
+                .filter(cell -> currentPlayer.canBuild(
+                        board.getPlayersOccupations(new ArrayList<>(List.of(cell.getPosition()))),
+                        cell
+                        )
+                )
+                .map(Cell::getPosition)
+                .collect(Collectors.toList());
+    }
+
 
     /* Method that check if a worker of currentPlayer can build in buildPos
      * Requires a not null Position where the worker want build
@@ -264,6 +308,26 @@ public class Game {
                 getPowerCellList(powerPos),
                 getPowerPlayerOccupations(powerPos)
         );
+    }
+
+    /**
+     * Method that return a list of Position where the player can use his power
+     *
+     * @param workerPos Position occupied by worker that player want to use his power
+     * @return List of Position that contains Position where the player can use his power
+     * @throws NullPointerException if workerPos is null
+     */
+    public List<Position> getPowerPositions(Position workerPos) throws NullPointerException {
+        if (workerPos == null)
+            throw new NullPointerException("workerPos");
+        return this.board.getAdjacentCells(workerPos).stream()
+                .filter(cell -> currentPlayer.canUsePower(
+                        getPowerCellList(cell.getPosition()),
+                        getPowerPlayerOccupations(cell.getPosition())
+                        )
+                )
+                .map(Cell::getPosition)
+                .collect(Collectors.toList());
     }
 
     /* Method that use currentPlayer power and update the board.
