@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.board;
 
-import it.polimi.ingsw.Observable;
 import it.polimi.ingsw.exception.*;
 import it.polimi.ingsw.model.player.PlayerIndex;
+import it.polimi.ingsw.observer.Observable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Board extends Observable {
+public class Board extends Observable<BoardChange> {
 
     private static final int NUM_ROW = 5;
     private static final int NUM_COLUMNS = 5;
@@ -80,6 +80,16 @@ public class Board extends Observable {
         return new Cell(this.map[position.row][position.col]);
     }
 
+    public void setCell(Cell cell, Position pos) throws NullPointerException {
+        if (pos == null)
+            throw new NullPointerException("pos");
+        if (cell == null)
+            throw new NullPointerException("cell");
+
+        this.map[pos.row][pos.col] = new Cell(cell);
+
+    }
+
     /*Returns the Map<Position, PlayerIndex> that contains all the pairs<Position, PlayerIndex> adjacent to the Position centralPosition
      * Throws NullPointerException  if centralPosition is null */
     public Map<Position, PlayerIndex> getAdjacentPlayers(Position centralPosition) throws NullPointerException {
@@ -129,7 +139,7 @@ public class Board extends Observable {
                     List<Position> newPositions = new ArrayList<>(list);
                     newPositions.add(newPosition);
                     this.playerPosition.put(entry.getKey(), newPositions);
-                    notifyPlayerMovement(oldPosition, newPosition, entry.getKey());
+                    notify(new BoardChange(oldPosition, newPosition, entry.getKey()));
                     return;
                 }
             }
@@ -145,9 +155,8 @@ public class Board extends Observable {
         if (buildPosition == null)
             throw new NullPointerException("buildPosition");
 
-        Cell oldCell = new Cell(this.map[buildPosition.row][buildPosition.col]);
-
         this.map[buildPosition.row][buildPosition.col].incrementLevel();
+        notify(new BoardChange(buildPosition, BuildType.LEVEL));
     }
 
     /*Given the Position putPosition and the PlayerIndex playerIndex put a worker of playerIndex on the board on the Cell in position putPosition
@@ -164,6 +173,7 @@ public class Board extends Observable {
                     List<Position> list = new ArrayList<>(entry.getValue());
                     list.add(putPosition);
                     this.playerPosition.put(playerIndex, list);
+                    notify(new BoardChange(new Position(0, 0), putPosition, playerIndex));
                     return;
                 } else
                     throw new InvalidPutWorkerException(putPosition.row, putPosition.col, playerIndex);
@@ -172,7 +182,7 @@ public class Board extends Observable {
         List<Position> list = new ArrayList<>();
         list.add(putPosition);
         this.playerPosition.put(playerIndex, list);
-        notifyPlayerPut(putPosition, playerIndex);
+        notify(new BoardChange(new Position(0, 0), putPosition, playerIndex));
     }
 
     /*Returns the PlayerIndex of the worker in Position position
@@ -205,6 +215,12 @@ public class Board extends Observable {
         return playerWorkersPositions;
     }
 
+    public int getWorkerNum(PlayerIndex index) {
+        if (this.playerPosition.get(index) == null)
+            return 0;
+        return this.playerPosition.get(index).size();
+    }
+
     /* Method used after PlayerInterface.usePower() to update the board with the new changes.
      * Depending on the content of boardChange, it can update playerPosition, modifies map or set cantGoUp
      * Requires BoardChange not null, with the changes to update
@@ -216,6 +232,7 @@ public class Board extends Observable {
             updateAfterPowerMove(boardChange.getChanges());
         if (!boardChange.isPositionBuildNull())
             updateAfterPowerBuild(boardChange.getPositionBuild(), boardChange.getBuildType());
+        notify(boardChange);
     }
 
     /* Method called by this.updateAfterPower() to update the playerPosition.
@@ -235,11 +252,6 @@ public class Board extends Observable {
                     positions.remove(entryChange.getKey().getOldPosition());
                     positions.add(entryChange.getKey().getOccupiedPosition());
                     this.playerPosition.put(entry.getKey(), positions);
-                    notifyPlayerMovement(
-                            entryChange.getKey().getOldPosition(),
-                            entryChange.getKey().getOccupiedPosition(),
-                            entry.getKey()
-                    );
                     isFound = true;
                 }
             }
@@ -265,26 +277,16 @@ public class Board extends Observable {
         }
     }
 
-    private void notifyPlayerMovement(Position oldPosition, Position newPosition, PlayerIndex index) throws NullPointerException {
-        if (oldPosition == null)
-            throw new NullPointerException("oldPosition");
-        if (newPosition == null)
-            throw new NullPointerException("newPosition");
-        notify(
-                "Player " + index,
-                oldPosition.toString(),
-                newPosition.toString()
-        );
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Board board = (Board) o;
+        for (int i = 0; i < NUM_ROW; i++) {
+            for (int j = 0; j < NUM_COLUMNS; j++)
+                if (!this.map[i][j].equals(board.map[i][j]))
+                    return false;
+        }
+        return this.playerPosition.equals(board.playerPosition);
     }
-
-    private void notifyPlayerPut(Position putPosition, PlayerIndex index) throws NullPointerException {
-        if (putPosition == null)
-            throw new NullPointerException("putPosition");
-        notify(
-                "Player " + index,
-                "null",
-                putPosition.toString()
-        );
-    }
-
 }
