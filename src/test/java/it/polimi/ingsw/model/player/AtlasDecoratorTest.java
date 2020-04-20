@@ -73,8 +73,6 @@ public class AtlasDecoratorTest {
         catch(NullPointerException e){
             assertEquals("playerChanges", e.getMessage());
         }
-
-        assertFalse(playerint.getActivePower());
     }
 
 }

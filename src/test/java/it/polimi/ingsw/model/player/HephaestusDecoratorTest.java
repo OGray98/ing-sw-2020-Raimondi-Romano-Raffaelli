@@ -104,8 +104,6 @@ public class HephaestusDecoratorTest {
         assertEquals(BuildType.LEVEL,boardChange.getBuildType());
         assertEquals(2,board.getCell(buildPosition).getLevel());
 
-
-        assertFalse(playerHephaestus.getActivePower());
     }
 
     @Test

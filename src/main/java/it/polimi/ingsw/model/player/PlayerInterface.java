@@ -20,9 +20,6 @@ public interface PlayerInterface {
     /* Set the situation after a move */
     void setAfterMove(Cell oldCell, Cell cellOccupied);
 
-    /*When a Player can use a God power activePower will be set true, false otherwise*/
-    void setActivePower(boolean isPowerOn);
-
     /*Setter of cantGoUp*/
     void setCantGoUp(boolean cantGoUp);
 
@@ -64,8 +61,6 @@ public interface PlayerInterface {
     Cell getOldCell() throws NullPointerException;
 
     Cell getCellOccupied() throws NullPointerException;
-
-    boolean getActivePower();
 
     boolean getCantGoUp();
 

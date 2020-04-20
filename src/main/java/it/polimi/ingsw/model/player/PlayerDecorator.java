@@ -50,11 +50,6 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     }
 
     @Override
-    public void setActivePower(boolean isPowerOn) {
-        player.setActivePower(isPowerOn);
-    }
-
-    @Override
     public void setCantGoUp(boolean cantGoUp) {
         player.setCantGoUp(cantGoUp);
     }
@@ -107,11 +102,6 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     @Override
     public Cell getCellOccupied(){
         return player.getCellOccupied();
-    }
-
-    @Override
-    public boolean getActivePower(){
-        return player.getActivePower();
     }
 
     @Override

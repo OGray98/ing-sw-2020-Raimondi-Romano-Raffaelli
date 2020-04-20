@@ -46,7 +46,7 @@ public class BoardChange {
 
         isPlayerChangesNull = false;
         isPositionBuildNull = true;
-        isCantGoUpNull = true;
+        isCantGoUpNull = false;
     }
 
     public BoardChange(Position oldPosition, Position newPosition, PlayerIndex playerIndex) throws NullPointerException {
