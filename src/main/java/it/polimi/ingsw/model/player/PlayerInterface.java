@@ -20,9 +20,6 @@ public interface PlayerInterface {
     /* Set the situation after a move */
     void setAfterMove(Cell oldCell, Cell cellOccupied);
 
-    /*When a Player can use a God power activePower will be set true, false otherwise*/
-    void setActivePower(boolean isPowerOn);
-
     /*Setter of cantGoUp*/
     void setCantGoUp(boolean cantGoUp);
 
@@ -52,9 +49,6 @@ public interface PlayerInterface {
     * in Decorator class can set activePower */
     void move(Cell newOccupiedCell) throws NullPointerException;
 
-    /*In Decorator classes can set active power, called after a build action*/
-    void activePowerAfterBuild();
-
     /*Method that will be specialized in the Decorator class, it refers to a specific God power*/
     boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList);
 
@@ -64,8 +58,6 @@ public interface PlayerInterface {
     Cell getOldCell() throws NullPointerException;
 
     Cell getCellOccupied() throws NullPointerException;
-
-    boolean getActivePower();
 
     boolean getCantGoUp();
 

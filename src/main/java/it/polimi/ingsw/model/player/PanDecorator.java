@@ -74,8 +74,9 @@ public class PanDecorator extends PlayerWinConditionDecorator {
 
     @Override
     public BoardChange usePower(Cell powerCell) {
+        BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(),powerCell.getPosition(),super.getPlayerNum());
         super.move(powerCell);
-        return new BoardChange(super.getCellOccupied().getPosition(),powerCell.getPosition(),super.getPlayerNum());
+        return boardChange;
 
     }
 }

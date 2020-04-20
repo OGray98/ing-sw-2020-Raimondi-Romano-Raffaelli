@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exception.AlreadyPresentGameException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Position;
@@ -7,8 +8,7 @@ import it.polimi.ingsw.model.deck.CardInterface;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +33,15 @@ public class GameTest {
     private static Position lastPlayerSecondWorker;
 
 
-    @BeforeClass
-    public static void init() {
+    @Before
+    public void init() {
         players = new ArrayList<>(3);
         players.add(new Player("Jack",PlayerIndex.PLAYER0));
         players.add(new Player("Rock",PlayerIndex.PLAYER1));
         players.add(new Player("Creed",PlayerIndex.PLAYER2));
         game = Game.getInstance(players);
         board = new Board();
-    }
-       /* firstPlayerFirstWorkerPos = new Position(1, 1);
+        /*firstPlayerFirstWorkerPos = new Position(1, 1);
         //playersCards = new HashMap<>(3);
         board = new Board();
         //currentPlayer = players.get(0);
@@ -73,14 +72,14 @@ public class GameTest {
         game.setStartingWorker(firstPlayerFirstWorkerPos);
 
         //playersCards.put(PlayerIndex.PLAYER0, game.)
-        //game.initGame();
+        //game.initGame();*/
 
-    }*/
+    }
 
 
      // Simulation test general, god tested Prometheus
 
-   /* @Test
+    @Test
     public void isCorrectedConstructor() {
         try {
             Game.getInstance(players);
@@ -96,8 +95,9 @@ public class GameTest {
         for(String godName : decks.keySet()){
             assertEquals(decks.get(godName),game.getDeck().getGodCard(godName).getGodDescription());
         }
-    }*/
-   /* @Test
+    }
+
+    @Test
     public void setChosenByGodLikeTest(){
         try{
             game.setGodsChosenByGodLike(null);
@@ -121,8 +121,9 @@ public class GameTest {
         assertTrue(game.getDeck().getGodCard("Pan").getBoolChosenGod());
         assertTrue(game.getDeck().getGodCard("Artemis").getBoolChosenGod());
         assertTrue(game.getDeck().getGodCard("Demeter").getBoolChosenGod());
-    }*/
-   /* @Test
+    }
+
+    /*@Test
     public void setPlayerCardsTest(){
         try{
             game.setPlayerCard(null);
@@ -136,9 +137,9 @@ public class GameTest {
         game.setPlayerCard("Atlas");
         assertEquals(PlayerIndex.PLAYER2,game.getPlayers().get(2).getPlayerNum());
         assertEquals(1,game.getPlayers().get(2).getPowerListDimension());// test if the method decorate correctly
-    }*/
+    }
 
-   /* @Test
+    @Test
     public void putWorkerTest(){
         try{
             game.putWorker(null);
@@ -253,8 +254,8 @@ public class GameTest {
 
 
     // Test game, gods: Pan, Artemis, Demeter
-    /* @Test
-    public void totalTest() {
+    @Test
+    public void gameTestPanArtemisDemeter() {
         //god Like sceglie le carte
         List<String> gods = new ArrayList<>(List.of("Pan", "Artemis", "Demeter"));
         game.setGodsChosenByGodLike(gods);
@@ -262,15 +263,18 @@ public class GameTest {
         assertTrue(game.getDeck().getGodCard("Pan").getBoolChosenGod());
         assertTrue(game.getDeck().getGodCard("Artemis").getBoolChosenGod());
 
+        int one = 1;
+
         for (int i = 0; i < gods.size(); i++) {
             game.setPlayerCard(gods.get(i));
-            assertEquals(gods.get(i), game.getPlayers().get(i).getGodName());
+            assertEquals(gods.get(i), game.getPlayers().get(one).getGodName());
+            one = (one+1) % 3;
         }
 
-        game.chooseFirstPlayer(PlayerIndex.PLAYER1);
-        assertEquals(PlayerIndex.PLAYER1, game.getPlayers().get(0).getPlayerNum());
-        assertEquals(PlayerIndex.PLAYER2, game.getPlayers().get(1).getPlayerNum());
-        assertEquals(PlayerIndex.PLAYER0, game.getPlayers().get(2).getPlayerNum());
+        game.chooseFirstPlayer(PlayerIndex.PLAYER2);
+        assertEquals(PlayerIndex.PLAYER2, game.getPlayers().get(0).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER0, game.getPlayers().get(1).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER1, game.getPlayers().get(2).getPlayerNum());
 
         List<Position> pos = new ArrayList<>(List.of(
                 new Position(0, 0),
@@ -339,21 +343,22 @@ public class GameTest {
         game.endTurn();
         game.startTurn();
         game.setStartingWorker(new Position(3,0));
-        assertEquals(PlayerIndex.PLAYER0,game.getBoard().getOccupiedPlayer(new Position(3,0)));
+        assertEquals(PlayerIndex.PLAYER1,game.getBoard().getOccupiedPlayer(new Position(3,0)));
         assertTrue(game.canMoveWorker(towerLevel1));
         game.moveWorker(towerLevel1);
         assertTrue(game.canMoveWorker(towerLevel2));
         game.moveWorker(towerLevel2);
-        assertTrue(game.canMoveWorker(new Position(4,2)));
-        game.moveWorker(new Position(4,2));
+        assertFalse(game.canMoveWorker(new Position(4,2)));
+        assertTrue(game.canUsePowerWorker(new Position(4,2)));
+        game.usePowerWorker(new Position(4,2));
         assertTrue(game.hasWonCurrentPlayer());
 
-    }*/
+    }
 
 
     //Test game, Gods: Atlas, Apollo, Prometheus
     @Test
-    public void gameTestAAP(){
+    public void gameTestAtlasApolloPrometheus(){
 
         List<String> gods = new ArrayList<>(List.of("Atlas", "Apollo", "Prometheus"));
         game.setGodsChosenByGodLike(gods);
@@ -361,15 +366,18 @@ public class GameTest {
         assertTrue(game.getDeck().getGodCard("Apollo").getBoolChosenGod());
         assertTrue(game.getDeck().getGodCard("Prometheus").getBoolChosenGod());
 
+        int one = 1;
+
         for (int i = 0; i < gods.size(); i++) {
             game.setPlayerCard(gods.get(i));
-            assertEquals(gods.get(i), game.getPlayers().get(i).getGodName());
+            assertEquals(gods.get(i), game.getPlayers().get(one).getGodName());
+            one = (one+1) % 3;
         }
 
-        game.chooseFirstPlayer(PlayerIndex.PLAYER0);
-        assertEquals(PlayerIndex.PLAYER0,game.getPlayers().get(0).getPlayerNum());
-        assertEquals(PlayerIndex.PLAYER1,game.getPlayers().get(1).getPlayerNum());
-        assertEquals(PlayerIndex.PLAYER2,game.getPlayers().get(2).getPlayerNum());
+        game.chooseFirstPlayer(PlayerIndex.PLAYER1);
+        assertEquals(PlayerIndex.PLAYER1,game.getPlayers().get(0).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER2,game.getPlayers().get(1).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER0,game.getPlayers().get(2).getPlayerNum());
 
         assertEquals("Atlas",game.getPlayers().get(0).getGodName());
         assertEquals("Apollo",game.getPlayers().get(1).getGodName());
@@ -399,7 +407,7 @@ public class GameTest {
         game.setStartingWorker(pos.get(0));
         assertTrue(game.canMoveWorker(new Position(1,0)));
         game.moveWorker(new Position(1,0));
-        assertEquals(PlayerIndex.PLAYER0,game.getBoard().getOccupiedPlayer(new Position(1,0)));
+        assertEquals(PlayerIndex.PLAYER1,game.getBoard().getOccupiedPlayer(new Position(1,0)));
         assertTrue(game.canBuild(new Position(1,1)));
         assertTrue(game.canUsePowerWorker(new Position(1,1)));
         game.usePowerWorker(new Position(1,1));
@@ -408,12 +416,11 @@ public class GameTest {
         game.startTurn(); // Apollo turn
         assertTrue(game.canPlayerMoveAWorker().size() > 0);
         game.setStartingWorker(pos.get(2));
-        assertTrue(game.canMoveWorker(pos.get(1)));
-        assertTrue(game.getPlayers().get(1).getActivePower());
+        assertFalse(game.canMoveWorker(pos.get(1)));
         assertTrue(game.canUsePowerWorker(pos.get(1)));
         game.usePowerWorker(pos.get(1));
-        assertEquals(PlayerIndex.PLAYER0,game.getBoard().getOccupiedPlayer(pos.get(2)));
-        assertEquals(PlayerIndex.PLAYER1, game.getBoard().getOccupiedPlayer(pos.get(1)));
+        assertEquals(PlayerIndex.PLAYER1,game.getBoard().getOccupiedPlayer(pos.get(2)));
+        assertEquals(PlayerIndex.PLAYER2, game.getBoard().getOccupiedPlayer(pos.get(1)));
         assertTrue(game.canPlayerBuildWithSelectedWorker());
         assertTrue(game.canBuild(new Position(1, 2)));
         game.build(new Position(1,2));
@@ -425,7 +432,6 @@ public class GameTest {
         game.usePowerWorker(powerPrometheus);
         assertEquals(1,game.getBoard().getCell(powerPrometheus).getLevel());
         assertTrue(game.getPlayers().get(2).getCantGoUp());
-        assertFalse(game.getPlayers().get(2).getActivePower());
         assertTrue(game.canMoveWorker(new Position(3,0)));
         game.moveWorker(new Position(3,0));
         assertTrue(game.canBuild(new Position(3,1)));
@@ -436,8 +442,7 @@ public class GameTest {
         game.endTurn();
         game.startTurn(); // Apollo turn
         game.setStartingWorker(new Position(1,3));
-        assertTrue(game.canMoveWorker(new Position(0,2)));
-        assertFalse(game.getPlayers().get(1).getActivePower());
+        assertFalse(game.canMoveWorker(new Position(0,2)));
         game.endTurn();
         game.startTurn(); // Prometheus turn
         game.setStartingWorker(new Position(3,3));
@@ -448,8 +453,8 @@ public class GameTest {
     }
 
 
-    /*@Test
-    public void totalTestHephaestusMinotaurAthena(){
+    @Test
+    public void gameTestHephaestusMinotaurAthena(){
         //god Like sceglie le carte
         List<String> gods = new ArrayList<>(List.of("Hephaestus", "Minotaur", "Athena"));
         game.setGodsChosenByGodLike(gods);
@@ -457,15 +462,18 @@ public class GameTest {
         assertTrue(game.getDeck().getGodCard("Minotaur").getBoolChosenGod());
         assertTrue(game.getDeck().getGodCard("Athena").getBoolChosenGod());
 
+        int one = 1;
+
         for (int i = 0; i < gods.size(); i++) {
             game.setPlayerCard(gods.get(i));
-            assertEquals(gods.get(i), game.getPlayers().get(i).getGodName());
+            assertEquals(gods.get(i), game.getPlayers().get(one).getGodName());
+            one = (one+1) % 3;
         }
 
-        game.chooseFirstPlayer(PlayerIndex.PLAYER0);
-        assertEquals(PlayerIndex.PLAYER1, game.getPlayers().get(1).getPlayerNum());
-        assertEquals(PlayerIndex.PLAYER2, game.getPlayers().get(2).getPlayerNum());
-        assertEquals(PlayerIndex.PLAYER0, game.getPlayers().get(0).getPlayerNum());
+        game.chooseFirstPlayer(PlayerIndex.PLAYER1);
+        assertEquals(PlayerIndex.PLAYER2, game.getPlayers().get(1).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER0, game.getPlayers().get(2).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER1, game.getPlayers().get(0).getPlayerNum());
 
         List<Position> pos = new ArrayList<>(List.of(
                 new Position(0, 0),
@@ -500,8 +508,7 @@ public class GameTest {
             game.canMoveWorker(posMosse.get(cont * 2));
             //If Minotaur actives the power
             if (game.getPlayers().get(cont).getGodName().equals("Minotaur")){
-                assertTrue(game.canMoveWorker(posMosse.get(cont*2)));
-                assertTrue(game.getPlayers().get(cont).getActivePower());
+                assertFalse(game.canMoveWorker(posMosse.get(cont*2)));
                 assertTrue(game.canUsePowerWorker(powerPos2));
                 game.usePowerWorker(powerPos2);
                 assertEquals(game.getPlayers().get(cont).getPlayerNum(), game.getBoard().getOccupiedPlayer(powerPos2));
@@ -510,10 +517,11 @@ public class GameTest {
             game.moveWorker(posMosse.get(cont * 2));
             //If Athena actives the power
             if (game.getPlayers().get(cont).getGodName().equals("Athena")){
-                assertTrue(game.canUsePowerWorker(posMosse.get(4)));
-                game.usePowerWorker(posMosse.get(4));
+                game.build(posMosse.get(5));
+                assertFalse(game.canMoveWorker(posMosse.get(5)));
+                assertTrue(game.canUsePowerWorker(posMosse.get(5)));
+                game.usePowerWorker(posMosse.get(5));
             }
-            assertEquals(game.getPlayers().get(cont).getPlayerNum(), game.getBoard().getOccupiedPlayer(posMosse.get(cont * 2)));
             assertFalse(game.hasWonCurrentPlayer());
             game.canBuild(posMosse.get(cont * 2 + 1));
             game.build(posMosse.get(cont * 2 + 1));
@@ -539,8 +547,8 @@ public class GameTest {
         assertTrue(game.getPlayers().get(1).getCantGoUp());
         game.endTurn();
         game.startTurn();
-        game.setStartingWorker(posMosse.get(4));
-        assertEquals(game.getPlayers().get(2).getPlayerNum(), game.getBoard().getOccupiedPlayer(posMosse.get(4)));
+        game.setStartingWorker(posMosse.get(5));
+        assertEquals(game.getPlayers().get(2).getPlayerNum(), game.getBoard().getOccupiedPlayer(posMosse.get(5)));
         assertFalse(game.getPlayers().get(2).getCantGoUp());
         game.endTurn();
         game.startTurn();
@@ -554,13 +562,15 @@ public class GameTest {
         assertFalse(game.getPlayers().get(1).getCantGoUp());
         game.endTurn();
         game.startTurn();
-        game.setStartingWorker(posMosse.get(4));
-        assertEquals(game.getPlayers().get(2).getPlayerNum(), game.getBoard().getOccupiedPlayer(posMosse.get(4)));
+        game.setStartingWorker(posMosse.get(5));
+        assertEquals(game.getPlayers().get(2).getPlayerNum(), game.getBoard().getOccupiedPlayer(posMosse.get(5)));
         assertFalse(game.getPlayers().get(2).getCantGoUp());
-    }*/
+    }
 
-
-
+    @After
+    public void reload(){
+        game.deleteInstance();
+    }
 
 
 }

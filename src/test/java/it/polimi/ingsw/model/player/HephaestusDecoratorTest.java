@@ -53,6 +53,7 @@ public class HephaestusDecoratorTest {
         board.putWorker(workerPosition,PlayerIndex.PLAYER0);
         playerHephaestus.setStartingWorkerSituation(board.getCell(workerPosition),false);
         assertTrue(playerHephaestus.canBuild(board.getAdjacentPlayers(workerPosition), board.getCell(buildPosition)));
+        board.constructBlock(buildPosition);
 
         List<Cell> power = new ArrayList<>();
         power.add(board.getCell(buildPosition));
@@ -70,13 +71,14 @@ public class HephaestusDecoratorTest {
     public void canUsePowerBlocked(){
         //Create a tower level 2
         board.constructBlock(buildPosition);
-        board.constructBlock(buildPosition);
         board.putWorker(workerPosition, PlayerIndex.PLAYER0);
         playerHephaestus.setStartingWorkerSituation(board.getCell(workerPosition), false);
         assertTrue(playerHephaestus.canBuild(board.getAdjacentPlayers(workerPosition), board.getCell(buildPosition)));
 
+        board.constructBlock(buildPosition);
         List<Cell> power = new ArrayList<>();
         power.add(board.getCell(buildPosition));
+
         assertTrue(playerHephaestus.canUsePower(power, board.getAdjacentPlayers(workerPosition)));
 
         //Upgrade tower to level 3
@@ -97,15 +99,12 @@ public class HephaestusDecoratorTest {
         assertEquals(1,board.getCell(buildPosition).getLevel());
         List<Cell> power = new ArrayList<>();
         power.add(board.getCell(buildPosition));
-        playerHephaestus.activePowerAfterBuild();
         assertTrue(playerHephaestus.canUsePower(power,board.getAdjacentPlayers(workerPosition)));
         boardChange = playerHephaestus.usePower(board.getCell(buildPosition));
         board.updateAfterPower(boardChange);
         assertEquals(BuildType.LEVEL,boardChange.getBuildType());
         assertEquals(2,board.getCell(buildPosition).getLevel());
 
-
-        assertFalse(playerHephaestus.getActivePower());
     }
 
     @Test

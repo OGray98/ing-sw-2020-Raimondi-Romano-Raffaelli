@@ -16,13 +16,11 @@ public class Player implements PlayerInterface{
     private Cell oldCell;
     private Cell cellOccupied;
     private boolean cantGoUp;
-    private boolean activePower;
 
     public Player(String nickName, PlayerIndex playerNum){
         this.nickName = nickName;
         this.playerNum = playerNum;
         this.cantGoUp = false;
-        this.activePower = false;
     }
 
     /*Set values of the situation after the first insert of a worker*/
@@ -45,11 +43,6 @@ public class Player implements PlayerInterface{
     public void setAfterMove(Cell oldCell, Cell cellOccupied){
         this.oldCell = oldCell;
         this.cellOccupied = cellOccupied;
-    }
-
-    @Override
-    public void setActivePower(boolean isPowerOn){
-        this.activePower = isPowerOn;
     }
 
     @Override
@@ -122,10 +115,6 @@ public class Player implements PlayerInterface{
     }
 
     @Override
-    public void activePowerAfterBuild(){
-    }
-
-    @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
         return false;
     }
@@ -147,11 +136,6 @@ public class Player implements PlayerInterface{
         if(this.cellOccupied == null) throw new NullPointerException("Worker has not a cell occupied");
 
         return new Cell(this.cellOccupied);
-    }
-
-    @Override
-    public boolean getActivePower(){
-        return this.activePower;
     }
 
     @Override

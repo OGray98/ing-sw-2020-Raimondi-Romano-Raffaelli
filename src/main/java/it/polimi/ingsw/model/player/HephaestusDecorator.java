@@ -35,14 +35,8 @@ public class HephaestusDecorator extends PlayerBuildDecorator {
     }
 
     @Override
-    public void activePowerAfterBuild() {
-        this.buildCell.incrementLevel();
-
-    }
-
-    @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) {
-        if(super.canBuild(adjacentPlayerList, adjacentList.get(0)) && this.buildCell.equals(adjacentList.get(0)) && (adjacentList.get(0).getLevel() < 3))
+        if(super.canBuild(adjacentPlayerList, adjacentList.get(0)) && this.buildCell.getPosition().equals(adjacentList.get(0).getPosition()) && this.buildCell.getLevel() == (adjacentList.get(0).getLevel() - 1) && (adjacentList.get(0).getLevel() < 3))
             return true;
         return false;
     }

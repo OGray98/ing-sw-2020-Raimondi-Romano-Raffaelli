@@ -80,7 +80,6 @@ public class ApolloDecoratorTest {
         List<Cell> powers1 = new ArrayList<>();
         powers1.add(board.getCell(new Position(0,1)));
         assertFalse(playerApollo.canUsePower(powers1,board.getAdjacentPlayers(workerPosition)));
-        assertFalse(playerApollo.getActivePower());
         List<Cell> powers2 = new ArrayList<>();
         powers2.add(board.getCell(secondWorkerPosition));
         //Case when Apollo selected other worker of his team

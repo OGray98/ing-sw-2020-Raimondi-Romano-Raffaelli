@@ -10,9 +10,12 @@ public class GameLobby {
     private ArrayList<String> lobbyPlayers;
     private boolean threePlayersGame;
 
-    public GameLobby(boolean threePlayersGame){
-        this.threePlayersGame = threePlayersGame;
+    public GameLobby(){
         this.lobbyPlayers = new ArrayList<>();
+    }
+
+    public void setThreePlayersGame(boolean threePlayersGame){
+        this.threePlayersGame = threePlayersGame;
     }
 
     public void addPlayer(String playerNick){
