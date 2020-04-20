@@ -136,7 +136,7 @@ public class GodPhaseManagerTest {
 
     @Test
     public void puttingWorkerTest(){
-        
+
 
         Position samePos = new Position(1,1);
         try{
