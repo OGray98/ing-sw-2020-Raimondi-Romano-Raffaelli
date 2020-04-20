@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exception.NotAdjacentMovementException;
+import it.polimi.ingsw.exception.NotPresentWorkerException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Cell;
@@ -15,8 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TurnManagerTest {
 
@@ -37,6 +38,7 @@ public class TurnManagerTest {
         domePos = new ArrayList<>(List.of(
                 new Position(3, 3),
                 new Position(4, 3),
+                new Position(1, 0),
                 new Position(3, 4)
         ));
         level1Pos = new ArrayList<>(List.of(
@@ -45,10 +47,13 @@ public class TurnManagerTest {
         ));
         level2Pos = new ArrayList<>(List.of(
                 new Position(2, 0),
-                new Position(3, 4)
+                new Position(3, 4),
+                new Position(0, 3),
+                new Position(1, 4)
         ));
         level3Pos = new ArrayList<>(List.of(
-                new Position(2, 3)
+                new Position(2, 3),
+                new Position(1, 3)
         ));
 
         players = new ArrayList<>(3);
@@ -77,7 +82,7 @@ public class TurnManagerTest {
                 new Position(0, 1),
                 new Position(2, 2),
                 new Position(0, 4),
-                new Position(0, 3),
+                new Position(0, 4),
                 new Position(4, 4)
         )
         );
@@ -91,8 +96,7 @@ public class TurnManagerTest {
         gods = new ArrayList<>(List.of("Atlas", "Apollo", "Prometheus"));
         Collections.rotate(gods, -1);
         gameInstance.setGodsChosenByGodLike(gods);
-        for (int i = 0; i < gods.size(); i++)
-            gameInstance.setPlayerCard(gods.get(i));
+        for (String god : gods) gameInstance.setPlayerCard(god);
         Collections.rotate(gods, 1);
         gameInstance.chooseFirstPlayer(PlayerIndex.PLAYER0);
 
@@ -112,7 +116,96 @@ public class TurnManagerTest {
     public void canCurrentPlayerMoveAWorkerTest() {
         turnManager.startTurn();
         assertTrue(turnManager.canCurrentPlayerMoveAWorker());
-        //endturn piu controllo sugli altri
+        gameInstance.endTurn();
+        gameInstance.endTurn();
+        turnManager.startTurn();
+        assertFalse(turnManager.canCurrentPlayerMoveAWorker());
+    }
+
+    @Test
+    public void movementPositionsTest() {
+        Position w1 = new Position(1, 1);
+        turnManager.startTurn();
+        assertTrue(turnManager.canCurrentPlayerMoveAWorker());
+        ArrayList<Position> expectedMovePos = new ArrayList<>(List.of(
+                new Position(0, 0),
+                new Position(0, 2),
+                new Position(1, 2),
+                new Position(2, 1)
+        ));
+        assertEquals(expectedMovePos, turnManager.movementPositions(w1));
+
+        try {
+            turnManager.movementPositions(null);
+        } catch (NullPointerException e) {
+            assertEquals("workerPos", e.getMessage());
+        }
+        try {
+            turnManager.movementPositions(new Position(3, 3));
+        } catch (NotPresentWorkerException e) {
+            assertEquals("There isn't a worker of " + PlayerIndex.PLAYER0 + " in : [" + 3 + "][" + 3 + "]", e.getMessage());
+        }
+    }
+
+    @Test
+    public void isValidMovementTest() {
+        turnManager.startTurn();
+        Position w1 = new Position(1, 1);
+        assertTrue(turnManager.canCurrentPlayerMoveAWorker());
+        assertTrue(turnManager.isValidMovement(w1, new Position(2, 1)));
+        assertFalse(turnManager.isValidMovement(w1, new Position(0, 1)));
+        assertFalse(turnManager.isValidMovement(new Position(2, 1), new Position(0, 1)));
+
+        try {
+            turnManager.isValidMovement(null, new Position(2, 1));
+        } catch (NullPointerException e) {
+            assertEquals("workerPos", e.getMessage());
+        }
+
+        try {
+            turnManager.isValidMovement(w1, null);
+        } catch (NullPointerException e) {
+            assertEquals("movePos", e.getMessage());
+        }
+    }
+
+    @Test
+    public void moveWorkerTest() {
+        turnManager.startTurn();
+        Position w1 = new Position(1, 1);
+        Position newW1 = new Position(2, 1);
+        assertTrue(turnManager.canCurrentPlayerMoveAWorker());
+        assertTrue(turnManager.isValidMovement(w1, newW1));
+
+        turnManager.moveWorker(w1, newW1);
+        assertEquals(PlayerIndex.PLAYER0, gameInstance.getBoard().getOccupiedPlayer(newW1));
+        assertTrue(gameInstance.getBoard().isFreeCell(w1));
+
+        try {
+            turnManager.moveWorker(null, newW1);
+        } catch (NullPointerException e) {
+            assertEquals("workerPos", e.getMessage());
+        }
+
+        try {
+            turnManager.moveWorker(w1, null);
+        } catch (NullPointerException e) {
+            assertEquals("movePos", e.getMessage());
+        }
+
+        try {
+            turnManager.moveWorker(new Position(2, 2), newW1);
+        } catch (NotPresentWorkerException e) {
+            assertEquals("There isn't a worker of " +
+                    PlayerIndex.PLAYER0 + " in : [" + 2 + "][" + 2 + "]", e.getMessage());
+        }
+
+        try {
+            turnManager.moveWorker(w1, new Position(3, 0));
+        } catch (NotAdjacentMovementException e) {
+            assertEquals("You can't move a player from Position :[" + w1.row + "][" + w1.col + "]" +
+                    "to Position : [" + 3 + "][" + 0 + "]", e.getMessage());
+        }
     }
 
     @After

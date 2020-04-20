@@ -146,7 +146,7 @@ public class TurnManager {
      * @throws NotPresentWorkerException    if in workerPos there isn't any worker of current Player
      * @throws NotAdjacentMovementException workerPos isn't adjacent to movePos
      */
-    public void moveWorker(Position buildPosition) throws NullPointerException, NotPresentWorkerException, NotAdjacentMovementException {
+    public void buildWorker(Position buildPosition) throws NullPointerException, NotPresentWorkerException, NotAdjacentMovementException {
         if (buildPosition == null)
             throw new NullPointerException("buildPosition");
         if (workerMovedPosition == null)
