@@ -47,6 +47,9 @@ public class GodPhaseManagerTest {
         assertEquals(PlayerIndex.PLAYER0,game.getPlayers().get(0).getPlayerNum());
     }
 
+    /**
+     * Test if player God like choose the corrected number of the Gods, and the corrected name of each chosen divinities
+     */
     @Test
     public void godLikeChooseCardTest(){
 
@@ -72,6 +75,9 @@ public class GodPhaseManagerTest {
 
     }
 
+    /**
+     * Verify if th chosen god boolean are set correctly
+     */
     @Test
     public void setBoolGodLikeException(){
 
@@ -91,6 +97,9 @@ public class GodPhaseManagerTest {
 
     }
 
+    /**
+     * Test if the god selected from each player is assigned correctly
+     */
     @Test
     public void playerChooseGodTest(){
 
@@ -125,6 +134,10 @@ public class GodPhaseManagerTest {
 
     }
 
+
+    /**
+     * Test if the order of player after choosing the first is correctly
+     */
     @Test
     public void chooseGodLikeFirstPlayerTest(){
 
@@ -135,6 +148,9 @@ public class GodPhaseManagerTest {
         assertEquals(PlayerIndex.PLAYER0,game.getPlayers().get(2).getPlayerNum());
     }
 
+    /**
+     * Test if the player put theirs workers on the board correctly
+     */
     @Test
     public void puttingWorkerTest(){
 
