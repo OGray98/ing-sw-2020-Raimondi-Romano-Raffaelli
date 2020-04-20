@@ -49,9 +49,6 @@ public interface PlayerInterface {
     * in Decorator class can set activePower */
     void move(Cell newOccupiedCell) throws NullPointerException;
 
-    /*In Decorator classes can set active power, called after a build action*/
-    void activePowerAfterBuild();
-
     /*Method that will be specialized in the Decorator class, it refers to a specific God power*/
     boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList);
 

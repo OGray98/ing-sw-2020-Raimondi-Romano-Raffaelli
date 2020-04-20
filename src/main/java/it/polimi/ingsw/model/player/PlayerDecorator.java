@@ -80,11 +80,6 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     }
 
     @Override
-    public void activePowerAfterBuild(){
-        player.activePowerAfterBuild();
-    }
-
-    @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) {
         return player.canUsePower(adjacentList, adjacentPlayerList);
     }
