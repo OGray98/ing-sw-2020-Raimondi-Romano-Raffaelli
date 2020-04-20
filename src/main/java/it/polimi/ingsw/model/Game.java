@@ -92,7 +92,7 @@ public class Game {
             }
         }
         deck.setChosenGodCards(godNames);
-        contCurrentPlayer = 0;
+        contCurrentPlayer = 1;
         currentPlayer = players.get(contCurrentPlayer);
     }
 
@@ -367,7 +367,7 @@ public class Game {
     }
 
     public Board getBoard() {
-        return new Board(this.board); //TODO non funziona costruttore copia board
+        return this.board; //TODO non funziona costruttore copia board
     }
 
     /* Private method that return a List<Cell> which will be used in Player::canUsePower()

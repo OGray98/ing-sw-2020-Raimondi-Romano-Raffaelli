@@ -272,6 +272,9 @@ public class GameTest {
         assertEquals(PlayerIndex.PLAYER2, game.getPlayers().get(1).getPlayerNum());
         assertEquals(PlayerIndex.PLAYER0, game.getPlayers().get(2).getPlayerNum());
 
+
+
+
         List<Position> pos = new ArrayList<>(List.of(
                 new Position(0, 0),
                 new Position(0, 3),
@@ -352,7 +355,7 @@ public class GameTest {
 
 
     //Test game, Gods: Atlas, Apollo, Prometheus
-    @Test
+   /* @Test
     public void gameTestAAP(){
 
         List<String> gods = new ArrayList<>(List.of("Atlas", "Apollo", "Prometheus"));
@@ -445,10 +448,10 @@ public class GameTest {
         assertTrue(game.canUsePowerWorker(new Position(4,3)));
         game.usePowerWorker(new Position(4,3));
         assertFalse(game.canMoveWorker(new Position(3,4)));
-    }
+    }*/
 
 
-    /*@Test
+    @Test
     public void totalTestHephaestusMinotaurAthena(){
         //god Like sceglie le carte
         List<String> gods = new ArrayList<>(List.of("Hephaestus", "Minotaur", "Athena"));
@@ -466,6 +469,8 @@ public class GameTest {
         assertEquals(PlayerIndex.PLAYER1, game.getPlayers().get(1).getPlayerNum());
         assertEquals(PlayerIndex.PLAYER2, game.getPlayers().get(2).getPlayerNum());
         assertEquals(PlayerIndex.PLAYER0, game.getPlayers().get(0).getPlayerNum());
+
+
 
         List<Position> pos = new ArrayList<>(List.of(
                 new Position(0, 0),
@@ -557,7 +562,7 @@ public class GameTest {
         game.setStartingWorker(posMosse.get(4));
         assertEquals(game.getPlayers().get(2).getPlayerNum(), game.getBoard().getOccupiedPlayer(posMosse.get(4)));
         assertFalse(game.getPlayers().get(2).getCantGoUp());
-    }*/
+    }
 
 
 
