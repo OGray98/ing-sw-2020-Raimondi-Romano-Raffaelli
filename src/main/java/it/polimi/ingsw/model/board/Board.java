@@ -80,13 +80,11 @@ public class Board extends Observable<BoardChange> {
         return new Cell(this.map[position.row][position.col]);
     }
 
-    public void setCell(Cell cell, Position pos) throws NullPointerException {
-        if (pos == null)
-            throw new NullPointerException("pos");
+    public void setCell(Cell cell) throws NullPointerException {
         if (cell == null)
             throw new NullPointerException("cell");
 
-        this.map[pos.row][pos.col] = new Cell(cell);
+        this.map[cell.getPosition().row][cell.getPosition().col] = new Cell(cell);
 
     }
 
