@@ -15,12 +15,14 @@ public class GameLobbyTest {
 
     @Before
     public void init(){
-        lobby2p = new GameLobby(false);
-        lobby3p = new GameLobby(true);
+        lobby2p = new GameLobby();
+        lobby3p = new GameLobby();
     }
 
     @Test
     public void addPlayerTest2Player(){
+        lobby2p.setThreePlayersGame(false);
+
         lobby2p.addPlayer("Jack");
         assertEquals(lobby2p.getLobbyPlayers().size(), 1);
         try{
@@ -42,6 +44,8 @@ public class GameLobbyTest {
 
     @Test
     public void addPlayerTest3Player(){
+        lobby3p.setThreePlayersGame(true);
+
         lobby3p.addPlayer("Jack");
         assertEquals(lobby3p.getLobbyPlayers().size(), 1);
         try{

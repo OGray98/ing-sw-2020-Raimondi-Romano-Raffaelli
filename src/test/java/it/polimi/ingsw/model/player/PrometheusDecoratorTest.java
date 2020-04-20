@@ -64,7 +64,6 @@ public class PrometheusDecoratorTest {
         assertTrue(playerPrometheus.getCantGoUp());
 
         assertFalse(playerPrometheus.canMove(board.getAdjacentPlayers(workerPosition),board.getCell(towerTwoPosition)));
-        assertFalse(playerPrometheus.getActivePower());
         board.updateAfterPower(boardChange);
         assertEquals(1,board.getCell(towerOnePosition).getLevel());
         playerPrometheus.move(board.getCell(workerPosition));

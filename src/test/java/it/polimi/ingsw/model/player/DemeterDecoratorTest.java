@@ -89,8 +89,6 @@ public class DemeterDecoratorTest {
             assertEquals("cantGoUp", e.getMessage());
         }
 
-        assertFalse(playerDemeter.getActivePower());
-
         assertEquals(playerDemeter.usePower(board.getCell(secondBuildPosition)).getBuildType(), BuildType.LEVEL);
         assertEquals(playerDemeter.usePower(board.getCell(secondBuildPosition)).getPositionBuild(), secondBuildPosition);
         try{
@@ -99,8 +97,6 @@ public class DemeterDecoratorTest {
         catch(NullPointerException e){
             assertEquals("playerChanges", e.getMessage());
         }
-
-        assertFalse(playerDemeter.getActivePower());
     }
 
     //Simple check for the powerListDimension

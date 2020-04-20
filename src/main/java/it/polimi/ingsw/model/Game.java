@@ -32,14 +32,35 @@ public class Game {
     private int contCurrentWorker;
 
 
-    private Game(List<PlayerInterface> players) throws NullPointerException {
+    private Game(List<PlayerInterface> players) throws NullPointerException, IllegalArgumentException {
         if (players == null)
             throw new NullPointerException("players");
         if (players.size() > 3 || players.size() == 1)
             throw new IllegalArgumentException("There can be only 2 or 3 player, you want "
                     + players.size() + " players");
+
         this.players = new ArrayList<>(players);
         board = new Board();
+        deck = new Deck(players.size());
+        numPlayer = players.size();
+        contCurrentPlayer = 0;
+        currentPlayer = players.get(0);
+        cantGoUp = false;
+        contEffect = 0;
+        contCurrentWorker = 0;
+    }
+
+    private Game(List<PlayerInterface> players, Board board) throws NullPointerException, IllegalArgumentException {
+        if (players == null)
+            throw new NullPointerException("players");
+        if (board == null)
+            throw new NullPointerException("board");
+        if (players.size() > 3 || players.size() == 1)
+            throw new IllegalArgumentException("There can be only 2 or 3 player, you want "
+                    + players.size() + " players");
+
+        this.players = new ArrayList<>(players);
+        this.board = new Board(board);
         deck = new Deck(players.size());
         numPlayer = players.size();
         contCurrentPlayer = 0;
@@ -53,6 +74,13 @@ public class Game {
         if (gameInstance != null)
             throw new AlreadyPresentGameException();
         gameInstance = new Game(players);
+        return gameInstance;
+    }
+
+    public static Game createInstance(List<PlayerInterface> players, Board board) {
+        if (gameInstance != null)
+            throw new AlreadyPresentGameException();
+        gameInstance = new Game(players, board);
         return gameInstance;
     }
 
@@ -92,6 +120,8 @@ public class Game {
             }
         }
         deck.setChosenGodCards(godNames);
+
+        //The player who start to chose the card is the first after godLike
         contCurrentPlayer = 1;
         currentPlayer = players.get(contCurrentPlayer);
     }
@@ -148,6 +178,10 @@ public class Game {
             if (contEffect == 0)
                 cantGoUp = false;
         }
+    }
+
+    public List<Position> getCurrentPlayerWorkersPosition() {
+        return this.board.workerPositions(currentPlayer.getPlayerNum());
     }
 
 
@@ -233,7 +267,6 @@ public class Game {
     public void moveWorker(Position movePos) throws NullPointerException {
         if (movePos == null)
             throw new NullPointerException("movePos");
-        //currentPosition = currentPlayer.getCellOccupied().getPosition();//TODO guarda la modifica
         board.changeWorkerPosition(currentPosition, movePos);
         currentPlayer.move(board.getCell(movePos));
         currentPosition = movePos;
@@ -287,12 +320,10 @@ public class Game {
     /* Method that build a block in buildPos and check if the player can activate his power after build
      * Requires a not null Position where build
      */
-    //TODO il controller controlla che la posizione sia adiacente al worker
     public void build(Position buildPos) throws NullPointerException {
         if (buildPos == null)
             throw new NullPointerException("buildPos");
         board.constructBlock(buildPos);
-        currentPlayer.activePowerAfterBuild();
     }
 
     //Method that check if the current player has won
@@ -367,7 +398,11 @@ public class Game {
     }
 
     public Board getBoard() {
-        return this.board; //TODO non funziona costruttore copia board
+        return new Board(this.board); //TODO non funziona costruttore copia board
+    }
+
+    public PlayerIndex getCurrentPlayerIndex() {
+        return currentPlayer.getPlayerNum();
     }
 
     /* Private method that return a List<Cell> which will be used in Player::canUsePower()
