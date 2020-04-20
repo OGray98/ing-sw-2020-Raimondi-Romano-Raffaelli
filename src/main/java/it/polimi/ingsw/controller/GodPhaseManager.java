@@ -36,6 +36,9 @@ public class GodPhaseManager {
         return this.godsChosen;
     }
 
+    /**
+     * @param godName name of god that godLike want to choose
+     */
     public void GodLikeChooseCards(String godName){
 
         if(this.godsChosen.size() == game.getPlayers().size()){
@@ -53,6 +56,9 @@ public class GodPhaseManager {
             throw new WrongGodNameException(godName);
     }
 
+    /**
+     * Take the godLike chosen cards and set the boolean of the Gods
+     */
     public void setBoolGodLike(){
         if(godsChosen.size() == game.getPlayers().size())
             game.setGodsChosenByGodLike(this.godsChosen);
@@ -60,6 +66,12 @@ public class GodPhaseManager {
             throw new NotEnoughGodsForPlayerException((game.getPlayers().size() - godsChosen.size()));
     }
 
+
+    /**
+     * The player God like take the last card remained
+     * @param cardGodName name of the God that the current Player want
+     *
+     */
     public void playerChooseGod(String cardGodName){
 
         if(this.godsChosen.size() == 0){
@@ -83,11 +95,18 @@ public class GodPhaseManager {
         }
     }
 
+    /**
+     * @param playerFirst PlayerIndex of the first Player
+     */
     public void godLikeChooseFirstPlayer(PlayerIndex playerFirst){
         game.chooseFirstPlayer(playerFirst);
     }
 
 
+    /**
+     * @param posWorkerOne Position (row,col) of the first worker
+     * @param posWorkerTwo Position (row,col) of the second worker
+     */
     public void puttingWorkerInBoard(Position posWorkerOne, Position posWorkerTwo){
 
         if(posWorkerOne.equals(posWorkerTwo)){

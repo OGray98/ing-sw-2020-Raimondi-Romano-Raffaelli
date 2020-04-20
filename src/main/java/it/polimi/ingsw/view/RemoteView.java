@@ -41,7 +41,7 @@ public class RemoteView implements Observer<BoardChange> {
             if (message.getBuildType() == BuildType.DOME) {
                 Cell aus = board.getCell(message.getPositionBuild());
                 aus.setHasDome(true);
-                board.setCell(aus, message.getPositionBuild());
+                board.setCell(aus);
             } else
                 board.constructBlock(message.getPositionBuild());
         }
