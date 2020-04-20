@@ -62,6 +62,10 @@ public class Game {
         return gameInstance;
     }
 
+    public static void deleteInstance() {
+        gameInstance = null;
+    }
+
     /* Method that return a map with of all cards in deck
      */
     public Map<String, String> getCards() {
