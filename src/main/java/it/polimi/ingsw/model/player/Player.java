@@ -74,7 +74,7 @@ public class Player implements PlayerInterface{
     }
 
     @Override
-    public boolean canMove(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell, Cell occupiedCell, boolean cantGoUp) throws InvalidPositionException, NullPointerException {
+    public boolean canMoveWithPowers(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell, Cell occupiedCell, boolean cantGoUp) throws InvalidPositionException, NullPointerException {
         this.setStartingWorkerSituation(occupiedCell, cantGoUp);
         return canMove(adjacentPlayerList, moveCell);
     }

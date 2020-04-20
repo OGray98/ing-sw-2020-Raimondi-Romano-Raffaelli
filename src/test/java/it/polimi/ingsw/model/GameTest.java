@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exception.AlreadyPresentGameException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.deck.CardInterface;
 import it.polimi.ingsw.model.player.Player;
@@ -21,6 +22,7 @@ public class GameTest {
     private static Game game;
     private static List<PlayerInterface> players;
     private static Board board;
+    private static Board premadeBoard;
     private static Position firstPlayerFirstWorkerPos;
     private static Position firstPlayerSecondWorkerPos;
     private static Map<PlayerIndex, CardInterface> playersCards;
@@ -567,10 +569,154 @@ public class GameTest {
         assertFalse(game.getPlayers().get(2).getCantGoUp());
     }
 
+    @Test
+    public void canPlayerMoveAWorkerTest(){
+
+        //First test: generic Player, check if canPlayerMoveAWorker() works
+        firstPlayerFirstWorkerPos = new Position(1,1);
+        firstPlayerSecondWorkerPos = new Position(3,3);
+
+        game.putWorker(firstPlayerFirstWorkerPos);
+        game.putWorker(firstPlayerSecondWorkerPos);
+
+        game.endTurn();
+        game.endTurn();
+
+        assertEquals(game.canPlayerMoveAWorker().size(),2);
+
+        //Block worker in firstPlayerFirstWorkerPos position
+        for(Cell c : board.getAdjacentCells(firstPlayerFirstWorkerPos)){
+            game.build(c.getPosition());
+            game.build(c.getPosition());
+        }
+
+        assertEquals(game.canPlayerMoveAWorker().size(), 1);
+        assertTrue(game.canPlayerMoveAWorker().get(0).equals(firstPlayerSecondWorkerPos));
+
+        //Block worker in firstPlayerSecondWorkerPos position
+        for(Cell c : board.getAdjacentCells(firstPlayerSecondWorkerPos)){
+            game.build(c.getPosition());
+            game.build(c.getPosition());
+        }
+
+        assertEquals(game.canPlayerMoveAWorker().size(), 0);
+
+        game.endTurn();
+
+        //Second test: check if Apollo is not blocked if the only cell where he can move is occupied by an enemy
+
+        secondPlayerFirstWorker = new Position(4,0);
+        secondPlayerSecondWorker = new Position(0,4);
+
+        List<String> gods = new ArrayList<>();
+        gods.add("Apollo");
+        gods.add("Athena");
+        gods.add("Pan");
+
+        game.setGodsChosenByGodLike(gods);
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        game.setPlayerCard("Apollo");
+
+        game.endTurn();
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        game.putWorker(secondPlayerFirstWorker);
+        game.putWorker(secondPlayerSecondWorker);
+
+        game.endTurn();
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        assertEquals(game.canPlayerMoveAWorker().size(), 2);
+
+        //Case where Apollo can only move in a cell occupied by an enemy
+        game.build(new Position(0,3));
+        game.build(new Position(0,3));
+        game.build(new Position(1,4));
+        game.build(new Position(1,4));
+
+        assertEquals(game.canPlayerMoveAWorker().size(), 2);
+
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+
+        //Put an enemy near Apollo
+        game.putWorker(new Position(1,3));
+
+        game.endTurn();
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        //Check Apollo is still free
+        assertEquals(game.canPlayerMoveAWorker().size(), 2);
+
+        //Block the other worker of Apollo
+        for(Cell c : board.getAdjacentCells(secondPlayerFirstWorker)){
+            game.build(c.getPosition());
+            game.build(c.getPosition());
+        }
+
+        //Check that now only one worker of Apollo is free
+        assertEquals(game.canPlayerMoveAWorker().size(), 1);
+        assertTrue(game.canPlayerMoveAWorker().get(0).equals(secondPlayerSecondWorker));
+    }
+
+    @Test
+    public void canPlayerMoveAWorkerTestPart2(){
+
+        firstPlayerFirstWorkerPos = new Position(1,1);
+        firstPlayerSecondWorkerPos = new Position(3,3);
+
+        List<String> gods = new ArrayList<>();
+        gods.add("Apollo");
+        gods.add("Athena");
+        gods.add("Pan");
+
+        game.setGodsChosenByGodLike(gods);
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        //Check that Athena uses her dedicated canMoveWithPower() method
+        game.setPlayerCard("Athena");
+
+        game.endTurn();
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        game.putWorker(firstPlayerFirstWorkerPos);
+        game.putWorker(firstPlayerSecondWorkerPos);
+
+        game.endTurn();
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        assertEquals(game.canPlayerMoveAWorker().size(), 2);
+
+        //Build tower level one near Athena
+        for(Cell c : board.getAdjacentCells(firstPlayerSecondWorkerPos)){
+            game.build(c.getPosition());
+        }
+
+        assertEquals(game.canPlayerMoveAWorker().size(), 2);
+
+        //Block with tower level two the same worker
+        for(Cell c : board.getAdjacentCells(firstPlayerSecondWorkerPos)){
+            game.build(c.getPosition());
+        }
+
+        assertEquals(game.canPlayerMoveAWorker().size(), 1);
+    }
+
     @After
     public void reload(){
         game.deleteInstance();
     }
-
-
 }

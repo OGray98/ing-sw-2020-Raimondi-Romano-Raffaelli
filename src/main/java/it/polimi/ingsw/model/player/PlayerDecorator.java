@@ -60,8 +60,8 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     }
 
     @Override
-    public boolean canMove(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell, Cell occupiedCell, boolean cantGoUp) throws InvalidPositionException, NullPointerException {
-        return player.canMove(adjacentPlayerList, moveCell, occupiedCell, cantGoUp);
+    public boolean canMoveWithPowers(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell, Cell occupiedCell, boolean cantGoUp) throws InvalidPositionException, NullPointerException {
+        return player.canMoveWithPowers(adjacentPlayerList, moveCell, occupiedCell, cantGoUp);
     }
 
     @Override

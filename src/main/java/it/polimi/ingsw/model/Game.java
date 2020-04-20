@@ -195,7 +195,7 @@ public class Game {
                 .filter(workerPos -> {
                             List<Cell> adjacentCells = board.getAdjacentCells(workerPos);
                             return adjacentCells.stream()
-                                    .anyMatch(cell -> currentPlayer.canMove(
+                                    .anyMatch(cell -> currentPlayer.canMoveWithPowers(
                                             board.getPlayersOccupations(new ArrayList<>(List.of(cell.getPosition()))),
                                             cell,
                                             board.getCell(workerPos),
@@ -247,7 +247,7 @@ public class Game {
         if (workerPos == null)
             throw new NullPointerException("workerPos");
         return this.board.getAdjacentCells(workerPos).stream()
-                .filter(cell -> currentPlayer.canMove(
+                .filter(cell -> currentPlayer.canMoveWithPowers(
                         board.getPlayersOccupations(new ArrayList<>(List.of(cell.getPosition()))),
                         cell,
                         board.getCell(workerPos),

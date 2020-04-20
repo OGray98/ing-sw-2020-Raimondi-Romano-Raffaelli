@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.Position;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,13 @@ public class ApolloDecorator extends PlayerMoveDecorator {
         return 1;
     }
 
+    @Override
+    public boolean canMoveWithPowers(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell, Cell occupiedCell, boolean cantGoUp){
+        this.setStartingWorkerSituation(occupiedCell, cantGoUp);
+        List<Cell> moveCellList = new ArrayList<>();
+        moveCellList.add(moveCell);
+        return canMove(adjacentPlayerList, moveCell) || this.canUsePower(moveCellList, adjacentPlayerList);
+    }
 
     @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList) {

@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.Position;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +26,13 @@ public class MinotaurDecorator extends PlayerMoveDecorator {
         return 2;
     }
 
-
-
+    @Override
+    public boolean canMoveWithPowers(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell, Cell occupiedCell, boolean cantGoUp){
+        this.setStartingWorkerSituation(occupiedCell, cantGoUp);
+        List<Cell> moveCellList = new ArrayList<>();
+        moveCellList.add(moveCell);
+        return canMove(adjacentPlayerList, moveCell) || this.canUsePower(moveCellList, adjacentPlayerList);
+    }
 
     /*Requires List<Cell> with the cell where Minotaur want to move and the cell where the opponent player will be moved
     * Requires Map<Position, PlayerIndex> with the informations about the two cell of List<Cell>
