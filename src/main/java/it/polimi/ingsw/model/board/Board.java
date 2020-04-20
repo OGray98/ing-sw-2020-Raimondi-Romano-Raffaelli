@@ -39,9 +39,7 @@ public class Board extends Observable<BoardChange> {
         }
         //Entry of playerPosition are added when someone call putWorker
         this.playerPosition = new HashMap<>(capacityPlayerPosition);
-        this.playerPosition.put(PlayerIndex.PLAYER0, new ArrayList<>(that.playerPosition.get(PlayerIndex.PLAYER0)));
-        this.playerPosition.put(PlayerIndex.PLAYER1, new ArrayList<>(that.playerPosition.get(PlayerIndex.PLAYER1)));
-        this.playerPosition.put(PlayerIndex.PLAYER2, new ArrayList<>(that.playerPosition.get(PlayerIndex.PLAYER2)));
+        that.playerPosition.forEach((key, value) -> this.playerPosition.put(key, new ArrayList<>(value)));
     }
 
     /*Returns true if the cell in Position cellPosition is empty
