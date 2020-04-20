@@ -115,10 +115,6 @@ public class Player implements PlayerInterface{
     }
 
     @Override
-    public void activePowerAfterBuild(){
-    }
-
-    @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
         return false;
     }
