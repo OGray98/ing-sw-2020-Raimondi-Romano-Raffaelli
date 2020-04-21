@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Board extends Observable<BoardChange> {
+public class Board extends Observable<Board> {
 
     private static final int NUM_ROW = 5;
     private static final int NUM_COLUMNS = 5;
     private static final int capacityPlayerPosition = 3;
-    private Cell[][] map;
-    private Map<PlayerIndex, List<Position>> playerPosition;
+    private final Cell[][] map;
+    private final Map<PlayerIndex, List<Position>> playerPosition;
 
 
     public Board() {
@@ -135,7 +135,8 @@ public class Board extends Observable<BoardChange> {
                     List<Position> newPositions = new ArrayList<>(list);
                     newPositions.add(newPosition);
                     this.playerPosition.put(entry.getKey(), newPositions);
-                    notify(new BoardChange(oldPosition, newPosition, entry.getKey()));
+                    //notify(new BoardChange(oldPosition, newPosition, entry.getKey()));
+                    notify(new Board(this));
                     return;
                 }
             }
@@ -152,7 +153,8 @@ public class Board extends Observable<BoardChange> {
             throw new NullPointerException("buildPosition");
 
         this.map[buildPosition.row][buildPosition.col].incrementLevel();
-        notify(new BoardChange(buildPosition, BuildType.LEVEL));
+        //notify(new BoardChange(buildPosition, BuildType.LEVEL));
+        notify(new Board(this));
     }
 
     /*Given the Position putPosition and the PlayerIndex playerIndex put a worker of playerIndex on the board on the Cell in position putPosition
@@ -169,7 +171,8 @@ public class Board extends Observable<BoardChange> {
                     List<Position> list = new ArrayList<>(entry.getValue());
                     list.add(putPosition);
                     this.playerPosition.put(playerIndex, list);
-                    notify(new BoardChange(new Position(0, 0), putPosition, playerIndex));
+                    //notify(new BoardChange(new Position(0, 0), putPosition, playerIndex));
+                    notify(new Board(this));
                     return;
                 } else
                     throw new InvalidPutWorkerException(putPosition.row, putPosition.col, playerIndex);
@@ -178,7 +181,8 @@ public class Board extends Observable<BoardChange> {
         List<Position> list = new ArrayList<>();
         list.add(putPosition);
         this.playerPosition.put(playerIndex, list);
-        notify(new BoardChange(new Position(0, 0), putPosition, playerIndex));
+        //notify(new BoardChange(new Position(0, 0), putPosition, playerIndex));
+        notify(new Board(this));
     }
 
     /*Returns the PlayerIndex of the worker in Position position
@@ -228,7 +232,8 @@ public class Board extends Observable<BoardChange> {
             updateAfterPowerMove(boardChange.getChanges());
         if (!boardChange.isPositionBuildNull())
             updateAfterPowerBuild(boardChange.getPositionBuild(), boardChange.getBuildType());
-        notify(boardChange);
+        //notify(boardChange);
+        notify(new Board(this));
     }
 
     /* Method called by this.updateAfterPower() to update the playerPosition.

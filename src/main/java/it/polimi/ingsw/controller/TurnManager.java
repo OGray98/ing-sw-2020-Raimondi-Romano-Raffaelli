@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class TurnManager {
 
-    private Game gameInstance;
+    private final Game gameInstance;
     private List<Position> currentPlayerWorkersPosition;
     private List<Position> movableWorkersPosition;
     private Position workerMovedPosition;

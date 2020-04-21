@@ -1,12 +1,9 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.BoardChange;
-import it.polimi.ingsw.model.board.BuildType;
-import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.observer.Observer;
 
-public class RemoteView implements Observer<BoardChange> {
+public class RemoteView implements Observer<Board> {
 
     private static Board board;
 
@@ -21,6 +18,12 @@ public class RemoteView implements Observer<BoardChange> {
         return board;
     }
 
+    @Override
+    public void update(Board message) {
+        RemoteView.board = message;
+    }
+
+    /*
     @Override
     public void update(BoardChange message) {
         if (!message.isPlayerChangesNull()) {
@@ -46,5 +49,5 @@ public class RemoteView implements Observer<BoardChange> {
                 board.constructBlock(message.getPositionBuild());
         }
 
-    }
+    }*/
 }
