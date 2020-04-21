@@ -34,6 +34,13 @@ public class TurnManagerTest {
 
     @Before
     public void setUp() {
+        /*
+            0  0A 0  2  0
+            1D 0A 0  3C 2
+            2  0  0B 3  0
+            0  0  0  0D 2D
+            0B 0  0  0D 1C
+         */
         board = new Board();
         domePos = new ArrayList<>(List.of(
                 new Position(3, 3),
@@ -82,7 +89,7 @@ public class TurnManagerTest {
                 new Position(0, 1),
                 new Position(2, 2),
                 new Position(0, 4),
-                new Position(0, 4),
+                new Position(1, 4),
                 new Position(4, 4)
         )
         );
@@ -207,6 +214,7 @@ public class TurnManagerTest {
                     "to Position : [" + 3 + "][" + 0 + "]", e.getMessage());
         }
     }
+
 
     @After
     public void tearDown() {
