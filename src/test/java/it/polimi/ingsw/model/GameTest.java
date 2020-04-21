@@ -675,7 +675,7 @@ public class GameTest {
         firstPlayerSecondWorkerPos = new Position(3,3);
 
         List<String> gods = new ArrayList<>();
-        gods.add("Apollo");
+        gods.add("Minotaur");
         gods.add("Athena");
         gods.add("Pan");
 
@@ -713,6 +713,291 @@ public class GameTest {
         }
 
         assertEquals(game.canPlayerMoveAWorker().size(), 1);
+
+        //Test Minotaur
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+
+        game.setPlayerCard("Minotaur");
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER0);
+
+        //put an enemy of Minotaur on the board
+        game.putWorker(new Position(3,0));
+        game.putWorker(new Position(1,0));
+
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+
+        //place Minotaur workers
+        secondPlayerFirstWorker = new Position(4,0);
+        secondPlayerSecondWorker = new Position(0,4);
+
+        game.putWorker(secondPlayerFirstWorker);
+        game.putWorker(secondPlayerSecondWorker);
+
+        game.endTurn();
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+
+        game.setStartingWorker(secondPlayerFirstWorker);
+
+        assertEquals(game.canPlayerMoveAWorker().size(), 2);
+
+        game.build(new Position(4,1));
+        game.build(new Position(4,1));
+        game.build(new Position(3,1));
+        game.build(new Position(3,1));
+
+        //Minotaur can move only in the cell with the enemy
+        assertEquals(game.canPlayerMoveAWorker().size(), 2);
+
+        //Put an other worker behind the enemy to block Minotaur power
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER0);
+
+        game.setStartingWorker(new Position(1,0));
+
+        game.moveWorker(new Position(2,0));
+
+        game.endTurn();
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+
+        game.setStartingWorker(secondPlayerFirstWorker);
+
+        //Now Minotaur cant use his power, so his worker is blocked
+        assertEquals(game.canPlayerMoveAWorker().size(), 1);
+        assertTrue(game.canPlayerMoveAWorker().get(0).equals(secondPlayerSecondWorker));
+    }
+
+    @Test
+    public void getMovePositionsTest(){
+        firstPlayerFirstWorkerPos = new Position(1,1);
+        firstPlayerSecondWorkerPos = new Position(3,3);
+
+        List<String> gods = new ArrayList<>();
+        gods.add("Minotaur");
+        gods.add("Athena");
+        gods.add("Pan");
+
+        game.setGodsChosenByGodLike(gods);
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        //Check some moves for Minotaur
+        game.setPlayerCard("Minotaur");
+
+        game.endTurn();
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        game.putWorker(firstPlayerFirstWorkerPos);
+        game.putWorker(firstPlayerSecondWorkerPos);
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+
+        Position blockedPos = new Position(2,0);
+
+        game.putWorker(new Position(1,2));
+        game.putWorker(blockedPos);
+
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        game.setStartingWorker(firstPlayerSecondWorkerPos);
+
+        assertEquals(game.getMovePositions(firstPlayerSecondWorkerPos).size(), 8);
+
+        game.setStartingWorker(firstPlayerFirstWorkerPos);
+        assertEquals(game.getMovePositions(firstPlayerFirstWorkerPos).size(), 7);
+        assertFalse(game.getMovePositions(firstPlayerFirstWorkerPos).contains(blockedPos));
+
+        //Block the power of Minotaur
+        Position domePos = new Position(1,3);
+
+        game.build(domePos);
+        game.build(domePos);
+        game.build(domePos);
+        game.build(domePos);
+
+        assertEquals(game.getMovePositions(firstPlayerFirstWorkerPos).size(), 6);
+        assertFalse(game.getMovePositions(firstPlayerFirstWorkerPos).contains(domePos));
+
+        //block some cells with buildings
+        Position lvl2pos = new Position(0,0);
+
+        game.build(lvl2pos);
+        game.build(lvl2pos);
+
+        assertEquals(game.getMovePositions(firstPlayerFirstWorkerPos).size(), 5);
+        assertFalse(game.getMovePositions(firstPlayerFirstWorkerPos).contains(lvl2pos));
+
+        Position lvl3pos = new Position(2,2);
+
+        game.build(lvl3pos);
+        game.build(lvl3pos);
+        game.build(lvl3pos);
+
+        assertEquals(game.getMovePositions(firstPlayerFirstWorkerPos).size(), 4);
+        assertFalse(game.getMovePositions(firstPlayerFirstWorkerPos).contains(lvl3pos));
+    }
+
+    @Test
+    public void getBuildPositionsTest(){
+        firstPlayerFirstWorkerPos = new Position(1,1);
+        firstPlayerSecondWorkerPos = new Position(3,3);
+
+        List<String> gods = new ArrayList<>();
+        gods.add("Minotaur");
+        gods.add("Athena");
+        gods.add("Pan");
+
+        game.setGodsChosenByGodLike(gods);
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        game.setPlayerCard("Pan");
+
+        game.putWorker(new Position(2,2));
+        game.putWorker(new Position(2,0));
+
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        game.putWorker(firstPlayerFirstWorkerPos);
+        game.putWorker(firstPlayerSecondWorkerPos);
+
+        game.endTurn();
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        game.setStartingWorker(firstPlayerFirstWorkerPos);
+
+        assertEquals(game.getBuildPositions(firstPlayerFirstWorkerPos).size(), 6);
+
+        Position lvl2Pos = new Position(0,1);
+
+        game.build(lvl2Pos);
+        game.build(lvl2Pos);
+
+        assertEquals(game.getBuildPositions(firstPlayerFirstWorkerPos).size(), 6);
+        assertTrue(game.getBuildPositions(firstPlayerFirstWorkerPos).contains(lvl2Pos));
+
+        Position domePos = new Position(0,2);
+
+        game.build(domePos);
+        game.build(domePos);
+        game.build(domePos);
+        game.build(domePos);
+
+        assertEquals(game.getBuildPositions(firstPlayerFirstWorkerPos).size(), 5);
+        assertFalse(game.getBuildPositions(firstPlayerFirstWorkerPos).contains(domePos));
+    }
+
+    @Test
+    public void getPowerPositionsTest(){
+        firstPlayerFirstWorkerPos = new Position(1,1);
+        firstPlayerSecondWorkerPos = new Position(3,3);
+
+        secondPlayerFirstWorker = new Position(1,2);
+        secondPlayerSecondWorker = new Position(2,0);
+
+        lastPlayerFirstWorker = new Position(2,1);
+        lastPlayerSecondWorker = new Position(2,2);
+
+        List<String> gods = new ArrayList<>();
+        gods.add("Minotaur");
+        gods.add("Apollo");
+        gods.add("Athena");
+
+        game.setGodsChosenByGodLike(gods);
+
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+        game.setPlayerCard("Minotaur");
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+        game.setPlayerCard("Apollo");
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER0);
+        game.setPlayerCard("Athena");
+
+        //Put all the workers on the map
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        game.putWorker(firstPlayerFirstWorkerPos);
+        game.putWorker(firstPlayerSecondWorkerPos);
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+
+        game.putWorker(secondPlayerFirstWorker);
+        game.putWorker(secondPlayerSecondWorker);
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER0);
+
+        game.putWorker(lastPlayerFirstWorker);
+        game.putWorker(lastPlayerSecondWorker);
+
+        //Check power positions for minotaur
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        game.setStartingWorker(firstPlayerFirstWorkerPos);
+
+        assertEquals(game.getPowerPositions(firstPlayerFirstWorkerPos).size(), 2);
+        assertTrue(game.getPowerPositions(firstPlayerFirstWorkerPos).contains(secondPlayerFirstWorker));
+        assertTrue(game.getPowerPositions(firstPlayerFirstWorkerPos).contains(lastPlayerFirstWorker));
+
+        game.endTurn();
+
+        //Check power positions for apollo
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+
+        game.setStartingWorker(secondPlayerSecondWorker);
+
+        assertEquals(game.getPowerPositions(secondPlayerSecondWorker).size(), 2);
+        assertTrue(game.getPowerPositions(secondPlayerSecondWorker).contains(firstPlayerFirstWorkerPos));
+        assertTrue(game.getPowerPositions(secondPlayerSecondWorker).contains(lastPlayerFirstWorker));
+
+        game.endTurn();
+
+        //Check power positions for athena
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER0);
+
+        game.setStartingWorker(lastPlayerFirstWorker);
+
+        assertEquals(game.getPowerPositions(lastPlayerFirstWorker).size(), 0);
+
+        Position lvlupPos1 = new Position(3,0);
+
+        game.build(lvlupPos1);
+
+        assertEquals(game.getPowerPositions(lastPlayerFirstWorker).size(), 1);
+        assertTrue(game.getPowerPositions(lastPlayerFirstWorker).contains(lvlupPos1));
+
+        game.setStartingWorker(lastPlayerSecondWorker);
+
+        assertEquals(game.getPowerPositions(lastPlayerSecondWorker).size(), 0);
+
+        Position lvlupPos2 = new Position(3,1);
+
+        game.build(lvlupPos2);
+
+        assertEquals(game.getPowerPositions(lastPlayerSecondWorker).size(), 1);
+        assertTrue(game.getPowerPositions(lastPlayerFirstWorker).contains(lvlupPos2));
+
+        game.setStartingWorker(lastPlayerFirstWorker);
+
+        assertEquals(game.getPowerPositions(lastPlayerFirstWorker).size(), 2);
+        assertTrue(game.getPowerPositions(lastPlayerFirstWorker).contains(lvlupPos1));
+        assertTrue(game.getPowerPositions(lastPlayerFirstWorker).contains(lvlupPos2));
     }
 
     @After
