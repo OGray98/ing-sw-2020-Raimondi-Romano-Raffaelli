@@ -196,8 +196,9 @@ public class Game {
                             List<Cell> adjacentCells = board.getAdjacentCells(workerPos);
                             return adjacentCells.stream()
                                     .anyMatch(cell -> currentPlayer.canMoveWithPowers(
-                                            board.getPlayersOccupations(new ArrayList<>(List.of(cell.getPosition()))),
-                                            cell,
+                                            //board.getPlayersOccupations(new ArrayList<>(List.of(cell.getPosition()))),
+                                            this.getPowerPlayerOccupations(cell.getPosition()),
+                                            this.getPowerCellList(cell.getPosition()),
                                             board.getCell(workerPos),
                                             this.cantGoUp
                                     ));
@@ -248,8 +249,9 @@ public class Game {
             throw new NullPointerException("workerPos");
         return this.board.getAdjacentCells(workerPos).stream()
                 .filter(cell -> currentPlayer.canMoveWithPowers(
-                        board.getPlayersOccupations(new ArrayList<>(List.of(cell.getPosition()))),
-                        cell,
+                        //board.getPlayersOccupations(new ArrayList<>(List.of(cell.getPosition()))),
+                        this.getPowerPlayerOccupations(cell.getPosition()),
+                        this.getPowerCellList(cell.getPosition()),
                         board.getCell(workerPos),
                         this.cantGoUp
                         )

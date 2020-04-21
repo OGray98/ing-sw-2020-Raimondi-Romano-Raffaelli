@@ -31,7 +31,7 @@ public interface PlayerInterface {
      * Throws NullPointerException is adjacentCells or adjacentPlayerList is null*/
     boolean canMove(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell) throws InvalidPositionException, NullPointerException;
 
-    boolean canMoveWithPowers(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell, Cell occupiedCell, boolean cantGoUp) throws InvalidPositionException, NullPointerException;
+    boolean canMoveWithPowers(Map<Position, PlayerIndex> adjacentPlayerList, List<Cell> moveCell, Cell occupiedCell, boolean cantGoUp) throws InvalidPositionException, NullPointerException;
 
     /*Method that returns true if user select a possible build action
      * It requires a List<Cell> that contains all the cells adjacent to the worker selected

@@ -27,11 +27,16 @@ public class MinotaurDecorator extends PlayerMoveDecorator {
     }
 
     @Override
-    public boolean canMoveWithPowers(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell, Cell occupiedCell, boolean cantGoUp){
+    public boolean canMoveWithPowers(Map<Position, PlayerIndex> adjacentPlayerList, List<Cell> moveCell, Cell occupiedCell, boolean cantGoUp){
         this.setStartingWorkerSituation(occupiedCell, cantGoUp);
-        List<Cell> moveCellList = new ArrayList<>();
-        moveCellList.add(moveCell);
-        return canMove(adjacentPlayerList, moveCell) || this.canUsePower(moveCellList, adjacentPlayerList);
+
+        if(moveCell.get(0).getPosition().isAdjacent(occupiedCell.getPosition())){
+            return canMove(adjacentPlayerList, moveCell.get(0)) || this.canUsePower(moveCell, adjacentPlayerList);
+        }
+
+        else{
+            return canMove(adjacentPlayerList, moveCell.get(1)) || this.canUsePower(moveCell, adjacentPlayerList);
+        }
     }
 
     /*Requires List<Cell> with the cell where Minotaur want to move and the cell where the opponent player will be moved
