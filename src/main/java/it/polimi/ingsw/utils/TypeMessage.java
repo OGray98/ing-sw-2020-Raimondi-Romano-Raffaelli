@@ -1,8 +1,8 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.utils;
 
 public enum TypeMessage {
     //Used in lobby
-    NICKNAME, NUMBER_PLAYER_GAME,
+    NICKNAME, IS_THREE_PLAYERS_GAME,
     //Used in setup
     GODLIKE_CHOOSE_CARDS, SELECT_CARD,
     MOVE, USE_POWER, BUILD,

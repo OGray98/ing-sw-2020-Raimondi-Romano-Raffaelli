@@ -20,10 +20,10 @@ public class Game {
 
     private static Game gameInstance;
 
-    private List<PlayerInterface> players;
-    private Board board;
-    private Deck deck;
-    private int numPlayer;
+    private final List<PlayerInterface> players;
+    private final Board board;
+    private final Deck deck;
+    private final int numPlayer;
     private PlayerInterface currentPlayer;
     private Position currentPosition;
     private int contCurrentPlayer;
