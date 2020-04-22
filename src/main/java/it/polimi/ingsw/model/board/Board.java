@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * Board is a group of Cell, which represent the game table.
+ */
 public class Board extends Observable<Board> {
 
     private static final int NUM_ROW = 5;
@@ -42,9 +45,13 @@ public class Board extends Observable<Board> {
         that.playerPosition.forEach((key, value) -> this.playerPosition.put(key, new ArrayList<>(value)));
     }
 
-    /*Returns true if the cell in Position cellPosition is empty
-     * Returns false if the cell in Position cellPosition contains a dome or a player
-     * Throws NullPointerException if cellPosition is null */
+    /**
+     * Check if selected Cell is free
+     *
+     * @param cellPosition Cell's Position which you want check
+     * @return true iff in Cell at cellPosition there isn't workers or a dome
+     * @throws NullPointerException if cellPosition is null
+     */
     public boolean isFreeCell(Position cellPosition) throws NullPointerException {
         if (cellPosition == null)
             throw new NullPointerException("cellPosition");
@@ -54,8 +61,14 @@ public class Board extends Observable<Board> {
         return playerPosition.values().stream().noneMatch(positions -> positions.contains(cellPosition));
     }
 
-    /*Given the Position centralPosition returns a List<Cell> that contains all the cells adjacent to centralPosition
-     * Throws NullPointerException if centralPosition is null */
+    /**
+     * Given the Position centralPosition returns a List of Cell that contains
+     * all the cells adjacent to centralPosition
+     *
+     * @param centralPosition Position at the center of the adjacent Cell
+     * @return returns a List of Cell that contains all the cells adjacent to centralPosition
+     * @throws NullPointerException if centralPosition is null
+     */
     public List<Cell> getAdjacentCells(Position centralPosition) throws NullPointerException {
         if (centralPosition == null)
             throw new NullPointerException("centralPosition");

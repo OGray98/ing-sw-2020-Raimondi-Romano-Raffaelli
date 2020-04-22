@@ -34,6 +34,7 @@ public class TurnManager {
     public void startTurn() {
         gameInstance.startTurn();
         currentPlayerWorkersPosition = gameInstance.getCurrentPlayerWorkersPosition();
+        workerMovedPosition = null;
     }
 
     /**
@@ -55,8 +56,10 @@ public class TurnManager {
     public List<Position> movementPositions(Position workerPos) throws NullPointerException, NotPresentWorkerException {
         if (workerPos == null)
             throw new NullPointerException("workerPos");
-        if (!movableWorkersPosition.contains(workerPos))
+        if (!currentPlayerWorkersPosition.contains(workerPos))
             throw new NotPresentWorkerException(workerPos.row, workerPos.col, gameInstance.getCurrentPlayerIndex());
+        if (!movableWorkersPosition.contains(workerPos))
+            return new ArrayList<>();
         return gameInstance.getMovePositions(workerPos);
     }
 
@@ -73,7 +76,7 @@ public class TurnManager {
             throw new NullPointerException("workerPos");
         if (movePos == null)
             throw new NullPointerException("movePos");
-        if (!movableWorkersPosition.contains(workerPos))
+        if (!currentPlayerWorkersPosition.contains(workerPos) || !movableWorkersPosition.contains(workerPos))
             return false;
 
         gameInstance.setStartingWorker(workerPos);
@@ -82,10 +85,10 @@ public class TurnManager {
 
 
     /**
-     * Update model with worker's movement from workerPos to movePos
+     * Update model with worker's movement from workerPos to movePos.
      *
-     * @param workerPos Worker's Position before movement
-     * @param movePos   Worker's Position after movement
+     * @param workerPos Worker's Position before movement. The worker must be able to move in movePos
+     * @param movePos   Worker's Position after movement. The worker must be able to move in movePos
      * @throws NullPointerException         if workerPos or movePos are null
      * @throws NotPresentWorkerException    if in workerPos there isn't any worker of current Player
      * @throws NotAdjacentMovementException workerPos isn't adjacent to movePos
@@ -95,13 +98,17 @@ public class TurnManager {
             throw new NullPointerException("workerPos");
         if (movePos == null)
             throw new NullPointerException("movePos");
-        if (!movableWorkersPosition.contains(workerPos))
+        if (!currentPlayerWorkersPosition.contains(workerPos))
             throw new NotPresentWorkerException(workerPos.row, workerPos.col, gameInstance.getCurrentPlayerIndex());
         if (!movePos.isAdjacent(workerPos))
             throw new NotAdjacentMovementException(workerPos.row, workerPos.col, movePos.row, movePos.col);
 
+        gameInstance.setStartingWorker(workerPos);
         gameInstance.moveWorker(movePos);
+        currentPlayerWorkersPosition = gameInstance.getCurrentPlayerWorkersPosition();
+        movableWorkersPosition = gameInstance.canPlayerMoveAWorker();
         workerMovedPosition = movePos;
+
     }
 
     /**
@@ -140,7 +147,7 @@ public class TurnManager {
      */
     public boolean isValidBuilding(Position buildPosition) throws NullPointerException {
         if (buildPosition == null)
-            throw new NullPointerException("workerPos");
+            throw new NullPointerException("buildPosition");
         if (workerMovedPosition == null)
             throw new NullPointerException("workerMovedPosition");
 
@@ -150,7 +157,7 @@ public class TurnManager {
     /**
      * Update model with worker's building in buildPosition
      *
-     * @param buildPosition Position where Player want to build
+     * @param buildPosition Position where Player want to build. It must be a position where worker can build.
      * @throws NullPointerException         if workerPos or movePos are null
      * @throws NotPresentWorkerException    if in workerPos there isn't any worker of current Player
      * @throws NotAdjacentMovementException workerPos isn't adjacent to movePos
@@ -160,7 +167,7 @@ public class TurnManager {
             throw new NullPointerException("buildPosition");
         if (workerMovedPosition == null)
             throw new NullPointerException("workerMovedPosition");
-        if (!buildPosition.isAdjacent(buildPosition))
+        if (!workerMovedPosition.isAdjacent(buildPosition))
             throw new NotAdjacentBuildingException(workerMovedPosition.row, workerMovedPosition.col, buildPosition.row, buildPosition.col);
 
         gameInstance.build(buildPosition);
