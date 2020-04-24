@@ -129,9 +129,10 @@ public class Game {
         this.currentState = nextState;
     }
 
-    /* Method that set the chosen cards in deck.
-     * Requires a not null List<String> which contains the name of the god chosen by player god like
-     * Throw IllegalArgumentException if List<String> contains equal values.
+    /**
+     *  Method that set the chosen cards in deck.
+     * @param godNames is required as a not null List<String> which contains the name of the god chosen by player god like
+     * @throws  IllegalArgumentException if List<String> contains equal values.
      */
     public void setGodsChosenByGodLike(List<String> godNames) throws NullPointerException, IllegalArgumentException {
         if (godNames == null)
@@ -149,9 +150,10 @@ public class Game {
         currentPlayer = players.get(contCurrentPlayer);
     }
 
-    /* Method that decorate currentPlayer with his divinity.
+    /**
+     *  Method that decorate this.currentPlayer with his divinity.
      * Modifies currentPlayer and contCurrentPlayer
-     * Requires not null String which contains the god's name
+     * @param godName is required as a not null String which contains the god's name
      */
     public void setPlayerCard(String godName) throws NullPointerException, WrongGodNameException {
         if (godName == null)
@@ -166,8 +168,9 @@ public class Game {
         updateCurrentPlayer();
     }
 
-    /* Method which set first player and ordinate the list of players
-     *
+    /**
+     *  Method which set first player and ordinate the list this.players
+     * @param playerIndex is the PlayerIndex of the first player
      */
     public void chooseFirstPlayer(PlayerIndex playerIndex) {
         Collections.rotate(players, -playerIndex.ordinal());
@@ -176,8 +179,9 @@ public class Game {
     }
 
 
-    /* Method that put a worker of currentPlayer in board
-     * Requires a not null Position where put the worker
+    /**
+     *  Method that put a worker of this.currentPlayer in board
+     * @param putPosition is a not null Position where put the worker
      */
     public void putWorker(Position putPosition) throws NullPointerException {
         if (putPosition == null)
@@ -192,7 +196,8 @@ public class Game {
     }
 
 
-    /* Method called a turn start and do the setup of turn.
+    /**
+     *  Method calls a turn start and do the setup of turn.
      * Modify contCurrentPlayer, currentPlayer, contEffect and currentPosition.
      */
     public void startTurn() {
@@ -230,7 +235,10 @@ public class Game {
                 .collect(Collectors.toList());
     }
 
-    /* Method that do initial operation for player before call his method
+    /**
+     *  Method that do initial operation for player before call his method
+     *  In particular it sets this.currentPosition
+     * @throws NotPresentWorkerException if in startPos there is not a worker
      */
     public void setStartingWorker(Position startPos) throws NullPointerException, NotPresentWorkerException {
         if (startPos == null)
@@ -245,8 +253,9 @@ public class Game {
     }
 
 
-    /* Method that check if a worker of currentPlayer can move in movePos
-     * Requires a not null Position where move the worker
+    /**
+     *  Method that check if a worker of this.currentPlayer can move in movePos
+     * @param movePos is a not null Position where move the worker
      * Modifies currentPosition
      */
     public boolean canMoveWorker(Position movePos) throws NullPointerException, NotPresentWorkerException {
@@ -262,7 +271,6 @@ public class Game {
 
     /**
      * Method that return a list of Position where the player can move
-     *
      * @param workerPos Position occupied by worker that player want to move
      * @return List of Position that contains Position where the player can move
      * @throws NullPointerException if workerPos is null
@@ -284,10 +292,11 @@ public class Game {
     }
 
 
-    /* Method that move worker of currentPlayer in movePos, before change the worker position in board, then the cell in
+    /**
+     *  Method that move worker of currentPlayer in movePos. Before change the worker position in board, then the cell in
      * currentPlayer
-     * Requires a not null Position where move the worker
-     * Modifies currentPosition
+     * @param movePos is a not null Position where move the worker
+     * Modifies this.currentPosition
      */
     public void moveWorker(Position movePos) throws NullPointerException {
         if (movePos == null)
@@ -329,8 +338,9 @@ public class Game {
     }
 
 
-    /* Method that check if a worker of currentPlayer can build in buildPos
-     * Requires a not null Position where the worker want build
+    /**
+     *  Method that check if a worker of currentPlayer can build in buildPos
+     * @param buildPos is a not null Position where the worker want build
      */
     public boolean canBuild(Position buildPos) throws NullPointerException {
         if (buildPos == null)
@@ -342,8 +352,9 @@ public class Game {
         );
     }
 
-    /* Method that build a block in buildPos and check if the player can activate his power after build
-     * Requires a not null Position where build
+    /**
+     *  Method that build a block in buildPos and check if the player can activate his power after build
+     * @param buildPos is a not null Position where build
      */
     public void build(Position buildPos) throws NullPointerException {
         if (buildPos == null)
@@ -351,14 +362,18 @@ public class Game {
         board.constructBlock(buildPos);
     }
 
-    //Method that check if the current player has won
+    /**
+     * Method that check if the current player has won
+     * It simply calls the method PlayerInterface.hasWin()
+     * */
     public boolean hasWonCurrentPlayer() {
         return currentPlayer.hasWin();
     }
 
-    /* Method that return if current worker of currentPlayer can use power in powerPos
-     * Requires a not null Position where use the power
-     * Modifies currentPosition
+    /**
+     *  Method that return if current worker of currentPlayer can use power in powerPos
+     * @param powerPos is a not null Position where use the power
+     * Modifies this.currentPosition
      */
     public boolean canUsePowerWorker(Position powerPos) throws NullPointerException {
         if (powerPos == null)
@@ -390,9 +405,10 @@ public class Game {
                 .collect(Collectors.toList());
     }
 
-    /* Method that use currentPlayer power and update the board.
-     * Requires a not null Position where use the power.
-     * Modifies currentPosition
+    /**
+     *  Method that use currentPlayer power and update the board.
+     * @param powerPos is a not null Position where use the power.
+     * Modifies this.currentPosition
      */
     public void usePowerWorker(Position powerPos) throws NullPointerException {
         if (powerPos == null)
@@ -413,7 +429,9 @@ public class Game {
         }
     }
 
-    //Method called when finished turn to change the currentPlayer
+    /**
+     * Method called when finished turn to change the currentPlayer
+     * */
     public void endTurn() {
         updateCurrentPlayer();
     }
@@ -430,8 +448,9 @@ public class Game {
         return currentPlayer.getPlayerNum();
     }
 
-    /* Private method that return a List<Cell> which will be used in Player::canUsePower()
-     * Requires a not null powerPos
+    /**
+     *  Private method that returns a List<Cell> which will be used in Player::canUsePower()
+     * @param powerPos is a not null powerPos
      */
     private List<Cell> getPowerCellList(Position powerPos) throws NullPointerException {
         if (powerPos == null)
@@ -451,8 +470,9 @@ public class Game {
         return cells;
     }
 
-    /* Private method that return a Map<Position, PlayerIndex> which will be used in Player::canUsePower()
-     * Requires a not null powerPos
+    /**
+     *  Private method that returns a Map<Position, PlayerIndex> which will be used in Player::canUsePower()
+     * @param powerPos is a not null powerPos
      */
     private Map<Position, PlayerIndex> getPowerPlayerOccupations(Position powerPos) throws NullPointerException {
         if (powerPos == null)
@@ -472,7 +492,8 @@ public class Game {
         return board.getPlayersOccupations(positions);
     }
 
-    /* Private method called when change current player.
+    /**
+     *  Private method called when change current player.
      * Modifies contCurrentPlayer and currentPlayer
      */
     private void updateCurrentPlayer() {

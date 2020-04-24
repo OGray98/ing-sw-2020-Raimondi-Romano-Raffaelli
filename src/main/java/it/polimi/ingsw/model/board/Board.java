@@ -83,8 +83,11 @@ public class Board extends Observable<Board> {
         return adjacentCells;
     }
 
-    /* Returns the Cell in Position position on the board
-     * Throws NullPointerException if position is null */
+    /**
+     *  Returns the Cell in Position position on the board
+     * @param position position of the cell to get
+     * @throws  NullPointerException if position is null
+     * */
     public Cell getCell(Position position) throws NullPointerException {
         if (position == null)
             throw new NullPointerException("Position");
@@ -99,8 +102,11 @@ public class Board extends Observable<Board> {
 
     }
 
-    /*Returns the Map<Position, PlayerIndex> that contains all the pairs<Position, PlayerIndex> adjacent to the Position centralPosition
-     * Throws NullPointerException  if centralPosition is null */
+    /**
+     * Returns the Map<Position, PlayerIndex> that contains all the pairs <Position, PlayerIndex> adjacent to the Position centralPosition
+     * @param centralPosition position of the cell of which the method returns the adjacent players
+     * @throws  NullPointerException  if centralPosition is null
+     * */
     public Map<Position, PlayerIndex> getAdjacentPlayers(Position centralPosition) throws NullPointerException {
         if (centralPosition == null)
             throw new NullPointerException("centralPosition");
@@ -114,9 +120,12 @@ public class Board extends Observable<Board> {
         return adjacentPlayers;
     }
 
-    /*Returns the Map<Position, PlayerIndex> that contains all the pairs<Position, PlayerIndex> for the occupied cell
-     * which their position is in positions.
-     * Throws NullPointerException  if positions is null */
+    /**
+     * Returns the Map<Position, PlayerIndex> that contains all the pairs<Position, PlayerIndex> for the occupied cell
+     * which their position is in
+     * @param positions
+     * @throws  NullPointerException  if positions is null
+     * */
     public Map<Position, PlayerIndex> getPlayersOccupations(List<Position> positions) throws NullPointerException {
         if (positions == null)
             throw new NullPointerException("positions");
@@ -130,9 +139,11 @@ public class Board extends Observable<Board> {
         return adjacentPlayers;
     }
 
-    /*Given oldPosition and newPosition move the worker contained in Position oldPosition to the Position newPosition
-     * Throws NotPresentWorkerException if in oldPosition there is not any worker
-     * Throws NullPointerException if oldPosition or newPosition is null*/
+    /**
+     * Given oldPosition and newPosition move the worker contained in Position oldPosition to the Position newPosition
+     * @throws  NotPresentWorkerException if in oldPosition there is not any worker
+     * @throws  NullPointerException if oldPosition or newPosition is null
+     * */
     //TODO: controllare qui se la newposition non è vuota? direi di no
     public void changeWorkerPosition(Position oldPosition, Position newPosition) throws NotPresentWorkerException, NullPointerException {
         if (oldPosition == null)
@@ -158,9 +169,12 @@ public class Board extends Observable<Board> {
     }
 
 
-    /*Increment the level of the Cell in Position buildPosition
-     * Throws NullPointerException if buildPosition is null
-     * Throws InvalidIncrementLevelException if building is not allowed*/
+    /**
+     * Increment the level of the Cell in Position
+     * @param buildPosition
+     * @throws  NullPointerException if buildPosition is null
+     * @throws  InvalidIncrementLevelException if building is not allowed
+     * */
     public void constructBlock(Position buildPosition) throws NullPointerException, InvalidIncrementLevelException {
         if (buildPosition == null)
             throw new NullPointerException("buildPosition");
@@ -170,9 +184,13 @@ public class Board extends Observable<Board> {
         notify(new Board(this));
     }
 
-    /*Given the Position putPosition and the PlayerIndex playerIndex put a worker of playerIndex on the board on the Cell in position putPosition
-     * Throws NullPointerException if putPosition is null
-     * Throws InvelidPutWorkerException if there are already two workers of the given player on the board */
+    /**
+     * Given the Position putPosition and the PlayerIndex playerIndex put a worker of
+     * @param playerIndex on the board on the Cell in position
+     * @param putPosition
+     * @throws  NullPointerException if putPosition is null
+     * @throws  InvalidPutWorkerException if there are already two workers of the given player on the board
+     * */
     //TODO: controllare qui se la putPosition non è vuota? direi di no
     public void putWorker(Position putPosition, PlayerIndex playerIndex) throws NullPointerException, InvalidPutWorkerException {
         if (putPosition == null)
@@ -198,9 +216,12 @@ public class Board extends Observable<Board> {
         notify(new Board(this));
     }
 
-    /*Returns the PlayerIndex of the worker in Position position
-     * Throws NullPointerException if position is null
-     * Throws NotPresentWorkerException if there is no worker in the Position position */
+    /**
+     * Returns the PlayerIndex of the worker in Position
+     * @param position
+     * @throws  NullPointerException if position is null
+     * @throws  NotPresentWorkerException if there is no worker in the Position position
+     * */
     public PlayerIndex getOccupiedPlayer(Position position) throws NullPointerException, NotPresentWorkerException {
         if (position == null)
             throw new NullPointerException("position");
@@ -213,8 +234,12 @@ public class Board extends Observable<Board> {
         throw new NotPresentWorkerException(position.row, position.col);
     }
 
-    /*Method that returns the positions of the workers of player playerToCheck
-     * It will be used by Game to check if all the workers of a player are blocked */
+    /**
+     * Method that returns the positions of the workers of player
+     * @param playerToCheck
+     * It will be used by Game to check if all the workers of a player are blocked
+     * @throws MissingWorkerException if the player has a number != 2 of workers
+     * */
     public List<Position> workerPositions(PlayerIndex playerToCheck) throws MissingWorkerException {
 
         List<Position> playerWorkersPositions = new ArrayList<>();
@@ -234,9 +259,12 @@ public class Board extends Observable<Board> {
         return this.playerPosition.get(index).size();
     }
 
-    /* Method used after PlayerInterface.usePower() to update the board with the new changes.
-     * Depending on the content of boardChange, it can update playerPosition, modifies map or set cantGoUp
+    /**
+     *  Method used after PlayerInterface.usePower() to update the board with the new changes.
+     * Depending on the content of
+     * @param boardChange, it can update playerPosition, modifies map or set cantGoUp
      * Requires BoardChange not null, with the changes to update
+     * @throws NullPointerException if BoardChange is null
      */
     public void updateAfterPower(BoardChange boardChange) throws NullPointerException {
         if (boardChange == null)
@@ -249,8 +277,11 @@ public class Board extends Observable<Board> {
         notify(new Board(this));
     }
 
-    /* Method called by this.updateAfterPower() to update the playerPosition.
-     * Requires Map<PositionContainer, PlayerIndex> not null, with the changes to update
+    /**
+     *  Method called by this.updateAfterPower() to update the playerPosition.
+     * @param changes is a Map<PositionContainer, PlayerIndex> not null, with the changes to update
+     * @throws NullPointerException if changes is null
+     * @throws NotPresentWorkerException if a player of the Map is not found
      */
     private void updateAfterPowerMove(Map<PositionContainer, PlayerIndex> changes) throws NullPointerException, NotPresentWorkerException {
         if (changes == null)
@@ -275,9 +306,12 @@ public class Board extends Observable<Board> {
         }
     }
 
-    /* Method called by this.updateAfterPower() to update map.
-     * Requires Position not null, with the Position to update
-     * Requires BuildType, which indicate if build a normal level or a dome
+    /**
+     *  Method called by this.updateAfterPower() to update map.
+     * @param positionBuild is not null, with the Position to update
+     * @param buildType indicates if build a normal level or a dome
+     * @throws NullPointerException if positionBuild is null
+     * @throws InvalidBuildDomeException if the cell to build has a dome
      */
     private void updateAfterPowerBuild(Position positionBuild, BuildType buildType) throws NullPointerException, InvalidBuildDomeException {
         if (positionBuild == null)

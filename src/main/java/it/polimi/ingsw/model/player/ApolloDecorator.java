@@ -55,6 +55,10 @@ public class ApolloDecorator extends PlayerMoveDecorator {
         return false;
     }
 
+    /**
+     * Implementation of Apollo power
+     * The BoardChange returned contains infos to update Apollo worker and enemy worker
+     * */
     @Override
     public BoardChange usePower(Cell powerCell) {
         Position startPosition = super.getCellOccupied().getPosition();

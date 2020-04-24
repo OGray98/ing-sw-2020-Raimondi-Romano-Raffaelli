@@ -28,6 +28,10 @@ public class ArtemisDecorator extends PlayerMoveDecorator {
         return super.canMove(adjacentPlayerList, adjacentList.get(0)) && !adjacentList.get(0).equals(super.getOldCell());
     }
 
+    /**
+     * Implementation of Artemis power
+     * The BoardChange returned contains infos to update Artemis worker
+     * */
     @Override
     public BoardChange usePower(Cell powerCell){
         BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(), powerCell.getPosition(), super.getPlayerNum());

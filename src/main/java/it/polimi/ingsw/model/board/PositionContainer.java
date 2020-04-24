@@ -10,10 +10,11 @@ public class PositionContainer {
         pos[1] = new Position(0, 0);
     }
 
-    /*
+    /**
      * Method that insert a new Position. The old occupiedPosition become oldPosition and the old oldPosition is discarded
-     * It requires a Position, which is the Position to add
-     * Throws NullPointerException if newPosition is null
+     * It requires a Position,
+     * @param newPosition which is the Position to add
+     * @throws  NullPointerException if newPosition is null
      */
     public void put(Position newPosition) throws NullPointerException {
         if (newPosition == null)
