@@ -1,12 +1,12 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.stub;
 
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utils.Message;
 
-public class ObservableStringOnlyForCheck extends Observable<Message> {
+public class StubObservableMessageReceiver extends Observable<Message> {
     public Message msg;
 
-    public ObservableStringOnlyForCheck(Message m) {
+    public StubObservableMessageReceiver(Message m) {
         msg = m;
         notify(msg);
     }

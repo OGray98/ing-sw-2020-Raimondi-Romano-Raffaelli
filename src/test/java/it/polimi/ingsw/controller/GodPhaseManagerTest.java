@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 public class GodPhaseManagerTest {
 
 
-    private static  Game game;
+    private Game game;
     private static List<PlayerInterface> players;
     private static GodPhaseManager godManager;
 
@@ -44,8 +44,8 @@ public class GodPhaseManagerTest {
     @Test
     public void getPlayerIndexTest(){
 
-        assertEquals(0,godManager.getGodLikePlayerIndex());
-        assertEquals(PlayerIndex.PLAYER0,game.getPlayers().get(0).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER0, godManager.getGodLikePlayerIndex());
+        assertEquals(PlayerIndex.PLAYER0, game.getPlayers().get(0).getPlayerNum());
     }
 
     /**
