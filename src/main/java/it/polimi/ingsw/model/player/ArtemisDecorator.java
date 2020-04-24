@@ -11,9 +11,9 @@ import java.util.Map;
 
 public class ArtemisDecorator extends PlayerMoveDecorator {
 
-    public ArtemisDecorator(String godName, String description, GameState powerState, GameState nextState){
+    public ArtemisDecorator(){
 
-        super(godName, description, powerState, nextState);
+        super("Artemis", "Your Worker may move one additional time, but not back to its initial space.", GameState.MOVE, GameState.CHECKWIN);
     }
 
     @Override

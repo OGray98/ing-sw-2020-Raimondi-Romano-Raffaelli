@@ -44,7 +44,7 @@ public class GodPhaseManagerTest {
     @Test
     public void getPlayerIndexTest(){
 
-        assertEquals(0,godManager.getGodLikePlayerIndex());
+        assertEquals(PlayerIndex.PLAYER0,godManager.getGodLikePlayerIndex());
         assertEquals(PlayerIndex.PLAYER0,game.getPlayers().get(0).getPlayerNum());
     }
 

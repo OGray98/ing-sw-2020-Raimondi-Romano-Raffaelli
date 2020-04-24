@@ -15,9 +15,9 @@ public class MinotaurDecorator extends PlayerMoveDecorator {
     private PlayerIndex playerOpponent;
     private Cell playerOpponentAfterPowerCell;
 
-    public MinotaurDecorator(String godName, String description, GameState powerState, GameState nextState){
+    public MinotaurDecorator(){
 
-        super(godName, description, powerState, nextState);
+        super("Minotaur", "our Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.", GameState.MOVE, GameState.CHECKWIN);
     }
 
 

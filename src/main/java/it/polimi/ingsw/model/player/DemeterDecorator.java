@@ -13,9 +13,9 @@ public class DemeterDecorator extends PlayerBuildDecorator {
 
     private Cell firstBuildCell;
 
-    public DemeterDecorator(String godName, String description, GameState powerState, GameState nextState){
+    public DemeterDecorator(){
 
-        super(godName, description, powerState, nextState);
+        super("Demeter", "Your Worker may build one additional time, but not on the same space.", GameState.ENDPHASE, GameState.BUILDPOWER);
     }
 
 

@@ -13,9 +13,9 @@ import java.util.Map;
 public class PanDecorator extends PlayerWinConditionDecorator {
 
 
-    public PanDecorator(String godName, String description, GameState powerState, GameState nextState){
+    public PanDecorator(){
 
-        super(godName, description, powerState, nextState);
+        super("Pan", "You also win if your Worker moves down two or more levels.", GameState.MOVE, GameState.CHECKWIN);
 
     }
 

@@ -15,9 +15,9 @@ public class HephaestusDecorator extends PlayerBuildDecorator {
 
     private Cell buildCell;
 
-    public HephaestusDecorator(String godName, String description, GameState powerState, GameState nextState){
+    public HephaestusDecorator(){
 
-        super(godName, description, powerState, nextState);
+        super("Hephaestus", "Your Worker may build one additional block (not dome) on top of your first block.", GameState.ENDPHASE, GameState.BUILDPOWER);
     }
 
 

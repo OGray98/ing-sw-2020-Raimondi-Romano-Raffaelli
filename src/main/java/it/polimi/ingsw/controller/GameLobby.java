@@ -21,6 +21,14 @@ public class GameLobby {
         this.threePlayersGame = threePlayersGame;
     }
 
+    /**
+     * Add a player in the lobby
+     * @param playerIndex index of the player to add
+     * @param playerNick nickName of the player to add
+     * @throws MaxPlayersException if lobby is already full
+     * @throws NameAlreadyTakenException if the nickname chosen is not available
+     * @throws IllegalArgumentException if the player is already in the lobby
+     * */
     public void addPlayer(PlayerIndex playerIndex, String playerNick){
         if(isFull()) throw new MaxPlayersException();
         if(isNameAlreadyTaken(playerNick)) throw new NameAlreadyTakenException();
@@ -46,6 +54,9 @@ public class GameLobby {
         return this.lobbyPlayers.keySet().contains(playerIndex);
     }
 
+    /**
+     * Check if lobby is full
+     * */
     public boolean isFull(){
         if(this.threePlayersGame){
             return this.lobbyPlayers.size() == 3;
