@@ -279,6 +279,64 @@ public class TurnManagerTest {
         assertEquals(1, gameInstance.getBoard().getCell(buildPos.get(0)).getLevel());
     }
 
+    @Test
+    public void stateSequenceTest() {
+
+        assertEquals(gameInstance.getCurrentState(), GameState.NULL);
+
+        //Put workers on the board
+        List<Position> workerPos = new ArrayList<>(List.of(
+                new Position(0, 0),
+                new Position(0, 4),
+                new Position(0, 2),
+                new Position(2, 0),
+                new Position(2, 1),
+                new Position(4, 4)
+        ));
+
+        workerPos.forEach(pos -> gameInstance.putWorker(pos));
+
+        //Check starting state
+        turnManager.startTurn();
+
+        assertEquals(gameInstance.getCurrentState(), GameState.MOVE);
+
+        //Check state after a move
+        turnManager.moveWorker(new Position(0, 4), new Position(0, 3));
+
+        assertEquals(gameInstance.getCurrentState(), GameState.CHECKWIN);
+
+        //Check state after a hasWin
+        turnManager.hasWonWithMovement();
+
+        assertEquals(gameInstance.getCurrentState(), GameState.BUILD);
+
+        //Check state after a build
+        turnManager.buildWorker(new Position(0, 4));
+
+        assertEquals(gameInstance.getCurrentState(), GameState.ENDPHASE);
+
+        //Check state after a endTurn
+        turnManager.endTurn();
+        turnManager.startTurn();
+
+        assertEquals(gameInstance.getCurrentState(), GameState.MOVE);
+
+        //Check Demeter sequence with power
+        assertEquals(gameInstance.getCurrentPlayerNextState(), GameState.BUILDPOWER);
+
+        turnManager.moveWorker(new Position(0, 2), new Position(0, 3));
+        turnManager.buildWorker(new Position(0, 2));
+        turnManager.usePowerWorker(new Position(0, 3), new Position(0, 4));
+
+        assertEquals(gameInstance.getCurrentState(), GameState.BUILDPOWER);
+
+        turnManager.endTurn();
+        turnManager.startTurn();
+
+        assertEquals(gameInstance.getCurrentState(), GameState.MOVE);
+
+    }
 
     @After
     public void tearDown() {

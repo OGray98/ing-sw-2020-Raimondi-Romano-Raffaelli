@@ -35,10 +35,12 @@ public class TurnManager {
         gameInstance.startTurn();
         currentPlayerWorkersPosition = gameInstance.getCurrentPlayerWorkersPosition();
         workerMovedPosition = null;
+        //Set GameState
+        gameInstance.setCurrentState(GameState.MOVE);
     }
 
     /**
-     * @return true iff the current Player can move at least one worker
+     * @return true if the current Player can move at least one worker
      */
     public boolean canCurrentPlayerMoveAWorker() {
         movableWorkersPosition = gameInstance.canPlayerMoveAWorker();
@@ -108,6 +110,8 @@ public class TurnManager {
         currentPlayerWorkersPosition = gameInstance.getCurrentPlayerWorkersPosition();
         movableWorkersPosition = gameInstance.canPlayerMoveAWorker();
         workerMovedPosition = movePos;
+        //Set GameState to the next state
+        gameInstance.setCurrentState(GameState.CHECKWIN);
 
     }
 
@@ -117,6 +121,9 @@ public class TurnManager {
      * @return true iff player has won with the last movement of his worker
      */
     public boolean hasWonWithMovement() {
+        //Set GameState to the next state
+        gameInstance.setCurrentState(GameState.BUILD);
+
         return gameInstance.hasWonCurrentPlayer();
     }
 
@@ -169,6 +176,8 @@ public class TurnManager {
             throw new NullPointerException("workerMovedPosition");
         if (!workerMovedPosition.isAdjacent(buildPosition))
             throw new NotAdjacentBuildingException(workerMovedPosition.row, workerMovedPosition.col, buildPosition.row, buildPosition.col);
+
+        gameInstance.setCurrentState(GameState.ENDPHASE);
 
         gameInstance.build(buildPosition);
     }
@@ -230,7 +239,10 @@ public class TurnManager {
 
         gameInstance.usePowerWorker(powerPos);
 
-        if(gameInstance.getCurrentPlayerWorkersPosition().contains(powerPos))
+        //Set GameState
+        gameInstance.setCurrentState(gameInstance.getCurrentPlayerNextState());
+
+        if (gameInstance.getCurrentPlayerWorkersPosition().contains(powerPos))
             workerMovedPosition = powerPos;
         else
             workerMovedPosition = workerPos;

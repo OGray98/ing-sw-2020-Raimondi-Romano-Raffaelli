@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.AlreadyPresentGameException;
 import it.polimi.ingsw.exception.NotPresentWorkerException;
 import it.polimi.ingsw.exception.NotSelectedGodException;
@@ -30,6 +31,7 @@ public class Game {
     private boolean cantGoUp;
     private int contEffect;
     private int contCurrentWorker;
+    private GameState currentState;
 
 
     private Game(List<PlayerInterface> players) throws NullPointerException, IllegalArgumentException {
@@ -48,6 +50,7 @@ public class Game {
         cantGoUp = false;
         contEffect = 0;
         contCurrentWorker = 0;
+        currentState = GameState.NULL;
     }
 
     private Game(List<PlayerInterface> players, Board board) throws NullPointerException, IllegalArgumentException {
@@ -68,6 +71,7 @@ public class Game {
         cantGoUp = false;
         contEffect = 0;
         contCurrentWorker = 0;
+        currentState = GameState.NULL;
     }
 
     public static Game getInstance(List<PlayerInterface> players) {
@@ -104,6 +108,25 @@ public class Game {
                         (a, b) -> b,
                         HashMap::new
                 ));
+    }
+
+    /*Method that returns the powerState of the current player, to check if he is in a state where usePower is allowed*/
+    public GameState getCurrentPlayerPowerState() {
+        return currentPlayer.getPowerState();
+    }
+
+    /*Method that returns the nextState of the current player after he has used a power*/
+    public GameState getCurrentPlayerNextState() {
+        return currentPlayer.getNextState();
+    }
+
+    public GameState getCurrentState() {
+        return this.currentState;
+    }
+
+    /*Change the currentState in the nextState given*/
+    public void setCurrentState(GameState nextState) {
+        this.currentState = nextState;
     }
 
     /* Method that set the chosen cards in deck.
