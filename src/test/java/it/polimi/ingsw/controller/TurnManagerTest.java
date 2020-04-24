@@ -5,6 +5,7 @@ import it.polimi.ingsw.exception.NotAdjacentMovementException;
 import it.polimi.ingsw.exception.NotPresentWorkerException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
@@ -277,6 +278,98 @@ public class TurnManagerTest {
         turnManager.buildWorker(buildPos.get(0));
 
         assertEquals(1, gameInstance.getBoard().getCell(buildPos.get(0)).getLevel());
+    }
+
+    @Test
+    public void powerPositionsTest(){
+        //Put workers on the board
+        List<Position> workerPos = new ArrayList<>(List.of(
+                new Position(0, 0),
+                new Position(0, 4),
+                new Position(0, 2),
+                new Position(2, 0),
+                new Position(2, 1),
+                new Position(4, 4)
+        ));
+
+        workerPos.forEach(pos -> gameInstance.putWorker(pos));
+
+        turnManager.startTurn();
+
+        assertEquals(gameInstance.getCurrentPlayerNextState(), GameState.ENDPHASE);
+
+        //Exception check:
+        try{
+            turnManager.powerPositions(null);
+        }
+        catch (NullPointerException e){
+            assertEquals("workerPos", e.getMessage());
+        }
+
+        //block a worker
+        turnManager.moveWorker(new Position(0,0), new Position(0,1));
+
+        for(Cell c : gameInstance.getBoard().getAdjacentCells(new Position(0,1))){
+            turnManager.buildWorker(c.getPosition());
+            turnManager.buildWorker(c.getPosition());
+        }
+
+        turnManager.canCurrentPlayerMoveAWorker();
+
+        try{
+            turnManager.powerPositions(new Position(0,1));
+        }
+        catch (NotPresentWorkerException e){
+            assertEquals("There isn't a worker of PLAYER0 in : [0][1]", e.getMessage());
+        }
+
+        gameInstance.setStartingWorker(new Position(0,4));
+        List<Position> powerPos = turnManager.powerPositions(new Position(0,4));
+
+        assertEquals(powerPos.size(),3);
+        assertTrue(powerPos.contains(new Position(0,3)));
+        assertTrue(powerPos.contains(new Position(1,3)));
+        assertTrue(powerPos.contains(new Position(1,4)));
+
+    }
+
+    @Test
+    public void validPowerTest(){
+
+        //Put workers on the board
+        List<Position> workerPos = new ArrayList<>(List.of(
+                new Position(0, 0),
+                new Position(0, 4),
+                new Position(0, 2),
+                new Position(2, 0),
+                new Position(2, 1),
+                new Position(4, 4)
+        ));
+
+        workerPos.forEach(pos -> gameInstance.putWorker(pos));
+
+        turnManager.startTurn();
+
+        assertEquals(gameInstance.getCurrentPlayerNextState(), GameState.ENDPHASE);
+
+        //Exception check:
+        try{
+            turnManager.isValidUseOfPower(null, new Position(0,1));
+        }
+        catch (NullPointerException e){
+            assertEquals("workerPos", e.getMessage());
+        }
+        try{
+            turnManager.isValidUseOfPower(new Position(0,0), null);
+        }
+        catch (NullPointerException e){
+            assertEquals("powerPos", e.getMessage());
+        }
+
+        //Check returns false if a position without a current player worker is given
+        assertFalse(turnManager.isValidUseOfPower(new Position(0,1), new Position(0,1)));
+
+        assertTrue(turnManager.isValidUseOfPower(new Position(0,0), new Position(0,1)));
     }
 
     @Test

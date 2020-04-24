@@ -211,11 +211,11 @@ public class TurnManager {
             throw new NullPointerException("workerPos");
         if (powerPos == null)
             throw new NullPointerException("powerPos");
-        if (!movableWorkersPosition.contains(workerPos))
+        if (!currentPlayerWorkersPosition.contains(workerPos))
             return false;
 
         gameInstance.setStartingWorker(workerPos);
-        return gameInstance.canUsePowerWorker(workerPos);
+        return gameInstance.canUsePowerWorker(powerPos);
     }
 
     /**
