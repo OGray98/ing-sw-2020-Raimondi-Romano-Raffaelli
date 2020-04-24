@@ -18,17 +18,17 @@ public class GodPhaseManager {
 
     private List<String> godsChosen;
     private final Game game;
-    private final int playerGodLikeIndex;
+    private final PlayerIndex playerGodLikeIndex;
 
     public GodPhaseManager(Game game){
         this.godsChosen = new ArrayList<>(game.getPlayers().size());
         this.game = game;
-        this.playerGodLikeIndex = 0;
+        this.playerGodLikeIndex = PlayerIndex.PLAYER0;
     }
 
     // The PlayerIndex.PLAYER0 is the godLike
-    public int getGodLikePlayerIndex(){
-       return this.playerGodLikeIndex;
+    public PlayerIndex getGodLikePlayerIndex() {
+        return this.playerGodLikeIndex;
     }
 
     public List<String> getGodsChosen(){

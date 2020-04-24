@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.exception.WrongAssociationViewPlayerException;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
@@ -43,6 +44,13 @@ public class RemoteView extends View implements Observer<Board> {
     @Override
     public void update(Board message) {
         RemoteView.board = message;
+    }
+
+    public void putMessage(Message msg) throws NullPointerException, WrongAssociationViewPlayerException {
+        if (msg == null)
+            throw new NullPointerException("msg");
+        if (!msg.getClient().equals(getPlayer()))
+            throw new WrongAssociationViewPlayerException(getPlayer(), msg.getClient());
     }
 
     /*

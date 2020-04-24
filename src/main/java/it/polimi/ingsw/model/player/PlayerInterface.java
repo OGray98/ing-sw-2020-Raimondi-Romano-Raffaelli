@@ -11,6 +11,9 @@ import java.util.Map;
 
 public interface PlayerInterface {
 
+    /* Getter of nickname*/
+    String getNickname();
+
     /* Set the situation when worker has never been moved yet */
     void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp);
 

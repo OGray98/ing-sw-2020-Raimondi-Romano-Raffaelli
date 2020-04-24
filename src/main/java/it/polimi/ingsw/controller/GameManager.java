@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exception.AlreadyPresentRemoteViewOfPlayerException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
@@ -9,7 +10,9 @@ import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.view.RemoteView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Game manager is the controller's most important class. It manage
@@ -21,11 +24,27 @@ public class GameManager implements Observer<Message> {
     private final GameLobby lobby;
     private Game gameInstance;
     private GodPhaseManager godPhaseManager;
-    private List<RemoteView> remoteViews;
+    private Map<PlayerIndex, RemoteView> remoteViews;
 
     public GameManager() {
-        remoteViews = new ArrayList<>();
+        remoteViews = new HashMap<>();
         lobby = new GameLobby();
+    }
+
+    /**
+     * Add a RemoteView associated with PlayerIndex of client
+     *
+     * @param index      PlayerIndex of Client
+     * @param remoteView Associated RemoteView
+     * @throws NullPointerException                      if remoteView is null
+     * @throws AlreadyPresentRemoteViewOfPlayerException if there already is a RemoteView associated with index.
+     */
+    public void addRemoteView(PlayerIndex index, RemoteView remoteView) throws NullPointerException, AlreadyPresentRemoteViewOfPlayerException {
+        if (remoteView == null)
+            throw new NullPointerException("remoteView");
+        if (remoteViews.containsKey(index))
+            throw new AlreadyPresentRemoteViewOfPlayerException(index);
+        remoteViews.put(index, remoteView);
     }
 
     @Override
@@ -66,29 +85,82 @@ public class GameManager implements Observer<Message> {
     }
 
     private void handleGodLikeChoseMessage(GodLikeChoseMessage message) {
-        if (message.getClient().compareTo(PlayerIndex.values()[godPhaseManager.getGodLikePlayerIndex()]) != 0) {
-            //TODO rispondi errore non sei godLike
+
+        PlayerIndex clientIndex = message.getClient();
+        List<String> godNames = message.getGodNames();
+
+        if (!clientIndex.equals(godPhaseManager.getGodLikePlayerIndex())) {
+            remoteViews.get(clientIndex).putMessage(
+                    new ErrorMessage(
+                            clientIndex,
+                            "You aren't player god like",
+                            TypeMessage.NOT_BE_GOD_LIKE
+                    )
+            );
             return;
         }
         if (message.getGodNames().size() != gameInstance.getPlayers().size()) {
-            //TODO rispondi errore
+            remoteViews.get(clientIndex).putMessage(
+                    new ErrorMessage(
+                            clientIndex,
+                            "You must choose " + gameInstance.getPlayers().size() + " cards",
+                            TypeMessage.WRONG_NUMBER_CARDS
+                    )
+            );
             return;
         }
-        message.getGodNames().forEach(name -> godPhaseManager.godLikeChooseCards(name));
+        godNames.forEach(name -> godPhaseManager.godLikeChooseCards(name));
         gameInstance.setGodsChosenByGodLike(godPhaseManager.getGodsChosen());
     }
 
-    private boolean isMessageSentByCurrentPlayer(Message msg) {
-        return msg.getClient().equals(gameInstance.getCurrentPlayerIndex());
-    }
-
     private void handleIsThreePlayersGameMessage(TypeMatchMessage message) {
+
+        PlayerIndex clientIndex = message.getClient();
+        boolean isThreePlayerGame = message.isThreePlayersMatch();
+
+        if (!clientIndex.equals(PlayerIndex.PLAYER0)) {
+            remoteViews.get(clientIndex).putMessage(
+                    new ErrorMessage(
+                            clientIndex,
+                            "You can't choose the number of players",
+                            TypeMessage.CANT_CHOOSE_PLAYERS_NUMBER
+                    )
+            );
+            return;
+        }
+
         lobby.setThreePlayersGame(message.isThreePlayersMatch());
     }
 
     private void handleNicknameMessage(NicknameMessage message) {
+
+        PlayerIndex clientIndex = message.getClient();
         String name = message.getNickname();
-        //Todo se il nome è già stato preso diglielo
+
+        if (lobby.isNameAlreadyTaken(name)) {
+            remoteViews.get(clientIndex).putMessage(
+                    new ErrorMessage(
+                            clientIndex,
+                            "There already is a player named " + name,
+                            TypeMessage.NICKNAME
+                    )
+            );
+            return;
+        }
+
+        /*
+        if(lobby.isAlreadyPresent(clientIndex)){
+            remoteViews.get(clientIndex).putMessage(
+                    new ErrorMessage(
+                            message.getClient(),
+                            "You already set your name" + name,
+                            TypeMessage.ALREADY_SET_NICKNAME
+                    )
+            );
+            return;
+        }
+        */
+
         lobby.addPlayer(name);
 
         if (lobby.isFull()) {
@@ -98,5 +170,9 @@ public class GameManager implements Observer<Message> {
             gameInstance = Game.getInstance(players);
             godPhaseManager = new GodPhaseManager(gameInstance);
         }
+    }
+
+    private boolean isMessageSentByCurrentPlayer(Message msg) {
+        return msg.getClient().equals(gameInstance.getCurrentPlayerIndex());
     }
 }

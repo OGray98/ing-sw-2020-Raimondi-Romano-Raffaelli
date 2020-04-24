@@ -17,15 +17,20 @@ public class Player implements PlayerInterface{
     private Cell cellOccupied;
     private boolean cantGoUp;
 
-    public Player(String nickName, PlayerIndex playerNum){
+    public Player(String nickName, PlayerIndex playerNum) {
         this.nickName = nickName;
         this.playerNum = playerNum;
         this.cantGoUp = false;
     }
 
+    @Override
+    public String getNickname() {
+        return this.nickName;
+    }
+
     /*Set values of the situation after the first insert of a worker*/
     @Override
-    public void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp){
+    public void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp) {
         this.cellOccupied = cellOccupied;
         this.cantGoUp = cantGoUp;
     }
