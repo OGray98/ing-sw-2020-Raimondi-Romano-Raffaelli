@@ -11,22 +11,30 @@ import java.util.stream.Collectors;
 
 public class Deck {
 
-    private final List<CardInterface> godCards;
+    private static final List<CardInterface> godCards = new ArrayList<>(
+            List.of(
+                    new ApolloDecorator("Apollo", "Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.", GameState.MOVE, GameState.CHECKWIN),
+                    new ArtemisDecorator("Artemis", "Your Worker may move one additional time, but not back to its initial space.", GameState.MOVE, GameState.CHECKWIN),
+                    new AthenaDecorator("Athena", "If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.", GameState.MOVE, GameState.CHECKWIN),
+                    new AtlasDecorator("Atlas", "Your Worker may build a dome at any level.", GameState.BUILD, GameState.ENDPHASE),
+                    new DemeterDecorator("Demeter", "Your Worker may build one additional time, but not on the same space.", GameState.ENDPHASE, GameState.BUILDPOWER),
+                    new HephaestusDecorator("Hephaestus", "Your Worker may build one additional block (not dome) on top of your first block.", GameState.ENDPHASE, GameState.BUILDPOWER),
+                    new MinotaurDecorator("Minotaur", "our Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.", GameState.MOVE, GameState.CHECKWIN),
+                    new PanDecorator("Pan", "You also win if your Worker moves down two or more levels.", GameState.MOVE, GameState.CHECKWIN),
+                    new PrometheusDecorator("Prometheus", "If your Worker does not move up, it may build both before and after moving.", GameState.INITURN, GameState.INITPOWER)
+            )
+    );
     public final static int size = 9;
-    private int playersNumber;
+    private final int playersNumber;
 
-    public Deck(int playersNumber){
+    public Deck(int playersNumber) {
         this.playersNumber = playersNumber;
-        CardInterface cardApollo = new ApolloDecorator("Apollo","Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.",GameState.MOVE,GameState.CHECKWIN);
-        CardInterface cardArtemis = new ArtemisDecorator("Artemis","Your Worker may move one additional time, but not back to its initial space.",GameState.MOVE,GameState.CHECKWIN);
-        CardInterface cardAthena = new AthenaDecorator("Athena","If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.",GameState.MOVE,GameState.CHECKWIN);
-        CardInterface cardAtlas = new AtlasDecorator("Atlas", "Your Worker may build a dome at any level.",GameState.BUILD,GameState.ENDPHASE);
-        CardInterface cardDemeter = new DemeterDecorator("Demeter","Your Worker may build one additional time, but not on the same space.",GameState.ENDPHASE,GameState.BUILDPOWER);
-        CardInterface cardHephaestus = new HephaestusDecorator("Hephaestus","Your Worker may build one additional block (not dome) on top of your first block.",GameState.ENDPHASE,GameState.BUILDPOWER);
-        CardInterface cardMinotaur = new MinotaurDecorator("Minotaur","our Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.",GameState.MOVE,GameState.CHECKWIN);
-        CardInterface cardPan = new PanDecorator("Pan","You also win if your Worker moves down two or more levels.",GameState.MOVE,GameState.CHECKWIN);
-        CardInterface cardPrometheus = new PrometheusDecorator("Prometheus","If your Worker does not move up, it may build both before and after moving.",GameState.MOVE,GameState.INITPOWER);
-        godCards = new ArrayList<>(List.of(cardApollo, cardArtemis, cardAthena, cardAtlas, cardDemeter, cardHephaestus, cardMinotaur, cardPan, cardPrometheus));
+    }
+
+    public static boolean isCorrectedName(String name) throws NullPointerException {
+        if (name == null)
+            throw new NullPointerException("name");
+        return godCards.stream().anyMatch(card -> card.getGodName().equals(name));
     }
 
     public void playerGodLikeChoose(CardInterface card) throws NullPointerException {
@@ -55,7 +63,7 @@ public class Deck {
     }
 
     public List<CardInterface> getGodCards() {
-        return this.godCards;
+        return godCards;
     }
 
     public CardInterface getGodCard(String name) throws NullPointerException, WrongGodNameException {

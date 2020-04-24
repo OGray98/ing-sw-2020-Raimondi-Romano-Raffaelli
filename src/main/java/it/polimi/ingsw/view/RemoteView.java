@@ -1,15 +1,36 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.player.PlayerIndex;
+import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.utils.Message;
 
-public class RemoteView implements Observer<Board> {
+/**
+ * RemoteView is an abstract class which represents an abstraction of RemoteView
+ * in the pattern MVC.
+ */
+public class RemoteView extends View implements Observer<Board> {
 
     private static Board board;
 
-    public RemoteView() {
+    public RemoteView(PlayerIndex player, Observable<Message> observable) {
+        super(player);
         if (board == null)
             board = new Board();
+        observable.addObserver(new MessageReceiver());
+    }
+
+    /**
+     * MessageReceiver is a class used by RemoteView to Observer the
+     * messages sent by clients.
+     */
+    private class MessageReceiver implements Observer<Message> {
+
+        @Override
+        public void update(Message message) {
+            handleMessage(message);
+        }
     }
 
     public static Board getBoard() throws NullPointerException {
@@ -17,6 +38,7 @@ public class RemoteView implements Observer<Board> {
             throw new NullPointerException("board");
         return board;
     }
+
 
     @Override
     public void update(Board message) {

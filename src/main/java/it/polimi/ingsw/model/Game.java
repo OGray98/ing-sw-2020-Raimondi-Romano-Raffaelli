@@ -111,21 +111,21 @@ public class Game {
     }
 
     /*Method that returns the powerState of the current player, to check if he is in a state where usePower is allowed*/
-    public GameState getCurrentPlayerPowerState(){
+    public GameState getCurrentPlayerPowerState() {
         return currentPlayer.getPowerState();
     }
 
     /*Method that returns the nextState of the current player after he has used a power*/
-    public GameState getCurrentPlayerNextState(){
+    public GameState getCurrentPlayerNextState() {
         return currentPlayer.getNextState();
     }
 
-    public GameState getCurrentState(){
+    public GameState getCurrentState() {
         return this.currentState;
     }
 
     /*Change the currentState in the nextState given*/
-    public void setCurrentState(GameState nextState){
+    public void setCurrentState(GameState nextState) {
         this.currentState = nextState;
     }
 

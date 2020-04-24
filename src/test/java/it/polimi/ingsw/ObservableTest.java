@@ -3,6 +3,8 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
+import it.polimi.ingsw.utils.TypeMatchMessage;
+import it.polimi.ingsw.view.ObservableStringOnlyForCheck;
 import it.polimi.ingsw.view.RemoteView;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +20,7 @@ public class ObservableTest {
     @Before
     public void init() {
         board = new Board();
-        remoteView = new RemoteView();
+        remoteView = new RemoteView(PlayerIndex.PLAYER0, new ObservableStringOnlyForCheck(new TypeMatchMessage(PlayerIndex.PLAYER0, true)));
         board.addObserver(remoteView);
     }
 

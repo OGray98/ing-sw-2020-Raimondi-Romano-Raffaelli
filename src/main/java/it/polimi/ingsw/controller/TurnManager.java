@@ -242,7 +242,7 @@ public class TurnManager {
         //Set GameState
         gameInstance.setCurrentState(gameInstance.getCurrentPlayerNextState());
 
-        if(gameInstance.getCurrentPlayerWorkersPosition().contains(powerPos))
+        if (gameInstance.getCurrentPlayerWorkersPosition().contains(powerPos))
             workerMovedPosition = powerPos;
         else
             workerMovedPosition = workerPos;
