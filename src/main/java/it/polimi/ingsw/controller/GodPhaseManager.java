@@ -83,6 +83,13 @@ public class GodPhaseManager {
                 game.setPlayerCard(cardGodName);
                 newGod.remove(name);
                 this.godsChosen = newGod;
+
+                //If remain only one card, it must be given to the godlike player
+                if(this.godsChosen.size() == 1){
+                    game.setPlayerCard(this.godsChosen.get(0));
+                    this.godsChosen.clear();
+                }
+
                 thereIs = true;
             }
         }

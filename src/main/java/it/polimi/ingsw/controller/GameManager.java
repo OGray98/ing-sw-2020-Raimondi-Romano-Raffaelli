@@ -25,6 +25,8 @@ public class GameManager implements Observer<Message> {
     private Game gameInstance;
     private GodPhaseManager godPhaseManager;
     private final Map<PlayerIndex, RemoteView> remoteViews;
+    //TurnManager instance
+    private TurnManager turnManager;
 
     public GameManager() {
         remoteViews = new HashMap<>();
@@ -64,6 +66,8 @@ public class GameManager implements Observer<Message> {
             case SELECT_CARD:
                 handleSelectCardMessage((PlayerSelectGodMessage) message);
                 break;
+            case GODLIKE_CHOOSE_FIRST_PLAYER:
+                handleGodLikeChooseFirstPlayerMessage((GodLikeChooseFirstPlayerMessage) message);
             case MOVE:
                 break;
             case USE_POWER:
@@ -76,12 +80,55 @@ public class GameManager implements Observer<Message> {
         }
     }
 
+    /**
+     * This method communicates with model and set the card of the current player
+     * It responds with an error message if the operation is not possible
+     * @param message is the input message sent from the current player
+     * */
     private void handleSelectCardMessage(PlayerSelectGodMessage message) {
+
+        PlayerIndex clientIndex = message.getClient();
+
         if (!isMessageSentByCurrentPlayer(message)) {
-            //TODO rispondi errore
+            respondToRemoteView(
+                    clientIndex,
+                    "Not your turn to choose the god",
+                    TypeMessage.NOT_YOUR_TURN
+            );
             return;
         }
+        //Godlike can't choose the card
+        if(clientIndex.equals(godPhaseManager.getGodLikePlayerIndex())){
+            respondToRemoteView(
+                    clientIndex,
+                    "Godlike player can not choose a card",
+                    TypeMessage.ERROR
+            );
+            return;
+        }
+
         godPhaseManager.playerChooseGod(message.getGodName());
+        //possibile problema: quando ultimo giocatore sceglie poi non sarà il turno del godlike
+    }
+
+    /**
+     * This method communicates with model and set the first player of the game
+     * It responds with an error message if the operation is not possible
+     * @param message is input message which contains the index of the first player chosen
+     * */
+    private void handleGodLikeChooseFirstPlayerMessage(GodLikeChooseFirstPlayerMessage message){
+
+        PlayerIndex clientIndex = message.getClient();
+
+        if(!clientIndex.equals(godPhaseManager.getGodLikePlayerIndex())){
+            respondToRemoteView(
+                    clientIndex,
+                    "You aren't player god like",
+                    TypeMessage.NOT_BE_GOD_LIKE
+            );
+            return;
+        }
+        godPhaseManager.godLikeChooseFirstPlayer(message.getPlayerFirst());
     }
 
     /**
