@@ -42,6 +42,9 @@ public class Game {
                     + players.size() + " players");
 
         this.players = new ArrayList<>(players);
+
+        this.players.sort(Comparator.comparing(PlayerInterface::getPlayerNum));
+
         board = new Board();
         deck = new Deck(players.size());
         numPlayer = players.size();
@@ -63,6 +66,9 @@ public class Game {
                     + players.size() + " players");
 
         this.players = new ArrayList<>(players);
+
+        this.players.sort(Comparator.comparing(PlayerInterface::getPlayerNum));
+
         this.board = new Board(board);
         deck = new Deck(players.size());
         numPlayer = players.size();
