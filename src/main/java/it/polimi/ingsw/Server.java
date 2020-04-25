@@ -42,10 +42,6 @@ public class Server {
             List<String> keys = new ArrayList<>(waitingConnection.keySet());
             ClientConnection c1 = waitingConnection.get(keys.get(0));
             ClientConnection c2 = waitingConnection.get(keys.get(1));
-            Player player0 = new Player(keys.get(0), PlayerIndex.PLAYER0);
-            Player player1 = new Player(keys.get(1),PlayerIndex.PLAYER1);
-            RemoteView player0Remote = new RemoteView(player0,keys.get(1),c1);
-            RemoteView player1Remote = new RemoteView(player1,keys.get(0),c2);
             // TODO : è da completare!!!
         }
     }
