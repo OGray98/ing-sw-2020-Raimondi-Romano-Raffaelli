@@ -7,5 +7,5 @@ public enum TypeMessage {
     GODLIKE_CHOOSE_CARDS, SELECT_CARD,
     MOVE, USE_POWER, BUILD,
     //Management message
-    ERROR
+    ERROR,CONNECTION,PING
 }
