@@ -1,34 +1,37 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.ClientConnection;
+import it.polimi.ingsw.exception.WrongAssociationViewPlayerException;
 import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
+import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.utils.Message;
 
-public class RemoteView implements Observer<Board> {
-
-    /*private class MessageReceiver implements Observer<String>{
-
-        @Override
-        public void update(String message) {
-            System.out.println("Received: " + message);
-        }
-    }*/
+/**
+ * RemoteView is an abstract class which represents an abstraction of RemoteView
+ * in the pattern MVC.
+ */
+public class RemoteView extends View implements Observer<Board> {
 
     private static Board board;
-   // private ClientConnection clientConnection;
 
-   /* public RemoteView(PlayerIndex player, String opponent, ClientConnection c){
+    public RemoteView(PlayerIndex player, Observable<Message> observable) {
         super(player);
-        this.clientConnection = c;
-        c.addObserver(new MessageReceiver());
-        c.asyncSend("Your opponent: " + opponent);
-    }*/
-
-   public RemoteView() {
         if (board == null)
             board = new Board();
+        observable.addObserver(new MessageReceiver());
+    }
+
+    /**
+     * MessageReceiver is a class used by RemoteView to Observer the
+     * messages sent by clients.
+     */
+    private class MessageReceiver implements Observer<Message> {
+
+        @Override
+        public void update(Message message) {
+            handleMessage(message);
+        }
     }
 
     public static Board getBoard() throws NullPointerException {
@@ -37,9 +40,17 @@ public class RemoteView implements Observer<Board> {
         return board;
     }
 
+
     @Override
     public void update(Board message) {
         RemoteView.board = message;
+    }
+
+    public void putMessage(Message msg) throws NullPointerException, WrongAssociationViewPlayerException {
+        if (msg == null)
+            throw new NullPointerException("msg");
+        if (!msg.getClient().equals(getPlayer()))
+            throw new WrongAssociationViewPlayerException(getPlayer(), msg.getClient());
     }
 
     /*
@@ -57,7 +68,6 @@ public class RemoteView implements Observer<Board> {
             message.getChanges().entrySet().stream()
                     .filter(entry -> board.getWorkerNum(entry.getValue()) < 2)
                     .forEach(workerToPut -> board.putWorker(workerToPut.getKey().getOccupiedPosition(), workerToPut.getValue()));
-
         }
         if (!message.isPositionBuildNull()) {
             if (message.getBuildType() == BuildType.DOME) {
@@ -67,6 +77,5 @@ public class RemoteView implements Observer<Board> {
             } else
                 board.constructBlock(message.getPositionBuild());
         }
-
     }*/
 }
