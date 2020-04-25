@@ -16,7 +16,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class GodPhaseManagerTest {
@@ -43,7 +44,7 @@ public class GodPhaseManagerTest {
     @Test
     public void getPlayerIndexTest(){
 
-        assertEquals(0,godManager.getGodLikePlayerIndex());
+        assertEquals(PlayerIndex.PLAYER0,godManager.getGodLikePlayerIndex());
         assertEquals(PlayerIndex.PLAYER0,game.getPlayers().get(0).getPlayerNum());
     }
 
@@ -55,20 +56,20 @@ public class GodPhaseManagerTest {
 
 
         try{
-            godManager.GodLikeChooseCards("Aapoollo");
+            godManager.godLikeChooseCards("Aapoollo");
         }catch (WrongGodNameException e){
             assertEquals("There isn't a god named Aapoollo",e.getMessage());
         }
 
-        godManager.GodLikeChooseCards("Apollo");
-        assertEquals("Apollo",godManager.getGodsChosen().get(0));
-        godManager.GodLikeChooseCards("Pan");
-        assertEquals("Pan",godManager.getGodsChosen().get(1));
-        godManager.GodLikeChooseCards("Demeter");
-        assertEquals("Demeter",godManager.getGodsChosen().get(2));
+        godManager.godLikeChooseCards("Apollo");
+        assertEquals("Apollo", godManager.getGodsChosen().get(0));
+        godManager.godLikeChooseCards("Pan");
+        assertEquals("Pan", godManager.getGodsChosen().get(1));
+        godManager.godLikeChooseCards("Demeter");
+        assertEquals("Demeter", godManager.getGodsChosen().get(2));
 
         try{
-            godManager.GodLikeChooseCards("Atlas");
+            godManager.godLikeChooseCards("Atlas");
         }catch (FullChosenCardsException e){
             assertEquals("The deck of chosen god is full",e.getMessage());
         }
@@ -79,17 +80,17 @@ public class GodPhaseManagerTest {
      * Verify if th chosen god boolean are set correctly
      */
     @Test
-    public void setBoolGodLikeException(){
+    public void setBoolGodLikeException() {
 
 
-        godManager.GodLikeChooseCards("Apollo");
-        godManager.GodLikeChooseCards("Pan");
-        try{
+        godManager.godLikeChooseCards("Apollo");
+        godManager.godLikeChooseCards("Pan");
+        try {
             godManager.setBoolGodLike();
-        }catch (NotEnoughGodsForPlayerException e){
-            assertEquals("There aren't enough gods for player, missed: " + (game.getPlayers().size() - godManager.getGodsChosen().size()),e.getMessage());
+        } catch (NotEnoughGodsForPlayerException e) {
+            assertEquals("There aren't enough gods for player, missed: " + (game.getPlayers().size() - godManager.getGodsChosen().size()), e.getMessage());
         }
-        godManager.GodLikeChooseCards("Demeter");
+        godManager.godLikeChooseCards("Demeter");
         godManager.setBoolGodLike();
         assertTrue(game.getDeck().getGodCard("Apollo").getBoolChosenGod());
         assertTrue(game.getDeck().getGodCard("Pan").getBoolChosenGod());
@@ -104,12 +105,12 @@ public class GodPhaseManagerTest {
     public void playerChooseGodTest(){
 
 
-        godManager.GodLikeChooseCards("Apollo");
-        assertEquals("Apollo",godManager.getGodsChosen().get(0));
-        godManager.GodLikeChooseCards("Prometheus");
-        assertEquals("Prometheus",godManager.getGodsChosen().get(1));
-        godManager.GodLikeChooseCards("Demeter");
-        assertEquals("Demeter",godManager.getGodsChosen().get(2));
+        godManager.godLikeChooseCards("Apollo");
+        assertEquals("Apollo", godManager.getGodsChosen().get(0));
+        godManager.godLikeChooseCards("Prometheus");
+        assertEquals("Prometheus", godManager.getGodsChosen().get(1));
+        godManager.godLikeChooseCards("Demeter");
+        assertEquals("Demeter", godManager.getGodsChosen().get(2));
 
         godManager.setBoolGodLike();
 

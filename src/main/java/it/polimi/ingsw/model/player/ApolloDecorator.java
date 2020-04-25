@@ -16,9 +16,9 @@ public class ApolloDecorator extends PlayerMoveDecorator {
 
 
 
-    public ApolloDecorator(String godName, String description, GameState powerState, GameState nextState) {
+    public ApolloDecorator() {
 
-       super(godName, description, powerState, nextState);
+       super("Apollo", "Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.", GameState.MOVE, GameState.CHECKWIN);
 
     }
 
@@ -55,6 +55,10 @@ public class ApolloDecorator extends PlayerMoveDecorator {
         return false;
     }
 
+    /**
+     * Implementation of Apollo power
+     * The BoardChange returned contains infos to update Apollo worker and enemy worker
+     * */
     @Override
     public BoardChange usePower(Cell powerCell) {
         Position startPosition = super.getCellOccupied().getPosition();

@@ -11,9 +11,9 @@ import java.util.Map;
 
 public class ArtemisDecorator extends PlayerMoveDecorator {
 
-    public ArtemisDecorator(String godName, String description, GameState powerState, GameState nextState){
+    public ArtemisDecorator(){
 
-        super(godName, description, powerState, nextState);
+        super("Artemis", "Your Worker may move one additional time, but not back to its initial space.", GameState.MOVE, GameState.CHECKWIN);
     }
 
     @Override
@@ -28,6 +28,10 @@ public class ArtemisDecorator extends PlayerMoveDecorator {
         return super.canMove(adjacentPlayerList, adjacentList.get(0)) && !adjacentList.get(0).equals(super.getOldCell());
     }
 
+    /**
+     * Implementation of Artemis power
+     * The BoardChange returned contains infos to update Artemis worker
+     * */
     @Override
     public BoardChange usePower(Cell powerCell){
         BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(), powerCell.getPosition(), super.getPlayerNum());

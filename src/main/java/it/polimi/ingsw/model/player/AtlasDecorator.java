@@ -12,9 +12,9 @@ import java.util.Map;
 public class AtlasDecorator extends PlayerBuildDecorator {
 
 
-    public AtlasDecorator(String godName, String description, GameState powerState, GameState nextState){
+    public AtlasDecorator(){
 
-        super(godName, description, powerState, nextState);
+        super("Atlas", "Your Worker may build a dome at any level.", GameState.BUILD, GameState.ENDPHASE);
 
     }
 

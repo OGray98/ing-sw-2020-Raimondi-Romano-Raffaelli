@@ -11,6 +11,9 @@ import java.util.Map;
 
 public interface PlayerInterface {
 
+    /* Getter of nickname*/
+    String getNickname();
+
     /* Set the situation when worker has never been moved yet */
     void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp);
 
@@ -23,36 +26,58 @@ public interface PlayerInterface {
     /*Setter of cantGoUp*/
     void setCantGoUp(boolean cantGoUp);
 
-    /*Method that returns true if user select a possible move action
-     * It requires a List<Cell> that contains all the cells adjacent to the worker selected
-     * It requires a Map<Position, PlayerIndex> that contains all the players adjacent to the selected worker
-     * It requires a Position that is the position to check
-     * Throws InvalidPositionException if movePos is an illegal position
-     * Throws NullPointerException is adjacentCells or adjacentPlayerList is null*/
+    /**
+     * Method that returns true if user select a possible move action
+     * @param adjacentPlayerList is a Map<Position, PlayerIndex> that contains the players on the cell moveCell
+     * @param  moveCell is a Position that is the position to check
+     * @throws  InvalidPositionException if movePos is an illegal position
+     * @throws  NullPointerException if adjacentCells or adjacentPlayerList is null
+     * */
     boolean canMove(Map<Position, PlayerIndex> adjacentPlayerList, Cell moveCell) throws InvalidPositionException, NullPointerException;
 
+    /**
+     * Method use in Game, it checks if it is possible for the current player to move on a cell in moveCell
+     * @param adjacentPlayerList is the Map<Position, PlayerIndex> that contains the players needed for the movement
+     * @param moveCell is a List<Cell> that contains the cell where to move
+     * @param occupiedCell is the cell occupied before the move
+     * @param cantGoUp is the value cantGoUp in Game
+     * */
     boolean canMoveWithPowers(Map<Position, PlayerIndex> adjacentPlayerList, List<Cell> moveCell, Cell occupiedCell, boolean cantGoUp) throws InvalidPositionException, NullPointerException;
 
-    /*Method that returns true if user select a possible build action
-     * It requires a List<Cell> that contains all the cells adjacent to the worker selected
-     * It requires a Map<Position, PlayerIndex> that contains all the players adjacent to the selected worker
-     * It requires a Position that is the position to check
-     * Throws InvalidPositionException if movePos is an illegal position
-     * Throws NullPointerException is adjacentCells or adjacentPlayerList is null*/
+    /**
+     * Method that returns true if user select a possible build action
+     * @param adjacentPlayerList is a Map<Position, PlayerIndex> that contains all the players adjacent to the selected worker
+     * @param buildCell a Position that is the position to check
+     * @throws  InvalidPositionException if movePos is an illegal position
+     * @throws  NullPointerException is adjacentCells or adjacentPlayerList is null
+     * */
     boolean canBuild(Map<Position, PlayerIndex> adjacentPlayerList, Cell buildCell) throws InvalidPositionException, NullPointerException;
 
-    /* Method that returns true if is verified a win condition
-    * Throws NullPointerException if is not selected any worker */
+    /**
+     *  Method that returns true if is verified a win condition
+     * @throws  NullPointerException if is not selected any worker
+     * */
     boolean hasWin() throws NullPointerException;
 
-    /* Update the occupiedCell after a move, so the hasWin() method can runs correctly
-    * in Decorator class can set activePower */
+    /**
+     *  Update the occupiedCell after a move with
+     *  @param newOccupiedCell so the hasWin() method can runs correctly
+     * */
     void move(Cell newOccupiedCell) throws NullPointerException;
 
-    /*Method that will be specialized in the Decorator class, it refers to a specific God power*/
+    /**
+     * Method that will be specialized in the Decorator class, it refers to a specific God power
+     * It returns true if is possible to use the power
+     * @param adjacentList is a List<Cell> that contains the cell needed for the specialized power
+     * @param adjacentPlayerList is a Map<Position, PlayerIndex> that contains the players on the cells in adjacentList
+     * */
     boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList);
 
-    /*Method that implements the power of a specific God, specialized in Decorator*/
+    /**
+     * Method that implements the power of a specific God, specialized in Decorator
+     * It returns a BoardChange that contains all the information to update the Board
+     * @param powerCell is the Cell where the player wants to use the power
+     * */
     BoardChange usePower(Cell powerCell);
 
     Cell getOldCell() throws NullPointerException;
@@ -70,7 +95,4 @@ public interface PlayerInterface {
     GameState getPowerState();
 
     GameState getNextState();
-
-
-    //public God getGodName();
 }

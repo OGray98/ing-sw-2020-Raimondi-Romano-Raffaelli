@@ -12,9 +12,9 @@ import java.util.Map;
 public class PrometheusDecorator extends PlayerYourTurnDecorator {
 
 
-    public PrometheusDecorator(String godName, String description, GameState powerState, GameState nextState){
+    public PrometheusDecorator(){
 
-        super(godName, description, powerState, nextState);
+        super("Prometheus", "If your Worker does not move up, it may build both before and after moving.", GameState.MOVE, GameState.INITPOWER);
     }
 
     public void setChosenGod(Boolean condition){

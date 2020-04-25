@@ -28,20 +28,24 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
         this.nextState = nextState;
     }
 
-    public PlayerInterface setPlayer(PlayerInterface player){
+    public PlayerInterface setPlayer(PlayerInterface player) {
         this.player = player;
         return this;
     }
 
-
     @Override
-    public void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp){
-         player.setStartingWorkerSituation(cellOccupied,cantGoUp);
+    public String getNickname() {
+        return player.getNickname();
     }
 
     @Override
-    public void setWorkerSituation(Cell oldCell, Cell cellOccupied, boolean cantGoUp){
-        player.setWorkerSituation(oldCell,cellOccupied,cantGoUp);
+    public void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp) {
+        player.setStartingWorkerSituation(cellOccupied, cantGoUp);
+    }
+
+    @Override
+    public void setWorkerSituation(Cell oldCell, Cell cellOccupied, boolean cantGoUp) {
+        player.setWorkerSituation(oldCell, cellOccupied, cantGoUp);
     }
 
     @Override

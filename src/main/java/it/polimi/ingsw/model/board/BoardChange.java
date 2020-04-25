@@ -117,12 +117,13 @@ public class BoardChange {
         return buildType;
     }
 
-    /*
-     * If playerChange isn't initialized, this method create it. Then add an entry in playerChange with a PositionContainer
+    /**
+     * If this.playerChange isn't initialized, this method creates it. Then it adds an entry in playerChange with a PositionContainer
      * which contains oldPosition and newPosition to represent the move and the relative PlayerIndex
-     * It requires a Position which is the oldPosition of movement
-     * It requires a Position which is the newPosition of movement
-     * It requires a PlayerIndex which is the player of movement
+     * @param oldPosition is the old position of the movement
+     * @param newPosition is the new position of the movement
+     * @param playerIndex is the player who is making the move
+     * @throws NullPointerException if oldPosition is null or newPosition is null
      */
     public void addPlayerChanges(Position oldPosition, Position newPosition, PlayerIndex playerIndex) throws NullPointerException {
         if (oldPosition == null)

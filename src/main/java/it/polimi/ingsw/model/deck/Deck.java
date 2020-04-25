@@ -11,30 +11,55 @@ import java.util.stream.Collectors;
 
 public class Deck {
 
-    private final List<CardInterface> godCards;
+    private static final List<CardInterface> godCards = new ArrayList<>(
+            List.of(
+                    new ApolloDecorator(),
+                    new ArtemisDecorator(),
+                    new AthenaDecorator(),
+                    new AtlasDecorator(),
+                    new DemeterDecorator(),
+                    new HephaestusDecorator(),
+                    new MinotaurDecorator(),
+                    new PanDecorator(),
+                    new PrometheusDecorator()
+            )
+    );
     public final static int size = 9;
-    private int playersNumber;
+    private final int playersNumber;
 
-    public Deck(int playersNumber){
+    public Deck(int playersNumber) {
         this.playersNumber = playersNumber;
-        CardInterface cardApollo = new ApolloDecorator("Apollo","Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.",GameState.MOVE,GameState.CHECKWIN);
-        CardInterface cardArtemis = new ArtemisDecorator("Artemis","Your Worker may move one additional time, but not back to its initial space.",GameState.MOVE,GameState.CHECKWIN);
-        CardInterface cardAthena = new AthenaDecorator("Athena","If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.",GameState.MOVE,GameState.CHECKWIN);
-        CardInterface cardAtlas = new AtlasDecorator("Atlas", "Your Worker may build a dome at any level.",GameState.BUILD,GameState.ENDTURN);
-        CardInterface cardDemeter = new DemeterDecorator("Demeter","Your Worker may build one additional time, but not on the same space.",GameState.BUILD,GameState.ENDTURN);
-        CardInterface cardHephaestus = new HephaestusDecorator("Hephaestus","Your Worker may build one additional block (not dome) on top of your first block.",GameState.BUILD,GameState.ENDTURN);
-        CardInterface cardMinotaur = new MinotaurDecorator("Minotaur","our Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.",GameState.MOVE,GameState.CHECKWIN);
-        CardInterface cardPan = new PanDecorator("Pan","You also win if your Worker moves down two or more levels.",GameState.MOVE,GameState.CHECKWIN);
-        CardInterface cardPrometheus = new PrometheusDecorator("Prometheus","If your Worker does not move up, it may build both before and after moving.",GameState.INITURN,GameState.CANMOVE);
-        godCards = new ArrayList<>(List.of(cardApollo, cardArtemis, cardAthena, cardAtlas, cardDemeter, cardHephaestus, cardMinotaur, cardPan, cardPrometheus));
     }
 
+    /**
+     * Check if the
+     * @param name is a correct god name
+     * @throws NullPointerException if name is null
+     * */
+    public static boolean isCorrectedName(String name) throws NullPointerException {
+        if (name == null)
+            throw new NullPointerException("name");
+        return godCards.stream().anyMatch(card -> card.getGodName().equals(name));
+    }
+
+    /**
+     * Set the CardInterface
+     * @param card as a card chosen by a player
+     * @throws NullPointerException if card is null
+     * */
     public void playerGodLikeChoose(CardInterface card) throws NullPointerException {
         if (card == null)
             throw new NullPointerException("Card is null");
         card.setChosenGod(true);
     }
 
+    /**
+     * Set the cards chosen by the godlike player in the beginning of the game
+     * @param gods is the list of the cards chosen
+     * @throws NullPointerException if gods is null
+     * @throws InvalidNumberCardsChosenException if the number of cards chosen and the number of players are different
+     * @throws  WrongGodNameException if in the list given there is a god not present
+     * */
     public void setChosenGodCards(List<String> gods) throws NullPointerException, ArrayIndexOutOfBoundsException {
         if (gods == null)
             throw new NullPointerException("gods");
@@ -55,7 +80,7 @@ public class Deck {
     }
 
     public List<CardInterface> getGodCards() {
-        return this.godCards;
+        return godCards;
     }
 
     public CardInterface getGodCard(String name) throws NullPointerException, WrongGodNameException {

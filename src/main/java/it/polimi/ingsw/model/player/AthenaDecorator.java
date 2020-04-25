@@ -13,9 +13,9 @@ import java.util.Map;
 public class AthenaDecorator extends PlayerOpponentTurnDecorator {
 
 
-    public AthenaDecorator(String godName, String description, GameState powerState, GameState nextState){
+    public AthenaDecorator(){
 
-        super(godName, description, powerState, nextState);
+        super("Athena", "If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.", GameState.MOVE, GameState.CHECKWIN);
 
     }
 
