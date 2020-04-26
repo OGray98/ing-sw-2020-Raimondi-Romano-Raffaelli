@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller.stub;
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.exception.WrongGodNameException;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.stub.StubObservableMessageReceiver;
 import it.polimi.ingsw.utils.*;
@@ -89,5 +90,36 @@ public class ControllerTestSOLOPERORA {
         obs1.setMsg(new GodLikeChooseFirstPlayerMessage(PlayerIndex.PLAYER0, PlayerIndex.PLAYER2));
 
         assertEquals(gameInstance.getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+
+        //Testing put worker phase
+        obs3.setMsg(new PutWorkerMessage(PlayerIndex.PLAYER2, new Position(0,0), new Position(0,1)));
+
+        assertEquals(gameInstance.getBoard().workerPositions(PlayerIndex.PLAYER2).size(), 2);
+        assertEquals(gameInstance.getBoard().getOccupiedPlayer(new Position(0,0)), PlayerIndex.PLAYER2);
+        assertEquals(gameInstance.getBoard().getOccupiedPlayer(new Position(0,1)), PlayerIndex.PLAYER2);
+
+        //Check current player is updated
+        assertEquals(gameInstance.getCurrentPlayerIndex(), PlayerIndex.PLAYER0);
+
+        //if a player wants to put workers in occupied cell it can't do it
+        obs1.setMsg(new PutWorkerMessage(PlayerIndex.PLAYER0, new Position(0,3), new Position(0,0)));
+
+        assertTrue(gameInstance.getBoard().isFreeCell(new Position(0,3)));
+
+        //second player put his workers
+        obs1.setMsg(new PutWorkerMessage(PlayerIndex.PLAYER0, new Position(0,3), new Position(0,4)));
+
+        assertEquals(gameInstance.getBoard().workerPositions(PlayerIndex.PLAYER0).size(), 2);
+
+        //a player try to put workers when it is not his turn
+        obs1.setMsg(new PutWorkerMessage(PlayerIndex.PLAYER0, new Position(3,3), new Position(3,4)));
+
+        assertTrue(gameInstance.getBoard().isFreeCell(new Position(3,3)));
+        assertTrue(gameInstance.getBoard().isFreeCell(new Position(3,4)));
+
+        //last player put workers
+        obs2.setMsg(new PutWorkerMessage(PlayerIndex.PLAYER1, new Position(1,3), new Position(1,4)));
+
+        assertEquals(gameInstance.getBoard().workerPositions(PlayerIndex.PLAYER1).size(), 2);
     }
 }

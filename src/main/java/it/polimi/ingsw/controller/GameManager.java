@@ -68,6 +68,10 @@ public class GameManager implements Observer<Message> {
                 break;
             case GODLIKE_CHOOSE_FIRST_PLAYER:
                 handleGodLikeChooseFirstPlayerMessage((GodLikeChooseFirstPlayerMessage) message);
+                break;
+            case PUTWORKER:
+                handlePutWorkerMessage((PutWorkerMessage) message);
+                break;
             case MOVE:
                 break;
             case USE_POWER:
@@ -129,6 +133,47 @@ public class GameManager implements Observer<Message> {
             return;
         }
         godPhaseManager.godLikeChooseFirstPlayer(message.getPlayerFirst());
+    }
+
+    /**
+     * This method communicates with model and put the two workers of the current player on the board
+     * It responds with an error message if:
+     * It is not the turn of the player
+     * Player selects occupied cells
+     * Player already has workers on the board
+     * @param message is the input message of type PutWorkerMessage
+     * */
+    private void handlePutWorkerMessage(PutWorkerMessage message){
+
+        PlayerIndex clientIndex = message.getClient();
+
+        if(!isMessageSentByCurrentPlayer(message)){
+            respondToRemoteView(
+                    clientIndex,
+                    "Not your turn to put the worker",
+                    TypeMessage.NOT_YOUR_TURN
+            );
+            return;
+        }
+        /*controllo abbastanza inutile che lancia eccezione
+        if(gameInstance.getBoard().workerPositions(clientIndex).size() != 0){
+            respondToRemoteView(
+                    clientIndex,
+                    "Workers already on the map",
+                    TypeMessage.ERROR
+            );
+        }*/
+        try{
+            godPhaseManager.puttingWorkerInBoard(message.getPositionOne(), message.getPositionTwo());
+        }
+        catch(IllegalArgumentException e){
+            respondToRemoteView(
+                    clientIndex,
+                    "You selected an invalid position",
+                    TypeMessage.CELL_OCCUPIED
+            );
+            return;
+        }
     }
 
     /**

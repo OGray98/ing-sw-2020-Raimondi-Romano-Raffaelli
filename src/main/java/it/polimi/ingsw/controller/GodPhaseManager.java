@@ -110,11 +110,18 @@ public class GodPhaseManager {
     /**
      * @param posWorkerOne Position (row,col) of the first worker
      * @param posWorkerTwo Position (row,col) of the second worker
+     * @throws IllegalArgumentException if positions given are not legal
      */
     public void puttingWorkerInBoard(Position posWorkerOne, Position posWorkerTwo){
 
         if(posWorkerOne.equals(posWorkerTwo)){
             throw new NotPutTwoWorkerInSamePositionException(posWorkerOne.row,posWorkerOne.col);
+        }
+        if(!game.getBoard().isFreeCell(posWorkerOne)){
+            throw new IllegalArgumentException("position [" + posWorkerOne.row + "][" + posWorkerOne.col + "] is not free");
+        }
+        if(!game.getBoard().isFreeCell(posWorkerTwo)){
+            throw new IllegalArgumentException("position [" + posWorkerTwo.row + "][" + posWorkerTwo.col + "] is not free");
         }
         game.putWorker(posWorkerOne);
         game.putWorker(posWorkerTwo);
