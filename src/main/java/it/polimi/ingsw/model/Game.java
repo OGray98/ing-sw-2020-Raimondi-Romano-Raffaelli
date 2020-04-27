@@ -10,9 +10,7 @@ import it.polimi.ingsw.model.deck.Deck;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.utils.GodLikeChoseMessage;
-import it.polimi.ingsw.utils.Message;
-import it.polimi.ingsw.utils.UpdateStateMessage;
+import it.polimi.ingsw.utils.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -188,9 +186,12 @@ public class Game extends Observable<Message> {
         currentPlayer.setStartingWorkerSituation(board.getCell(putPosition), false);
         contCurrentWorker++;
         if (contCurrentWorker == 2) {
+            List<Position> workersPos = board.workerPositions(currentPlayer.getPlayerNum());
+            notify(new PutWorkerMessage(PlayerIndex.ALL, workersPos.get(0), workersPos.get(1)));
             contCurrentWorker = 0;
             updateCurrentPlayer();
         }
+
     }
 
 
@@ -301,6 +302,7 @@ public class Game extends Observable<Message> {
             throw new NullPointerException("movePos");
         board.changeWorkerPosition(currentPosition, movePos);
         currentPlayer.move(board.getCell(movePos));
+        notify(new MoveMessage(PlayerIndex.ALL, currentPosition, movePos));
         currentPosition = movePos;
     }
 

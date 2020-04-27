@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 
 public class MoveMessage extends TwoPositionMessage {
 
-    public MoveMessage(PlayerIndex client, TypeMessage type, Position workerPos, Position movePos) throws NullPointerException {
-        super(client, type, workerPos, movePos);
+    public MoveMessage(PlayerIndex client, Position workerPos, Position movePos) throws NullPointerException {
+        super(client, TypeMessage.MOVE, workerPos, movePos);
         if (workerPos == null)
             throw new NullPointerException("workerPos");
         if (movePos == null)

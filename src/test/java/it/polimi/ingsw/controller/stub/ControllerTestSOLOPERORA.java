@@ -15,7 +15,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ControllerTestSOLOPERORA {
     private final GameManager gameManager = new GameManager();
@@ -140,22 +141,22 @@ public class ControllerTestSOLOPERORA {
         assertEquals(gameManager.getGame().getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
 
         //can't move in an enemy turn
-        obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0, TypeMessage.MOVE, new Position(0,3), new Position(1,2)));
+        obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0, new Position(0, 3), new Position(1, 2)));
 
         assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(1,2)));
 
         //can't move if workerPos does not contains player worker
-        obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2, TypeMessage.MOVE, new Position(4,4), new Position(1,1)));
+        obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2, new Position(4, 4), new Position(1, 1)));
 
         assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(1,2)));
 
         //player can't move if the movement is not valid
-        obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2, TypeMessage.MOVE, new Position(0,0), new Position(2,2)));
+        obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2, new Position(0, 0), new Position(2, 2)));
 
         assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(2,2)));
 
         //Normal move
-        obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2, TypeMessage.MOVE, new Position(0,0), new Position(1,0)));
+        obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2, new Position(0, 0), new Position(1, 0)));
 
         assertEquals(gameManager.getGame().getBoard().getOccupiedPlayer(new Position(1,0)), PlayerIndex.PLAYER2);
         assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(0,0)));
