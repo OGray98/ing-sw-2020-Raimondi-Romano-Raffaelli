@@ -49,12 +49,6 @@ public class Server {
     }
 
 
-
-
-
-
-
-
     public Server() throws IOException{
         this.serverSocket = new ServerSocket(PORT);
         System.out.println("Port is open ");
@@ -64,7 +58,7 @@ public class Server {
         while(true){
             try {
                 Socket socket = serverSocket.accept();
-                System.out.println("Client is connected");
+                //System.out.println("Client is connected");
                 SocketClientConnection socketClientConnection = new SocketClientConnection(socket,this);
                 executor.submit(socketClientConnection);
             }catch (IOException e){

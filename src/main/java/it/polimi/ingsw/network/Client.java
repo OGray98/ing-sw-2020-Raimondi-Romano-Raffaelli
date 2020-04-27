@@ -94,11 +94,9 @@ public class Client {
 
     public void run() throws IOException {
         Socket socket = new Socket(ip, port);
-        System.out.println("Connection established");
+        //System.out.println("Connection established");
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream socketOut = new ObjectOutputStream(socket.getOutputStream());
-        Scanner stdin = new Scanner(System.in);
-
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(socketOut);
@@ -107,7 +105,6 @@ public class Client {
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
-            stdin.close();
             socketIn.close();
             socketOut.close();
             socket.close();
