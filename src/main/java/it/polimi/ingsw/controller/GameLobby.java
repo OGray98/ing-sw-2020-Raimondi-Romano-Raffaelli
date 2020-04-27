@@ -4,13 +4,11 @@ import it.polimi.ingsw.exception.MaxPlayersException;
 import it.polimi.ingsw.exception.NameAlreadyTakenException;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class GameLobby {
 
-    private HashMap<PlayerIndex, String> lobbyPlayers;
+    private final HashMap<PlayerIndex, String> lobbyPlayers;
     private boolean threePlayersGame;
 
     public GameLobby(){
@@ -51,7 +49,7 @@ public class GameLobby {
     }
 
     public boolean isPlayerAlreadyInLobby(PlayerIndex playerIndex){
-        return this.lobbyPlayers.keySet().contains(playerIndex);
+        return this.lobbyPlayers.containsKey(playerIndex);
     }
 
     /**

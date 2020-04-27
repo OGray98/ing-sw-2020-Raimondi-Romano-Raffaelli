@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,9 +32,9 @@ public class GodPhaseManagerTest {
 
         players = new ArrayList<>(3);
         players.add(new Player("Jack", PlayerIndex.PLAYER0));
-        players.add(new Player("Creed",PlayerIndex.PLAYER1));
-        players.add(new Player("Rock",PlayerIndex.PLAYER2));
-        game = Game.getInstance(players);
+        players.add(new Player("Creed", PlayerIndex.PLAYER1));
+        players.add(new Player("Rock", PlayerIndex.PLAYER2));
+        game = new Game(players);
         godManager = new GodPhaseManager(game);
 
     }
@@ -184,14 +183,5 @@ public class GodPhaseManagerTest {
         assertEquals(PlayerIndex.PLAYER0,game.getBoard().getOccupiedPlayer(pos6));
 
     }
-
-    @After
-    public void delete(){
-
-        Game.deleteInstance();
-    }
-
-
-
 
 }
