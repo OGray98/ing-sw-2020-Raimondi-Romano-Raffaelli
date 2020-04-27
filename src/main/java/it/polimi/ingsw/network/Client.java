@@ -48,7 +48,7 @@ public class Client {
                         if(inputMessage != null && inputMessage.getType() == TypeMessage.PING){
                             pingTimer.cancel();
                             pingTimer = new Timer();
-                            pingTimer.schedule(/*TODO:close method*/,DISCONNECTION_TIME);
+                            //pingTimer.schedule(/*TODO:close method*/,DISCONNECTION_TIME);
                         } else if(inputMessage != null && inputMessage.getType() != TypeMessage.PING){
                             //do something
                         }else {
