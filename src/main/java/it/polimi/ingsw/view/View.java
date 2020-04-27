@@ -9,6 +9,7 @@ import it.polimi.ingsw.utils.Message;
  * in the pattern MVC.
  */
 public abstract class View extends Observable<Message> {
+
     private final PlayerIndex player;
 
     public View(PlayerIndex player) {

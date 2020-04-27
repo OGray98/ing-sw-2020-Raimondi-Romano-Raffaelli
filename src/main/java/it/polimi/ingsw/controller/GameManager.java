@@ -2,7 +2,9 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exception.AlreadyPresentRemoteViewOfPlayerException;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.deck.Deck;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
@@ -22,13 +24,6 @@ import java.util.Map;
  */
 public class GameManager implements Observer<Message> {
 
-    /*
-        TODO SUPER MEGA IMPORTANTE, PASSARE TRA MODEL E REMOTEVIEW TUTTO GAME??
-        MOTIVI: LE VIEW HANNO BISOGNO DI SAPERE PIU' O MENO TUTTO, TRA CUI CURRENTSTATE,
-        CURRENTPLAYER ECCETERA.
-        SE PASSO ALLA REMOTEVIEW TUTTO QUESTO E' INUTILE FARE GLI UPDATE STATE MESSAGE QUI NEL CONTROLLER
-        -> IMPLEMENTAZIONE MIGLIORE PERCHE' I CSMBIAENTI DEL MODEL DEVONO ESSERE NOTIFICATI DA LUI ALLA VIEW.
-     */
 
     private final GameLobby lobby;
 
@@ -43,9 +38,12 @@ public class GameManager implements Observer<Message> {
         lobby = new GameLobby();
     }
 
-    //TODO DA TOGLIERE ASSOLUTAMENTE, MESSO SOLO MOMENTANEAMENTE PER VEDERE SE FUNZIONANO I TEST
-    public Game getGameModel() {
-        return gameModel;
+    public List<PlayerInterface> getPlayers() {
+        return gameModel.getPlayers();
+    }
+
+    public Board getBoard() {
+        return gameModel.getBoard();
     }
 
 
@@ -145,9 +143,8 @@ public class GameManager implements Observer<Message> {
                     (index, nickname) -> players.add(new Player(nickname, index))
             );
             gameModel = new Game(players);
+            remoteViews.values().forEach(remView -> gameModel.addObserver(remView));
             godPhaseManager = new GodPhaseManager(gameModel);
-
-            sendNewStateToAll(TypeMessage.GODLIKE_CHOOSE_CARDS);
 
         }
 
@@ -200,6 +197,15 @@ public class GameManager implements Observer<Message> {
         PlayerIndex clientIndex = message.getClient();
         List<String> godNames = message.getGodNames();
 
+        if (godNames.stream().filter(Deck::isCorrectedName).count() != godNames.size()) {
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "You insert wrong names",
+                    TypeMessage.WRONG_GOD_NAME
+            );
+            return;
+        }
+
         if (isNotCurrentGameState(GameState.GOD_PLAYER_CHOOSE_CARDS)) {
             respondErrorToRemoteView(
                     clientIndex,
@@ -230,7 +236,6 @@ public class GameManager implements Observer<Message> {
         respondOkToRemoteView(clientIndex, "Cards chosen correctly", TypeMessage.GODLIKE_CHOOSE_CARDS);
 
         gameModel.setCurrentState(GameState.SELECT_CARD);
-        sendNewStateToAll(TypeMessage.SELECT_CARD);
     }
 
 
@@ -275,10 +280,8 @@ public class GameManager implements Observer<Message> {
         //possibile problema: quando ultimo giocatore sceglie poi non sarà il turno del godlike. RISOLTO?
         respondOkToRemoteView(clientIndex, "Card selected correctly", TypeMessage.SELECT_CARD);
 
-        if (godPhaseManager.isFinishSelectCardPhase()) {
+        if (godPhaseManager.isFinishSelectCardPhase())
             gameModel.setCurrentState(GameState.GOD_PLAYER_CHOOSE_FIRST_PLAYER);
-            sendNewStateToAll(TypeMessage.GODLIKE_CHOOSE_FIRST_PLAYER);
-        }
     }
 
     /**
@@ -311,7 +314,6 @@ public class GameManager implements Observer<Message> {
         respondOkToRemoteView(clientIndex, "First player chosen correctly", TypeMessage.GODLIKE_CHOOSE_FIRST_PLAYER);
 
         gameModel.setCurrentState(GameState.PUT_WORKER);
-        sendNewStateToAll(TypeMessage.PUT_WORKER);
     }
 
     /**
@@ -343,14 +345,7 @@ public class GameManager implements Observer<Message> {
             );
             return;
         }
-        /*controllo abbastanza inutile che lancia eccezione
-        if(gameInstance.getBoard().workerPositions(clientIndex).size() != 0){
-            respondToRemoteView(
-                    clientIndex,
-                    "Workers already on the map",
-                    TypeMessage.ERROR
-            );
-        }*/
+
         if (message.getPositions().stream().anyMatch(pos -> !godPhaseManager.canPutWorker(pos))) {
             respondErrorToRemoteView(
                     clientIndex,
@@ -362,10 +357,8 @@ public class GameManager implements Observer<Message> {
 
         respondOkToRemoteView(clientIndex, "Workers put correctly", TypeMessage.PUT_WORKER);
 
-        if (godPhaseManager.getPlayersWithWorkerPut() == gameModel.getPlayers().size()) {
+        if (godPhaseManager.getPlayersWithWorkerPut() == gameModel.getPlayers().size())
             gameModel.setCurrentState(GameState.INITURN);
-            sendNewStateToAll(TypeMessage.MOVE);
-        }
     }
 
     private void handleMoveMessage(MoveMessage message) {
@@ -427,23 +420,6 @@ public class GameManager implements Observer<Message> {
                         clientIndex,
                         specificType,
                         text
-                )
-        );
-    }
-
-    /**
-     * Send an UpdateStateMessage to every RemoteView
-     *
-     * @param state new game state
-     */
-    private void sendNewStateToAll(TypeMessage state) {
-        remoteViews.forEach(
-                (clientIndex, remView) -> remView.putMessage(
-                        new UpdateStateMessage(
-                                clientIndex,
-                                state,
-                                "The new game state is " + state
-                        )
                 )
         );
     }

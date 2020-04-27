@@ -1,14 +1,18 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
-public class UpdateStateMessage extends InformationMessage {
+public class UpdateStateMessage extends Message {
 
-    public UpdateStateMessage(PlayerIndex client, TypeMessage specificType, String string) {
-        super(client, TypeMessage.UPDATE_STATE, specificType, string);
+    private final GameState gameState;
+
+    public UpdateStateMessage(PlayerIndex client, GameState gameState) {
+        super(client, TypeMessage.UPDATE_STATE);
+        this.gameState = gameState;
     }
 
-    public TypeMessage getSentState() {
-        return super.getSpecificType();
+    public GameState getGameState() {
+        return gameState;
     }
 }

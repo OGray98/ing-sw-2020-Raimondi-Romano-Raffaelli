@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.exception.*;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.observer.Observable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /**
  * Board is a group of Cell, which represent the game table.
  */
-public class Board extends Observable<Board> {
+public class Board {
 
     private static final int NUM_ROW = 5;
     private static final int NUM_COLUMNS = 5;
@@ -159,8 +158,6 @@ public class Board extends Observable<Board> {
                     List<Position> newPositions = new ArrayList<>(list);
                     newPositions.add(newPosition);
                     this.playerPosition.put(entry.getKey(), newPositions);
-                    //notify(new BoardChange(oldPosition, newPosition, entry.getKey()));
-                    notify(new Board(this));
                     return;
                 }
             }
@@ -180,8 +177,6 @@ public class Board extends Observable<Board> {
             throw new NullPointerException("buildPosition");
 
         this.map[buildPosition.row][buildPosition.col].incrementLevel();
-        //notify(new BoardChange(buildPosition, BuildType.LEVEL));
-        notify(new Board(this));
     }
 
     /**
@@ -203,7 +198,6 @@ public class Board extends Observable<Board> {
                     list.add(putPosition);
                     this.playerPosition.put(playerIndex, list);
                     //notify(new BoardChange(new Position(0, 0), putPosition, playerIndex));
-                    notify(new Board(this));
                     return;
                 } else
                     throw new InvalidPutWorkerException(putPosition.row, putPosition.col, playerIndex);
@@ -213,7 +207,6 @@ public class Board extends Observable<Board> {
         list.add(putPosition);
         this.playerPosition.put(playerIndex, list);
         //notify(new BoardChange(new Position(0, 0), putPosition, playerIndex));
-        notify(new Board(this));
     }
 
     /**
@@ -273,8 +266,6 @@ public class Board extends Observable<Board> {
             updateAfterPowerMove(boardChange.getChanges());
         if (!boardChange.isPositionBuildNull())
             updateAfterPowerBuild(boardChange.getPositionBuild(), boardChange.getBuildType());
-        //notify(boardChange);
-        notify(new Board(this));
     }
 
     /**

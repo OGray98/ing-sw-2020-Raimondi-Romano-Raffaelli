@@ -9,6 +9,10 @@ import it.polimi.ingsw.model.deck.CardInterface;
 import it.polimi.ingsw.model.deck.Deck;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.utils.GodLikeChoseMessage;
+import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.UpdateStateMessage;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Game contains every object of model
  */
-public class Game {
+public class Game extends Observable<Message> {
 
     private final List<PlayerInterface> players;
     private final Board board;
@@ -49,7 +53,7 @@ public class Game {
         this.cantGoUp = false;
         this.contEffect = 0;
         this.contCurrentWorker = 0;
-        this.currentState = GameState.GOD_PLAYER_CHOOSE_CARDS;
+        updateCurrentState(GameState.GOD_PLAYER_CHOOSE_CARDS);
     }
 
     public Game(List<PlayerInterface> players, Board board) throws NullPointerException, IllegalArgumentException {
@@ -72,7 +76,13 @@ public class Game {
         this.cantGoUp = false;
         this.contEffect = 0;
         this.contCurrentWorker = 0;
-        this.currentState = GameState.GOD_PLAYER_CHOOSE_CARDS;
+        updateCurrentState(GameState.GOD_PLAYER_CHOOSE_CARDS);
+    }
+
+    private void updateCurrentState(GameState gameState) {
+        this.currentState = gameState;
+
+        notify(new UpdateStateMessage(PlayerIndex.ALL, gameState));
     }
 
     /* Method that return a map with of all cards in deck
@@ -103,7 +113,7 @@ public class Game {
 
     /*Change the currentState in the nextState given*/
     public void setCurrentState(GameState nextState) {
-        this.currentState = nextState;
+        updateCurrentState(nextState);
     }
 
     /**
@@ -121,6 +131,7 @@ public class Game {
             }
         }
         deck.setChosenGodCards(godNames);
+        notify(new GodLikeChoseMessage(PlayerIndex.ALL, godNames));
 
         //The player who start to chose the card is the first after godLike
         contCurrentPlayer = 1;
