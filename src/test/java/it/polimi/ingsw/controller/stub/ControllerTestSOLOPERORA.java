@@ -1,20 +1,21 @@
 package it.polimi.ingsw.controller.stub;
 
 import it.polimi.ingsw.controller.GameManager;
+import it.polimi.ingsw.controller.GameState;
+import it.polimi.ingsw.exception.WrongGodNameException;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
 import it.polimi.ingsw.stub.StubObservableMessageReceiver;
-import it.polimi.ingsw.utils.GodLikeChoseMessage;
-import it.polimi.ingsw.utils.NicknameMessage;
-import it.polimi.ingsw.utils.TypeMatchMessage;
+import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.view.RemoteView;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class ControllerTestSOLOPERORA {
     private final GameManager gameManager = new GameManager();
@@ -60,8 +61,105 @@ public class ControllerTestSOLOPERORA {
 
         obs1.setMsg(new GodLikeChoseMessage(PlayerIndex.PLAYER0, godChosen));
 
+        //Check some god phase messages
+        //God choose cards
 
+        assertTrue(gameManager.getGame().getDeck().getChosenGodCards().size() == 3);
+        assertEquals(gameManager.getGame().getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
 
+        //players choose cards
+        obs2.setMsg(new PlayerSelectGodMessage(PlayerIndex.PLAYER2, "Athena"));
+
+        assertEquals(gameManager.getGame().getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        try{
+            obs2.setMsg(new PlayerSelectGodMessage(PlayerIndex.PLAYER1, "Apollo"));
+        }
+        catch(WrongGodNameException e){
+            assertEquals("There isn't a god named Apollo", e.getMessage());
+        }
+
+        assertEquals(gameManager.getGame().getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        obs2.setMsg(new PlayerSelectGodMessage(PlayerIndex.PLAYER1, "Athena"));
+
+        assertEquals(gameManager.getGame().getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+
+        obs3.setMsg(new PlayerSelectGodMessage(PlayerIndex.PLAYER2, "Demeter"));
+
+        assertEquals(gameManager.getGame().getCurrentPlayerIndex(), PlayerIndex.PLAYER0);
+
+        //godlike chooses first player
+        obs1.setMsg(new GodLikeChooseFirstPlayerMessage(PlayerIndex.PLAYER0, PlayerIndex.PLAYER2));
+
+        assertEquals(gameManager.getGame().getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+
+        //Testing put worker phase
+        obs3.setMsg(new PutWorkerMessage(PlayerIndex.PLAYER2, new Position(0,0), new Position(0,1)));
+
+        assertEquals(gameManager.getGame().getBoard().workerPositions(PlayerIndex.PLAYER2).size(), 2);
+        assertEquals(gameManager.getGame().getBoard().getOccupiedPlayer(new Position(0,0)), PlayerIndex.PLAYER2);
+        assertEquals(gameManager.getGame().getBoard().getOccupiedPlayer(new Position(0,1)), PlayerIndex.PLAYER2);
+
+        //Check current player is updated
+        assertEquals(gameManager.getGame().getCurrentPlayerIndex(), PlayerIndex.PLAYER0);
+
+        //if a player wants to put workers in occupied cell it can't do it
+        obs1.setMsg(new PutWorkerMessage(PlayerIndex.PLAYER0, new Position(0,3), new Position(0,0)));
+
+        assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(0,3)));
+
+        //second player put his workers
+        obs1.setMsg(new PutWorkerMessage(PlayerIndex.PLAYER0, new Position(0,3), new Position(0,4)));
+
+        assertEquals(gameManager.getGame().getBoard().workerPositions(PlayerIndex.PLAYER0).size(), 2);
+
+        //a player try to put workers when it is not his turn
+        obs1.setMsg(new PutWorkerMessage(PlayerIndex.PLAYER0, new Position(3,3), new Position(3,4)));
+
+        assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(3,3)));
+        assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(3,4)));
+
+        //last player put workers
+        obs2.setMsg(new PutWorkerMessage(PlayerIndex.PLAYER1, new Position(1,3), new Position(1,4)));
+
+        assertEquals(gameManager.getGame().getBoard().workerPositions(PlayerIndex.PLAYER1).size(), 2);
+
+        /*Initail board:
+        *
+        * P2    P2    0    P0   P0
+        * 0     0     0    P1   P1
+        * 0     0     0    0    0
+        * 0     0     0    0    0
+        * 0     0     0    0    0
+        * */
+
+        assertEquals(gameManager.getGame().getCurrentState(), GameState.MOVE);
+
+        //Testing move phase
+        assertEquals(gameManager.getGame().getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+
+        //can't move in an enemy turn
+        obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0, TypeMessage.MOVE, new Position(0,3), new Position(1,2)));
+
+        assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(1,2)));
+
+        //can't move if workerPos does not contains player worker
+        obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2, TypeMessage.MOVE, new Position(4,4), new Position(1,1)));
+
+        assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(1,2)));
+
+        //player can't move if the movement is not valid
+        obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2, TypeMessage.MOVE, new Position(0,0), new Position(2,2)));
+
+        assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(2,2)));
+
+        //Normal move
+        obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2, TypeMessage.MOVE, new Position(0,0), new Position(1,0)));
+
+        assertEquals(gameManager.getGame().getBoard().getOccupiedPlayer(new Position(1,0)), PlayerIndex.PLAYER2);
+        assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(0,0)));
+        assertEquals(gameManager.getGame().getCurrentState(), GameState.BUILD);
 
 
 

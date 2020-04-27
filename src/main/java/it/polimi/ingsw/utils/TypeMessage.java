@@ -9,7 +9,7 @@ public enum TypeMessage {
     //Management message
     ERROR, ALREADY_SET_NICKNAME, CANT_CHOOSE_PLAYERS_NUMBER,
     NOT_BE_GOD_LIKE, WRONG_NUMBER_CARDS, /*Added by francesco:*/NOT_YOUR_TURN, CELL_OCCUPIED,
-    OK, WRONG_GAME_STATE, UPDATE_STATE, WRONG_GOD_NAME,
+    OK, WRONG_GAME_STATE, UPDATE_STATE, WRONG_GOD_NAME, WINNER,
 
     //Management connection
     PING

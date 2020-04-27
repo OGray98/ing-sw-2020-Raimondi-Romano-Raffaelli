@@ -446,6 +446,10 @@ public class Game extends Observable<Message> {
         return currentPlayer.getPlayerNum();
     }
 
+    public String getCurrentPlayerNick(){
+        return currentPlayer.getNickname();
+    }
+
     /**
      *  Private method that returns a List<Cell> which will be used in Player::canUsePower()
      * @param powerPos is a not null powerPos

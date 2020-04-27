@@ -12,10 +12,7 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.view.RemoteView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Game manager is the controller's most important class. It manage
@@ -36,6 +33,11 @@ public class GameManager implements Observer<Message> {
     public GameManager() {
         remoteViews = new HashMap<>();
         lobby = new GameLobby();
+    }
+
+    //Getter di gameModel provvisorio
+    public Game getGame(){
+        return gameModel;
     }
 
     public List<PlayerInterface> getPlayers() {
@@ -87,6 +89,7 @@ public class GameManager implements Observer<Message> {
                 handlePutWorkerMessage((PutWorkerMessage) message);
                 break;
             case MOVE:
+                handleMoveMessage((MoveMessage) message);
                 break;
             case USE_POWER:
                 break;
@@ -115,6 +118,7 @@ public class GameManager implements Observer<Message> {
                     "You can't join the lobby because is already full",
                     TypeMessage.WRONG_GAME_STATE
             );
+            return;
         }
 
         if (lobby.isNameAlreadyTaken(name)) {
@@ -168,6 +172,7 @@ public class GameManager implements Observer<Message> {
                     "You can't set now the number of players",
                     TypeMessage.WRONG_GAME_STATE
             );
+            return;
         }
 
         if (!clientIndex.equals(PlayerIndex.PLAYER0)) {
@@ -300,6 +305,7 @@ public class GameManager implements Observer<Message> {
                     "You can't select now the first player",
                     TypeMessage.WRONG_GAME_STATE
             );
+            return;
         }
 
         if (!clientIndex.equals(godPhaseManager.getGodLikePlayerIndex())) {
@@ -335,6 +341,7 @@ public class GameManager implements Observer<Message> {
                     "You can't put worker now",
                     TypeMessage.WRONG_GAME_STATE
             );
+            return;
         }
 
         if (isNotMessageSentByCurrentPlayer(message)) {
@@ -355,17 +362,83 @@ public class GameManager implements Observer<Message> {
             return;
         }
 
+        godPhaseManager.puttingWorkerInBoard(message.getPositionOne(), message.getPositionTwo());
         respondOkToRemoteView(clientIndex, "Workers put correctly", TypeMessage.PUT_WORKER);
 
-        if (godPhaseManager.getPlayersWithWorkerPut() == gameModel.getPlayers().size())
+        if (godPhaseManager.getPlayersWithWorkerPut() == gameModel.getPlayers().size()){
             gameModel.setCurrentState(GameState.INITURN);
+            //Create an instance of TurnManager and start the first turn
+            this.turnManager = new TurnManager(this.gameModel);
+            //Set state
+            gameModel.setCurrentState(GameState.MOVE);
+            this.turnManager.startTurn();
+        }
     }
 
+    /**
+     * This method is used to move a worker on the board
+     * It responds with error if:
+     * It's not the right state of the game
+     * It's not the turn of the player
+     * The player has selected a wrong worker cell
+     * The player has selected an illegal move
+     * */
     private void handleMoveMessage(MoveMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
         Position workerPos = message.getWorkerPosition();
         Position movePos = message.getMovePosition();
+
+        //Move allowed only in states MOVE and INITPOWER
+        if(isNotCurrentGameState(GameState.MOVE) && isNotCurrentGameState(GameState.INITPOWER)){
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "You can't move a worker now!",
+                    TypeMessage.WRONG_GAME_STATE
+            );
+            return;
+        }
+        if(isNotMessageSentByCurrentPlayer(message)){
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "Not your turn",
+                    TypeMessage.NOT_YOUR_TURN
+            );
+            return;
+        }
+        //Send an error if the position given is not a worker of current player
+        if(!gameModel.getBoard().workerPositions(clientIndex).contains(workerPos)){
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "You select a wrong position",
+                    TypeMessage.ERROR
+            );
+            return;
+        }
+        //Send an error if the movement is not possible
+        if(!turnManager.isValidMovement(workerPos, movePos)){
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "You select an illegal movement",
+                    TypeMessage.ERROR
+            );
+            return;
+        }
+        //Forse da aggiungere il controllo se puo costruire in seguito al movimento?
+
+        this.turnManager.moveWorker(workerPos, movePos);
+        
+        //Set state
+        gameModel.setCurrentState(GameState.BUILD);
+
+        //Check if player is the winner
+        if(turnManager.hasWonWithMovement()){
+            gameModel.setCurrentState(GameState.MATCH_ENDED);
+            respondMessageToAll(
+                    gameModel.getCurrentPlayerNick() + " has won the game!",
+                    TypeMessage.WINNER
+            );
+        }
     }
 
 
@@ -422,6 +495,24 @@ public class GameManager implements Observer<Message> {
                         text
                 )
         );
+    }
+
+    /**
+     * Send a message to all the players connected
+     *
+     * @param text          message text
+     * @param specificType  type of Message
+     */
+    private void respondMessageToAll(String text, TypeMessage specificType){
+        for(PlayerIndex client : remoteViews.keySet()){
+            remoteViews.get(client).putMessage(
+                    new OkMessage(
+                            client,
+                            specificType,
+                            text
+                    )
+            );
+        }
     }
 
 
