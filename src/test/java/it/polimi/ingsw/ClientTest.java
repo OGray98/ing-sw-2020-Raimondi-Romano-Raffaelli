@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
 
+import it.polimi.ingsw.network.Client;
+
 import java.io.IOException;
 
 public class ClientTest {

@@ -1,14 +1,17 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.network.ClientConnection;
+import it.polimi.ingsw.network.Server;
 import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.utils.Message;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
-public class SocketClientConnection extends Observable<String> implements ClientConnection,Runnable{
+public class SocketClientConnection extends Observable<Message> implements ClientConnection,Runnable{
 
     private ObjectOutputStream out;
     private Socket socket;
@@ -52,7 +55,7 @@ public class SocketClientConnection extends Observable<String> implements Client
         server.deleteClient(this);
     }
 
-    public void asyncSend(final Object message){
+    public void asyncSend(final Message message){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -63,18 +66,19 @@ public class SocketClientConnection extends Observable<String> implements Client
 
     @Override
     public void run() {
-        Scanner in;
-        String name;
         try{
-            in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            send("Welcome!\nWhat is your name?");
-            String read = in.nextLine();
-            name = read;
-            server.lobby(this, name);
-            while(isActive()){
-                read = in.nextLine();
-                notify(read);
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            try {
+                /*Object read = in.readObject();
+                name = read;
+                server.lobby(this, "Marco");*/
+                while (isActive()) {
+                    Message read = (Message) in.readObject();
+                    notify(read);
+                }
+            }catch (ClassNotFoundException e){
+                e.printStackTrace();
             }
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error!" + e.getMessage());
