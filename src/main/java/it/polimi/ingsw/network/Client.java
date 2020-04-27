@@ -44,11 +44,11 @@ public class Client {
             public void run() {
                 try {
                     while (isActive()) {
-                        Message inputMessage = (Message) socketIn.readObject();//TODO ricorda oggetti di tipo Message
+                        Message inputMessage = (Message) socketIn.readObject();
                         if(inputMessage != null && inputMessage.getType() == TypeMessage.PING){
                             pingTimer.cancel();
                             pingTimer = new Timer();
-                            pingTimer.schedule(/*close method*/,DISCONNECTION_TIME);
+                            pingTimer.schedule(/*TODO:close method*/,DISCONNECTION_TIME);
                         } else if(inputMessage != null && inputMessage.getType() != TypeMessage.PING){
                             //do something
                         }else {
