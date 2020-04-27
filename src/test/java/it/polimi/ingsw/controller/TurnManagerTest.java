@@ -10,7 +10,6 @@ import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,7 +41,7 @@ public class TurnManagerTest {
         players.add(new Player("Rock", PlayerIndex.PLAYER1));
         players.add(new Player("Creed", PlayerIndex.PLAYER2));
 
-        gameInstance = Game.getInstance(players);
+        gameInstance = new Game(players);
 
         gods = new ArrayList<>(List.of("Atlas", "Demeter", "Prometheus"));
         Collections.rotate(gods, -1);
@@ -375,7 +374,7 @@ public class TurnManagerTest {
     @Test
     public void stateSequenceTest(){
 
-        assertEquals(gameInstance.getCurrentState(), GameState.NULL);
+        assertEquals(gameInstance.getCurrentState(), GameState.GOD_PLAYER_CHOOSE_CARDS);
 
         //Put workers on the board
         List<Position> workerPos = new ArrayList<>(List.of(
@@ -429,10 +428,5 @@ public class TurnManagerTest {
 
         assertEquals(gameInstance.getCurrentState(), GameState.MOVE);
 
-    }
-
-    @After
-    public void tearDown() {
-        Game.deleteInstance();
     }
 }

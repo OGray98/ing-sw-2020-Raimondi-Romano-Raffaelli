@@ -2,10 +2,10 @@ package it.polimi.ingsw.utils;
 
 import it.polimi.ingsw.model.player.PlayerIndex;
 
-public class ErrorMessage extends InformationMessage {
+public class OkMessage extends InformationMessage {
 
-    public ErrorMessage(PlayerIndex client, TypeMessage specificErrorType, String errorMessage) {
-        super(client, TypeMessage.ERROR, specificErrorType, errorMessage);
+    public OkMessage(PlayerIndex client, TypeMessage specificOkType, String okMessage) {
+        super(client, TypeMessage.OK, specificOkType, okMessage);
     }
 
     public String getErrorMessage() {

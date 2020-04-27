@@ -18,7 +18,7 @@ public class GodLikeChoseMessage extends Message {
         super(client, TypeMessage.GODLIKE_CHOOSE_CARDS);
         if (godNames == null)
             throw new NullPointerException("godNames");
-        if (godNames.stream().filter(Deck::isCorrectedName).count() == godNames.size())
+        if (godNames.stream().filter(Deck::isCorrectedName).count() != godNames.size())
             throw new WrongGodNameException("godNames");
         this.godNames = godNames;
     }

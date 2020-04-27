@@ -19,11 +19,15 @@ public class GodPhaseManager {
     private List<String> godsChosen;
     private final Game game;
     private final PlayerIndex playerGodLikeIndex;
+    private boolean isFinishSelectCardPhase;
+    private int playersWithWorkerPut;
 
-    public GodPhaseManager(Game game){
+    public GodPhaseManager(Game game) {
         this.godsChosen = new ArrayList<>(game.getPlayers().size());
         this.game = game;
         this.playerGodLikeIndex = PlayerIndex.PLAYER0;
+        this.isFinishSelectCardPhase = false;
+        this.playersWithWorkerPut = 0;
     }
 
     // The PlayerIndex.PLAYER0 is the godLike
@@ -83,6 +87,14 @@ public class GodPhaseManager {
                 game.setPlayerCard(cardGodName);
                 newGod.remove(name);
                 this.godsChosen = newGod;
+
+                //If remain only one card, it must be given to the godlike player
+                if(this.godsChosen.size() == 1){
+                    game.setPlayerCard(this.godsChosen.get(0));
+                    this.godsChosen.clear();
+                    this.isFinishSelectCardPhase = true;
+                }
+
                 thereIs = true;
             }
         }
@@ -95,29 +107,45 @@ public class GodPhaseManager {
     /**
      * @param playerFirst PlayerIndex of the first Player
      */
-    public void godLikeChooseFirstPlayer(PlayerIndex playerFirst){
+    public void godLikeChooseFirstPlayer(PlayerIndex playerFirst) {
         game.chooseFirstPlayer(playerFirst);
     }
 
 
+    public boolean canPutWorker(Position workerPos) throws NullPointerException {
+        if (workerPos == null)
+            throw new NullPointerException("workerPos");
+        return game.canPutWorker(workerPos);
+    }
+
     /**
      * @param posWorkerOne Position (row,col) of the first worker
      * @param posWorkerTwo Position (row,col) of the second worker
+     * @throws IllegalArgumentException if positions given are not legal
      */
-    public void puttingWorkerInBoard(Position posWorkerOne, Position posWorkerTwo){
+    public void puttingWorkerInBoard(Position posWorkerOne, Position posWorkerTwo) {
 
-        if(posWorkerOne.equals(posWorkerTwo)){
-            throw new NotPutTwoWorkerInSamePositionException(posWorkerOne.row,posWorkerOne.col);
+        if (posWorkerOne.equals(posWorkerTwo)) {
+            throw new NotPutTwoWorkerInSamePositionException(posWorkerOne.row, posWorkerOne.col);
+        }
+        if (!game.getBoard().isFreeCell(posWorkerOne)) {
+            throw new IllegalArgumentException("position [" + posWorkerOne.row + "][" + posWorkerOne.col + "] is not free");
+        }
+        if (!game.getBoard().isFreeCell(posWorkerTwo)) {
+            throw new IllegalArgumentException("position [" + posWorkerTwo.row + "][" + posWorkerTwo.col + "] is not free");
         }
         game.putWorker(posWorkerOne);
         game.putWorker(posWorkerTwo);
 
+        this.playersWithWorkerPut++;
 
     }
 
+    public boolean isFinishSelectCardPhase() {
+        return isFinishSelectCardPhase;
+    }
 
-
-
-
-
+    public int getPlayersWithWorkerPut() {
+        return playersWithWorkerPut;
+    }
 }

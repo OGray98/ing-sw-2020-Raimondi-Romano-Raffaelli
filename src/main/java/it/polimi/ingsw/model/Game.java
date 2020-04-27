@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.GameState;
-import it.polimi.ingsw.exception.AlreadyPresentGameException;
 import it.polimi.ingsw.exception.NotPresentWorkerException;
 import it.polimi.ingsw.exception.NotSelectedGodException;
 import it.polimi.ingsw.exception.WrongGodNameException;
@@ -15,11 +14,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Game is a singleton which contains every object of model
+ * Game contains every object of model
  */
 public class Game {
-
-    private static Game gameInstance;
 
     private final List<PlayerInterface> players;
     private final Board board;
@@ -34,7 +31,7 @@ public class Game {
     private GameState currentState;
 
 
-    private Game(List<PlayerInterface> players) throws NullPointerException, IllegalArgumentException {
+    public Game(List<PlayerInterface> players) throws NullPointerException, IllegalArgumentException {
         if (players == null)
             throw new NullPointerException("players");
         if (players.size() > 3 || players.size() == 1)
@@ -42,21 +39,20 @@ public class Game {
                     + players.size() + " players");
 
         this.players = new ArrayList<>(players);
-
         this.players.sort(Comparator.comparing(PlayerInterface::getPlayerNum));
 
-        board = new Board();
-        deck = new Deck(players.size());
-        numPlayer = players.size();
-        contCurrentPlayer = 0;
-        currentPlayer = players.get(0);
-        cantGoUp = false;
-        contEffect = 0;
-        contCurrentWorker = 0;
-        currentState = GameState.NULL;
+        this.board = new Board();
+        this.deck = new Deck(players.size());
+        this.numPlayer = players.size();
+        this.contCurrentPlayer = 0;
+        this.currentPlayer = players.get(0);
+        this.cantGoUp = false;
+        this.contEffect = 0;
+        this.contCurrentWorker = 0;
+        this.currentState = GameState.GOD_PLAYER_CHOOSE_CARDS;
     }
 
-    private Game(List<PlayerInterface> players, Board board) throws NullPointerException, IllegalArgumentException {
+    public Game(List<PlayerInterface> players, Board board) throws NullPointerException, IllegalArgumentException {
         if (players == null)
             throw new NullPointerException("players");
         if (board == null)
@@ -66,42 +62,17 @@ public class Game {
                     + players.size() + " players");
 
         this.players = new ArrayList<>(players);
-
         this.players.sort(Comparator.comparing(PlayerInterface::getPlayerNum));
 
         this.board = new Board(board);
-        deck = new Deck(players.size());
-        numPlayer = players.size();
-        contCurrentPlayer = 0;
-        currentPlayer = players.get(0);
-        cantGoUp = false;
-        contEffect = 0;
-        contCurrentWorker = 0;
-        currentState = GameState.NULL;
-    }
-
-    public static Game getInstance(List<PlayerInterface> players) {
-        if (gameInstance != null)
-            throw new AlreadyPresentGameException();
-        gameInstance = new Game(players);
-        return gameInstance;
-    }
-
-    public static Game createInstance(List<PlayerInterface> players, Board board) {
-        if (gameInstance != null)
-            throw new AlreadyPresentGameException();
-        gameInstance = new Game(players, board);
-        return gameInstance;
-    }
-
-    public static Game getInstance() {
-        if (gameInstance == null)
-            throw new NullPointerException("Call getInstance(List<PlayerInterface>)");
-        return gameInstance;
-    }
-
-    public static void deleteInstance() {
-        gameInstance = null;
+        this.deck = new Deck(players.size());
+        this.numPlayer = players.size();
+        this.contCurrentPlayer = 0;
+        this.currentPlayer = players.get(0);
+        this.cantGoUp = false;
+        this.contEffect = 0;
+        this.contCurrentWorker = 0;
+        this.currentState = GameState.GOD_PLAYER_CHOOSE_CARDS;
     }
 
     /* Method that return a map with of all cards in deck
@@ -171,11 +142,14 @@ public class Game {
         CardInterface card = deck.getGodCard(godName);
         currentPlayer = card.setPlayer(currentPlayer);
         players.set(contCurrentPlayer, currentPlayer);
-        updateCurrentPlayer();
+
+        if (!currentPlayer.getPlayerNum().equals(players.get(0).getPlayerNum()))
+            updateCurrentPlayer();
     }
 
     /**
-     *  Method which set first player and ordinate the list this.players
+     * Method which set first player and ordinate the list this.players
+     *
      * @param playerIndex is the PlayerIndex of the first player
      */
     public void chooseFirstPlayer(PlayerIndex playerIndex) {
@@ -184,9 +158,16 @@ public class Game {
         currentPlayer = players.get(contCurrentPlayer);
     }
 
+    public boolean canPutWorker(Position putPosition) throws NullPointerException {
+        if (putPosition == null)
+            throw new NullPointerException("putPosition");
+        return board.isFreeCell(putPosition);
+    }
+
 
     /**
-     *  Method that put a worker of this.currentPlayer in board
+     * Method that put a worker of this.currentPlayer in board
+     *
      * @param putPosition is a not null Position where put the worker
      */
     public void putWorker(Position putPosition) throws NullPointerException {
@@ -509,5 +490,9 @@ public class Game {
 
     public Deck getDeck() {
         return this.deck;
+    }
+
+    private void init(List<PlayerInterface> players) {
+
     }
 }
