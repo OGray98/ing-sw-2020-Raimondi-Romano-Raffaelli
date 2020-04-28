@@ -44,6 +44,12 @@ public class Board {
         that.playerPosition.forEach((key, value) -> this.playerPosition.put(key, new ArrayList<>(value)));
     }
 
+    public void removePlayerWorkers(PlayerIndex playerIndex) {
+        if (!this.playerPosition.containsKey(playerIndex))
+            throw new IllegalArgumentException("There isn't " + playerIndex + " on the board");
+        this.playerPosition.remove(playerIndex);
+    }
+
     /**
      * Check if selected Cell is free
      *
