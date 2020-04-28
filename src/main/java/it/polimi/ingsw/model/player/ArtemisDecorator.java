@@ -13,7 +13,7 @@ public class ArtemisDecorator extends PlayerMoveDecorator {
 
     public ArtemisDecorator(){
 
-        super("Artemis", "Your Worker may move one additional time, but not back to its initial space.", GameState.MOVE, GameState.CHECKWIN);
+        super("Artemis", "Your Worker may move one additional time, but not back to its initial space.", GameState.BUILD, GameState.SECOND_MOVE);
     }
 
     @Override
