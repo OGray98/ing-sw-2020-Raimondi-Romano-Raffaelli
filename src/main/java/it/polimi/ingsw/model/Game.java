@@ -501,7 +501,7 @@ public class Game extends Observable<Message> {
      * Modifies contCurrentPlayer and currentPlayer
      */
     private void updateCurrentPlayer() {
-        contCurrentPlayer = (contCurrentPlayer + 1) % 3;
+        contCurrentPlayer = (contCurrentPlayer + 1) % players.size();
         currentPlayer = players.get(contCurrentPlayer);
     }
 
@@ -509,7 +509,13 @@ public class Game extends Observable<Message> {
         return this.deck;
     }
 
-    private void init(List<PlayerInterface> players) {
-
+    /**
+     * Remove current player and delete his workers from the board.
+     * Notify this change to remoteView
+     */
+    public void removeCurrentPlayer() {
+        notify(new LoserMessage(currentPlayer.getPlayerNum()));
+        this.board.removePlayerWorkers(currentPlayer.getPlayerNum());
+        this.players.remove(currentPlayer);
     }
 }
