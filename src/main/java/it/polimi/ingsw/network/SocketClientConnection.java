@@ -30,7 +30,7 @@ public class SocketClientConnection extends Observable<Message> implements Clien
         return active;
     }
 
-    private synchronized void send(Object message){
+    private synchronized void send(Message message){
         try{
             out.reset();
             out.writeObject(message);
@@ -41,7 +41,7 @@ public class SocketClientConnection extends Observable<Message> implements Clien
     }
 
     public synchronized void closeConnection(){
-        send("Connection closed");
+        //send(new CloseConnectionMessage());
         try{
             socket.close();
         }catch (IOException e){
