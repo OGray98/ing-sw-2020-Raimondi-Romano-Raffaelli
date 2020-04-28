@@ -12,7 +12,10 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.view.RemoteView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Game manager is the controller's most important class. It manage
@@ -365,13 +368,15 @@ public class GameManager implements Observer<Message> {
         godPhaseManager.puttingWorkerInBoard(message.getPositionOne(), message.getPositionTwo());
         respondOkToRemoteView(clientIndex, "Workers put correctly", TypeMessage.PUT_WORKER);
 
-        if (godPhaseManager.getPlayersWithWorkerPut() == gameModel.getPlayers().size()){
+        if (godPhaseManager.getPlayersWithWorkerPut() == gameModel.getPlayers().size()) {
             gameModel.setCurrentState(GameState.INITURN);
             //Create an instance of TurnManager and start the first turn
             this.turnManager = new TurnManager(this.gameModel);
             //Set state
             gameModel.setCurrentState(GameState.MOVE);
             this.turnManager.startTurn();
+            //TODO controllare se ha perso (mandare la notify alla remoteView dal model)
+
         }
     }
 
@@ -424,21 +429,75 @@ public class GameManager implements Observer<Message> {
             );
             return;
         }
-        //Forse da aggiungere il controllo se puo costruire in seguito al movimento?
 
         this.turnManager.moveWorker(workerPos, movePos);
-        
+
         //Set state
         gameModel.setCurrentState(GameState.BUILD);
 
+        //TODO Cosa fare con il potere di artemide
+
+        //TODO controllare se ha perso (mandare la notify alla remoteView dal model)
+
+
         //Check if player is the winner
-        if(turnManager.hasWonWithMovement()){
+        if (turnManager.hasWonWithMovement()) {
             gameModel.setCurrentState(GameState.MATCH_ENDED);
             respondMessageToAll(
                     gameModel.getCurrentPlayerNick() + " has won the game!",
                     TypeMessage.WINNER
             );
         }
+    }
+
+    /**
+     * This method is used to build on the board
+     * It responds with error if:
+     * It's not the right state of the game
+     * It's not the turn of the player
+     * The player has selected an illegal move
+     */
+    private void handleBuildMessage(BuildMessage message) {
+
+        PlayerIndex clientIndex = message.getClient();
+        Position buildPos = message.getBuildPosition();
+
+        //Move allowed only in states BUILD and INITPOWER
+        if (isNotCurrentGameState(GameState.BUILD) && isNotCurrentGameState(GameState.INITPOWER)) {
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "You can't build now!",
+                    TypeMessage.WRONG_GAME_STATE
+            );
+            return;
+        }
+        if (isNotMessageSentByCurrentPlayer(message)) {
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "Not your turn",
+                    TypeMessage.NOT_YOUR_TURN
+            );
+            return;
+        }
+
+        //Send an error if the build is not possible
+        if (!turnManager.isValidBuilding(buildPos)) {
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "You select an illegal movement",
+                    TypeMessage.ERROR
+            );
+            return;
+        }
+
+        this.turnManager.buildWorker(buildPos);
+
+        //TODO Cosa fare con il potere di chi può costrruire ancora?
+
+
+        //Set state
+        gameModel.setCurrentState(GameState.ENDPHASE);
+
     }
 
 
