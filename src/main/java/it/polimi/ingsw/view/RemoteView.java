@@ -12,9 +12,14 @@ import it.polimi.ingsw.utils.Message;
  */
 public class RemoteView extends View implements Observer<Message> {
 
-    public RemoteView(PlayerIndex player, Observable<Message> observable) {
+    //private ClientConnection connection;
+
+    public RemoteView(PlayerIndex player, Observable<Message> observable/*,ClientConnection connection*/) {
         super(player);
         observable.addObserver(new MessageReceiver());
+        //this.connection = connection;
+        //connection.addObserver(new MessageReceiver());
+        //connection.asyncSend(client send client);
     }
 
     /**

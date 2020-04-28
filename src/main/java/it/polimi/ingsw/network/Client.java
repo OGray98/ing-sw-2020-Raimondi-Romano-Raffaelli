@@ -18,6 +18,7 @@ public class Client {
     private Message message;
     private transient Timer pingTimer;
 
+
     static final int DISCONNECTION_TIME = 15000;
 
     public Client(String ip, int port){
@@ -48,7 +49,7 @@ public class Client {
                         if(inputMessage != null && inputMessage.getType() == TypeMessage.PING){
                             pingTimer.cancel();
                             pingTimer = new Timer();
-                            //pingTimer.schedule(/*TODO:close method*/,DISCONNECTION_TIME);
+                            //pingTimer.schedule(new PingTimer(disconnectionClientInterface),DISCONNECTION_TIME);
                         } else if(inputMessage != null && inputMessage.getType() != TypeMessage.PING){
                             //do something
                         }else {
