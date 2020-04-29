@@ -105,6 +105,11 @@ public class Game extends Observable<Message> {
         return currentPlayer.getNextState();
     }
 
+    /*Method that returns the name of the god chosen by the player*/
+    public String getCurrentPlayerGodName(){
+        return currentPlayer.getGodName();
+    }
+
     public GameState getCurrentState() {
         return this.currentState;
     }

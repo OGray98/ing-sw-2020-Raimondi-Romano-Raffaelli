@@ -162,6 +162,7 @@ public class ControllerTestSOLOPERORA {
         assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(0,0)));
         assertEquals(gameManager.getGame().getCurrentState(), GameState.BUILD);
 
+        //TODO: tests of handler for build, usepower, endturn!
 
 
 

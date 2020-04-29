@@ -5,7 +5,7 @@ public enum TypeMessage {
     NICKNAME, IS_THREE_PLAYERS_GAME,
     //Used in setup
     GODLIKE_CHOOSE_CARDS, SELECT_CARD,
-    MOVE, USE_POWER, BUILD, /*Added by francesco:*/ GODLIKE_CHOOSE_FIRST_PLAYER, PUT_WORKER,
+    MOVE, USE_POWER, BUILD, /*Added by francesco:*/ GODLIKE_CHOOSE_FIRST_PLAYER, PUT_WORKER, END_TURN,
 
     //Used in turn
     ACTION_MESSAGE,

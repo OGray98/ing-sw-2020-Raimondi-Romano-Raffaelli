@@ -95,9 +95,13 @@ public class GameManager implements Observer<Message> {
                 handleMoveMessage((MoveMessage) message);
                 break;
             case USE_POWER:
+                handleUsePowerMessage((UsePowerMessage) message);
                 break;
             case BUILD:
+                handleBuildMessage((BuildMessage) message);
                 break;
+            case END_TURN:
+                handleEndTurnMessage((EndTurnMessage) message);
             default:
                 //Error message
                 break;
@@ -375,8 +379,6 @@ public class GameManager implements Observer<Message> {
             //Set state
             gameModel.setCurrentState(GameState.MOVE);
             this.turnManager.startTurn();
-            //TODO controllare se ha perso (mandare la notify alla remoteView dal model)
-
         }
     }
 
@@ -435,10 +437,10 @@ public class GameManager implements Observer<Message> {
         //Set state
         gameModel.setCurrentState(GameState.BUILD);
 
-        //TODO Cosa fare con il potere di artemide
-
-        //TODO controllare se ha perso (mandare la notify alla remoteView dal model)
-
+        //Check if player has lost with the movement
+        if(!gameModel.canPlayerBuildWithSelectedWorker()){
+            removeLoser(clientIndex);
+        }
 
         //Check if player is the winner
         if (turnManager.hasWonWithMovement()) {
@@ -455,15 +457,15 @@ public class GameManager implements Observer<Message> {
      * It responds with error if:
      * It's not the right state of the game
      * It's not the turn of the player
-     * The player has selected an illegal move
+     * The player has selected an illegal build
      */
     private void handleBuildMessage(BuildMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
         Position buildPos = message.getBuildPosition();
 
-        //Move allowed only in states BUILD and INITPOWER
-        if (isNotCurrentGameState(GameState.BUILD) && isNotCurrentGameState(GameState.INITPOWER)) {
+        //Move allowed only in states BUILD and SECOND_MOVE
+        if (isNotCurrentGameState(GameState.BUILD) && isNotCurrentGameState(GameState.SECOND_MOVE)) {
             respondErrorToRemoteView(
                     clientIndex,
                     "You can't build now!",
@@ -484,7 +486,7 @@ public class GameManager implements Observer<Message> {
         if (!turnManager.isValidBuilding(buildPos)) {
             respondErrorToRemoteView(
                     clientIndex,
-                    "You select an illegal movement",
+                    "You select an illegal building action",
                     TypeMessage.ERROR
             );
             return;
@@ -492,14 +494,150 @@ public class GameManager implements Observer<Message> {
 
         this.turnManager.buildWorker(buildPos);
 
-        //TODO Cosa fare con il potere di chi può costrruire ancora?
-
-
         //Set state
         gameModel.setCurrentState(GameState.ENDPHASE);
 
     }
 
+    /**
+     * Method used to use a god power
+     * It responds with error if:
+     * It is the wrong game state
+     * It is not the turn of the player
+     * Player selects an invalid power use
+     * Player did not select a valid position of the worker
+     * */
+    private void handleUsePowerMessage(UsePowerMessage message){
+
+        PlayerIndex clientIndex = message.getClient();
+        Position workerPos = message.getWorkerPosition();
+        Position powerPos = message.getPowerPosition();
+
+        //Check that the player can use the power in this state
+        if(!isNotCurrentGameState(gameModel.getCurrentPlayerPowerState())){
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "You cannot use power in this turn phase!",
+                    TypeMessage.WRONG_GAME_STATE
+            );
+            return;
+        }
+        if(isNotMessageSentByCurrentPlayer(message)){
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "Not your turn!",
+                    TypeMessage.NOT_YOUR_TURN
+            );
+            return;
+        }
+        //Check if player can use the power
+        if(!turnManager.isValidUseOfPower(workerPos, powerPos)){
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "You select an illegal power action!",
+                    TypeMessage.ERROR
+            );
+            return;
+        }
+        //Send an error if the position given is not a worker of current player
+        if(!gameModel.getBoard().workerPositions(clientIndex).contains(workerPos)){
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "You select a wrong position",
+                    TypeMessage.ERROR
+            );
+            return;
+        }
+
+        this.turnManager.usePowerWorker(workerPos, powerPos);
+
+        //Set the new state, it depends on the god of current player
+        gameModel.setCurrentState(gameModel.getCurrentPlayerNextState());
+
+        //Check if the power made a player the winner
+        if(gameModel.getCurrentPlayerGodName().equals("Apollo") ||
+                gameModel.getCurrentPlayerGodName().equals("Artemis") ||
+                gameModel.getCurrentPlayerGodName().equals("Athena") ||
+                gameModel.getCurrentPlayerGodName().equals("Minotaur") ||
+                gameModel.getCurrentPlayerGodName().equals("Pan")){
+
+            if(this.turnManager.hasWonWithMovement()){
+                gameModel.setCurrentState(GameState.MATCH_ENDED);
+                respondMessageToAll(
+                        gameModel.getCurrentPlayerNick() + " has won the game!",
+                        TypeMessage.WINNER
+                );
+            }
+        }
+    }
+
+    /**
+     * Method used to end the turn of the current player
+     * It start the turn of the next player and it change the state of th game
+     * */
+    private void handleEndTurnMessage(EndTurnMessage message){
+
+        PlayerIndex clientIndex = message.getClient();
+
+        //only in ENDPHASE and BUILDPOWER state is allowed to end the current turn
+        if(isNotCurrentGameState(GameState.ENDPHASE) && isNotCurrentGameState(GameState.BUILDPOWER)){
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "You cannot end the turn now!",
+                    TypeMessage.ERROR
+            );
+            return;
+        }
+        //only current player can end his turn
+        if(isNotMessageSentByCurrentPlayer(message)){
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "Not your turn!",
+                    TypeMessage.NOT_YOUR_TURN
+            );
+            return;
+        }
+
+        //setup the new turn
+        this.turnManager.endTurn();
+        this.turnManager.startTurn();
+        gameModel.setCurrentState(GameState.MOVE);
+
+        //If current player has been blocked, he loses
+        if(!this.turnManager.canCurrentPlayerMoveAWorker()){
+            removeLoser(gameModel.getCurrentPlayerIndex());
+        }
+    }
+
+    /**
+     * Method called when a player has lost
+     * It remove his workers and start the turn of the next player
+     * If the remains only one player he wins the game
+     * */
+    private void removeLoser(PlayerIndex loserIndex){
+        //notify loser payer
+        respondOkToRemoteView(
+                loserIndex,
+                "You have lost!",
+                TypeMessage.LOSER
+        );
+        //remove loser player
+        gameModel.removeCurrentPlayer();
+        //Set state and start new turn of other player
+        gameModel.setCurrentState(GameState.MOVE);
+        this.turnManager.endTurn();
+        this.turnManager.startTurn();
+        //if only 1 player remains he wins the game!
+        if(gameModel.getPlayers().size() == 1){
+            respondOkToRemoteView(
+                    gameModel.getCurrentPlayerIndex(),
+                    "You win!",
+                    TypeMessage.WINNER
+            );
+            //Set state
+            gameModel.setCurrentState(GameState.MATCH_ENDED);
+        }
+    }
 
     /**
      * Check if the message is sent by the current player
