@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.InvalidPositionException;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Cell;
@@ -33,6 +34,11 @@ public class PlayerTest {
         cellOccupied = new Cell(1,1);
         adjacentCells = new ArrayList<>();
         adjacentPlayerList = new HashMap<>();
+    }
+
+    @Test
+    public void nickNameIsCorrectTest(){
+        assertEquals("Jack",player.getNickname());
     }
 
     @Test
@@ -278,6 +284,7 @@ public class PlayerTest {
          * where X is the current worker cell
          * */
 
+
         //Check build on level 0
         assertTrue(player.canBuild(adjacentPlayerList, board.getCell(cell00.getPosition())));
         //Check build on level 3
@@ -292,6 +299,17 @@ public class PlayerTest {
         //Check build on a not in adjacentCells cell
         Cell notAdj = new Cell(2,3);
         assertFalse(player.canBuild(adjacentPlayerList, notAdj));
+
+        try{
+            player.canBuild(adjacentPlayerList,new Cell(5,5));
+        }catch (InvalidPositionException e){
+            assertEquals("You cannot have a position in : [5][5]",e.getMessage());
+        }
+
+        List<Cell> powers = new ArrayList<>();
+        powers.add(board.getCell(new Position(4,4)));
+        assertFalse(player.canUsePower(powers,adjacentPlayerList));
+        assertEquals(null,player.usePower(new Cell(4,3)));
 
         //Upgrade the level of the Cell where worker is to level 1
         board.constructBlock(cellOccupied.getPosition());
@@ -412,5 +430,14 @@ public class PlayerTest {
     @Test
     public void toStringTest(){
         assertEquals(player.toString(), "Player nickname: Jack");
+    }
+
+
+    @Test
+    public void testMethodOver(){
+        assertEquals(null,player.getGodName());
+        assertEquals(GameState.NULL,player.getPowerState());
+        assertEquals(GameState.NULL,player.getNextState());
+
     }
 }

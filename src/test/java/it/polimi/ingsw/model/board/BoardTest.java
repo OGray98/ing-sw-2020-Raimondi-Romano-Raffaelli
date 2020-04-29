@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +34,19 @@ public class BoardTest {
     }
 
     @Test
+    public void boardInitNull(){
+        Board b1;
+        try{
+            b1 = new Board(null);
+        }catch (NullPointerException e){
+            assertEquals("that",e.getMessage());
+        }
+
+
+    }
+
+
+    @Test
     public void isBoardInit(){
         //control if init board is set correctly
         for(int i = 0; i < 5; i++){
@@ -41,6 +56,27 @@ public class BoardTest {
                 assertEquals(new Cell(i,j),board.getCell(new Position(i,j)));
                 assertFalse(board.getCell(new Position(i,j)).hasDome());
             }
+        }
+    }
+
+    @Test
+    public void setCellTest(){
+        try{
+            board.setCell(null);
+        }catch (NullPointerException e){
+            assertEquals("cell",e.getMessage());
+        }
+        Cell cell = new Cell(4,4);
+        board.setCell(cell);
+        assertEquals(cell,board.getCell(new Position(4,4)));
+    }
+
+    @Test
+    public void getPlayersOccupationsNull(){
+        try{
+            board.getPlayersOccupations(null);
+        }catch (NullPointerException e){
+            assertEquals("positions",e.getMessage());
         }
     }
 
@@ -233,6 +269,8 @@ public class BoardTest {
         assertTrue(board.workerPositions(PlayerIndex.PLAYER1).contains(pos33));
 
     }
+
+
 
     @Test
     public void isUpdateAfterPowerCorrected() {
