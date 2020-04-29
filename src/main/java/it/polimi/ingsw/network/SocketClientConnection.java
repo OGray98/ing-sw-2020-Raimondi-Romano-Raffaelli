@@ -1,9 +1,12 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ClientConnection;
 import it.polimi.ingsw.network.Server;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.OkMessage;
+import it.polimi.ingsw.utils.TypeMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -70,9 +73,7 @@ public class SocketClientConnection extends Observable<Message> implements Clien
             out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             try {
-                /*Object read = in.readObject();
-                name = read;
-                server.lobby(this, "Marco");*/
+                server.lobby(this);
                 while (isActive()) {
                     Message read = (Message) in.readObject();
                     notify(read);

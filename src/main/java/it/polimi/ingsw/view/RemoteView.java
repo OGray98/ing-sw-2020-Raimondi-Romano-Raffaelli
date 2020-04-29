@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.exception.WrongAssociationViewPlayerException;
 import it.polimi.ingsw.model.player.PlayerIndex;
+import it.polimi.ingsw.network.ClientConnection;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.Message;
@@ -12,14 +13,11 @@ import it.polimi.ingsw.utils.Message;
  */
 public class RemoteView extends View implements Observer<Message> {
 
-    //private ClientConnection connection;
+    private ClientConnection clientConnection;
 
-    public RemoteView(PlayerIndex player, Observable<Message> observable/*,ClientConnection connection*/) {
+    public RemoteView(PlayerIndex player, ClientConnection connection) {
         super(player);
-        observable.addObserver(new MessageReceiver());
-        //this.connection = connection;
-        //connection.addObserver(new MessageReceiver());
-        //connection.asyncSend(client send client);
+        connection.addObserver(new MessageReceiver());
     }
 
     /**

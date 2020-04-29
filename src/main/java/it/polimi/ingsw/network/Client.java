@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-import java.util.Timer;
+import java.util.*;
 
 public class Client {
 
@@ -17,6 +15,7 @@ public class Client {
     private int port;
     private Message message;
     private transient Timer pingTimer;
+    final transient List<Message> messageQueue;
 
 
     static final int DISCONNECTION_TIME = 15000;
@@ -26,6 +25,7 @@ public class Client {
         this.port = port;
         this.message = null;
         this.pingTimer = new Timer();
+        this.messageQueue = new ArrayList<>();
 
     }
 
@@ -51,8 +51,11 @@ public class Client {
                             pingTimer = new Timer();
                             //pingTimer.schedule(new PingTimer(disconnectionClientInterface),DISCONNECTION_TIME);
                         } else if(inputMessage != null && inputMessage.getType() != TypeMessage.PING){
-                            //do something
-                        }else {
+                            synchronized (messageQueue){
+                                messageQueue.add(inputMessage);
+                            }
+
+                        } else {
                             throw new IllegalArgumentException();
                         }
                     }
