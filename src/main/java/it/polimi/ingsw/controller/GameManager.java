@@ -51,6 +51,8 @@ public class GameManager implements Observer<Message> {
         return gameModel.getBoard();
     }
 
+    public int getPlayerNum(){return lobby.getNumberOfPlayerInLobby();}
+
 
     /**
      * Add a RemoteView associated with PlayerIndex of client

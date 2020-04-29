@@ -11,6 +11,13 @@ public class GameLobby {
     private final HashMap<PlayerIndex, String> lobbyPlayers;
     private boolean threePlayersGame;
 
+    public int getNumberOfPlayerInLobby(){
+       if(!threePlayersGame){
+           return 2;
+       }
+       return 3;
+    }
+
     public GameLobby(){
         this.lobbyPlayers = new HashMap<>();
     }

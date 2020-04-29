@@ -15,7 +15,7 @@ public class Client {
     private int port;
     private Message message;
     private transient Timer pingTimer;
-    final transient List<Message> messageQueue;
+    private final List<Message> messageQueue;
 
 
     static final int DISCONNECTION_TIME = 15000;
@@ -28,6 +28,8 @@ public class Client {
         this.messageQueue = new ArrayList<>();
 
     }
+
+    //TODO: problem with socket closing
 
     private boolean active = true;
 
@@ -51,10 +53,7 @@ public class Client {
                             pingTimer = new Timer();
                             //pingTimer.schedule(new PingTimer(disconnectionClientInterface),DISCONNECTION_TIME);
                         } else if(inputMessage != null && inputMessage.getType() != TypeMessage.PING){
-                            synchronized (messageQueue){
-                                messageQueue.add(inputMessage);
-                            }
-
+                            System.out.println("Received");
                         } else {
                             throw new IllegalArgumentException();
                         }
@@ -98,7 +97,7 @@ public class Client {
 
     public void run() throws IOException {
         Socket socket = new Socket(ip, port);
-        //System.out.println("Connection established");
+        System.out.println("Connection established");
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream socketOut = new ObjectOutputStream(socket.getOutputStream());
         try{
