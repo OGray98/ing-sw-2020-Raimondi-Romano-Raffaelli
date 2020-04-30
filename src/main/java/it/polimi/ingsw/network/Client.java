@@ -29,7 +29,7 @@ public class Client {
 
     }
 
-    //TODO: problem with socket closing
+    //TODO: Fixed problem with closing but need a method to close socketOut
 
     private boolean active = true;
 
@@ -109,7 +109,6 @@ public class Client {
             System.out.println("Connection closed from the client side");
         } finally {
             socketIn.close();
-            socketOut.close();
             socket.close();
         }
     }
