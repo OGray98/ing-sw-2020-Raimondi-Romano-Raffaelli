@@ -16,6 +16,9 @@ public class Client {
     private Message message;
     private transient Timer pingTimer;
     private final List<Message> messageQueue;
+    private transient Socket socket;
+    private transient ObjectInputStream socketIn;
+    private transient ObjectOutputStream socketOut;
 
 
     static final int DISCONNECTION_TIME = 15000;
@@ -29,7 +32,7 @@ public class Client {
 
     }
 
-    //TODO: Fixed problem with closing but need a method to close socketOut
+    
 
     private boolean active = true;
 
@@ -96,10 +99,10 @@ public class Client {
 
 
     public void run() throws IOException {
-        Socket socket = new Socket(ip, port);
+        socket = new Socket(ip, port);
         System.out.println("Connection established");
-        ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
-        ObjectOutputStream socketOut = new ObjectOutputStream(socket.getOutputStream());
+        socketIn = new ObjectInputStream(socket.getInputStream());
+        socketOut = new ObjectOutputStream(socket.getOutputStream());
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(socketOut);
@@ -107,9 +110,25 @@ public class Client {
             t1.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
-        } finally {
-            socketIn.close();
+            disconnect();
+        }
+    }
+
+    public void close() throws IOException {
+        if(!socket.isClosed()){
             socket.close();
+        }
+        socketIn = null;
+        socketOut = null;
+
+    }
+
+    public void disconnect(){
+        try{
+            close();
+        }catch (IOException e){
+            System.err.println("Error in closing socket");
+            e.printStackTrace();
         }
     }
 
