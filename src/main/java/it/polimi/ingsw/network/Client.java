@@ -117,6 +117,8 @@ public class Client {
     public void close() throws IOException {
         if(!socket.isClosed()){
             socket.close();
+            socketOut.close();
+            socketIn.close();
         }
         socketIn = null;
         socketOut = null;
