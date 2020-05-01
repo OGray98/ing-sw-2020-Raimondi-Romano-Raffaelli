@@ -29,7 +29,7 @@ public class ControllerTestSOLOPERORA {
     private RemoteView remoteView2;
     private RemoteView remoteView3;
 
-   @Test
+   /*@Test
     public void isCorr() {
         obs1 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER0, "Pasquale"));
         obs2 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER1, "Tony"));
@@ -94,7 +94,7 @@ public class ControllerTestSOLOPERORA {
         assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(3,4)));
         //last player put workers
         obs2.setMsg(new PutWorkerMessage(PlayerIndex.PLAYER1, new Position(1,3), new Position(1,4)));
-        assertEquals(gameManager.getGame().getBoard().workerPositions(PlayerIndex.PLAYER1).size(), 2);
+        assertEquals(gameManager.getGame().getBoard().workerPositions(PlayerIndex.PLAYER1).size(), 2);*/
         /*Initail board:
         *
         * P2    P2    0    P0   P0
@@ -104,7 +104,7 @@ public class ControllerTestSOLOPERORA {
         * 0     0     0    0    0
         * */
 
-        assertEquals(gameManager.getGame().getCurrentState(), GameState.INITURN);
+        /*assertEquals(gameManager.getGame().getCurrentState(), GameState.INITURN);
         //Testing move phase
         assertEquals(gameManager.getGame().getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
         //can't move in an enemy turn
@@ -124,7 +124,7 @@ public class ControllerTestSOLOPERORA {
         assertEquals(gameManager.getGame().getBoard().getOccupiedPlayer(new Position(1,0)), PlayerIndex.PLAYER2);
         assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(0,0)));
         assertEquals(gameManager.getGame().getCurrentState(), GameState.BUILD);
-
+*/
     //TODO: tests of handler for build, usepower, endturn!
 
 
@@ -198,6 +198,6 @@ public class ControllerTestSOLOPERORA {
         assertEquals(game.getBoard().workerPositions(PlayerIndex.PLAYER1).size(), 2);
         */
 
-    }
+    //}
 
 }
