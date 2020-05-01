@@ -121,9 +121,9 @@ public class GodPhaseManagerTest {
         }
 
         godManager.playerChooseGod("Demeter");
-
+        assertEquals("Demeter",game.getGodNames().get(PlayerIndex.PLAYER1));
         godManager.playerChooseGod("Apollo");
-
+        assertEquals("Apollo",game.getGodNames().get(PlayerIndex.PLAYER2));
         godManager.playerChooseGod("Prometheus");
         assertEquals("Prometheus",game.getCurrentPlayerGodName());
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.GameManager;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.view.RemoteView;
 
@@ -21,7 +22,8 @@ public class Server {
     private Map<PlayerIndex, ClientConnection> waitingConnection = new HashMap<>();
     private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
     private static int lobbyCount = 0;
-    private GameManager controller = new GameManager();
+    private Game game = new Game();
+    private GameManager controller = new GameManager(game);
     private Thread pingThread;
 
 
