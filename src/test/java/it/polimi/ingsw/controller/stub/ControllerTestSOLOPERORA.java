@@ -28,7 +28,7 @@ public class ControllerTestSOLOPERORA {
     private RemoteView remoteView2;
     private RemoteView remoteView3;
 
-   /* @Test
+   /*@Test
     public void isCorr() {
         obs1 = new StubObservableMessageReceiver(new NicknameMessage(PlayerIndex.PLAYER0, "Pasquale"));
         obs2 = new StubObservableMessageReceiver(new NicknameMessage(PlayerIndex.PLAYER1, "Tony"));
@@ -102,7 +102,7 @@ public class ControllerTestSOLOPERORA {
         * 0     0     0    0    0
         * 0     0     0    0    0
         * */
-        /*
+    /*
         assertEquals(gameManager.getGame().getCurrentState(), GameState.MOVE);
         //Testing move phase
         assertEquals(gameManager.getGame().getCurrentPlayerIndex(), PlayerIndex.PLAYER2);

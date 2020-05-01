@@ -158,7 +158,7 @@ public class GameManager implements Observer<Message> {
             lobby.getLobbyPlayers().forEach(
                     (index, nickname) -> players.add(new Player(nickname, index))
             );
-            gameModel = new Game(players);
+            gameModel = new Game(lobby.getNumberOfPlayerInLobby());
             remoteViews.values().forEach(remView -> gameModel.addObserver(remView));
             godPhaseManager = new GodPhaseManager(gameModel);
 
@@ -195,7 +195,6 @@ public class GameManager implements Observer<Message> {
         }
 
         lobby.setThreePlayersGame(isThreePlayerGame);
-
     }
 
     /**
