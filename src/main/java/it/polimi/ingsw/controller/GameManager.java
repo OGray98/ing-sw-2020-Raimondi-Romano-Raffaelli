@@ -33,9 +33,10 @@ public class GameManager implements Observer<Message> {
     //TurnManager instance
     private TurnManager turnManager;
 
-    public GameManager() {
+    public GameManager(Game game) {
         remoteViews = new HashMap<>();
         lobby = new GameLobby();
+        gameModel = game;
     }
 
     public Board getBoard() {
@@ -183,10 +184,10 @@ public class GameManager implements Observer<Message> {
         lobby.setThreePlayersGame(isThreePlayerGame);
 
         if(isThreePlayerGame){
-            gameModel = new Game(3);
+            gameModel.setNumPlayer(true);
         }
         else{
-            gameModel = new Game(2);
+            gameModel.setNumPlayer(false);
         }
     }
 
