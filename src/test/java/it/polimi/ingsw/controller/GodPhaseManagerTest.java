@@ -125,8 +125,7 @@ public class GodPhaseManagerTest {
         assertEquals("Demeter",game.getGodNames().get(PlayerIndex.PLAYER1));
         godManager.playerChooseGod("Apollo");
         assertEquals("Apollo",game.getGodNames().get(PlayerIndex.PLAYER2));
-        godManager.playerChooseGod("Prometheus");
-        assertEquals("Prometheus",game.getCurrentPlayerGodName());
+        assertEquals("Prometheus",game.getGodNames().get(PlayerIndex.PLAYER0));
 
         assertTrue(godManager.isFinishSelectCardPhase());
 
