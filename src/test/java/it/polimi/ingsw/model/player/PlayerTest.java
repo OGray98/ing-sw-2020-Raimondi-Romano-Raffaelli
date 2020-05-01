@@ -37,6 +37,12 @@ public class PlayerTest {
     }
 
     @Test
+    public void canGoUpTest(){
+        player.setCantGoUp(true);
+        assertTrue(player.getCantGoUp());
+    }
+
+    @Test
     public void nickNameIsCorrectTest(){
         assertEquals("Jack",player.getNickname());
     }
@@ -196,6 +202,9 @@ public class PlayerTest {
         //adjacentCells = board.getAdjacentCells(cellOccupied.getPosition());
 
         adjacentPlayerList = board.getAdjacentPlayers(cellOccupied.getPosition());
+        List<Cell> powers = new ArrayList<>();
+        powers.add(board.getCell(new Position(4,4)));
+        assertFalse(player.canMoveWithPowers(adjacentPlayerList,powers,player.getCellOccupied(),true));
 
         /*Adjacent cells tested representation:
          *
@@ -304,6 +313,12 @@ public class PlayerTest {
             player.canBuild(adjacentPlayerList,new Cell(5,5));
         }catch (InvalidPositionException e){
             assertEquals("You cannot have a position in : [5][5]",e.getMessage());
+        }
+
+        try{
+            player.canBuild(adjacentPlayerList,new Cell(-1,-1));
+        }catch (InvalidPositionException e){
+            assertEquals("You cannot have a position in : [-1][-1]",e.getMessage());
         }
 
         List<Cell> powers = new ArrayList<>();
@@ -438,6 +453,8 @@ public class PlayerTest {
         assertEquals(null,player.getGodName());
         assertEquals(GameState.NULL,player.getPowerState());
         assertEquals(GameState.NULL,player.getNextState());
+        assertEquals(0,player.getPowerListDimension());
+        assertEquals(PlayerIndex.PLAYER0,player.getPlayerNum());
 
     }
 }

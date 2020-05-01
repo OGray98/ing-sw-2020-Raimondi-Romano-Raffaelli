@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.exception.InvalidPositionException;
 import it.polimi.ingsw.model.board.Cell;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,7 +11,7 @@ import static org.junit.Assert.*;
 
 public class CellTest {
 
-    private static Cell cell;
+
     private static Cell cellDome;
     private static Cell cellNotDome;
 
@@ -41,5 +42,11 @@ public class CellTest {
         cellNotDome.setHasDome(false);
         assertTrue(cellDome.hasDome());
         assertFalse(cellNotDome.hasDome());
+    }
+
+    @After
+    public void afterAll(){
+        cellDome = null;
+        cellNotDome = null;
     }
 }

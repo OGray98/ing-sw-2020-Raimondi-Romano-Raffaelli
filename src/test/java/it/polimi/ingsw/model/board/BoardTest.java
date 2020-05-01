@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.exception.*;
 import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.player.PlayerIndex;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -414,5 +415,18 @@ public class BoardTest {
         return cells.size() == 8 && board.getCell(new Position(r-1,c-1)).equals(cells.get(0)) && board.getCell(new Position(r-1,c)).equals(cells.get(1)) && board.getCell(new Position(r-1,c+1)).equals(cells.get(2))
                 && board.getCell(new Position(r,c-1)).equals(cells.get(3)) && board.getCell(new Position(r,c+1)).equals(cells.get(4))
                 && board.getCell(new Position(r+1,c-1)).equals(cells.get(5)) && board.getCell(new Position(r+1,c)).equals(cells.get(6)) && board.getCell(new Position(r+1,c+1)).equals(cells.get(7));
+    }
+
+    @After
+    public void afterAll(){
+
+        board = null;
+        domePosition = null;
+        freePosition = null;
+        opponentAdjacentWorkerPosition = null;
+        workerPosition = null;
+        zeroPosition = null;
+
+
     }
 }

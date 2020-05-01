@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.board.PositionContainer;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -64,6 +65,13 @@ public class PositionContainerTest {
 
         assertEquals("PositionContainer{ oldPosition = " + pos2 + ", newPosition = " + pos1 + "}",
                 positionContainer.toString());
+    }
+
+    @After
+    public void afterAll(){
+        pos1 = null;
+        pos2 = null;
+
     }
 
 }

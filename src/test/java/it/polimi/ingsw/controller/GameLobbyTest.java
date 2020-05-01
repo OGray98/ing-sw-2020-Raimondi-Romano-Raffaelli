@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.GameLobby;
 import it.polimi.ingsw.exception.MaxPlayersException;
 import it.polimi.ingsw.exception.NameAlreadyTakenException;
 import it.polimi.ingsw.model.player.PlayerIndex;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -84,5 +85,12 @@ public class GameLobbyTest {
         catch(MaxPlayersException e){
             assertEquals("Max number of players reached! Impossible to add other players!", e.getMessage());
         }
+    }
+
+    @After
+    public void afterAll(){
+        lobby2p = null;
+        lobby3p = null;
+
     }
 }

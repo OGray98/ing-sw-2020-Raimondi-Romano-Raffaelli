@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -370,5 +371,15 @@ public class TurnManagerTest {
         assertFalse(turnManager.isValidUseOfPower(new Position(0,1), new Position(0,1)));
 
         assertTrue(turnManager.isValidUseOfPower(new Position(0,0), new Position(0,1)));
+    }
+
+    @After
+    public void afterAll(){
+        board = null;
+        players = null;
+        gameInstance = null;
+        gods = null;
+        turnManager = null;
+
     }
 }

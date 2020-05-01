@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -179,6 +180,13 @@ public class GodPhaseManagerTest {
         assertEquals(PlayerIndex.PLAYER0,game.getBoard().getOccupiedPlayer(pos5));
         assertEquals(PlayerIndex.PLAYER0,game.getBoard().getOccupiedPlayer(pos6));
 
+    }
+
+    @After
+    public void afterAll(){
+        players = null;
+        game = null;
+        godManager = null;
     }
 
 }

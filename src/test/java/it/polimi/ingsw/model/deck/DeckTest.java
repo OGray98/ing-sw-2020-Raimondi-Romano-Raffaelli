@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.deck;
 
 import it.polimi.ingsw.exception.InvalidNumberCardsChosenException;
 import it.polimi.ingsw.exception.WrongGodNameException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -142,6 +143,12 @@ public class DeckTest {
 
     }
 
+    @After
+    public void afterAll(){
+        deckEmpty = null;
+        deckTwoPlayers = null;
+        deckThreePlayers = null;
+    }
 
 
 
