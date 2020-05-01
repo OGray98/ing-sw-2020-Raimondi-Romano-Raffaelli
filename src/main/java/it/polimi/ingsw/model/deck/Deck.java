@@ -24,10 +24,14 @@ public class Deck {
             )
     );
     public final static int size = 9;
-    private final int playersNumber;
+    private int playersNumber;
 
-    public Deck(int playersNumber) {
-        this.playersNumber = playersNumber;
+    public Deck() {
+        this.playersNumber = 3;
+    }
+
+    public void setPlayersNumber(boolean threePlayer) {
+        this.playersNumber = threePlayer ? 3 : 2;
     }
 
     /**
