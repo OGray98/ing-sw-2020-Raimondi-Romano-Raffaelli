@@ -40,16 +40,6 @@ public class StubObservableClientConnection extends Observable<Message> implemen
         mesRemoteToView.add(message);
     }
 
-    @Override
-    public boolean isConnected() {
-        return false;
-    }
-
-    @Override
-    public void ping(PlayerIndex player) {
-
-    }
-
     //->controller
     public void setMsg(Message message){
         this.mesRemoteToView.clear();

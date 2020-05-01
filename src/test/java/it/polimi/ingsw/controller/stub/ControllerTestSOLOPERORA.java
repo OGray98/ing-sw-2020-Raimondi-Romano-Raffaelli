@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller.stub;
 
 import it.polimi.ingsw.controller.GameManager;
+import it.polimi.ingsw.exception.WrongGodNameException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.stub.StubObservableClientConnection;
@@ -29,7 +30,6 @@ public class ControllerTestSOLOPERORA {
         obs1 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER0, "Pasquale"));
         obs2 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER1, "Tony"));
         obs3 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER2, "PiccoloPietro"));
-        game = new Game();
         game.addObserver(obs1);
         game.addObserver(obs2);
         game.addObserver(obs3);
@@ -52,14 +52,36 @@ public class ControllerTestSOLOPERORA {
         assertEquals(nick.getNickname(), "Tony");
 
         obs2.setMsg(new NicknameMessage(PlayerIndex.PLAYER1, names.get(1)));
+
+        assertEquals(obs2.getMesRemoteToView().size(), 1);
+        NicknameMessage nick2 = (NicknameMessage) obs2.getMesRemoteToView().get(0);
+        assertEquals(nick2.getNickname(), "Pasquale");
+
         obs3.setMsg(new NicknameMessage(PlayerIndex.PLAYER2, names.get(2)));
-        /*
-        List<PlayerInterface> players = gameManager.getPlayers();
-        List<String> actualNames = new ArrayList<>(0);
-        players.forEach(player -> actualNames.add(player.getNickname()));
-        assertEquals(actualNames, names);
+
+        NicknameMessage nick3 = (NicknameMessage) obs3.getMesRemoteToView().get(0);
+        assertEquals(nick3.getNickname(), "PiccoloPietro");
+
         List<String> godChosen = new ArrayList<>(List.of("Demeter", "Athena", "Atlas"));
         obs1.setMsg(new GodLikeChoseMessage(PlayerIndex.PLAYER0, godChosen));
+
+        GodLikeChoseMessage gods = (GodLikeChoseMessage) obs1.getMesRemoteToView().get(0);
+        assertEquals(gods.getGodNames(), godChosen);
+
+        //Check some god phase messages
+        //God choose cards
+        obs2.setMsg(new PlayerSelectGodMessage(PlayerIndex.PLAYER2, "Athena"));
+
+        //assertEquals();
+        try{
+            obs2.setMsg(new PlayerSelectGodMessage(PlayerIndex.PLAYER1, "Apollo"));
+        }
+        catch(WrongGodNameException e){
+            assertEquals("There isn't a god named Apollo", e.getMessage());
+        }
+        obs2.setMsg(new PlayerSelectGodMessage(PlayerIndex.PLAYER1, "Athena"));
+        /*
+
         //Check some god phase messages
         //God choose cards
         assertTrue(gameManager.getGame().getDeck().getChosenGodCards().size() == 3);
