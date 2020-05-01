@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exception.MaxPlayersException;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.Position;
@@ -47,6 +48,48 @@ public class GameTest {
 
     @Test
     public void isConstructorCorrected() {
+        try {
+            new Game(4);
+        } catch (IllegalArgumentException e) {
+            assertEquals("You must have 2 or 3 player, not " + 4, e.getMessage());
+        }
+    }
+
+    @Test
+    public void isGetNumPlayerCorrected() {
+        assertEquals(3, game.getNumPlayer());
+    }
+
+    @Test
+    public void isAddPlayerCorrected() {
+        Game gameInstance = new Game(2);
+        assertEquals(2, game.getNumPlayer());
+
+        gameInstance.addPlayer(PlayerIndex.PLAYER0, "Paolo");
+        assertEquals(1, gameInstance.getCurrentNumberOfPlayers());
+        assertTrue(gameInstance.getPlayersNames().containsKey(PlayerIndex.PLAYER0));
+        assertEquals(1, gameInstance.getPlayersNames().size());
+        assertEquals("Paolo", gameInstance.getPlayersNames().get(PlayerIndex.PLAYER0));
+
+        try {
+            gameInstance.addPlayer(PlayerIndex.PLAYER2, "Pietro");
+        } catch (IllegalArgumentException e) {
+            assertEquals("You can't have PLAYER2 in two players game", e.getMessage());
+        }
+
+        gameInstance.addPlayer(PlayerIndex.PLAYER1, "Pietro");
+        assertEquals(2, gameInstance.getCurrentNumberOfPlayers());
+        assertTrue(gameInstance.getPlayersNames().containsKey(PlayerIndex.PLAYER0));
+        assertTrue(gameInstance.getPlayersNames().containsKey(PlayerIndex.PLAYER1));
+        assertEquals(2, gameInstance.getPlayersNames().size());
+        assertEquals("Paolo", gameInstance.getPlayersNames().get(PlayerIndex.PLAYER0));
+        assertEquals("Pietro", gameInstance.getPlayersNames().get(PlayerIndex.PLAYER1));
+
+        try {
+            gameInstance.addPlayer(PlayerIndex.PLAYER1, "Nicola");
+        } catch (MaxPlayersException e) {
+            assertEquals(new MaxPlayersException().getMessage(), e.getMessage());
+        }
 
     }
 
@@ -57,8 +100,8 @@ public class GameTest {
     public void getCardsTest() {
         assertEquals(9, game.getCards().size());
         Map<String, String> decks = game.getCards();
-        for(String godName : decks.keySet()){
-            assertEquals(decks.get(godName),game.getDeck().getGodCard(godName).getGodDescription());
+        for (String godName : decks.keySet()) {
+            assertEquals(decks.get(godName), game.getDeck().getGodCard(godName).getGodDescription());
         }
     }
 
@@ -228,13 +271,7 @@ public class GameTest {
         assertTrue(game.getDeck().getGodCard("Pan").getBoolChosenGod());
         assertTrue(game.getDeck().getGodCard("Artemis").getBoolChosenGod());
 
-        int one = 1;
-
-        for (String god : gods) {
-            game.setPlayerCard(god);
-            assertEquals(god, game.getPlayers().get(one).getGodName());
-            one = (one + 1) % 3;
-        }
+        //gods.forEach(  );
 
         game.chooseFirstPlayer(PlayerIndex.PLAYER2);
         assertEquals(PlayerIndex.PLAYER2, game.getPlayers().get(0).getPlayerNum());

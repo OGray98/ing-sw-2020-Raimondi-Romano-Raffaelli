@@ -68,6 +68,8 @@ public class Game extends Observable<Message> {
             throw new NullPointerException("nickname");
         if (this.players.size() == this.numPlayer)
             throw new MaxPlayersException();
+        if (this.numPlayer == 2 && index == PlayerIndex.PLAYER2)
+            throw new IllegalArgumentException("You can't have PLAYER2 in two players game");
 
         this.players.add(new Player(nickname, index));
         notify(new NicknameMessage(PlayerIndex.ALL, nickname));
@@ -542,13 +544,25 @@ public class Game extends Observable<Message> {
 
     /**
      * Method called when finished turn to change the currentPlayer
-     * */
+     */
     public void endTurn() {
         updateCurrentPlayer();
     }
 
-    public List<PlayerInterface> getPlayers() {
-        return new ArrayList<>(players);
+    public int getCurrentNumberOfPlayers() {
+        return this.players.size();
+    }
+
+    public Map<PlayerIndex, String> getPlayersNames() {
+        Map<PlayerIndex, String> nicknames = new HashMap<>();
+        this.players.forEach(player -> nicknames.put(player.getPlayerNum(), player.getNickname()));
+        return nicknames;
+    }
+
+    public Map<PlayerIndex, String> getGodNames() {
+        Map<PlayerIndex, String> godNames = new HashMap<>();
+        this.players.forEach(player -> godNames.put(player.getPlayerNum(), player.getGodName()));
+        return godNames;
     }
 
     public Board getBoard() {
@@ -559,7 +573,7 @@ public class Game extends Observable<Message> {
         return currentPlayer.getPlayerNum();
     }
 
-    public String getCurrentPlayerNick(){
+    public String getCurrentPlayerNick() {
         return currentPlayer.getNickname();
     }
 
