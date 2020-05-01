@@ -125,6 +125,7 @@ public class Game extends Observable<Message> {
      */
     public void setCurrentState(GameState nextState) {
         this.currentState = nextState;
+        notify(new UpdateStateMessage(PlayerIndex.ALL, nextState));
         if (this.currentState == GameState.MOVE)
             sendPossibleActionMoveState();
         else if (this.currentState == GameState.BUILD)
