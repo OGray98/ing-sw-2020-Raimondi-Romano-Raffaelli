@@ -8,7 +8,7 @@ import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utils.CloseConnectionMessage;
 import it.polimi.ingsw.utils.Message;
 import it.polimi.ingsw.utils.PingMessage;
-import it.polimi.ingsw.utils.TypeMessage;
+
 
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
-import java.util.Timer;
+
 
 public class SocketClientConnection extends Observable<Message> implements ClientConnection,Runnable{
 
@@ -43,6 +43,9 @@ public class SocketClientConnection extends Observable<Message> implements Clien
         return active;
     }
 
+    /**
+     * @param message to write on socket server -> client
+     */
     private synchronized void send(Message message){
         try{
             out.reset();
@@ -74,6 +77,10 @@ public class SocketClientConnection extends Observable<Message> implements Clien
         new Thread(() -> send(message)).start();
     }
 
+    /**
+     * Create the input and output stream, insert the connection in server lobby and remain active to read message input
+     * from clients
+     */
     @Override
     public void run() {
         try{

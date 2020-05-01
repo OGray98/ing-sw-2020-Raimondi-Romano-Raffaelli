@@ -32,10 +32,16 @@ public class Client {
 
     }
 
+    /**
+     * @return List where message input are insert to read by client manager
+     */
     public List<Message> getMessageQueue(){
         return messageQueue;
     }
 
+    /**
+     * @param mesQueue : List upgrade after client read a message
+     */
     public void setMessageQueue(List<Message> mesQueue){
         this.messageQueue = mesQueue;
     }
@@ -50,6 +56,11 @@ public class Client {
         this.active = active;
     }
 
+    /**
+     * @param socketIn Input stream used to receive object
+     * @return thread
+     * Used to read message input and adding them to list
+     */
     public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
         Thread t = new Thread(() -> {
             try {
@@ -81,6 +92,11 @@ public class Client {
         return t;
     }
 
+    /**
+     * @param socketOut Output stream use to write object on scoket
+     * @return thread
+     * Used to write message on socket to client
+     */
     public Thread asyncWriteToSocket(final ObjectOutputStream socketOut){
         Thread t = new Thread(() -> {
             try {
@@ -97,6 +113,9 @@ public class Client {
         return t;
     }
 
+    /**
+     * @param message to send to server
+     */
     public void createClientMessage(Message message){
         this.message = message;
     }
@@ -106,6 +125,10 @@ public class Client {
     }
 
 
+    /**
+     * @throws IOException
+     * Create the socket, the output and input stream and run the threads of writing and reading on socket
+     */
     public void run() throws IOException {
         socket = new Socket(ip, port);
         System.out.println("Connection established");

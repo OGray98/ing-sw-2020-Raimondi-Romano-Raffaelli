@@ -27,8 +27,9 @@ public class Server {
     private Thread pingThread;
 
 
-
-
+    /**
+     * @param c connection to eliminate from the list of client player in lobby
+     */
     public synchronized void deleteClient(ClientConnection c){
         ClientConnection opponent = playingConnection.get(c);
         if(opponent != null){
@@ -44,7 +45,11 @@ public class Server {
         }
     }
 
+    /**
+     * @param c connection to insert in lobby for the game
+     */
     public synchronized void lobby(ClientConnection c) {
+        game.addObserver(controller);
         if (lobbyCount == 0) {
             waitingConnection.put(PlayerIndex.PLAYER0, c);
             ClientConnection c1 = waitingConnection.get(0);
@@ -95,6 +100,9 @@ public class Server {
         }
     }
 
+    /**
+     * Thread that send ping message to all clients players in lobby to see if they are alive
+     */
     public void pingRun(){
         while(!pingThread.isInterrupted()){
             for(Map.Entry<PlayerIndex,ClientConnection> client : waitingConnection.entrySet()){
