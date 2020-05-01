@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.player.DemeterDecorator;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -103,5 +104,22 @@ public class DemeterDecoratorTest {
     @Test
     public void getPowerListDimensionTest(){
         assertEquals(1,playerDemeter.getPowerListDimension());
+    }
+
+
+
+    @After
+    public void afterAll(){
+
+        deck = null;
+        board = null;
+        playerDemeter = null;
+        cardDemeter = null;
+        workerPosition = null;
+        firstBuildingPosition = null;
+        sameAsFirst = null;
+        secondBuildPosition = null;
+
+
     }
 }

@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.player.HephaestusDecorator;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -113,5 +114,18 @@ public class HephaestusDecoratorTest {
     }
 
 
+
+    @After
+    public void afterAll(){
+
+        board = null;
+        deck = null;
+        cardHephaestus = null;
+        playerHephaestus = null;
+        workerPosition = null;
+        buildPosition = null;
+        otherPosition = null;
+
+    }
 
 }

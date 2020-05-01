@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -456,5 +457,17 @@ public class PlayerTest {
         assertEquals(0,player.getPowerListDimension());
         assertEquals(PlayerIndex.PLAYER0,player.getPlayerNum());
 
+    }
+
+
+    @After
+    public void afterAll(){
+
+        board = null;
+        player = null;
+        adjacentCells = null;
+        adjacentPlayerList = null;
+        cellOccupied = null;
+        oldCell = null;
     }
 }

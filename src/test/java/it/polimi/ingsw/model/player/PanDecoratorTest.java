@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.player.PanDecorator;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -198,5 +199,20 @@ public class PanDecoratorTest {
     @Test
     public void getPowerListDimensionTest(){
         assertEquals(0,playerPan.getPowerListDimension());
+    }
+
+
+
+    @After
+    public void afterAll(){
+
+        deck = null;
+        playerPan = null;
+        cardPan = null;
+        board = null;
+        workerPosition = null;
+        buildPositionLevel1 = null;
+        buildPositionLevel2 = null;
+        buildPositionLevel3 = null;
     }
 }

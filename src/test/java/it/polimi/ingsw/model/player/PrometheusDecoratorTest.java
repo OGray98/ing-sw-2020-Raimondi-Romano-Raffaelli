@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
 import it.polimi.ingsw.model.player.PrometheusDecorator;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -76,5 +77,18 @@ public class PrometheusDecoratorTest {
     @Test
     public void getPowerListDimensionTest(){
         assertEquals(1,playerPrometheus.getPowerListDimension());
+    }
+
+
+    @After
+    public void afterAll(){
+
+        deck = null;
+        cardPrometheus = null;
+        playerPrometheus = null;
+        board = null;
+        workerPosition = null;
+        towerOnePosition = null;
+        towerTwoPosition = null;
     }
 }

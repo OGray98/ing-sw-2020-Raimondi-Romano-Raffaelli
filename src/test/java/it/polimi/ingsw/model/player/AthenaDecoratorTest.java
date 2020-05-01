@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.player.AthenaDecorator;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -132,5 +133,18 @@ public class AthenaDecoratorTest {
 
         board.updateAfterPower(powerRes);
         assertTrue(playerAthena.hasWin());
+    }
+
+
+    @After
+    public void afterAll(){
+
+        board = null;
+        deck =  null;
+        cardAthena = null;
+        playerAthena = null;
+        workerPos = null;
+        lvlUpPos = null;
+        notLvlUpPos = null;
     }
 }

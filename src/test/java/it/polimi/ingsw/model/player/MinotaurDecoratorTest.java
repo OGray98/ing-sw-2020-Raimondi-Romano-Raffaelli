@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.player.MinotaurDecorator;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -270,5 +271,21 @@ public class MinotaurDecoratorTest {
         board.updateAfterPower(powerRes);
         assertEquals(board.getOccupiedPlayer(workerOpponentPos1), PlayerIndex.PLAYER0);
         assertTrue(playerMinotaur.hasWin());
+    }
+
+
+    @After
+    public void afterAll(){
+
+        deck = null;
+        board = null;
+        cardMinotaur = null;
+        playerMinotaur = null;
+        playerOpponent = null;
+        workerOnePos = null;
+        workerOpponentPos1 = null;
+        workerOpponentPos2 = null;
+        otherPlayerOpponent = null;
+
     }
 }

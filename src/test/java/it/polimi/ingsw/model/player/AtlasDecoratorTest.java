@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.player.AtlasDecorator;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -73,6 +74,20 @@ public class AtlasDecoratorTest {
         catch(NullPointerException e){
             assertEquals("playerChanges", e.getMessage());
         }
+    }
+
+
+    @After
+    public void afterAll(){
+
+        deck = null;
+        atlasPlayer = null;
+        board = null;
+        workerPos = null;
+        playerint = null;
+        posFalse = null;
+        posTrue = null;
+
     }
 
 }

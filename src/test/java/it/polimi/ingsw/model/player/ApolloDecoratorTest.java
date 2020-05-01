@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.player.ApolloDecorator;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -186,6 +187,25 @@ public class ApolloDecoratorTest {
         playerApollo.usePower(board.getCell(workerOpponentPosition));
         assertTrue(playerApollo.hasWin());
 
+
+    }
+
+    @After
+    public void afterAll(){
+
+        deck = null;
+        board = null;
+        playerApollo = null;
+        playerOpponent = null;
+        otherPlayerOpponent = null;
+        workerOpponentPosition = null;
+        workerPosition = null;
+        secondOpponentWorkerPosition = null;
+        thirdWorkerPosition = null;
+        secondWorkerPosition = null;
+        cardApollo = null;
+        towerWorkerOne = null;
+        towerWorkerTwo = null;
 
     }
 

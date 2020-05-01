@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.player.ArtemisDecorator;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -139,6 +140,19 @@ public class ArtemisDecoratorTest {
         assertTrue(playerArtemis.hasWin());
 
 
+    }
+
+
+    @After
+    public void afterAll(){
+
+        deck = null;
+        board = null;
+        cardArtemis = null;
+        playerArtemis = null;
+        workerPos = null;
+        firstMovePosition = null;
+        secondMovePosition = null;
     }
 
 }
