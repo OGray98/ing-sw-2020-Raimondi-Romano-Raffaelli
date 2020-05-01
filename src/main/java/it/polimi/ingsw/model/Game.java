@@ -22,7 +22,7 @@ public class Game extends Observable<Message> {
     private final List<PlayerInterface> players;
     private final Board board;
     private final Deck deck;
-    private final int numPlayer;
+    private int numPlayer;
     private PlayerInterface currentPlayer;
     private Position currentPosition;
     private int contCurrentPlayer;
@@ -31,21 +31,17 @@ public class Game extends Observable<Message> {
     private int contCurrentWorker;
     private GameState currentState;
 
-    public Game(int numPlayer) throws IllegalArgumentException {
-        if (numPlayer < 2 || numPlayer > 3)
-            throw new IllegalArgumentException("You must have 2 or 3 player, not " + numPlayer);
+    public Game() throws IllegalArgumentException {
 
         this.players = new ArrayList<>(2);
         this.board = new Board();
-        this.deck = new Deck(numPlayer);
-
-        this.numPlayer = numPlayer;
+        this.deck = new Deck();
+        this.numPlayer = 3;
         this.cantGoUp = false;
         this.contEffect = 0;
         this.contCurrentWorker = 0;
         this.contCurrentPlayer = 0;
         this.currentState = GameState.START_GAME;
-
     }
 
     /**
@@ -54,6 +50,12 @@ public class Game extends Observable<Message> {
     public int getNumPlayer() {
         return numPlayer;
     }
+
+    public void setNumPlayer(boolean threePlayer) {
+        this.numPlayer = threePlayer ? 3 : 2;
+        this.deck.setPlayersNumber(threePlayer);
+    }
+
 
     /**
      * Add a Player in players
