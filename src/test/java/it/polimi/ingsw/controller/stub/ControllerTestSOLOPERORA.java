@@ -1,14 +1,9 @@
 package it.polimi.ingsw.controller.stub;
 
 import it.polimi.ingsw.controller.GameManager;
-import it.polimi.ingsw.controller.GameState;
-import it.polimi.ingsw.exception.WrongGodNameException;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.model.player.PlayerInterface;
 import it.polimi.ingsw.stub.StubObservableClientConnection;
-import it.polimi.ingsw.stub.StubObservableMessageReceiver;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.view.RemoteView;
 import org.junit.Test;
@@ -29,11 +24,15 @@ public class ControllerTestSOLOPERORA {
     private RemoteView remoteView2;
     private RemoteView remoteView3;
 
-   /*@Test
+   @Test
     public void isCorr() {
         obs1 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER0, "Pasquale"));
         obs2 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER1, "Tony"));
         obs3 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER2, "PiccoloPietro"));
+        game = new Game();
+        game.addObserver(obs1);
+        game.addObserver(obs2);
+        game.addObserver(obs3);
         remoteView1 = new RemoteView(PlayerIndex.PLAYER0, obs1);
         remoteView2 = new RemoteView(PlayerIndex.PLAYER1, obs2);
         remoteView3 = new RemoteView(PlayerIndex.PLAYER2, obs3);
@@ -43,11 +42,18 @@ public class ControllerTestSOLOPERORA {
         gameManager.addRemoteView(PlayerIndex.PLAYER0, remoteView1);
         gameManager.addRemoteView(PlayerIndex.PLAYER1, remoteView2);
         gameManager.addRemoteView(PlayerIndex.PLAYER2, remoteView3);
+
         List<String> names = new ArrayList<>(List.of("Tony", "Pasquale", "PiccoloPietro"));
         obs1.setMsg(new TypeMatchMessage(PlayerIndex.PLAYER0, true));
         obs1.setMsg(new NicknameMessage(PlayerIndex.PLAYER0, names.get(0)));
+
+        assertEquals(obs1.getMesRemoteToView().size(), 1);
+        NicknameMessage nick = (NicknameMessage) obs1.getMesRemoteToView().get(0);
+        assertEquals(nick.getNickname(), "Tony");
+
         obs2.setMsg(new NicknameMessage(PlayerIndex.PLAYER1, names.get(1)));
         obs3.setMsg(new NicknameMessage(PlayerIndex.PLAYER2, names.get(2)));
+        /*
         List<PlayerInterface> players = gameManager.getPlayers();
         List<String> actualNames = new ArrayList<>(0);
         players.forEach(player -> actualNames.add(player.getNickname()));
@@ -123,8 +129,8 @@ public class ControllerTestSOLOPERORA {
         obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2, new Position(0, 0), new Position(1, 0)));
         assertEquals(gameManager.getGame().getBoard().getOccupiedPlayer(new Position(1,0)), PlayerIndex.PLAYER2);
         assertTrue(gameManager.getGame().getBoard().isFreeCell(new Position(0,0)));
-        assertEquals(gameManager.getGame().getCurrentState(), GameState.BUILD);
-*/
+        assertEquals(gameManager.getGame().getCurrentState(), GameState.BUILD);*/
+
     //TODO: tests of handler for build, usepower, endturn!
 
 
@@ -198,6 +204,6 @@ public class ControllerTestSOLOPERORA {
         assertEquals(game.getBoard().workerPositions(PlayerIndex.PLAYER1).size(), 2);
         */
 
-    //}
+    }
 
 }
