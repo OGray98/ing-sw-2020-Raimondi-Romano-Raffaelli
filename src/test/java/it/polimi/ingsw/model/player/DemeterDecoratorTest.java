@@ -28,7 +28,7 @@ public class DemeterDecoratorTest {
 
     @Before
     public void init(){
-        deck = new Deck(2);
+        deck = new Deck();
         board = new Board();
         cardDemeter = deck.getGodCard("Demeter");
         playerDemeter = cardDemeter.setPlayer(new Player("Jack", PlayerIndex.PLAYER1));
