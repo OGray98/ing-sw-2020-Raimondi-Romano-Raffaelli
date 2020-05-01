@@ -11,11 +11,11 @@ import java.util.*;
 
 public class Client {
 
-    private String ip;
-    private int port;
+    private final String ip;
+    private final int port;
     private Message message;
     private transient Timer pingTimer;
-    private final List<Message> messageQueue;
+    private transient List<Message> messageQueue;
     private transient Socket socket;
     private transient ObjectInputStream socketIn;
     private transient ObjectOutputStream socketOut;
@@ -32,7 +32,13 @@ public class Client {
 
     }
 
-    
+    public List<Message> getMessageQueue(){
+        return messageQueue;
+    }
+
+    public void setMessageQueue(List<Message> mesQueue){
+        this.messageQueue = mesQueue;
+    }
 
     private boolean active = true;
 
@@ -45,25 +51,24 @@ public class Client {
     }
 
     public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (isActive()) {
-                        Message inputMessage = (Message) socketIn.readObject();
-                        if(inputMessage != null && inputMessage.getType() == TypeMessage.PING){
-                            pingTimer.cancel();
-                            pingTimer = new Timer();
-                            //pingTimer.schedule(new PingTimer(disconnectionClientInterface),DISCONNECTION_TIME);
-                        } else if(inputMessage != null && inputMessage.getType() != TypeMessage.PING){
-                            System.out.println("Received");
-                        } else {
-                            throw new IllegalArgumentException();
+        Thread t = new Thread(() -> {
+            try {
+                while (isActive()) {
+                    Message inputMessage = (Message) socketIn.readObject();
+                    if(inputMessage != null && inputMessage.getType() == TypeMessage.PING){
+                        pingTimer.cancel();
+                        pingTimer = new Timer();
+                        //pingTimer.schedule(new PingTimer(disconnectionClientInterface),DISCONNECTION_TIME);
+                    } else if(inputMessage != null && inputMessage.getType() != TypeMessage.PING){
+                        synchronized (messageQueue){
+                            messageQueue.add(inputMessage);
                         }
+                    } else {
+                        throw new IllegalArgumentException();
                     }
-                } catch (Exception e){
-                    setActive(false);
                 }
+            } catch (Exception e){
+                setActive(false);
             }
         });
         t.start();
@@ -71,18 +76,15 @@ public class Client {
     }
 
     public Thread asyncWriteToSocket(final ObjectOutputStream socketOut){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (isActive()) {
-                        socketOut.reset();
-                        socketOut.writeObject(getClientMessage());
-                        socketOut.flush();
-                    }
-                }catch(Exception e){
-                    setActive(false);
+        Thread t = new Thread(() -> {
+            try {
+                while (isActive()) {
+                    socketOut.reset();
+                    socketOut.writeObject(getClientMessage());
+                    socketOut.flush();
                 }
+            }catch(Exception e){
+                setActive(false);
             }
         });
         t.start();
