@@ -93,6 +93,9 @@ public class GameManager implements Observer<Message> {
             case PUT_WORKER:
                 handlePutWorkerMessage((PutWorkerMessage) message);
                 break;
+            case SELECT_WORKER:
+                handleSelectWorkerMessage((SelectWorkerMessage) message);
+                break;
             case MOVE:
                 handleMoveMessage((MoveMessage) message);
                 break;
@@ -149,19 +152,12 @@ public class GameManager implements Observer<Message> {
         }
 
         lobby.addPlayer(clientIndex, name);
+        gameModel.addPlayer(clientIndex, name);
 
         if (lobby.isFull()) {
-            List<PlayerInterface> players = new ArrayList<>(lobby.getLobbyPlayers().size());
-            lobby.getLobbyPlayers().forEach(
-                    (index, nickname) -> players.add(new Player(nickname, index))
-            );
-            gameModel = new Game(players);
-            remoteViews.values().forEach(remView -> gameModel.addObserver(remView));
             godPhaseManager = new GodPhaseManager(gameModel);
-
+            gameModel.setCurrentState(GameState.GOD_PLAYER_CHOOSE_CARDS);
         }
-
-        respondOkToRemoteView(clientIndex, "Nickname entered correctly", TypeMessage.NICKNAME);
     }
 
     /**
@@ -195,8 +191,12 @@ public class GameManager implements Observer<Message> {
 
         lobby.setThreePlayersGame(isThreePlayerGame);
 
-        respondOkToRemoteView(clientIndex, "Number of players entered correctly", TypeMessage.IS_THREE_PLAYERS_GAME);
-
+        if(isThreePlayerGame){
+            gameModel = new Game(3);
+        }
+        else{
+            gameModel = new Game(2);
+        }
     }
 
     /**
@@ -247,7 +247,6 @@ public class GameManager implements Observer<Message> {
         }
         godNames.forEach(name -> godPhaseManager.godLikeChooseCards(name));
         gameModel.setGodsChosenByGodLike(godPhaseManager.getGodsChosen());
-        respondOkToRemoteView(clientIndex, "Cards chosen correctly", TypeMessage.GODLIKE_CHOOSE_CARDS);
 
         gameModel.setCurrentState(GameState.SELECT_CARD);
     }
@@ -292,7 +291,6 @@ public class GameManager implements Observer<Message> {
 
         godPhaseManager.playerChooseGod(message.getGodName());
         //possibile problema: quando ultimo giocatore sceglie poi non sarà il turno del godlike. RISOLTO?
-        respondOkToRemoteView(clientIndex, "Card selected correctly", TypeMessage.SELECT_CARD);
 
         if (godPhaseManager.isFinishSelectCardPhase())
             gameModel.setCurrentState(GameState.GOD_PLAYER_CHOOSE_FIRST_PLAYER);
@@ -326,7 +324,6 @@ public class GameManager implements Observer<Message> {
             return;
         }
         godPhaseManager.godLikeChooseFirstPlayer(message.getPlayerFirst());
-        respondOkToRemoteView(clientIndex, "First player chosen correctly", TypeMessage.GODLIKE_CHOOSE_FIRST_PLAYER);
 
         gameModel.setCurrentState(GameState.PUT_WORKER);
     }
@@ -372,16 +369,44 @@ public class GameManager implements Observer<Message> {
         }
 
         godPhaseManager.puttingWorkerInBoard(message.getPositionOne(), message.getPositionTwo());
-        respondOkToRemoteView(clientIndex, "Workers put correctly", TypeMessage.PUT_WORKER);
 
         if (godPhaseManager.getPlayersWithWorkerPut() == gameModel.getPlayers().size()) {
             gameModel.setCurrentState(GameState.INITURN);
             //Create an instance of TurnManager and start the first turn
             this.turnManager = new TurnManager(this.gameModel);
-            //Set state
-            gameModel.setCurrentState(GameState.MOVE);
             this.turnManager.startTurn();
         }
+    }
+
+    /**
+     * This method is used to select the worker that user wants to use
+     * it will notify the positions where the player can move or use a power
+     * */
+    public void handleSelectWorkerMessage(SelectWorkerMessage message){
+
+        PlayerIndex clientIndex = message.getClient();
+        Position workerPos = message.getWorkerPos();
+
+        if(isNotMessageSentByCurrentPlayer(message)){
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "Not your turn",
+                    TypeMessage.NOT_YOUR_TURN
+            );
+            return;
+        }
+        if(isNotCurrentGameState(GameState.INITURN)){
+            respondErrorToRemoteView(
+                    clientIndex,
+                    "You can't move a worker now!",
+                    TypeMessage.WRONG_GAME_STATE
+            );
+            return;
+        }
+
+        //notify delle celle di entrambi i worker
+        //gameModel.sendPossibleActionMove()
+        gameModel.setCurrentState(GameState.MOVE);
     }
 
     /**
@@ -435,7 +460,7 @@ public class GameManager implements Observer<Message> {
         }
 
         this.turnManager.moveWorker(workerPos, movePos);
-
+        //gameModel.sendPossibleActionBuild()
         //Set state
         gameModel.setCurrentState(GameState.BUILD);
 
@@ -603,7 +628,7 @@ public class GameManager implements Observer<Message> {
         //setup the new turn
         this.turnManager.endTurn();
         this.turnManager.startTurn();
-        gameModel.setCurrentState(GameState.MOVE);
+        gameModel.setCurrentState(GameState.INITURN);
 
         //If current player has been blocked, he loses
         if(!this.turnManager.canCurrentPlayerMoveAWorker()){
