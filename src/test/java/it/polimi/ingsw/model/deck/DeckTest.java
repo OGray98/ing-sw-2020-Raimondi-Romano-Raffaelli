@@ -20,9 +20,9 @@ public class DeckTest {
 
     @Before
     public void init(){
-        deckTwoPlayers = new Deck(2);
-        deckThreePlayers = new Deck(3);
-        deckEmpty = new Deck(2);
+        deckTwoPlayers = new Deck();
+        deckThreePlayers = new Deck();
+        deckEmpty = new Deck();
 
     }
 

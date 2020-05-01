@@ -30,7 +30,7 @@ public class HephaestusDecoratorTest {
     @Before
     public void init(){
         board = new Board();
-        deck = new Deck(3);
+        deck = new Deck();
         cardHephaestus = deck.getGodCard("Hephaestus");
         playerHephaestus = cardHephaestus.setPlayer(new Player("jack", PlayerIndex.PLAYER0));
         workerPosition = new Position(1,1);

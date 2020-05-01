@@ -35,7 +35,7 @@ public class MinotaurDecoratorTest {
 
     @Before
     public void init(){
-        deck = new Deck(3);
+        deck = new Deck();
         board = new Board();
         cardMinotaur = deck.getGodCard("Minotaur");
         playerMinotaur = cardMinotaur.setPlayer(new Player("Jack", PlayerIndex.PLAYER0));

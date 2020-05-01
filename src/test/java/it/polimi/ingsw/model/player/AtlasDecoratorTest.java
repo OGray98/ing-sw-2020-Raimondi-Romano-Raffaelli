@@ -27,7 +27,7 @@ public class AtlasDecoratorTest {
 
     @Before
     public void init(){
-        deck = new Deck(3);
+        deck = new Deck();
         atlasPlayer = deck.getGodCard("Atlas");
         board = new Board();
         workerPos = new Position(1,1);
