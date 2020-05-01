@@ -15,11 +15,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ControllerTestSOLOPERORA {
-    private final GameManager gameManager = new GameManager();
     private StubObservableClientConnection obs1;
     private StubObservableClientConnection obs2;
     private StubObservableClientConnection obs3;
-    private Game game;
+    private Game game = new Game();
+    private final GameManager gameManager = new GameManager(game);
     private RemoteView remoteView1;
     private RemoteView remoteView2;
     private RemoteView remoteView3;

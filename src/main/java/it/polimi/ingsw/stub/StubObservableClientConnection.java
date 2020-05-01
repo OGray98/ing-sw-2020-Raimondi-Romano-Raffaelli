@@ -1,5 +1,6 @@
 package it.polimi.ingsw.stub;
 
+import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ClientConnection;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
@@ -27,6 +28,16 @@ public class StubObservableClientConnection extends Observable<Message> implemen
     @Override
     public void asyncSend(Message message) {
         mesRemoteToView.add(message);
+    }
+
+    @Override
+    public boolean isConnected() {
+        return false;
+    }
+
+    @Override
+    public void ping(PlayerIndex player) {
+
     }
 
     //->controller
