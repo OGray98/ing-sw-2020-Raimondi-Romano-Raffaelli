@@ -20,6 +20,16 @@ public class StubObservableClientConnection extends Observable<Message> implemen
     }
 
     @Override
+    public boolean isConnected() {
+        return false;
+    }
+
+    @Override
+    public void ping(PlayerIndex player) {
+
+    }
+
+    @Override
     public void closeConnection() {
 
     }
