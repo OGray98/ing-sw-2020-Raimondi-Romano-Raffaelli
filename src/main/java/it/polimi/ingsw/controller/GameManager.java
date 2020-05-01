@@ -38,15 +38,6 @@ public class GameManager implements Observer<Message> {
         lobby = new GameLobby();
     }
 
-    //Getter di gameModel provvisorio
-    public Game getGame(){
-        return gameModel;
-    }
-
-    public List<PlayerInterface> getPlayers() {
-        return gameModel.getPlayers();
-    }
-
     public Board getBoard() {
         return gameModel.getBoard();
     }
@@ -382,7 +373,7 @@ public class GameManager implements Observer<Message> {
      * This method is used to select the worker that user wants to use
      * it will notify the positions where the player can move or use a power
      * */
-    public void handleSelectWorkerMessage(SelectWorkerMessage message){
+    private void handleSelectWorkerMessage(SelectWorkerMessage message){
 
         PlayerIndex clientIndex = message.getClient();
         Position workerPos = message.getWorkerPos();
@@ -405,7 +396,6 @@ public class GameManager implements Observer<Message> {
         }
 
         //notify delle celle di entrambi i worker
-        //gameModel.sendPossibleActionMove()
         gameModel.setCurrentState(GameState.MOVE);
     }
 
@@ -460,7 +450,6 @@ public class GameManager implements Observer<Message> {
         }
 
         this.turnManager.moveWorker(workerPos, movePos);
-        //gameModel.sendPossibleActionBuild()
         //Set state
         gameModel.setCurrentState(GameState.BUILD);
 
