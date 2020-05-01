@@ -3,7 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.view.RemoteView;
-import it.polimi.ingsw.view.View;
+
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -73,8 +73,6 @@ public class Server {
        }
     }
 
-
-
     public Server() throws IOException{
         this.serverSocket = new ServerSocket(PORT);
         System.out.println("Port is open ");
@@ -88,6 +86,7 @@ public class Server {
                 SocketClientConnection socketClientConnection = new SocketClientConnection(socket,this);
                 executor.submit(socketClientConnection);
             }catch (IOException e){
+                System.err.println("Error during the open port on server");
                 e.printStackTrace();
             }
         }
