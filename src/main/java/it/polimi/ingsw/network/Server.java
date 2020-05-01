@@ -22,6 +22,7 @@ public class Server {
     private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
     private static int lobbyCount = 0;
     private GameManager controller = new GameManager();
+    private Thread pingThread;
 
 
 
@@ -74,6 +75,8 @@ public class Server {
     public Server() throws IOException{
         this.serverSocket = new ServerSocket(PORT);
         System.out.println("Port is open ");
+        pingThread = new Thread();
+        pingThread.start();
     }
 
     public void run(){
@@ -86,6 +89,23 @@ public class Server {
             }catch (IOException e){
                 System.err.println("Error during the open port on server");
                 e.printStackTrace();
+            }
+        }
+    }
+
+    public void pingRun(){
+        while(!pingThread.isInterrupted()){
+            for(Map.Entry<PlayerIndex,ClientConnection> client : waitingConnection.entrySet()){
+                if(client != null && client.getValue().isConnected()){
+                    client.getValue().ping(client.getKey());
+                }
+            }
+            try{
+                pingThread.sleep(1000);
+            }catch (InterruptedException e){
+                System.err.println("Ping thread is interrupted");
+                e.printStackTrace();
+                pingThread.interrupt();
             }
         }
     }
