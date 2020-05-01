@@ -27,7 +27,7 @@ public class PrometheusDecoratorTest {
 
     @Before
     public void init(){
-         deck = new Deck(3);
+         deck = new Deck();
          cardPrometheus = deck.getGodCard("Prometheus");
          playerPrometheus = cardPrometheus.setPlayer(new Player("Jack", PlayerIndex.PLAYER0));
          board = new Board();

@@ -30,7 +30,7 @@ public class AthenaDecoratorTest {
     @Before
     public void init(){
         board = new Board();
-        deck = new Deck(3);
+        deck = new Deck();
         cardAthena = deck.getGodCard("Athena");
         playerAthena = cardAthena.setPlayer(new Player("Jack", PlayerIndex.PLAYER0));
         workerPos = new Position(3,3);

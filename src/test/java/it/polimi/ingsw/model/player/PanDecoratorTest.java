@@ -32,7 +32,7 @@ public class PanDecoratorTest {
 
     @Before
     public void init(){
-        deck = new Deck(2);
+        deck = new Deck();
         cardPan = deck.getGodCard("Pan");
         board = new Board();
         playerPan = cardPan.setPlayer(new Player("jack", PlayerIndex.PLAYER0));

@@ -28,7 +28,7 @@ public class ArtemisDecoratorTest {
 
     @Before
     public void init(){
-        deck = new Deck(3);
+        deck = new Deck();
         board = new Board();
         cardArtemis = deck.getGodCard("Artemis");
         playerArtemis = cardArtemis.setPlayer(new Player("Jack", PlayerIndex.PLAYER2));

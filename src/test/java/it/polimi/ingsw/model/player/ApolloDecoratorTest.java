@@ -37,7 +37,7 @@ public class ApolloDecoratorTest {
 
     @Before
     public void init(){
-        deck = new Deck(3);
+        deck = new Deck();
         cardApollo = deck.getGodCard("Apollo");
         board = new Board();
         playerApollo = cardApollo.setPlayer(new Player("jack", PlayerIndex.PLAYER0));
