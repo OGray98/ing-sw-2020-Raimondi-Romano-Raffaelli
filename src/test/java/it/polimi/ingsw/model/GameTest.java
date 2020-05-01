@@ -43,48 +43,20 @@ public class GameTest {
         game = new Game(3);
         players.forEach(player -> game.addPlayer(player.getPlayerNum(), player.getNickname()));
         board = new Board();
-        /*firstPlayerFirstWorkerPos = new Position(1, 1);
-        //playersCards = new HashMap<>(3);
-        board = new Board();
-        //currentPlayer = players.get(0);
-        secondPos = new Position(3,3);
-        firstPlayerSecondWorkerPos = new Position(4,0);
-        game.setPlayerCard("Prometheus");
-        assertEquals(PlayerIndex.PLAYER0,game.getPlayers().get(0).getPlayerNum());
-        game.setPlayerCard("Pan");
-        assertEquals(PlayerIndex.PLAYER1,game.getPlayers().get(1).getPlayerNum());
-        game.setPlayerCard("Atlas");
-        assertEquals(PlayerIndex.PLAYER2,game.getPlayers().get(2).getPlayerNum());
-        assertEquals(1,game.getPlayers().get(2).getPowerListDimension());
-        game.chooseFirstPlayer(PlayerIndex.PLAYER0);
-        // Prometheus
-        game.putWorker(firstPlayerFirstWorkerPos);
-        game.putWorker(firstPlayerSecondWorkerPos);
-        //Pan
-        secondPlayerFirstWorker = new Position(4,2);
-        secondPlayerSecondWorker = new Position(4,4);
-        game.putWorker(secondPlayerFirstWorker);
-        game.putWorker(secondPlayerSecondWorker);
-        //Atlas
-        lastPlayerFirstWorker = new Position(2,0);
-        lastPlayerSecondWorker = new Position(3,0);
-        game.putWorker(lastPlayerFirstWorker);
-        game.putWorker(lastPlayerSecondWorker);
-        game.startTurn();
-        game.setStartingWorker(firstPlayerFirstWorkerPos);
+    }
 
-        //playersCards.put(PlayerIndex.PLAYER0, game.)
-        //game.initGame();*/
+    @Test
+    public void isConstructorCorrected() {
 
     }
 
 
-     // Simulation test general, god tested Prometheus
+    // Simulation test general, god tested Prometheus
 
     @Test
-    public void getCardsTest(){
-        assertEquals(9,game.getCards().size());
-        Map<String,String> decks = game.getCards();
+    public void getCardsTest() {
+        assertEquals(9, game.getCards().size());
+        Map<String, String> decks = game.getCards();
         for(String godName : decks.keySet()){
             assertEquals(decks.get(godName),game.getDeck().getGodCard(godName).getGodDescription());
         }

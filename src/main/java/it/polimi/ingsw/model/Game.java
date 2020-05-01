@@ -71,6 +71,7 @@ public class Game extends Observable<Message> {
 
         this.players.add(new Player(nickname, index));
         notify(new NicknameMessage(PlayerIndex.ALL, nickname));
+
         if (this.players.size() == this.numPlayer) {
             this.players.sort(Comparator.comparing(PlayerInterface::getPlayerNum));
             this.contCurrentPlayer = 0;
@@ -107,7 +108,7 @@ public class Game extends Observable<Message> {
     }
 
     /*Method that returns the name of the god chosen by the player*/
-    public String getCurrentPlayerGodName(){
+    public String getCurrentPlayerGodName() {
         return currentPlayer.getGodName();
     }
 
@@ -115,9 +116,21 @@ public class Game extends Observable<Message> {
         return this.currentState;
     }
 
-    /*Change the currentState in the nextState given*/
+
+    /**
+     * Set the current state of Game. Send notify to remote view if
+     * needed.
+     *
+     * @param nextState state to set.
+     */
     public void setCurrentState(GameState nextState) {
         this.currentState = nextState;
+        if (this.currentState == GameState.MOVE)
+            sendPossibleActionMoveState();
+        else if (this.currentState == GameState.BUILD)
+            sendPossibleActionBuildState();
+        if (this.currentPlayer.getPowerState() == this.currentState)
+            sendPossibleActionPowerState();
     }
 
 
@@ -146,24 +159,6 @@ public class Game extends Observable<Message> {
                                 )
                         )
                 );
-
-        //Send position where use power if the currentPlayer can
-        if (this.currentPlayer.getPowerState() == GameState.MOVE) {
-            this.board.workerPositions(currentPlayer.getPlayerNum())
-                    .forEach(
-                            pos -> notify(
-                                    new ActionMessage(
-                                            currentPlayer.getPlayerNum(),
-                                            pos,
-                                            board.getAdjacentCells(pos).stream()
-                                                    .filter(cell -> canUsePowerWorker(cell.getPosition()))
-                                                    .map(Cell::getPosition)
-                                                    .collect(Collectors.toList()),
-                                            ActionType.POWER
-                                    )
-                            )
-                    );
-        }
     }
 
     /**
@@ -172,7 +167,7 @@ public class Game extends Observable<Message> {
      *
      * @throws InvalidStateException if currentState isn't GameState.BUILD
      */
-    public void sendPossibleActionMoveBuild() throws InvalidStateException {
+    public void sendPossibleActionBuildState() throws InvalidStateException {
         if (this.currentState != GameState.BUILD)
             throw new InvalidStateException(GameState.MOVE, this.currentState);
 
@@ -188,9 +183,32 @@ public class Game extends Observable<Message> {
                         ActionType.BUILD
                 )
         );
+    }
 
-        //Send position where use power if the currentPlayer can
-        if (this.currentPlayer.getPowerState() == GameState.BUILD) {
+    /**
+     * Notify to remoteView of currentPlayer every possible Position where currentPlayer
+     * can use his power
+     *
+     * @throws InvalidStateException if currentState isn't GameState.MOVE
+     */
+    public void sendPossibleActionPowerState() throws InvalidStateException {
+
+        if (this.currentState == GameState.INITURN) {
+            this.board.workerPositions(currentPlayer.getPlayerNum())
+                    .forEach(
+                            pos -> notify(
+                                    new ActionMessage(
+                                            currentPlayer.getPlayerNum(),
+                                            pos,
+                                            board.getAdjacentCells(pos).stream()
+                                                    .filter(cell -> canUsePowerWorker(cell.getPosition()))
+                                                    .map(Cell::getPosition)
+                                                    .collect(Collectors.toList()),
+                                            ActionType.POWER
+                                    )
+                            )
+                    );
+        } else {
             notify(
                     new ActionMessage(
                             currentPlayer.getPlayerNum(),
