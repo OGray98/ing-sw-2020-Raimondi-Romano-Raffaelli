@@ -45,7 +45,7 @@ public class GodPhaseManagerTest {
     public void getPlayerIndexTest(){
 
         assertEquals(PlayerIndex.PLAYER0,godManager.getGodLikePlayerIndex());
-        assertEquals(PlayerIndex.PLAYER0,game.getPlayers().get(0).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER0,game.getCurrentPlayerIndex());
     }
 
     /**
@@ -121,11 +121,11 @@ public class GodPhaseManagerTest {
         }
 
         godManager.playerChooseGod("Demeter");
-        assertEquals("Demeter",game.getPlayers().get(1).getGodName());
+        assertEquals("Demeter",game.getCurrentPlayerGodName());
         godManager.playerChooseGod("Apollo");
-        assertEquals("Apollo",game.getPlayers().get(2).getGodName());
+        assertEquals("Apollo",game.getCurrentPlayerGodName());
         //godManager.playerChooseGod("Prometheus");
-        assertEquals("Prometheus",game.getPlayers().get(0).getGodName());
+        assertEquals("Prometheus",game.getCurrentPlayerGodName());
 
         try{
             godManager.playerChooseGod("Apollo");

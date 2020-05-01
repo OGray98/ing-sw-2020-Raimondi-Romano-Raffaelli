@@ -228,10 +228,10 @@ public class GameManager implements Observer<Message> {
             );
             return;
         }
-        if (message.getGodNames().size() != gameModel.getPlayers().size()) {
+        if (message.getGodNames().size() != gameModel.getNumPlayer()) {
             respondErrorToRemoteView(
                     clientIndex,
-                    "You must choose " + gameModel.getPlayers().size() + " cards",
+                    "You must choose " + gameModel.getNumPlayer() + " cards",
                     TypeMessage.WRONG_NUMBER_CARDS
             );
             return;
@@ -361,7 +361,7 @@ public class GameManager implements Observer<Message> {
 
         godPhaseManager.puttingWorkerInBoard(message.getPositionOne(), message.getPositionTwo());
 
-        if (godPhaseManager.getPlayersWithWorkerPut() == gameModel.getPlayers().size()) {
+        if (godPhaseManager.getPlayersWithWorkerPut() == gameModel.getNumPlayer()) {
             gameModel.setCurrentState(GameState.INITURN);
             //Create an instance of TurnManager and start the first turn
             this.turnManager = new TurnManager(this.gameModel);
@@ -644,7 +644,7 @@ public class GameManager implements Observer<Message> {
         this.turnManager.endTurn();
         this.turnManager.startTurn();
         //if only 1 player remains he wins the game!
-        if(gameModel.getPlayers().size() == 1){
+        if(gameModel.getNumPlayer() == 1){
             respondOkToRemoteView(
                     gameModel.getCurrentPlayerIndex(),
                     "You win!",
