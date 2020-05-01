@@ -1,12 +1,11 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.GameState;
-import it.polimi.ingsw.exception.NotPresentWorkerException;
-import it.polimi.ingsw.exception.NotSelectedGodException;
-import it.polimi.ingsw.exception.WrongGodNameException;
+import it.polimi.ingsw.exception.*;
 import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.deck.CardInterface;
 import it.polimi.ingsw.model.deck.Deck;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
 import it.polimi.ingsw.observer.Observable;
@@ -23,7 +22,7 @@ public class Game extends Observable<Message> {
     private final List<PlayerInterface> players;
     private final Board board;
     private final Deck deck;
-    private final int numPlayer;
+    private int numPlayer;
     private PlayerInterface currentPlayer;
     private Position currentPosition;
     private int contCurrentPlayer;
@@ -32,56 +31,69 @@ public class Game extends Observable<Message> {
     private int contCurrentWorker;
     private GameState currentState;
 
+    public Game() {
 
-    public Game(List<PlayerInterface> players) throws NullPointerException, IllegalArgumentException {
-        if (players == null)
-            throw new NullPointerException("players");
-        if (players.size() > 3 || players.size() == 1)
-            throw new IllegalArgumentException("There can be only 2 or 3 player, you want "
-                    + players.size() + " players");
-
-        this.players = new ArrayList<>(players);
-        this.players.sort(Comparator.comparing(PlayerInterface::getPlayerNum));
-
+        this.players = new ArrayList<>(2);
         this.board = new Board();
-        this.deck = new Deck(players.size());
-        this.numPlayer = players.size();
-        this.contCurrentPlayer = 0;
-        this.currentPlayer = players.get(0);
+        this.deck = new Deck();
+
+        this.numPlayer = 2;
         this.cantGoUp = false;
         this.contEffect = 0;
         this.contCurrentWorker = 0;
-        updateCurrentState(GameState.GOD_PLAYER_CHOOSE_CARDS);
-    }
-
-    public Game(List<PlayerInterface> players, Board board) throws NullPointerException, IllegalArgumentException {
-        if (players == null)
-            throw new NullPointerException("players");
-        if (board == null)
-            throw new NullPointerException("board");
-        if (players.size() > 3 || players.size() == 1)
-            throw new IllegalArgumentException("There can be only 2 or 3 player, you want "
-                    + players.size() + " players");
-
-        this.players = new ArrayList<>(players);
-        this.players.sort(Comparator.comparing(PlayerInterface::getPlayerNum));
-
-        this.board = new Board(board);
-        this.deck = new Deck(players.size());
-        this.numPlayer = players.size();
         this.contCurrentPlayer = 0;
-        this.currentPlayer = players.get(0);
-        this.cantGoUp = false;
-        this.contEffect = 0;
-        this.contCurrentWorker = 0;
-        updateCurrentState(GameState.GOD_PLAYER_CHOOSE_CARDS);
+        this.currentState = GameState.START_GAME;
+
     }
 
-    private void updateCurrentState(GameState gameState) {
-        this.currentState = gameState;
-
-        notify(new UpdateStateMessage(PlayerIndex.ALL, gameState));
+    /**
+     * @return number of players
+     */
+    public int getNumPlayer() {
+        return numPlayer;
     }
+
+    /**
+     * Set number of players
+     *
+     * @param numPlayer number of players
+     * @throws IllegalArgumentException in numPlayer isn't 2 or 3
+     */
+    public void setNumPlayer(int numPlayer) throws IllegalArgumentException {
+        if (numPlayer < 2 || numPlayer > 3)
+            throw new IllegalArgumentException("There can be only 2 or 3 player");
+        this.numPlayer = numPlayer;
+        this.deck.setPlayersNumber(numPlayer);
+    }
+
+    /**
+     * Add a Player in players
+     *
+     * @param index    PlayerIndex of new Player
+     * @param nickname nickname of new Player
+     * @throws NullPointerException if nickname is null
+     * @throws MaxPlayersException  if there already is max number of Player
+     */
+    public void addPlayer(PlayerIndex index, String nickname) throws NullPointerException, MaxPlayersException {
+        if (nickname == null)
+            throw new NullPointerException("nickname");
+        if (this.players.size() == this.numPlayer)
+            throw new MaxPlayersException();
+
+        this.players.add(new Player(nickname, index));
+        notify(new NicknameMessage(PlayerIndex.ALL, nickname));
+        if (this.players.size() == this.numPlayer) {
+            this.players.sort(Comparator.comparing(PlayerInterface::getPlayerNum));
+            this.contCurrentPlayer = 0;
+            this.currentPlayer = players.get(0);
+            this.cantGoUp = false;
+            this.contEffect = 0;
+            this.contCurrentWorker = 0;
+            setCurrentState(GameState.GOD_PLAYER_CHOOSE_CARDS);
+        }
+
+    }
+
 
     /* Method that return a map with of all cards in deck
      */
@@ -116,13 +128,99 @@ public class Game extends Observable<Message> {
 
     /*Change the currentState in the nextState given*/
     public void setCurrentState(GameState nextState) {
-        updateCurrentState(nextState);
+        this.currentState = nextState;
+    }
+
+
+    /**
+     * Notify to remoteView of currentPlayer every possible action that currentPlayer
+     * can do when currentState is GameState.MOVE
+     *
+     * @throws InvalidStateException if currentState isn't GameState.MOVE
+     */
+    public void sendPossibleActionMoveState() throws InvalidStateException {
+        if (this.currentState != GameState.MOVE)
+            throw new InvalidStateException(GameState.MOVE, this.currentState);
+
+        //Send position where you can move
+        this.board.workerPositions(currentPlayer.getPlayerNum())
+                .forEach(
+                        pos -> notify(
+                                new ActionMessage(
+                                        currentPlayer.getPlayerNum(),
+                                        pos,
+                                        board.getAdjacentCells(pos).stream()
+                                                .filter(cell -> canMoveWorker(cell.getPosition()))
+                                                .map(Cell::getPosition)
+                                                .collect(Collectors.toList()),
+                                        ActionType.MOVE
+                                )
+                        )
+                );
+
+        //Send position where use power if the currentPlayer can
+        if (this.currentPlayer.getPowerState() == GameState.MOVE) {
+            this.board.workerPositions(currentPlayer.getPlayerNum())
+                    .forEach(
+                            pos -> notify(
+                                    new ActionMessage(
+                                            currentPlayer.getPlayerNum(),
+                                            pos,
+                                            board.getAdjacentCells(pos).stream()
+                                                    .filter(cell -> canUsePowerWorker(cell.getPosition()))
+                                                    .map(Cell::getPosition)
+                                                    .collect(Collectors.toList()),
+                                            ActionType.POWER
+                                    )
+                            )
+                    );
+        }
     }
 
     /**
-     *  Method that set the chosen cards in deck.
+     * Notify to remoteView of currentPlayer every possible action that currentPlayer
+     * can do when currentState is GameState.BUILD
+     *
+     * @throws InvalidStateException if currentState isn't GameState.BUILD
+     */
+    public void sendPossibleActionMoveBuild() throws InvalidStateException {
+        if (this.currentState != GameState.BUILD)
+            throw new InvalidStateException(GameState.MOVE, this.currentState);
+
+        //Send position where you can move
+        notify(
+                new ActionMessage(
+                        currentPlayer.getPlayerNum(),
+                        currentPosition,
+                        board.getAdjacentCells(currentPosition).stream()
+                                .filter(cell -> canBuild(cell.getPosition()))
+                                .map(Cell::getPosition)
+                                .collect(Collectors.toList()),
+                        ActionType.BUILD
+                )
+        );
+
+        //Send position where use power if the currentPlayer can
+        if (this.currentPlayer.getPowerState() == GameState.BUILD) {
+            notify(
+                    new ActionMessage(
+                            currentPlayer.getPlayerNum(),
+                            currentPosition,
+                            board.getAdjacentCells(currentPosition).stream()
+                                    .filter(cell -> canUsePowerWorker(cell.getPosition()))
+                                    .map(Cell::getPosition)
+                                    .collect(Collectors.toList()),
+                            ActionType.POWER
+                    )
+            );
+        }
+    }
+
+    /**
+     * Method that set the chosen cards in deck.
+     *
      * @param godNames is required as a not null List<String> which contains the name of the god chosen by player god like
-     * @throws  IllegalArgumentException if List<String> contains equal values.
+     * @throws IllegalArgumentException if List<String> contains equal values.
      */
     public void setGodsChosenByGodLike(List<String> godNames) throws NullPointerException, IllegalArgumentException {
         if (godNames == null)

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.deck;
 
-import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.InvalidNumberCardsChosenException;
 import it.polimi.ingsw.exception.WrongGodNameException;
 import it.polimi.ingsw.model.player.*;
@@ -25,17 +24,28 @@ public class Deck {
             )
     );
     public final static int size = 9;
-    private final int playersNumber;
+    private int playersNumber;
 
-    public Deck(int playersNumber) {
+    public Deck() {
+        this.playersNumber = 2;
+    }
+
+    public int getPlayersNumber() {
+        return playersNumber;
+    }
+
+    public void setPlayersNumber(int playersNumber) {
+        if (playersNumber < 2 || playersNumber > 3)
+            throw new IllegalArgumentException("Number of player must be 2 or 3");
         this.playersNumber = playersNumber;
     }
 
     /**
      * Check if the
+     *
      * @param name is a correct god name
      * @throws NullPointerException if name is null
-     * */
+     */
     public static boolean isCorrectedName(String name) throws NullPointerException {
         if (name == null)
             throw new NullPointerException("name");
