@@ -622,7 +622,14 @@ public class Game extends Observable<Message> {
     }
 
     /**
-     *  Private method called when change current player.
+     * @return list of PlayerIndex in the correct orded chosen by God Like player
+     */
+    public List<PlayerIndex> getSortedIndexes() {
+        return players.stream().map(PlayerInterface::getPlayerNum).collect(Collectors.toList());
+    }
+
+    /**
+     * Private method called when change current player.
      * Modifies contCurrentPlayer and currentPlayer
      */
     private void updateCurrentPlayer() {

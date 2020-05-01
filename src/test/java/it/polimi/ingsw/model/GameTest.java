@@ -11,9 +11,7 @@ import it.polimi.ingsw.model.player.PlayerInterface;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -271,14 +269,17 @@ public class GameTest {
         assertTrue(game.getDeck().getGodCard("Pan").getBoolChosenGod());
         assertTrue(game.getDeck().getGodCard("Artemis").getBoolChosenGod());
 
-        //gods.forEach(  );
+        Collections.rotate(gods, -1);
+        game.setGodsChosenByGodLike(gods);
+        for (String god : gods) game.setPlayerCard(god);
+
+
+        game.getGodNames().forEach((index, name) -> assertEquals(gods.get(index.ordinal()), name));
+        Collections.rotate(gods, 1);
 
         game.chooseFirstPlayer(PlayerIndex.PLAYER2);
-        assertEquals(PlayerIndex.PLAYER2, game.getPlayers().get(0).getPlayerNum());
-        assertEquals(PlayerIndex.PLAYER0, game.getPlayers().get(1).getPlayerNum());
-        assertEquals(PlayerIndex.PLAYER1, game.getPlayers().get(2).getPlayerNum());
 
-        List<Position> pos = new ArrayList<>(List.of(
+        Map<Position, PlayerIndex> pos = new HashMap<>(Map.of(
                 new Position(0, 0),
                 new Position(0, 3),
                 new Position(1, 1),
