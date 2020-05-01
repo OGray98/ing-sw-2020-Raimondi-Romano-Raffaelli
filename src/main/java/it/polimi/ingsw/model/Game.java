@@ -643,7 +643,7 @@ public class Game extends Observable<Message> {
         return this.deck;
     }
 
-
+    
     /**
      * Remove current player and delete his workers from the board.
      * Notify this change to remoteView
