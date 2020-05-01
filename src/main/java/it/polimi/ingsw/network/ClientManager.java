@@ -22,6 +22,9 @@ public class ClientManager {
         this.deck = deck;
     }
 
+    /**
+     * Read the message in list and update client game model
+     */
     public void start(){
         if(client.getMessageQueue() != null){
             for(Message mes : client.getMessageQueue()){
@@ -33,6 +36,9 @@ public class ClientManager {
         }
     }
 
+    /**
+     * @param message used to take the value to use to modify the model client
+     */
     public void updateClient(Message message){
         if(message == null)
             throw new NullPointerException("message");

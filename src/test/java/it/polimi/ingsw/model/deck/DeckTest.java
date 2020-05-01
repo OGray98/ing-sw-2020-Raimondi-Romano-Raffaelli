@@ -24,6 +24,10 @@ public class DeckTest {
         deckThreePlayers = new Deck();
         deckEmpty = new Deck();
 
+        deckThreePlayers.setPlayersNumber(true);
+        deckTwoPlayers.setPlayersNumber(false);
+        deckEmpty.setPlayersNumber(false);
+
     }
 
     @Test
