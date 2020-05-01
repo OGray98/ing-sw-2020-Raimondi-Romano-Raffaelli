@@ -14,6 +14,6 @@ public class SelectWorkerMessage extends Message{
     }
 
     public Position getWorkerPos(){
-        return getWorkerPos();
+        return workerPos;
     }
 }

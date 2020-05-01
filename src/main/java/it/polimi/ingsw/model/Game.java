@@ -266,6 +266,7 @@ public class Game extends Observable<Message> {
         CardInterface card = deck.getGodCard(godName);
         currentPlayer = card.setPlayer(currentPlayer);
         players.set(contCurrentPlayer, currentPlayer);
+        notify(new PlayerSelectGodMessage(PlayerIndex.ALL, godName));
 
         if (!currentPlayer.getPlayerNum().equals(players.get(0).getPlayerNum()))
             updateCurrentPlayer();
@@ -280,6 +281,7 @@ public class Game extends Observable<Message> {
         Collections.rotate(players, -playerIndex.ordinal());
         contCurrentPlayer = 0;
         currentPlayer = players.get(contCurrentPlayer);
+        notify(new GodLikeChooseFirstPlayerMessage(PlayerIndex.ALL, playerIndex));
     }
 
     public boolean canPutWorker(Position putPosition) throws NullPointerException {
