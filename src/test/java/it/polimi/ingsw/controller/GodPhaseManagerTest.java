@@ -88,7 +88,7 @@ public class GodPhaseManagerTest {
         try {
             godManager.setBoolGodLike();
         } catch (NotEnoughGodsForPlayerException e) {
-            assertEquals("There aren't enough gods for player, missed: " + (game.getPlayers().size() - godManager.getGodsChosen().size()), e.getMessage());
+            assertEquals("There aren't enough gods for player, missed: " + (game.getNumPlayer() - godManager.getGodsChosen().size()), e.getMessage());
         }
         godManager.godLikeChooseCards("Demeter");
         godManager.setBoolGodLike();
