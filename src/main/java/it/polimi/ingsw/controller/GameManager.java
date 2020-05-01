@@ -152,16 +152,11 @@ public class GameManager implements Observer<Message> {
         }
 
         lobby.addPlayer(clientIndex, name);
+        gameModel.addPlayer(clientIndex, name);
 
         if (lobby.isFull()) {
-            List<PlayerInterface> players = new ArrayList<>(lobby.getLobbyPlayers().size());
-            lobby.getLobbyPlayers().forEach(
-                    (index, nickname) -> players.add(new Player(nickname, index))
-            );
-            gameModel = new Game(lobby.getNumberOfPlayerInLobby());
-            remoteViews.values().forEach(remView -> gameModel.addObserver(remView));
             godPhaseManager = new GodPhaseManager(gameModel);
-
+            gameModel.setCurrentState(GameState.GOD_PLAYER_CHOOSE_CARDS);
         }
     }
 
@@ -195,6 +190,13 @@ public class GameManager implements Observer<Message> {
         }
 
         lobby.setThreePlayersGame(isThreePlayerGame);
+
+        if(isThreePlayerGame){
+            gameModel = new Game(3);
+        }
+        else{
+            gameModel = new Game(2);
+        }
     }
 
     /**
