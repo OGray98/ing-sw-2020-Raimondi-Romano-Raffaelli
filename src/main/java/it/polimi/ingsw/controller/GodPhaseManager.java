@@ -23,7 +23,7 @@ public class GodPhaseManager {
     private int playersWithWorkerPut;
 
     public GodPhaseManager(Game game) {
-        this.godsChosen = new ArrayList<>(game.getPlayers().size());
+        this.godsChosen = new ArrayList<>(game.getNumPlayer());
         this.game = game;
         this.playerGodLikeIndex = PlayerIndex.PLAYER0;
         this.isFinishSelectCardPhase = false;
@@ -44,7 +44,7 @@ public class GodPhaseManager {
      */
     public void godLikeChooseCards(String godName) {
 
-        if (this.godsChosen.size() == game.getPlayers().size()) {
+        if (this.godsChosen.size() == game.getNumPlayer()) {
             throw new FullChosenCardsException();
         }
 
@@ -63,10 +63,10 @@ public class GodPhaseManager {
      * Take the godLike chosen cards and set the boolean of the Gods
      */
     public void setBoolGodLike(){
-        if(godsChosen.size() == game.getPlayers().size())
+        if(godsChosen.size() == game.getNumPlayer())
             game.setGodsChosenByGodLike(this.godsChosen);
         else
-            throw new NotEnoughGodsForPlayerException((game.getPlayers().size() - godsChosen.size()));
+            throw new NotEnoughGodsForPlayerException((game.getNumPlayer() - godsChosen.size()));
     }
 
 
@@ -77,9 +77,7 @@ public class GodPhaseManager {
      */
     public void playerChooseGod(String cardGodName) {
 
-        if (this.godsChosen.size() == 0) {
-            throw new NullPointerException("GodChosen is empty");
-        }
+
         boolean thereIs = false;
         for (String name : this.godsChosen) {
             if (name.equals(cardGodName)) {

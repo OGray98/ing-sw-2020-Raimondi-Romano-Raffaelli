@@ -34,7 +34,7 @@ public class GodPhaseManagerTest {
         players.add(new Player("Jack", PlayerIndex.PLAYER0));
         players.add(new Player("Creed", PlayerIndex.PLAYER1));
         players.add(new Player("Rock", PlayerIndex.PLAYER2));
-        game = new Game(3);
+        game = new Game();
         players.forEach(playerInterface -> game.addPlayer(playerInterface.getPlayerNum(), playerInterface.getNickname()));
         godManager = new GodPhaseManager(game);
 
@@ -45,7 +45,7 @@ public class GodPhaseManagerTest {
     public void getPlayerIndexTest(){
 
         assertEquals(PlayerIndex.PLAYER0,godManager.getGodLikePlayerIndex());
-        assertEquals(PlayerIndex.PLAYER0,game.getPlayers().get(0).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER0,game.getCurrentPlayerIndex());
     }
 
     /**
@@ -88,7 +88,7 @@ public class GodPhaseManagerTest {
         try {
             godManager.setBoolGodLike();
         } catch (NotEnoughGodsForPlayerException e) {
-            assertEquals("There aren't enough gods for player, missed: " + (game.getPlayers().size() - godManager.getGodsChosen().size()), e.getMessage());
+            assertEquals("There aren't enough gods for player, missed: " + (game.getNumPlayer() - godManager.getGodsChosen().size()), e.getMessage());
         }
         godManager.godLikeChooseCards("Demeter");
         godManager.setBoolGodLike();
@@ -121,17 +121,13 @@ public class GodPhaseManagerTest {
         }
 
         godManager.playerChooseGod("Demeter");
-        assertEquals("Demeter",game.getPlayers().get(1).getGodName());
-        godManager.playerChooseGod("Apollo");
-        assertEquals("Apollo",game.getPlayers().get(2).getGodName());
-        //godManager.playerChooseGod("Prometheus");
-        assertEquals("Prometheus",game.getPlayers().get(0).getGodName());
 
-        try{
-            godManager.playerChooseGod("Apollo");
-        } catch (NullPointerException e){
-            assertEquals("GodChosen is empty",e.getMessage());
-        }
+        godManager.playerChooseGod("Apollo");
+
+        godManager.playerChooseGod("Prometheus");
+        assertEquals("Prometheus",game.getCurrentPlayerGodName());
+
+        assertTrue(godManager.isFinishSelectCardPhase());
 
     }
 
@@ -144,9 +140,9 @@ public class GodPhaseManagerTest {
 
 
         godManager.godLikeChooseFirstPlayer(PlayerIndex.PLAYER1);
-        assertEquals(PlayerIndex.PLAYER1,game.getPlayers().get(0).getPlayerNum());
-        assertEquals(PlayerIndex.PLAYER2,game.getPlayers().get(1).getPlayerNum());
-        assertEquals(PlayerIndex.PLAYER0,game.getPlayers().get(2).getPlayerNum());
+        assertEquals(PlayerIndex.PLAYER1,game.getSortedIndexes().get(0));
+        assertEquals(PlayerIndex.PLAYER2,game.getSortedIndexes().get(1));
+        assertEquals(PlayerIndex.PLAYER0,game.getSortedIndexes().get(2));
     }
 
     /**
