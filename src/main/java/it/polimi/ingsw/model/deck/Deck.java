@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.deck;
 
-import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.InvalidNumberCardsChosenException;
 import it.polimi.ingsw.exception.WrongGodNameException;
 import it.polimi.ingsw.model.player.*;
@@ -33,9 +32,10 @@ public class Deck {
 
     /**
      * Check if the
+     *
      * @param name is a correct god name
      * @throws NullPointerException if name is null
-     * */
+     */
     public static boolean isCorrectedName(String name) throws NullPointerException {
         if (name == null)
             throw new NullPointerException("name");

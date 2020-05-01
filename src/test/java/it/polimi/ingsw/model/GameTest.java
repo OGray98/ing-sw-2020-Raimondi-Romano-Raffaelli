@@ -40,7 +40,8 @@ public class GameTest {
         players.add(new Player("Jack", PlayerIndex.PLAYER0));
         players.add(new Player("Rock", PlayerIndex.PLAYER1));
         players.add(new Player("Creed", PlayerIndex.PLAYER2));
-        game = new Game(players);
+        game = new Game(3);
+        players.forEach(player -> game.addPlayer(player.getPlayerNum(), player.getNickname()));
         board = new Board();
         /*firstPlayerFirstWorkerPos = new Position(1, 1);
         //playersCards = new HashMap<>(3);
