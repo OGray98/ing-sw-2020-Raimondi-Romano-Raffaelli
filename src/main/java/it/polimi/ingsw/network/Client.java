@@ -58,7 +58,13 @@ public class Client {
                     if(inputMessage != null && inputMessage.getType() == TypeMessage.PING){
                         pingTimer.cancel();
                         pingTimer = new Timer();
-                        //pingTimer.schedule(new PingTimer(disconnectionClientInterface),DISCONNECTION_TIME);
+                        pingTimer.scheduleAtFixedRate(new TimerTask() {
+                            @Override
+                            public void run() {
+                                disconnect();
+                                //TODO: remove client from server list
+                            }
+                        },0, DISCONNECTION_TIME);
                     } else if(inputMessage != null && inputMessage.getType() != TypeMessage.PING){
                         synchronized (messageQueue){
                             messageQueue.add(inputMessage);
