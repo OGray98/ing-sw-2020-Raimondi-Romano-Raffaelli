@@ -24,19 +24,9 @@ public class Deck {
             )
     );
     public final static int size = 9;
-    private int playersNumber;
+    private final int playersNumber;
 
-    public Deck() {
-        this.playersNumber = 2;
-    }
-
-    public int getPlayersNumber() {
-        return playersNumber;
-    }
-
-    public void setPlayersNumber(int playersNumber) {
-        if (playersNumber < 2 || playersNumber > 3)
-            throw new IllegalArgumentException("Number of player must be 2 or 3");
+    public Deck(int playersNumber) {
         this.playersNumber = playersNumber;
     }
 
