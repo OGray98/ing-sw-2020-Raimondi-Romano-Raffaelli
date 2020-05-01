@@ -77,9 +77,7 @@ public class GodPhaseManager {
      */
     public void playerChooseGod(String cardGodName) {
 
-        if (this.godsChosen.size() == 0) {
-            throw new NullPointerException("GodChosen is empty");
-        }
+
         boolean thereIs = false;
         for (String name : this.godsChosen) {
             if (name.equals(cardGodName)) {

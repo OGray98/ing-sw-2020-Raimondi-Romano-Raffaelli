@@ -1,5 +1,6 @@
 package it.polimi.ingsw.stub;
 
+import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientConnection;
 import it.polimi.ingsw.observer.Observable;
@@ -16,6 +17,16 @@ public class StubObservableClientConnection extends Observable<Message> implemen
         mes = new ArrayList<>();
         mes.add(m);
         notify(m);
+    }
+
+    @Override
+    public boolean isConnected() {
+        return false;
+    }
+
+    @Override
+    public void ping(PlayerIndex player) {
+
     }
 
     @Override

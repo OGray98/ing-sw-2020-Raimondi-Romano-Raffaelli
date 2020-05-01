@@ -260,7 +260,7 @@ public class GameTest {
 
 
     // Test game, gods: Pan, Artemis, Demeter
-    @Test
+    /*@Test
     public void gameTestPanArtemisDemeter() {
         //god Like sceglie le carte
         List<String> gods = new ArrayList<>(List.of("Pan", "Artemis", "Demeter"));
@@ -1001,6 +1001,6 @@ public class GameTest {
         assertEquals(game.getPowerPositions(lastPlayerFirstWorker).size(), 2);
         assertTrue(game.getPowerPositions(lastPlayerFirstWorker).contains(lvlupPos1));
         assertTrue(game.getPowerPositions(lastPlayerFirstWorker).contains(lvlupPos2));
-    }
+    }*/
 
 }
