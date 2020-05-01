@@ -6,7 +6,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utils.CloseConnectionMessage;
 import it.polimi.ingsw.utils.Message;
-
+import it.polimi.ingsw.utils.TypeMessage;
 
 
 import java.io.IOException;
@@ -14,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
+import java.util.Timer;
 
 public class SocketClientConnection extends Observable<Message> implements ClientConnection,Runnable{
 
@@ -21,6 +22,7 @@ public class SocketClientConnection extends Observable<Message> implements Clien
     private final Socket socket;
     private final Server server;
     private boolean active = true;
+
 
 
     public SocketClientConnection(Socket socket, Server server){
@@ -71,13 +73,9 @@ public class SocketClientConnection extends Observable<Message> implements Clien
             out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             try {
-                //send(new NicknameMessage(PlayerIndex.PLAYER0,"jack"));
                 server.lobby(this);
                 while (isActive()) {
                     Message read = (Message) in.readObject();
-                   /* if(read != null){
-                        send(new NicknameMessage(PlayerIndex.PLAYER0,"Lik"));
-                    }*/
                     notify(read);
                 }
             }catch (ClassNotFoundException e){

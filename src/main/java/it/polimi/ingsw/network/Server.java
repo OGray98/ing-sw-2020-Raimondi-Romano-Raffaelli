@@ -51,7 +51,10 @@ public class Server {
         } else {
             waitingConnection.put(PlayerIndex.PLAYER1, c);
             waitingConnection.put(PlayerIndex.PLAYER2, c);
-            if (controller.getPlayerNum() == 2 && waitingConnection.size() == 2) {
+            if (controller.getPlayerNum() == 2 && waitingConnection.size() >= 2) {
+                if(waitingConnection.size() == 3){
+                    waitingConnection.remove(PlayerIndex.PLAYER2,c);
+                }
                 ClientConnection c2 = waitingConnection.get(1);
                 RemoteView player2View = new RemoteView(PlayerIndex.PLAYER1, c2);
                 controller.addRemoteView(PlayerIndex.PLAYER1, player2View);
