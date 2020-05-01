@@ -28,7 +28,7 @@ public class ControllerTestSOLOPERORA {
     private RemoteView remoteView2;
     private RemoteView remoteView3;
 
-    @Test
+   @Test
     public void isCorr() {
 
         obs1 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER0, "Pasquale"));
@@ -145,7 +145,7 @@ public class ControllerTestSOLOPERORA {
         obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0, new Position(0, 3), new Position(1, 2)));
         assertEquals(obs1.getMesRemoteToView().size(),0);
 
-        //can't move if workerPos does not contains player worker
+       //can't move if workerPos does not contains player worker
         obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2, new Position(0,1)));
         ActionMessage select1 = (ActionMessage) obs3.getMesRemoteToView().get(2);
         assertEquals(select1.getWorkerPos(), new Position(0,1));
@@ -169,7 +169,7 @@ public class ControllerTestSOLOPERORA {
         UpdateStateMessage buildState = (UpdateStateMessage) obs3.getMesRemoteToView().get(1);
         assertEquals(buildState.getGameState(), GameState.BUILD);
 
-        //TODO: tests of handler for build, usepower, endturn!
+    //TODO: tests of handler for build, usepower, endturn!
 
 
     }
