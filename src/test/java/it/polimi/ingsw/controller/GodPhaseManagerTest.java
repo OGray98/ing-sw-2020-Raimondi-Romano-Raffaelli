@@ -34,7 +34,8 @@ public class GodPhaseManagerTest {
         players.add(new Player("Jack", PlayerIndex.PLAYER0));
         players.add(new Player("Creed", PlayerIndex.PLAYER1));
         players.add(new Player("Rock", PlayerIndex.PLAYER2));
-        game = new Game(players);
+        game = new Game(3);
+        players.forEach(playerInterface -> game.addPlayer(playerInterface.getPlayerNum(), playerInterface.getNickname()));
         godManager = new GodPhaseManager(game);
 
     }

@@ -41,7 +41,8 @@ public class TurnManagerTest {
         players.add(new Player("Rock", PlayerIndex.PLAYER1));
         players.add(new Player("Creed", PlayerIndex.PLAYER2));
 
-        gameInstance = new Game(players);
+        gameInstance = new Game(3);
+        players.forEach(playerInterface -> gameInstance.addPlayer(playerInterface.getPlayerNum(), playerInterface.getNickname()));
 
         gods = new ArrayList<>(List.of("Atlas", "Demeter", "Prometheus"));
         Collections.rotate(gods, -1);
