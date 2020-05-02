@@ -29,7 +29,7 @@ public class DemeterDecorator extends PlayerBuildDecorator {
 
     @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
-        return super.canBuild(adjacentPlayerList, adjacentList.get(0)) && !adjacentList.get(0).equals(this.firstBuildCell);
+        return super.canBuild(adjacentPlayerList, adjacentList.get(0)) && !adjacentList.get(0).getPosition().equals(this.firstBuildCell.getPosition());
     }
 
     @Override

@@ -531,7 +531,7 @@ public class GameManager implements Observer<Message> {
         Position powerPos = message.getPowerPosition();
 
         //Check that the player can use the power in this state
-        if(!isNotCurrentGameState(gameModel.getCurrentPlayerPowerState())){
+        if(isNotCurrentGameState(gameModel.getCurrentPlayerPowerState())){
             respondErrorToRemoteView(
                     clientIndex,
                     "You cannot use power in this turn phase!",

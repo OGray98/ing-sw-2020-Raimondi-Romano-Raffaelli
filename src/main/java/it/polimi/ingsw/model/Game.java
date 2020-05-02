@@ -477,6 +477,7 @@ public class Game extends Observable<Message> {
         if (buildPos == null)
             throw new NullPointerException("buildPos");
         board.constructBlock(buildPos);
+        notify(new BuildMessage(PlayerIndex.ALL, buildPos));
     }
 
     /**
@@ -533,11 +534,19 @@ public class Game extends Observable<Message> {
 
         BoardChange changes = currentPlayer.usePower(board.getCell(powerPos));
         board.updateAfterPower(changes);
+        //notify to view:
+        //notify for build power
+        if(!changes.isPositionBuildNull()){
+            notify(new BuildPowerMessage(PlayerIndex.ALL, powerPos, changes.getBuildType()));
+        }
         if (!changes.isPlayerChangesNull()) {
             Map<PositionContainer, PlayerIndex> positionsUpdated = changes.getChanges();
             for (Map.Entry<PositionContainer, PlayerIndex> entry : positionsUpdated.entrySet()) {
-                if (entry.getValue().compareTo(currentPlayer.getPlayerNum()) == 0)
+                if (entry.getValue().compareTo(currentPlayer.getPlayerNum()) == 0){
                     currentPosition = entry.getKey().getOccupiedPosition();
+                    //notify for move power
+                    notify(new MoveMessage(PlayerIndex.ALL, entry.getKey().getOldPosition(), entry.getKey().getOccupiedPosition()));
+                }
             }
         }
         if (!changes.isCantGoUpNull()) {

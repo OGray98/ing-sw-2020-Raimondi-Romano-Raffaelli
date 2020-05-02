@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.WrongGodNameException;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.BuildType;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.stub.StubObservableClientConnection;
@@ -145,7 +146,7 @@ public class ControllerTestSOLOPERORA {
         obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0, new Position(0, 3), new Position(1, 2)));
         assertEquals(obs1.getMesRemoteToView().size(),0);
 
-       //can't move if workerPos does not contains player worker
+        //can't move if workerPos does not contains player worker
         obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2, new Position(0,1)));
         ActionMessage select1 = (ActionMessage) obs3.getMesRemoteToView().get(2);
         assertEquals(select1.getWorkerPos(), new Position(0,1));
@@ -169,7 +170,65 @@ public class ControllerTestSOLOPERORA {
         UpdateStateMessage buildState = (UpdateStateMessage) obs3.getMesRemoteToView().get(1);
         assertEquals(buildState.getGameState(), GameState.BUILD);
 
-    //TODO: tests of handler for build, usepower, endturn!
+        //Testing build phase
+        //an player cannot build in an enemy turn
+        obs2.setMsg(new BuildMessage(PlayerIndex.PLAYER1, new Position(2,3)));
+        assertEquals(obs2.getMesRemoteToView().size(),0);
+
+        //cannot build in a not valid build position
+        obs3.setMsg(new BuildMessage(PlayerIndex.PLAYER2, new Position(0,1)));
+        assertEquals(obs2.getMesRemoteToView().size(),0);
+
+        //check that player can not build with his other worker
+        obs3.setMsg(new BuildMessage(PlayerIndex.PLAYER2, new Position(0,2)));
+        assertEquals(obs2.getMesRemoteToView().size(),0);
+
+        //Normal build
+        obs3.setMsg(new BuildMessage(PlayerIndex.PLAYER2, new Position(1,1)));
+        BuildMessage build1 = (BuildMessage) obs3.getMesRemoteToView().get(0);
+        assertEquals(build1.getBuildPosition(), new Position(1,1));
+        //Check that the state is ENDPHASE
+        UpdateStateMessage endPhaseState = (UpdateStateMessage) obs3.getMesRemoteToView().get(1);
+        assertEquals(endPhaseState.getGameState(), GameState.ENDPHASE);
+
+        //Testing usePower for Demeter
+        //a player cannot use power in an enemy turn
+        obs2.setMsg(new UsePowerMessage(PlayerIndex.PLAYER1, new Position(1,4), new Position(2,4)));
+        assertEquals(obs2.getMesRemoteToView().size(),0);
+
+        //cannot use power in a not valid power position (Demeter can't use the power on the same cell where she built in the same turn)
+        obs3.setMsg(new UsePowerMessage(PlayerIndex.PLAYER2, new Position(1,0), new Position(1,1)));
+        assertEquals(obs3.getMesRemoteToView().size(),0);
+
+        //cannot use power with an invalid worker position
+        obs3.setMsg(new UsePowerMessage(PlayerIndex.PLAYER2, new Position(3,0), new Position(2,1)));
+        assertEquals(obs3.getMesRemoteToView().size(),0);
+
+        //Normal use of power
+        obs3.setMsg(new UsePowerMessage(PlayerIndex.PLAYER2, new Position(1,0), new Position(2,1)));
+        BuildPowerMessage power1 = (BuildPowerMessage) obs3.getMesRemoteToView().get(0);
+        assertEquals(power1.getBuildPosition(), new Position(2,1));
+        assertEquals(power1.getBuildType(), BuildType.LEVEL);
+
+        UpdateStateMessage builPowState = (UpdateStateMessage) obs3.getMesRemoteToView().get(1);
+        assertEquals(builPowState.getGameState(), GameState.BUILDPOWER);
+
+        //Testing endturn
+        //a player cannot end the turn of other players
+        obs2.setMsg(new EndTurnMessage(PlayerIndex.PLAYER1));
+        assertEquals(obs2.getMesRemoteToView().size(),0);
+
+        //Normal endTurn
+        obs3.setMsg(new EndTurnMessage(PlayerIndex.PLAYER2));
+        UpdateStateMessage init = (UpdateStateMessage) obs3.getMesRemoteToView().get(0);
+        assertEquals(init.getGameState(), GameState.INITURN);
+
+        //after the end of the turn the next player is able to play
+        obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0, new Position(0,4)));
+        ActionMessage select2 = (ActionMessage) obs1.getMesRemoteToView().get(2);
+        assertEquals(select2.getWorkerPos(), new Position(0,4));
+
+    //TODO: rimangono da fare alcuni test di casi particolari(vittorie, sconfitte)
 
 
     }
