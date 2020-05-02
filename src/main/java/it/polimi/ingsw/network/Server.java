@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.view.RemoteView;
+import it.polimi.ingsw.view.View;
 
 
 import java.io.IOException;
@@ -49,12 +50,14 @@ public class Server {
      * @param c connection to insert in lobby for the game
      */
     public synchronized void lobby(ClientConnection c) {
-        game.addObserver(controller);
+
         if (lobbyCount == 0) {
             waitingConnection.put(PlayerIndex.PLAYER0, c);
             ClientConnection c1 = waitingConnection.get(0);
-            RemoteView player1View = new RemoteView(PlayerIndex.PLAYER0, c1);
-            controller.addRemoteView(PlayerIndex.PLAYER0, player1View);
+            //TODO: problem with RemoteView constructor
+            /*RemoteView player1View = new RemoteView(PlayerIndex.PLAYER0, c1);
+            player1View.addObserver(controller);
+            controller.addRemoteView(PlayerIndex.PLAYER0, player1View);*/
             lobbyCount++;
         } else {
             waitingConnection.put(PlayerIndex.PLAYER1, c);
@@ -65,6 +68,7 @@ public class Server {
                 }
                 ClientConnection c2 = waitingConnection.get(1);
                 RemoteView player2View = new RemoteView(PlayerIndex.PLAYER1, c2);
+                player2View.addObserver(controller);
                 controller.addRemoteView(PlayerIndex.PLAYER1, player2View);
                 lobbyCount = 0;
             } else if (controller.getPlayerNum() == 3 && waitingConnection.size() == 3) {
@@ -72,6 +76,8 @@ public class Server {
                 ClientConnection c3 = waitingConnection.get(2);
                 RemoteView player2View = new RemoteView(PlayerIndex.PLAYER1, c2);
                 RemoteView player3View = new RemoteView(PlayerIndex.PLAYER2, c3);
+                player2View.addObserver(controller);
+                player3View.addObserver(controller);
                 controller.addRemoteView(PlayerIndex.PLAYER1, player2View);
                 controller.addRemoteView(PlayerIndex.PLAYER2, player3View);
                 lobbyCount = 0;
@@ -97,26 +103,22 @@ public class Server {
                 System.err.println("Error during the open port on server");
                 e.printStackTrace();
             }
+            while(!pingThread.isInterrupted()){
+                for(Map.Entry<PlayerIndex,ClientConnection> client : waitingConnection.entrySet()){
+                    if(client != null && client.getValue().isConnected()){
+                        client.getValue().ping(client.getKey());
+                    }
+                }
+                try{
+                    pingThread.sleep(1000);
+                }catch (InterruptedException e){
+                    System.err.println("Ping thread is interrupted");
+                    e.printStackTrace();
+                    pingThread.interrupt();
+                }
+            }
         }
     }
 
-    /**
-     * Thread that send ping message to all clients players in lobby to see if they are alive
-     */
-    public void pingRun(){
-        while(!pingThread.isInterrupted()){
-            for(Map.Entry<PlayerIndex,ClientConnection> client : waitingConnection.entrySet()){
-                if(client != null && client.getValue().isConnected()){
-                    client.getValue().ping(client.getKey());
-                }
-            }
-            try{
-                pingThread.sleep(1000);
-            }catch (InterruptedException e){
-                System.err.println("Ping thread is interrupted");
-                e.printStackTrace();
-                pingThread.interrupt();
-            }
-        }
-    }
+
 }

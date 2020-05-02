@@ -12,6 +12,7 @@ public class ServerTest {
         try{
             server = new Server();
             server.run();
+
         }catch (IOException e){
             e.printStackTrace();
         }

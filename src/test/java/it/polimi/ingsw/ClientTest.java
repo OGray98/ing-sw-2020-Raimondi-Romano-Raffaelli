@@ -16,8 +16,8 @@ public class ClientTest{
 
         StubObservableClientMessage clientMessage;
         Client client = new Client("127.0.0.1",12345);
-        clientMessage = new StubObservableClientMessage(new NicknameMessage(PlayerIndex.PLAYER0,"Rock"),client);
-        clientMessage.sendFromClientMessage();
+        //clientMessage = new StubObservableClientMessage(new NicknameMessage(PlayerIndex.PLAYER0,"Rock"),client);
+       // clientMessage.sendFromClientMessage();
         try{
             client.run();
         }catch (IOException e){

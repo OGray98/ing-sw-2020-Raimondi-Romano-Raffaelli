@@ -11,6 +11,17 @@ import it.polimi.ingsw.utils.PingMessage;
 
 
 
+
+
+
+import it.polimi.ingsw.model.player.PlayerIndex;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.utils.CloseConnectionMessage;
+import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.PingMessage;
+
+
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -24,6 +35,7 @@ public class SocketClientConnection extends Observable<Message> implements Clien
     private final Socket socket;
     private final Server server;
     private boolean active = true;
+    private boolean connectionActive = true;
 
 
 
@@ -40,7 +52,7 @@ public class SocketClientConnection extends Observable<Message> implements Clien
 
     @Override
     public boolean isConnected() {
-        return active;
+        return connectionActive;
     }
 
     /**
@@ -66,6 +78,7 @@ public class SocketClientConnection extends Observable<Message> implements Clien
             e.printStackTrace();
         }
         active = false;
+        connectionActive = false;
     }
 
     private void close(){
