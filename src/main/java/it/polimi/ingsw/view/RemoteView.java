@@ -3,7 +3,6 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.exception.WrongAssociationViewPlayerException;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ClientConnection;
-import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.Message;
 

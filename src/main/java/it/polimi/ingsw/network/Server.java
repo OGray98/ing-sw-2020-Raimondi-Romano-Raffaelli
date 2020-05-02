@@ -53,37 +53,34 @@ public class Server {
 
         if (lobbyCount == 0) {
             waitingConnection.put(PlayerIndex.PLAYER0, c);
-            ClientConnection c1 = waitingConnection.get(0);
-            //TODO: problem with RemoteView constructor
-            /*RemoteView player1View = new RemoteView(PlayerIndex.PLAYER0, c1);
+            ClientConnection c1 = waitingConnection.get(PlayerIndex.PLAYER0);
+            RemoteView player1View = new RemoteView(PlayerIndex.PLAYER0, c1);
             player1View.addObserver(controller);
-            controller.addRemoteView(PlayerIndex.PLAYER0, player1View);*/
+            controller.addRemoteView(PlayerIndex.PLAYER0, player1View);
             lobbyCount++;
-        } else {
+        }
+        else if(lobbyCount == 1){
             waitingConnection.put(PlayerIndex.PLAYER1, c);
-            waitingConnection.put(PlayerIndex.PLAYER2, c);
-            if (controller.getPlayerNum() == 2 && waitingConnection.size() >= 2) {
-                if(waitingConnection.size() == 3){
-                    waitingConnection.remove(PlayerIndex.PLAYER2,c);
-                }
-                ClientConnection c2 = waitingConnection.get(1);
+            if(waitingConnection.size() == 2){
+                ClientConnection c2 = waitingConnection.get(PlayerIndex.PLAYER1);
                 RemoteView player2View = new RemoteView(PlayerIndex.PLAYER1, c2);
                 player2View.addObserver(controller);
                 controller.addRemoteView(PlayerIndex.PLAYER1, player2View);
-                lobbyCount = 0;
-            } else if (controller.getPlayerNum() == 3 && waitingConnection.size() == 3) {
-                ClientConnection c2 = waitingConnection.get(1);
-                ClientConnection c3 = waitingConnection.get(2);
-                RemoteView player2View = new RemoteView(PlayerIndex.PLAYER1, c2);
-                RemoteView player3View = new RemoteView(PlayerIndex.PLAYER2, c3);
-                player2View.addObserver(controller);
-                player3View.addObserver(controller);
-                controller.addRemoteView(PlayerIndex.PLAYER1, player2View);
-                controller.addRemoteView(PlayerIndex.PLAYER2, player3View);
-                lobbyCount = 0;
+                lobbyCount++;
             }
         }
-    }
+        else if (lobbyCount == 2 && controller.getPlayerNum() == 3) {
+            waitingConnection.put(PlayerIndex.PLAYER2,c);
+            if(waitingConnection.size() == 3) {
+                ClientConnection c3 = waitingConnection.get(PlayerIndex.PLAYER2);
+                RemoteView player3View = new RemoteView(PlayerIndex.PLAYER2, c3);
+                player3View.addObserver(controller);
+                controller.addRemoteView(PlayerIndex.PLAYER2, player3View);
+                lobbyCount = 5;
+                }
+            }
+        }
+
 
     public Server() throws IOException{
         this.serverSocket = new ServerSocket(PORT);
