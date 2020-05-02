@@ -67,7 +67,8 @@ public class Client {
                 while (isActive()) {
                     Message inputMessage = (Message) socketIn.readObject();
                     if(inputMessage != null && inputMessage.getType() == TypeMessage.PING){
-                        pingTimer.cancel();
+                        System.out.println("Received");
+                        /*pingTimer.cancel();
                         pingTimer = new Timer();
                         pingTimer.scheduleAtFixedRate(new TimerTask() {
                             @Override
@@ -75,7 +76,7 @@ public class Client {
                                 disconnect();
                                 //TODO: remove client from server list
                             }
-                        },0, DISCONNECTION_TIME);
+                        },0, DISCONNECTION_TIME);*/
                     } else if(inputMessage != null && inputMessage.getType() != TypeMessage.PING){
                         synchronized (messageQueue){
                             messageQueue.add(inputMessage);

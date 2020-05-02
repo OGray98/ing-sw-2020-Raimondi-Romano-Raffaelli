@@ -1,27 +1,9 @@
 package it.polimi.ingsw.network;
-
-
-
-
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utils.CloseConnectionMessage;
 import it.polimi.ingsw.utils.Message;
 import it.polimi.ingsw.utils.PingMessage;
-
-
-
-
-
-
-import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.utils.CloseConnectionMessage;
-import it.polimi.ingsw.utils.Message;
-import it.polimi.ingsw.utils.PingMessage;
-
-
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -110,8 +92,6 @@ public class SocketClientConnection extends Observable<Message> implements Clien
             }
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error!" + e.getMessage());
-        }finally{
-            close();
         }
     }
 

@@ -22,11 +22,25 @@ public class Server {
     private ExecutorService executor = Executors.newFixedThreadPool(3);
     private Map<PlayerIndex, ClientConnection> waitingConnection = new HashMap<>();
     private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
+
+
     private static int lobbyCount = 0;
     private Game game = new Game();
     private GameManager controller = new GameManager(game);
     private Thread pingThread;
+    private boolean isActive = true;
 
+    public synchronized void setActive(boolean condition){
+        this.isActive = condition;
+    }
+
+    public synchronized boolean getActive(){
+        return isActive;
+    }
+
+    private Server getServer(){
+        return this;
+    }
 
     /**
      * @param c connection to eliminate from the list of client player in lobby
@@ -81,26 +95,9 @@ public class Server {
             }
         }
 
-
-    public Server() throws IOException{
-        this.serverSocket = new ServerSocket(PORT);
-        System.out.println("Port is open ");
-        pingThread = new Thread();
-        pingThread.start();
-    }
-
-    public void run(){
-        while(true){
-            try {
-                Socket socket = serverSocket.accept();
-                System.out.println("Client is connected");
-                SocketClientConnection socketClientConnection = new SocketClientConnection(socket,this);
-                executor.submit(socketClientConnection);
-            }catch (IOException e){
-                System.err.println("Error during the open port on server");
-                e.printStackTrace();
-            }
-            while(!pingThread.isInterrupted()){
+     public Thread pingRunThread(){
+        Thread t = new Thread(() -> {
+            while(getActive()){
                 for(Map.Entry<PlayerIndex,ClientConnection> client : waitingConnection.entrySet()){
                     if(client != null && client.getValue().isConnected()){
                         client.getValue().ping(client.getKey());
@@ -111,11 +108,52 @@ public class Server {
                 }catch (InterruptedException e){
                     System.err.println("Ping thread is interrupted");
                     e.printStackTrace();
+                    setActive(false);
                     pingThread.interrupt();
                 }
+            }
+        });
+        t.start();
+        return t;
+
+     }
+
+     public Thread threadInConnection(){
+        Thread t = new Thread(() -> {
+            while (true){
+                try{
+                    Socket socket = serverSocket.accept();
+                    System.out.println("Client is connected");
+                    SocketClientConnection socketClientConnection = new SocketClientConnection(socket,getServer());
+                    executor.submit(socketClientConnection);
+                }catch (IOException e){
+                    System.err.println("Error during the open port on server");
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
+        return t;
+     }
+
+
+    public Server() throws IOException{
+        this.serverSocket = new ServerSocket(PORT);
+        System.out.println("Port is open ");
+    }
+
+    public void run(){
+
+            try {
+               pingThread = pingRunThread();
+               Thread runThread = threadInConnection();
+               runThread.join();
+               pingThread.join();
+            }catch (InterruptedException | NoSuchElementException e){
+                System.err.println("Error during the join of threads");
+                e.printStackTrace();
             }
         }
     }
 
 
-}
