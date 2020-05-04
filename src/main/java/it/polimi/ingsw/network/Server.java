@@ -28,6 +28,8 @@ public class Server {
     private Game game = new Game();
     private GameManager controller = new GameManager(game);
     private Thread pingThread;
+    private Thread runThread;
+
     private boolean isActive = true;
 
     public synchronized void setActive(boolean condition){
@@ -46,18 +48,19 @@ public class Server {
      * @param c connection to eliminate from the list of client player in lobby
      */
     public synchronized void deleteClient(ClientConnection c){
-        ClientConnection opponent = playingConnection.get(c);
+        ClientConnection opponent = waitingConnection.get(c);
         if(opponent != null){
             opponent.closeConnection();
         }
-        playingConnection.remove(opponent);
-        playingConnection.remove(c);
-        Iterator<PlayerIndex> iterator = waitingConnection.keySet().iterator();
+        //playingConnection.remove(opponent);
+        //playingConnection.remove(c);
+        waitingConnection.remove(c);
+       /* Iterator<PlayerIndex> iterator = waitingConnection.keySet().iterator();
         while(iterator.hasNext()){
             if(waitingConnection.get(iterator.next())==c){
                 iterator.remove();
             }
-        }
+        }*/
     }
 
     /**
@@ -129,8 +132,11 @@ public class Server {
                 }catch (IOException e){
                     System.err.println("Error during the open port on server");
                     e.printStackTrace();
+                    runThread.interrupt();
+                    break;
                 }
             }
+            executor.shutdown();
         });
         t.start();
         return t;
@@ -143,15 +149,17 @@ public class Server {
     }
 
     public void run(){
-
             try {
                pingThread = pingRunThread();
-               Thread runThread = threadInConnection();
+               runThread = threadInConnection();
                runThread.join();
                pingThread.join();
             }catch (InterruptedException | NoSuchElementException e){
                 System.err.println("Error during the join of threads");
                 e.printStackTrace();
+                runThread.interrupt();
+                pingThread.interrupt();
+
             }
         }
     }

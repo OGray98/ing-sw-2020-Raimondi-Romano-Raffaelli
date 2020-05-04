@@ -16,12 +16,12 @@ public class Client {
     private Message message;
     private transient Timer pingTimer;
     private transient List<Message> messageQueue;
-    private transient Socket socket;
-    private transient ObjectInputStream socketIn;
-    private transient ObjectOutputStream socketOut;
+    private  Socket socket;
+    private ObjectInputStream socketIn;
+    private ObjectOutputStream socketOut;
 
 
-    static final int DISCONNECTION_TIME = 15000;
+    static final int DISCONNECTION_TIME = 10000;
 
     public Client(String ip, int port){
         this.ip = ip;
@@ -67,16 +67,14 @@ public class Client {
                 while (isActive()) {
                     Message inputMessage = (Message) socketIn.readObject();
                     if(inputMessage != null && inputMessage.getType() == TypeMessage.PING){
-                        System.out.println("Received");
-                        /*pingTimer.cancel();
+                        pingTimer.cancel();
                         pingTimer = new Timer();
-                        pingTimer.scheduleAtFixedRate(new TimerTask() {
+                        pingTimer.schedule(new TimerTask() {
                             @Override
                             public void run() {
                                 disconnect();
-                                //TODO: remove client from server list
                             }
-                        },0, DISCONNECTION_TIME);*/
+                        }, DISCONNECTION_TIME);
                     } else if(inputMessage != null && inputMessage.getType() != TypeMessage.PING){
                         synchronized (messageQueue){
                             messageQueue.add(inputMessage);
@@ -102,9 +100,11 @@ public class Client {
         Thread t = new Thread(() -> {
             try {
                 while (isActive()) {
+                    if(getClientMessage() != null){
                     socketOut.reset();
                     socketOut.writeObject(getClientMessage());
                     socketOut.flush();
+                    }
                 }
             }catch(Exception e){
                 setActive(false);
@@ -148,9 +148,10 @@ public class Client {
 
     public void close() throws IOException {
         if(!socket.isClosed()){
-            socket.close();
+            System.out.println("Client is closed");
             socketOut.close();
             socketIn.close();
+            socket.close();
         }
         socketIn = null;
         socketOut = null;

@@ -54,11 +54,13 @@ public class SocketClientConnection extends Observable<Message> implements Clien
     public synchronized void closeConnection(){
         send(new CloseConnectionMessage());
         try{
+            out.close();
             socket.close();
         }catch (IOException e){
             System.err.println("Error closing socket client connection");
             e.printStackTrace();
         }
+        out = null;
         active = false;
         connectionActive = false;
     }
@@ -89,9 +91,11 @@ public class SocketClientConnection extends Observable<Message> implements Clien
                 }
             }catch (ClassNotFoundException e){
                 e.printStackTrace();
+                close();
             }
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error!" + e.getMessage());
+            close();
         }
     }
 
