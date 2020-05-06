@@ -23,7 +23,6 @@ public class ControllerTestSOLOPERORA {
     private StubObservableClientConnection obs1;
     private StubObservableClientConnection obs2;
     private StubObservableClientConnection obs3;
-    private StubObservableClientConnection obs4;
     private Game game = new Game();
     private final GameManager gameManager = new GameManager(game);
     private RemoteView remoteView1;
@@ -334,7 +333,7 @@ public class ControllerTestSOLOPERORA {
 
         //Normal endTurn
         obs3.setMsg(new EndTurnMessage(PlayerIndex.PLAYER2));
-        UpdateStateMessage init = (UpdateStateMessage) obs3.getMesRemoteToView().get(0);
+        UpdateStateMessage init = (UpdateStateMessage) obs3.getMesRemoteToView().get(1);
         assertEquals(init.getGameState(), GameState.INITURN);
 
         //after the end of the turn the next player is able to play
