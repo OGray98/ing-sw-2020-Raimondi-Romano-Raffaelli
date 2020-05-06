@@ -52,6 +52,8 @@ public class ClientModel extends Observable<Message> {
     List<Position> normalActionPositions = new ArrayList<>();
     List<Position> powerActionPositions = new ArrayList<>();
 
+    boolean amICurrentPlayer = false;
+
     public ClientModel() {
         for (int i = 0; i < Board.NUM_ROW; i++)
             for (int j = 0; j < Board.NUM_COLUMNS; j++)
@@ -239,5 +241,13 @@ public class ClientModel extends Observable<Message> {
             default:
                 throw new WrongGodNameException(clientGod);
         }
+    }
+
+    public boolean isAmICurrentPlayer() {
+        return amICurrentPlayer;
+    }
+
+    public void setAmICurrentPlayer(boolean amICurrentPlayer) {
+        this.amICurrentPlayer = amICurrentPlayer;
     }
 }
