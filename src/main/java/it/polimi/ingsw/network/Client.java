@@ -42,6 +42,8 @@ public class Client implements ServerConnection {
         this.port = port;
         this.message = null;
         this.pingTimer = new Timer();
+        this.clientModel = new ClientModel();
+        this.clientManager = new ClientManager(this, this.clientModel);
     }
 
     public synchronized boolean isActive(){
@@ -62,7 +64,7 @@ public class Client implements ServerConnection {
             try {
                 while (isActive()) {
                     Message inputMessage = (Message) socketIn.readObject();
-                    if(inputMessage != null && inputMessage.getType() == TypeMessage.PING) {
+                    if (inputMessage != null && inputMessage.getType() == TypeMessage.PING) {
                         System.out.println("PING");
                         outputMessageQueue.put(new PongMessage());
                         pingTimer.cancel();
@@ -127,20 +129,18 @@ public class Client implements ServerConnection {
      * @throws IOException Create the socket, the output and input stream and run the threads of writing and reading on socket
      */
     public void run() throws IOException {
-        this.clientModel = new ClientModel();
-        this.clientManager = new ClientManager(this, this.clientModel);
         socket = new Socket(ip, port);
         System.out.println("Connection established");
         socketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new ObjectOutputStream(socket.getOutputStream());
-        try {
+        try{
             Thread t0 = asyncReadFromSocket(socketIn);
             threadWrite = asyncWriteToSocket(socketOut);
             Thread threadController = clientManageReadMessage();
             t0.join();
             threadWrite.join();
             threadController.join();
-        } catch(InterruptedException | NoSuchElementException e){
+        } catch (InterruptedException | NoSuchElementException e) {
             System.out.println("Connection closed from the client side");
             Logger.getAnonymousLogger().severe(e.getMessage());
             disconnect();
