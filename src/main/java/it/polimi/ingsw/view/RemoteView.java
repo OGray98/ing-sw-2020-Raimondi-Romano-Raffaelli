@@ -16,6 +16,7 @@ public class RemoteView extends View implements Observer<Message> {
 
     public RemoteView(PlayerIndex player, ClientConnection connection) {
         super(player);
+        this.clientConnection = connection;
         connection.addObserver(new MessageReceiver());
     }
 
@@ -48,7 +49,7 @@ public class RemoteView extends View implements Observer<Message> {
     }
 
     public void sendUpdates(Message message) {
-
+        clientConnection.asyncSend(message);
     }
 
     /*
