@@ -7,7 +7,7 @@ public class CurrentPlayerMessage extends Message{
     private PlayerIndex currentPlayerIndex;
 
     public CurrentPlayerMessage(PlayerIndex currentPlayerIndex) {
-        super(PlayerIndex.ALL, TypeMessage.CURRENT_PLAYER);
+        super(currentPlayerIndex, TypeMessage.CURRENT_PLAYER);
         this.currentPlayerIndex = currentPlayerIndex;
     }
 
