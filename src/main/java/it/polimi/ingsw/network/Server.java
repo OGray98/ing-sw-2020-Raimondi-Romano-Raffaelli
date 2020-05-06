@@ -56,6 +56,7 @@ public class Server {
             }
         }
         waitingConnection.remove(c);
+        lobbyCount--;
 
     }
 
@@ -89,7 +90,7 @@ public class Server {
                 RemoteView player3View = new RemoteView(PlayerIndex.PLAYER2, c3);
                 player3View.addObserver(controller);
                 controller.addRemoteView(PlayerIndex.PLAYER2, player3View);
-                lobbyCount = 5;
+                lobbyCount++;
                 }
             }
         }
