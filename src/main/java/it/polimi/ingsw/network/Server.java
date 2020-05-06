@@ -100,7 +100,7 @@ public class Server {
                                 value.ping(key);
                             } catch (IOException e) {
                                 System.out.println("Tolgo connessione con " + key);
-                                value.closeConnection();
+                                value.forceDisconnection();
                             }
                         }
                 );

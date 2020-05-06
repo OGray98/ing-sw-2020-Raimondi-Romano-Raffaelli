@@ -12,7 +12,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
-import java.util.Timer;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
@@ -24,10 +23,6 @@ public class SocketClientConnection extends Observable<Message> implements Clien
     private final Socket socket;
     private final Server server;
     private boolean active = true;
-    private boolean connectionActive = true;
-    private transient Timer pingTimer;
-    static final int DISCONNECTION_TIME = 10000;
-    private boolean closeForced = true;
     private ObjectInputStream in;
 
     private transient final BlockingQueue<Message> inputMessageQueue = new ArrayBlockingQueue<>(10);
@@ -36,26 +31,17 @@ public class SocketClientConnection extends Observable<Message> implements Clien
     public SocketClientConnection(Socket socket, Server server) {
         this.server = server;
         this.socket = socket;
-        this.pingTimer = new Timer();
     }
 
-
-    private synchronized boolean isActive() {
-        return active;
+    private synchronized void setIsActiveFalse() {
+        this.active = false;
     }
 
     @Override
-    public boolean isConnected() {
-        return connectionActive;
+    public synchronized boolean isConnected() {
+        return active;
     }
 
-    private synchronized boolean getCloseForced(){
-        return this.closeForced;
-    }
-
-    private void setCloseForced(boolean condition){
-        this.closeForced = condition;
-    }
 
     /**
      * @param message to write on socket server -> client
@@ -83,14 +69,7 @@ public class SocketClientConnection extends Observable<Message> implements Clien
             Logger.getAnonymousLogger().severe(e.getMessage());
 
         }
-        active = false;
-        connectionActive = false;
-        setCloseForced(false);
-    }
-
-    private void close(){
-        closeConnection();
-        //server.deleteClient(this);
+        setIsActiveFalse();
     }
 
 
@@ -118,54 +97,49 @@ public class SocketClientConnection extends Observable<Message> implements Clien
             server.lobby(this);
             new Thread(() -> {
                 try {
-                    while (isActive()) {
+                    while (isConnected()) {
                         notify(inputMessageQueue.take());
                     }
                 } catch (InterruptedException e) {
-                    active = false;
+                    setIsActiveFalse();
                 }
             }).start();
-            while (isActive()) {
+            while (isConnected()) {
                 try {
                     Message inputMessage = (Message) in.readObject();
-                    /*if (inputMessage != null && inputMessage.getType() == TypeMessage.PONG) {
-                        this.pingTimer.cancel();
-                        this.pingTimer = new Timer();
-                        this.pingTimer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                if (!getCloseForced())
-                                    return;
-                                setCloseForced(false);
-                                close();
-                            }
-                        }, DISCONNECTION_TIME);
-                    } else*/
                     if (inputMessage != null && inputMessage.getType() != TypeMessage.PONG) {
                         try {
                             inputMessageQueue.put(inputMessage);
                         } catch (InterruptedException e) {
                             System.err.println("Error!" + e.getMessage());
                             Logger.getAnonymousLogger().severe(e.getMessage());
-                            connectionActive = false;
+                            setIsActiveFalse();
                         }
                     }
                 } catch (ClassNotFoundException e) {
                     Logger.getAnonymousLogger().severe(e.getMessage());
-                    connectionActive = false;
+                    setIsActiveFalse();
                 }
             }
 
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! oooo " + e.toString());
             Logger.getAnonymousLogger().severe(e.getMessage());
-            connectionActive = false;
+            setIsActiveFalse();
         }
     }
 
     @Override
     public void ping(PlayerIndex player) throws IOException {
         send(new PingMessage(player));
+    }
+
+    @Override
+    public void forceDisconnection() {
+        notify(new CloseConnectionMessage(PlayerIndex.PLAYER0));
+
+        setIsActiveFalse();
+
     }
 
 

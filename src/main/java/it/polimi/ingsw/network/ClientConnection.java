@@ -17,4 +17,6 @@ public interface ClientConnection {
     boolean isConnected();
 
     void ping(PlayerIndex player) throws IOException;
+
+    void forceDisconnection();
 }
