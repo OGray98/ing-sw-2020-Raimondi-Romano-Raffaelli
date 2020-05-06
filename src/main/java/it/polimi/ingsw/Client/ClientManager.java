@@ -30,8 +30,10 @@ public class ClientManager {
                 break;
             case CURRENT_PLAYER:
                 updateCurrentPlayer((CurrentPlayerMessage) message);
+                break;
             case PLAYERINDEX_CONNECTION:
                 updateIndex((ConnectionPlayerIndex) message);
+                break;
             case UPDATE_STATE:
                 updateState((UpdateStateMessage) message);
                 break;
