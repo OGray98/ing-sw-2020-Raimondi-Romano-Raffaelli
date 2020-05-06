@@ -1,60 +1,69 @@
 package it.polimi.ingsw.Client;
 
-
-import it.polimi.ingsw.model.board.Board;
-import it.polimi.ingsw.model.board.BoardChange;
-import it.polimi.ingsw.model.deck.CardInterface;
-import it.polimi.ingsw.model.deck.Deck;
-import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.model.board.BuildType;
+import it.polimi.ingsw.network.ServerConnection;
 import it.polimi.ingsw.utils.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.*;
 
 public class ClientManager {
 
-    private final Client client;
-    private final Board board;
-    private final Deck deck;
+    private final ServerConnection serverConnection;
+    private final ClientModel clientModel;
+    //private final ClientView clientView;
 
-    public ClientManager(Client client, Deck deck){
-        this.client = client;
-        this.board = new Board();
-        this.deck = deck;
+    public ClientManager(ServerConnection serverConnection){
+        this.serverConnection = serverConnection;
+        this.clientModel = new ClientModel();
     }
 
     /**
-     * Read the message in list and update client game model
-     */
-    public void start(){
-        if(client.getMessageQueue() != null){
-            for(Message mes : client.getMessageQueue()){
-                updateClient(mes);
-                client.getMessageQueue().remove(mes);
-            }
-        }
-    }
-
-    /**
+     * Method that receives notifies from the model and modifies the client representation of the model
      * @param message used to take the value to use to modify the model client
      */
     public void updateClient(Message message){
         if(message == null)
             throw new NullPointerException("message");
         switch (message.getType()){
+            case NICKNAME:
+                updateNicknames((NicknameMessage) message);
+                break;
+            case CURRENT_PLAYER:
+                updateCurrentPlayer((CurrentPlayerMessage) message);
+            case PLAYERINDEX_CONNECTION:
+                updateIndex((ConnectionPlayerIndex) message);
+            case UPDATE_STATE:
+                updateState((UpdateStateMessage) message);
+                break;
+            case ACTION_MESSAGE:
+                updateAction((ActionMessage) message);
+                break;
+            case GODLIKE_CHOOSE_CARDS:
+                updateGodCards((GodLikeChoseMessage) message);
+                break;
             case SELECT_CARD:
-                updateSelectCardMessage((PlayerSelectGodMessage) message);
+                updateSelectedCard((PlayerSelectGodMessage) message);
+                break;
+            case GODLIKE_CHOOSE_FIRST_PLAYER:
+                //client-view
+                break;
             case PUT_WORKER:
-                updateBoardPutWorkerMessage((PutWorkerMessage) message);
+                updatePutWorkerMessage((PutWorkerMessage) message);
+                break;
             case MOVE:
-                updateBoardMoveMessage((MoveMessage) message);
+                updateMoveMessage((MoveMessage) message);
                 break;
             case BUILD:
-                updateBoardBuildMessage((BuildMessage) message);
+                updateBuildMessage((BuildMessage) message);
                 break;
-            case USE_POWER:
-                updateBoardAfterPowerMessage((UsePowerMessage) message);
+            case BUILD_POWER:
+                updateBuildPowerMessage((BuildPowerMessage) message);
                 break;
+            case LOSER:
+                updateLoserMessage((LoserMessage) message);
+                break;
+            case ERROR:
+                //clientView.receiveErrorMessage(message.getErrorMessage());
                 default:
                 //error message
                 break;
@@ -63,27 +72,82 @@ public class ClientManager {
 
     }
 
-    public CardInterface updateSelectCardMessage(PlayerSelectGodMessage message){
-            return this.deck.getGodCard(message.getGodName());
+    /**
+     * Method that receives input from user and send the message to the server
+     * @param message is the message to send
+     * */
+    public void sendToServer(Message message){
+        if(message == null)
+            throw new NullPointerException("message");
+        serverConnection.sendToServer(message);
     }
 
-    public void updateBoardMoveMessage(MoveMessage message){
-        this.board.changeWorkerPosition(message.getWorkerPosition(),message.getMovePosition());
+    /**
+     * The following methods will update the model rep of the client
+     * */
+
+    public void updateNicknames(NicknameMessage message){
+        clientModel.addNickname(message.getNickname());
+        if(message.getClient() == clientModel.getPlayerIndex()){
+            clientModel.setPlayerNickname(message.getNickname());
+        }
     }
 
-    public void updateBoardBuildMessage(BuildMessage message){
-        this.board.constructBlock(message.getBuildPosition());
+    public void updateCurrentPlayer(CurrentPlayerMessage message){
+        if(message.getCurrentPlayerIndex() == clientModel.getPlayerIndex()){
+            clientModel.setAmICurrentPlayer(true);
+        }
+        else
+            clientModel.setAmICurrentPlayer(false);
     }
 
-    public void updateBoardAfterPowerMessage(UsePowerMessage message){
-        this.board.updateAfterPower(new BoardChange(message.getWorkerPosition(),message.getPowerPosition(),message.getClient()));
+    public void updateIndex(ConnectionPlayerIndex message){
+        clientModel.setPlayerIndex(message.getPlayerIndex());
     }
 
-    public void updateBoardPutWorkerMessage(PutWorkerMessage message){
-        this.board.putWorker(message.getPositionOne(),message.getClient());
-        this.board.putWorker(message.getPositionTwo(),message.getClient());
+    public void updateState(UpdateStateMessage message){
+        clientModel.setCurrentState(message.getGameState());
     }
 
+    public void updateAction(ActionMessage message){
+        clientModel.setActionPositions(message.getActionType(), message.getPossiblePosition());
+    }
 
+    public void updateGodCards(GodLikeChoseMessage message){
+        for(String god : message.getGodNames()){
+            clientModel.addGodChosen(god);
+        }
+    }
 
+    public void updateSelectedCard(PlayerSelectGodMessage message){
+        if(clientModel.isAmICurrentPlayer()){
+            clientModel.setClientGod(message.getGodName());
+        }
+        //TODO: altri giocatori cosa vedono?
+    }
+
+    public void updatePutWorkerMessage(PutWorkerMessage message){
+        clientModel.putWorker(message.getClient(), message.getPositionOne());
+        clientModel.putWorker(message.getClient(), message.getPositionTwo());
+    }
+
+    public void updateMoveMessage(MoveMessage message){
+        clientModel.movePlayer(message.getWorkerPosition(), message.getMovePosition());
+    }
+
+    public void updateBuildMessage(BuildMessage message){
+        clientModel.incrementLevel(message.getBuildPosition());
+    }
+
+    public void updateBuildPowerMessage(BuildPowerMessage message){
+        if(message.getBuildType() == BuildType.DOME){
+            clientModel.addDome(message.getBuildPosition());
+        }
+        else
+            clientModel.incrementLevel(message.getBuildPosition());
+    }
+
+    public void updateLoserMessage(LoserMessage message){
+        //clientModel.lose(message.getLoserPlayer());
+    }
 }

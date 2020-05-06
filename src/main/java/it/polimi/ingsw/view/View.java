@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utils.Message;
@@ -32,4 +33,6 @@ public abstract class View extends Observable<Message> {
         if (msg.getClient().compareTo(player) == 0)
             notify(msg);
     }
+
+
 }

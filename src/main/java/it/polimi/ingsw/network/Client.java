@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.Client.ClientManager;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.utils.Message;
 import it.polimi.ingsw.utils.PingMessage;
@@ -13,13 +14,14 @@ import java.net.Socket;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class Client {
+public class Client implements ServerConnection{
 
+    private final ClientManager clientManager;
     private final String ip;
     private final int port;
     private Message message;
     private transient Timer pingTimer;
-    private transient final List<Message> messageQueue;
+    //private transient final List<Message> messageQueue;
     private  Socket socket;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
@@ -29,20 +31,21 @@ public class Client {
     static final int DISCONNECTION_TIME = 10000;
 
     public Client(String ip, int port){
+        this.clientManager = new ClientManager(this);
         this.ip = ip;
         this.port = port;
         this.message = null;
         this.pingTimer = new Timer();
-        this.messageQueue = new ArrayList<>();
+        //this.messageQueue = new ArrayList<>();
 
     }
 
-    /**
+    /*
      * @return List where message input are insert to read by client manager
      */
-    public List<Message> getMessageQueue(){
+    /*public List<Message> getMessageQueue(){
         return messageQueue;
-    }
+    }*/
 
 
     private boolean active = true;
@@ -76,8 +79,8 @@ public class Client {
                             }
                         }, DISCONNECTION_TIME);
                     } else if(inputMessage != null && inputMessage.getType() != TypeMessage.PING){
-                        synchronized (messageQueue){
-                            messageQueue.add(inputMessage);
+                        synchronized (clientManager){
+                            clientManager.updateClient(inputMessage);
                         }
                     } else {
                         throw new IllegalArgumentException();
@@ -92,7 +95,7 @@ public class Client {
     }
 
     /**
-     * @param socketOut Output stream use to write object on scoket
+     * @param socketOut Output stream use to write object on socket
      * @return thread
      * Used to write message on socket to client
      */
@@ -179,6 +182,11 @@ public class Client {
             Logger.getAnonymousLogger().severe(e.getMessage());
 
         }
+    }
+
+    public void sendToServer(Message message){
+        createClientMessage(message);
+        asyncWriteToSocket(socketOut);
     }
 
 }

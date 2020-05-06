@@ -322,6 +322,7 @@ public class Game extends Observable<Message> {
             if (contEffect == 0)
                 cantGoUp = false;
         }
+        notify(new CurrentPlayerMessage(this.currentPlayer.getPlayerNum()));
     }
 
     public List<Position> getCurrentPlayerWorkersPosition() {
