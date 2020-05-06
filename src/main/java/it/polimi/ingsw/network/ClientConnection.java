@@ -4,6 +4,8 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.Message;
 
+import java.io.IOException;
+
 public interface ClientConnection {
 
     void closeConnection();
@@ -14,5 +16,5 @@ public interface ClientConnection {
 
     boolean isConnected();
 
-    void ping(PlayerIndex player);
+    void ping(PlayerIndex player) throws IOException;
 }

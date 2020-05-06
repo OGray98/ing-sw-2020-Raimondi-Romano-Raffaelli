@@ -3,27 +3,27 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.utils.EndGameMessage;
 import it.polimi.ingsw.view.RemoteView;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class Server {
 
     private static final int PORT = 12345;
 
-    private ServerSocket serverSocket;
-    private ExecutorService executor = Executors.newFixedThreadPool(3);
-    private Map<PlayerIndex, ClientConnection> waitingConnection = new HashMap<>();
-
+    private final ServerSocket serverSocket;
+    private final ExecutorService executor = Executors.newFixedThreadPool(3);
+    private final Map<PlayerIndex, ClientConnection> waitingConnection = new HashMap<>();
 
 
     private static int lobbyCount = 0;
@@ -93,22 +93,28 @@ public class Server {
 
      public Thread pingRunThread(){
         Thread t = new Thread(() -> {
-            while(getActive()){
-                for(Map.Entry<PlayerIndex,ClientConnection> client : waitingConnection.entrySet()){
-                    if(client != null && client.getValue().isConnected()){
-                        client.getValue().ping(client.getKey());
-                    }
-                    else if(client != null && !client.getValue().isConnected()){
-                        for(Map.Entry<PlayerIndex,ClientConnection> clientActive : waitingConnection.entrySet()){
-                            if(clientActive != null && !clientActive.equals(client)){
-                                client.getValue().asyncSend(new EndGameMessage(client.getKey()));
+            while(getActive()) {
+                waitingConnection.forEach(
+                        (key, value) -> {
+                            try {
+                                value.ping(key);
+                            } catch (IOException e) {
+                                System.out.println("Tolgo connessione con " + key);
+                                value.closeConnection();
                             }
                         }
-                    }
-                }
-                try{
+                );
+
+                final List<PlayerIndex> connectionListInactive = waitingConnection.entrySet().stream()
+                        .filter(entry -> !entry.getValue().isConnected())
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toList());
+                connectionListInactive.forEach(waitingConnection::remove);
+
+
+                try {
                     pingThread.sleep(1000);
-                }catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     System.err.println("Ping thread is interrupted");
                     Logger.getAnonymousLogger().severe(e.getMessage());
                     setActive(false);

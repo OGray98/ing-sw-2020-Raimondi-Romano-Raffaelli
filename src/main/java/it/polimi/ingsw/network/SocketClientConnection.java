@@ -13,7 +13,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
@@ -61,32 +60,25 @@ public class SocketClientConnection extends Observable<Message> implements Clien
     /**
      * @param message to write on socket server -> client
      */
-    private synchronized void send(Message message){
-        try{
-            out.reset();
-            out.writeObject(message);
-            out.flush();
-        }catch (IOException e){
-            System.err.println("Error sending message to client");
-            Logger.getAnonymousLogger().severe(e.getMessage());
-            connectionActive = false;
-        }
+    private synchronized void send(Message message) throws IOException {
+        out.reset();
+        out.writeObject(message);
+        out.flush();
     }
 
 
 
 
-    public synchronized void closeConnection(){
-        if(getCloseForced()){
-            notify(new CloseConnectionMessage());
-            send(new CloseConnectionMessage());
-        }
-        try{
+    public synchronized void closeConnection() {
+
+        notify(new CloseConnectionMessage(PlayerIndex.PLAYER0));
+
+        try {
             out.close();
             in.close();
             socket.close();
             System.out.println("Socket connection closed");
-        }catch (IOException e){
+        } catch (IOException e) {
             System.err.println("Error closing socket client connection");
             Logger.getAnonymousLogger().severe(e.getMessage());
 
@@ -98,13 +90,19 @@ public class SocketClientConnection extends Observable<Message> implements Clien
 
     private void close(){
         closeConnection();
-        server.deleteClient(this);
+        //server.deleteClient(this);
     }
 
 
 
-    public void asyncSend(final Message message){
-        new Thread(() -> send(message)).start();
+    public void asyncSend(final Message message) {
+        new Thread(() -> {
+            try {
+                send(message);
+            } catch (IOException e) {
+                closeConnection();
+            }
+        }).start();
     }
 
     /**
@@ -113,23 +111,24 @@ public class SocketClientConnection extends Observable<Message> implements Clien
      */
     @Override
     public void run() {
-        try{
+        try {
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            try {
-                server.lobby(this);
-                new Thread(() -> {
-                    try {
-                        while (isActive()) {
-                            notify(inputMessageQueue.take());
-                        }
-                    } catch (InterruptedException e) {
-                        active = false;
+
+            server.lobby(this);
+            new Thread(() -> {
+                try {
+                    while (isActive()) {
+                        notify(inputMessageQueue.take());
                     }
-                }).start();
-                while (isActive()) {
+                } catch (InterruptedException e) {
+                    active = false;
+                }
+            }).start();
+            while (isActive()) {
+                try {
                     Message inputMessage = (Message) in.readObject();
-                    if (inputMessage != null && inputMessage.getType() == TypeMessage.PONG) {
+                    /*if (inputMessage != null && inputMessage.getType() == TypeMessage.PONG) {
                         this.pingTimer.cancel();
                         this.pingTimer = new Timer();
                         this.pingTimer.schedule(new TimerTask() {
@@ -141,7 +140,8 @@ public class SocketClientConnection extends Observable<Message> implements Clien
                                 close();
                             }
                         }, DISCONNECTION_TIME);
-                    } else if (inputMessage != null && inputMessage.getType() != TypeMessage.PONG) {
+                    } else*/
+                    if (inputMessage != null && inputMessage.getType() != TypeMessage.PONG) {
                         try {
                             inputMessageQueue.put(inputMessage);
                         } catch (InterruptedException e) {
@@ -150,20 +150,21 @@ public class SocketClientConnection extends Observable<Message> implements Clien
                             connectionActive = false;
                         }
                     }
+                } catch (ClassNotFoundException e) {
+                    Logger.getAnonymousLogger().severe(e.getMessage());
+                    connectionActive = false;
                 }
-            }catch (ClassNotFoundException e){
-                Logger.getAnonymousLogger().severe(e.getMessage());
-                connectionActive = false;
             }
+
         } catch (IOException | NoSuchElementException e) {
-            System.err.println("Error!" + e.getMessage());
+            System.err.println("Error! oooo " + e.toString());
             Logger.getAnonymousLogger().severe(e.getMessage());
             connectionActive = false;
         }
     }
 
     @Override
-    public void ping(PlayerIndex player){
+    public void ping(PlayerIndex player) throws IOException {
         send(new PingMessage(player));
     }
 
