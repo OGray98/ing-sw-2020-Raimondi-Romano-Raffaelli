@@ -322,7 +322,6 @@ public class Game extends Observable<Message> {
             if (contEffect == 0)
                 cantGoUp = false;
         }
-        notify(new CurrentPlayerMessage(this.currentPlayer.getPlayerNum()));
     }
 
     public List<Position> getCurrentPlayerWorkersPosition() {
@@ -649,6 +648,7 @@ public class Game extends Observable<Message> {
     private void updateCurrentPlayer() {
         contCurrentPlayer = (contCurrentPlayer + 1) % players.size();
         currentPlayer = players.get(contCurrentPlayer);
+        notify(new CurrentPlayerMessage(this.currentPlayer.getPlayerNum()));
     }
 
     public Deck getDeck() {
