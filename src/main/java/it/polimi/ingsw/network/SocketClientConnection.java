@@ -1,7 +1,11 @@
 package it.polimi.ingsw.network;
+
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.utils.*;
+import it.polimi.ingsw.utils.CloseConnectionMessage;
+import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.PingMessage;
+import it.polimi.ingsw.utils.TypeMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -10,6 +14,8 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
 
@@ -25,15 +31,17 @@ public class SocketClientConnection extends Observable<Message> implements Clien
     private boolean closeForced = true;
     private ObjectInputStream in;
 
+    private transient final BlockingQueue<Message> inputMessageQueue = new ArrayBlockingQueue<>(10);
 
-    public SocketClientConnection(Socket socket, Server server){
+
+    public SocketClientConnection(Socket socket, Server server) {
         this.server = server;
         this.socket = socket;
         this.pingTimer = new Timer();
     }
 
 
-    private synchronized boolean isActive(){
+    private synchronized boolean isActive() {
         return active;
     }
 
@@ -112,22 +120,27 @@ public class SocketClientConnection extends Observable<Message> implements Clien
             try {
                 server.lobby(this);
                 while (isActive()) {
-                    Message read = (Message) in.readObject();
-                    if(read != null && read.getType() == TypeMessage.PONG){
+                    Message inputMessage = (Message) in.readObject();
+                    if (inputMessage != null && inputMessage.getType() == TypeMessage.PONG) {
                         this.pingTimer.cancel();
                         this.pingTimer = new Timer();
                         this.pingTimer.schedule(new TimerTask() {
                             @Override
                             public void run() {
-                                if(!getCloseForced())
+                                if (!getCloseForced())
                                     return;
                                 setCloseForced(false);
                                 close();
                             }
-                        },DISCONNECTION_TIME);
-                    }
-                    else if(read != null && read.getType() != TypeMessage.PONG){
-                    notify(read);
+                        }, DISCONNECTION_TIME);
+                    } else if (inputMessage != null && inputMessage.getType() != TypeMessage.PONG) {
+                        try {
+                            inputMessageQueue.put(inputMessage);
+                        } catch (InterruptedException e) {
+                            System.err.println("Error!" + e.getMessage());
+                            Logger.getAnonymousLogger().severe(e.getMessage());
+                            connectionActive = false;
+                        }
                     }
                 }
             }catch (ClassNotFoundException e){

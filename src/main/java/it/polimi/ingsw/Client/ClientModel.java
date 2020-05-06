@@ -82,7 +82,11 @@ public class ClientModel extends Observable<Message> {
      */
     public void incrementLevel(Position pos) throws NullPointerException {
         if (pos == null) throw new NullPointerException("pos");
-        this.levelsPositions.put(pos, this.levelsPositions.get(pos) + 1);
+        for(Position p: levelsPositions.keySet()){
+            if(p.equals(pos)){
+                this.levelsPositions.replace(p,this.levelsPositions.get(p) + 1);
+            }
+        }
     }
 
     /**
@@ -178,6 +182,41 @@ public class ClientModel extends Observable<Message> {
         return powerGodState;
     }
 
+    public int getLevelPosition(Position position){
+       for(Position pos : levelsPositions.keySet()){
+           if(pos.equals(position)){
+               return levelsPositions.get(pos);
+           }
+       }
+       return -1;
+    }
+
+    public List<Position> getPlayerIndexPosition(PlayerIndex playerIndex){
+        for(PlayerIndex player: playersPositions.keySet()){
+            if(player.equals(playerIndex)){
+                return this.playersPositions.get(player);
+            }
+        }
+        return null;
+    }
+
+    public boolean nicknameIsPresent(String nickname){
+        for(String nick : nicknames){
+            if(nick.equalsIgnoreCase(nickname)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean thePositionContainDome(Position position){
+        for(Position pos: domesPositions){
+            if(pos.equals(position)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public String getClientGod() {
         return clientGod;
