@@ -70,7 +70,6 @@ public class SocketClientConnection extends Observable<Message> implements Clien
             System.err.println("Error sending message to client");
             Logger.getAnonymousLogger().severe(e.getMessage());
             connectionActive = false;
-
         }
     }
 
@@ -119,6 +118,15 @@ public class SocketClientConnection extends Observable<Message> implements Clien
             in = new ObjectInputStream(socket.getInputStream());
             try {
                 server.lobby(this);
+                new Thread(() -> {
+                    try {
+                        while (isActive()) {
+                            notify(inputMessageQueue.take());
+                        }
+                    } catch (InterruptedException e) {
+                        active = false;
+                    }
+                }).start();
                 while (isActive()) {
                     Message inputMessage = (Message) in.readObject();
                     if (inputMessage != null && inputMessage.getType() == TypeMessage.PONG) {
