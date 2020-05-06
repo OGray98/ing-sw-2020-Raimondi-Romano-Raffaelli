@@ -36,14 +36,13 @@ public class RemoteView extends View implements Observer<Message> {
     public void update(Message message) throws NullPointerException {
         if (message == null)
             throw new NullPointerException("msg");
-        if (getPlayer().equals(message.getClient()) || message.getClient() == PlayerIndex.ALL)
-            sendUpdates(message);
+        sendUpdates(message);
     }
 
     public void putMessage(Message msg) throws NullPointerException, WrongAssociationViewPlayerException {
         if (msg == null)
             throw new NullPointerException("msg");
-        if (!(msg.getClient().equals(getPlayer()) || msg.getClient() == PlayerIndex.ALL))
+        if (!(msg.getClient().equals(getPlayer())))
             throw new WrongAssociationViewPlayerException(getPlayer(), msg.getClient());
         sendUpdates(msg);
     }
