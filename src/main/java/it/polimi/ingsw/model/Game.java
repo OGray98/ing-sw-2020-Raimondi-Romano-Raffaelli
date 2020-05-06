@@ -74,7 +74,7 @@ public class Game extends Observable<Message> {
             throw new IllegalArgumentException("You can't have PLAYER2 in two players game");
 
         this.players.add(new Player(nickname, index));
-        notify(new NicknameMessage(PlayerIndex.ALL, nickname));
+        notify(new NicknameMessage(index, nickname));
 
         if (this.players.size() == this.numPlayer) {
             this.players.sort(Comparator.comparing(PlayerInterface::getPlayerNum));
@@ -129,7 +129,7 @@ public class Game extends Observable<Message> {
      */
     public void setCurrentState(GameState nextState) {
         this.currentState = nextState;
-        notify(new UpdateStateMessage(PlayerIndex.ALL, nextState));
+        notify(new UpdateStateMessage(currentPlayer.getPlayerNum(), nextState));
         if (this.currentState == GameState.MOVE)
             sendPossibleActionMoveState();
         else if (this.currentState == GameState.BUILD)
@@ -244,7 +244,7 @@ public class Game extends Observable<Message> {
             }
         }
         deck.setChosenGodCards(godNames);
-        notify(new GodLikeChoseMessage(PlayerIndex.ALL, godNames));
+        notify(new GodLikeChoseMessage(currentPlayer.getPlayerNum(), godNames));
 
         //The player who start to chose the card is the first after godLike
         contCurrentPlayer = 1;
@@ -266,7 +266,7 @@ public class Game extends Observable<Message> {
         CardInterface card = deck.getGodCard(godName);
         currentPlayer = card.setPlayer(currentPlayer);
         players.set(contCurrentPlayer, currentPlayer);
-        notify(new PlayerSelectGodMessage(PlayerIndex.ALL, godName));
+        notify(new PlayerSelectGodMessage(currentPlayer.getPlayerNum(), godName));
 
         if (!currentPlayer.getPlayerNum().equals(players.get(0).getPlayerNum()))
             updateCurrentPlayer();
@@ -281,7 +281,7 @@ public class Game extends Observable<Message> {
         Collections.rotate(players, -playerIndex.ordinal());
         contCurrentPlayer = 0;
         currentPlayer = players.get(contCurrentPlayer);
-        notify(new GodLikeChooseFirstPlayerMessage(PlayerIndex.ALL, playerIndex));
+        notify(new GodLikeChooseFirstPlayerMessage(currentPlayer.getPlayerNum(), playerIndex));
     }
 
     public boolean canPutWorker(Position putPosition) throws NullPointerException {
@@ -304,7 +304,7 @@ public class Game extends Observable<Message> {
         contCurrentWorker++;
         if (contCurrentWorker == 2) {
             List<Position> workersPos = board.workerPositions(currentPlayer.getPlayerNum());
-            notify(new PutWorkerMessage(PlayerIndex.ALL, workersPos.get(0), workersPos.get(1)));
+            notify(new PutWorkerMessage(currentPlayer.getPlayerNum(), workersPos.get(0), workersPos.get(1)));
             contCurrentWorker = 0;
             updateCurrentPlayer();
         }
@@ -419,7 +419,7 @@ public class Game extends Observable<Message> {
             throw new NullPointerException("movePos");
         board.changeWorkerPosition(currentPosition, movePos);
         currentPlayer.move(board.getCell(movePos));
-        notify(new MoveMessage(PlayerIndex.ALL, currentPosition, movePos));
+        notify(new MoveMessage(currentPlayer.getPlayerNum(), currentPosition, movePos));
         currentPosition = movePos;
     }
 
@@ -477,7 +477,7 @@ public class Game extends Observable<Message> {
         if (buildPos == null)
             throw new NullPointerException("buildPos");
         board.constructBlock(buildPos);
-        notify(new BuildMessage(PlayerIndex.ALL, buildPos));
+        notify(new BuildMessage(currentPlayer.getPlayerNum(), buildPos));
     }
 
     /**
@@ -537,7 +537,7 @@ public class Game extends Observable<Message> {
         //notify to view:
         //notify for build power
         if(!changes.isPositionBuildNull()){
-            notify(new BuildPowerMessage(PlayerIndex.ALL, powerPos, changes.getBuildType()));
+            notify(new BuildPowerMessage(currentPlayer.getPlayerNum(), powerPos, changes.getBuildType()));
         }
         if (!changes.isPlayerChangesNull()) {
             Map<PositionContainer, PlayerIndex> positionsUpdated = changes.getChanges();
@@ -545,7 +545,7 @@ public class Game extends Observable<Message> {
                 if (entry.getValue().compareTo(currentPlayer.getPlayerNum()) == 0){
                     currentPosition = entry.getKey().getOccupiedPosition();
                     //notify for move power
-                    notify(new MoveMessage(PlayerIndex.ALL, entry.getKey().getOldPosition(), entry.getKey().getOccupiedPosition()));
+                    notify(new MoveMessage(currentPlayer.getPlayerNum(), entry.getKey().getOldPosition(), entry.getKey().getOccupiedPosition()));
                 }
             }
         }
