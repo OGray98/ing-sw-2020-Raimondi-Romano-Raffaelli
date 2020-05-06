@@ -1,6 +1,9 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.PingMessage;
+import it.polimi.ingsw.utils.PongMessage;
 import it.polimi.ingsw.utils.TypeMessage;
 
 import java.io.IOException;
@@ -8,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class Client {
 
@@ -19,6 +23,7 @@ public class Client {
     private  Socket socket;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
+    private Thread threadWrite;
 
 
     static final int DISCONNECTION_TIME = 10000;
@@ -67,6 +72,7 @@ public class Client {
                 while (isActive()) {
                     Message inputMessage = (Message) socketIn.readObject();
                     if(inputMessage != null && inputMessage.getType() == TypeMessage.PING){
+                        createClientMessage(new PongMessage());
                         pingTimer.cancel();
                         pingTimer = new Timer();
                         pingTimer.schedule(new TimerTask() {
@@ -100,10 +106,22 @@ public class Client {
         Thread t = new Thread(() -> {
             try {
                 while (isActive()) {
-                    if(getClientMessage() != null){
+                    if(getClientMessage() != null && getClientMessage().getType() == TypeMessage.PONG){
                     socketOut.reset();
                     socketOut.writeObject(getClientMessage());
                     socketOut.flush();
+                    try{
+                        threadWrite.sleep(1000);
+                    } catch (InterruptedException e){
+                        System.err.println("Error in pong response from client");
+                        Logger.getAnonymousLogger().severe(e.getMessage());
+                        threadWrite.interrupt();
+                    }
+                    }
+                    else if(getClientMessage() != null && getClientMessage().getType() != TypeMessage.PONG){
+                        socketOut.reset();
+                        socketOut.writeObject(getClientMessage());
+                        socketOut.flush();
                     }
                 }
             }catch(Exception e){
@@ -137,11 +155,12 @@ public class Client {
         socketOut = new ObjectOutputStream(socket.getOutputStream());
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
-            Thread t1 = asyncWriteToSocket(socketOut);
+            threadWrite = asyncWriteToSocket(socketOut);
             t0.join();
-            t1.join();
+            threadWrite.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
+            Logger.getAnonymousLogger().severe(e.getMessage());
             disconnect();
         }
     }
@@ -162,8 +181,9 @@ public class Client {
         try{
             close();
         }catch (IOException e){
-            System.err.println("Error in closing socket");
-            e.printStackTrace();
+            System.err.println("Error during disconnection of client");
+            Logger.getAnonymousLogger().severe(e.getMessage());
+
         }
     }
 

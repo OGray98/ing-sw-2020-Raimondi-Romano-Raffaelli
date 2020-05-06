@@ -15,5 +15,5 @@ public enum TypeMessage {
     OK, WRONG_GAME_STATE, UPDATE_STATE, WRONG_GOD_NAME, WINNER, LOSER,
 
     //Management connection
-    PING,CLOSE_CONNECTION
+    PING,CLOSE_CONNECTION,PONG
 }

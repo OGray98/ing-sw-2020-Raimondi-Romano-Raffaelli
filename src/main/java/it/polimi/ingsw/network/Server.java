@@ -13,6 +13,7 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class Server {
 
@@ -48,19 +49,14 @@ public class Server {
      * @param c connection to eliminate from the list of client player in lobby
      */
     public synchronized void deleteClient(ClientConnection c){
-        ClientConnection opponent = waitingConnection.get(c);
-        if(opponent != null){
-            opponent.closeConnection();
-        }
-        //playingConnection.remove(opponent);
-        //playingConnection.remove(c);
-        waitingConnection.remove(c);
-       /* Iterator<PlayerIndex> iterator = waitingConnection.keySet().iterator();
+        Iterator<PlayerIndex> iterator = waitingConnection.keySet().iterator();
         while(iterator.hasNext()){
             if(waitingConnection.get(iterator.next())==c){
                 iterator.remove();
             }
-        }*/
+        }
+        waitingConnection.remove(c);
+
     }
 
     /**
@@ -110,7 +106,7 @@ public class Server {
                     pingThread.sleep(1000);
                 }catch (InterruptedException e){
                     System.err.println("Ping thread is interrupted");
-                    e.printStackTrace();
+                    Logger.getAnonymousLogger().severe(e.getMessage());
                     setActive(false);
                     pingThread.interrupt();
                 }
@@ -131,7 +127,7 @@ public class Server {
                     executor.submit(socketClientConnection);
                 }catch (IOException e){
                     System.err.println("Error during the open port on server");
-                    e.printStackTrace();
+                    Logger.getAnonymousLogger().severe(e.getMessage());
                     runThread.interrupt();
                     break;
                 }
@@ -156,7 +152,7 @@ public class Server {
                pingThread.join();
             }catch (InterruptedException | NoSuchElementException e){
                 System.err.println("Error during the join of threads");
-                e.printStackTrace();
+                Logger.getAnonymousLogger().severe(e.getMessage());
                 runThread.interrupt();
                 pingThread.interrupt();
 

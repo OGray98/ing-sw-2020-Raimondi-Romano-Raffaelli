@@ -4,11 +4,16 @@ import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utils.CloseConnectionMessage;
 import it.polimi.ingsw.utils.Message;
 import it.polimi.ingsw.utils.PingMessage;
+import it.polimi.ingsw.utils.TypeMessage;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Logger;
 
 
 public class SocketClientConnection extends Observable<Message> implements ClientConnection,Runnable{
@@ -18,14 +23,17 @@ public class SocketClientConnection extends Observable<Message> implements Clien
     private final Server server;
     private boolean active = true;
     private boolean connectionActive = true;
-
+    private transient Timer pingTimer;
+    static final int DISCONNECTION_TIME = 10000;
+    private boolean closeForced = true;
+    private ObjectInputStream in;
 
 
     public SocketClientConnection(Socket socket, Server server){
         this.server = server;
         this.socket = socket;
+        this.pingTimer = new Timer();
     }
-
 
 
     private synchronized boolean isActive(){
@@ -35,6 +43,14 @@ public class SocketClientConnection extends Observable<Message> implements Clien
     @Override
     public boolean isConnected() {
         return connectionActive;
+    }
+
+    private synchronized boolean getCloseForced(){
+        return this.closeForced;
+    }
+
+    private void setCloseForced(boolean condition){
+        this.closeForced = condition;
     }
 
     /**
@@ -47,28 +63,41 @@ public class SocketClientConnection extends Observable<Message> implements Clien
             out.flush();
         }catch (IOException e){
             System.err.println("Error sending message to client");
-            e.printStackTrace();
+            Logger.getAnonymousLogger().severe(e.getMessage());
+            connectionActive = false;
+
         }
     }
 
+
+
+
     public synchronized void closeConnection(){
-        send(new CloseConnectionMessage());
+        if(getCloseForced()){
+            notify(new CloseConnectionMessage());
+            send(new CloseConnectionMessage());
+        }
         try{
             out.close();
+            in.close();
             socket.close();
+            System.out.println("Socket connection closed");
         }catch (IOException e){
             System.err.println("Error closing socket client connection");
-            e.printStackTrace();
+            Logger.getAnonymousLogger().severe(e.getMessage());
+
         }
-        out = null;
         active = false;
         connectionActive = false;
+        setCloseForced(false);
     }
 
     private void close(){
         closeConnection();
         server.deleteClient(this);
     }
+
+
 
     public void asyncSend(final Message message){
         new Thread(() -> send(message)).start();
@@ -82,20 +111,36 @@ public class SocketClientConnection extends Observable<Message> implements Clien
     public void run() {
         try{
             out = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            in = new ObjectInputStream(socket.getInputStream());
             try {
                 server.lobby(this);
                 while (isActive()) {
                     Message read = (Message) in.readObject();
+                    if(read != null && read.getType() == TypeMessage.PONG){
+                        this.pingTimer.cancel();
+                        this.pingTimer = new Timer();
+                        this.pingTimer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                if(!getCloseForced())
+                                    return;
+                                setCloseForced(false);
+                                close();
+                            }
+                        },DISCONNECTION_TIME);
+                    }
+                    else if(read != null && read.getType() != TypeMessage.PONG){
                     notify(read);
+                    }
                 }
             }catch (ClassNotFoundException e){
-                e.printStackTrace();
-                close();
+                Logger.getAnonymousLogger().severe(e.getMessage());
+                connectionActive = false;
             }
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error!" + e.getMessage());
-            close();
+            Logger.getAnonymousLogger().severe(e.getMessage());
+            connectionActive = false;
         }
     }
 
