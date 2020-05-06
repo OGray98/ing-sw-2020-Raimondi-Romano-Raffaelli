@@ -104,18 +104,13 @@ public class Client {
                     socketOut.reset();
                     socketOut.writeObject(getClientMessage());
                     socketOut.flush();
-                    try{
-                        threadWrite.sleep(1000);
-                    } catch (InterruptedException e){
-                        System.err.println("Error in pong response from client");
-                        Logger.getAnonymousLogger().severe(e.getMessage());
-                        threadWrite.interrupt();
-                    }
+                    createClientMessage(null);
                     }
                     else if(getClientMessage() != null && getClientMessage().getType() != TypeMessage.PONG){
                         socketOut.reset();
                         socketOut.writeObject(getClientMessage());
                         socketOut.flush();
+                        createClientMessage(null);
                     }
                 }
             }catch(Exception e){
