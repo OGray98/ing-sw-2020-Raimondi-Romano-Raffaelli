@@ -1,10 +1,7 @@
 package it.polimi.ingsw.network;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.utils.CloseConnectionMessage;
-import it.polimi.ingsw.utils.Message;
-import it.polimi.ingsw.utils.PingMessage;
-import it.polimi.ingsw.utils.TypeMessage;
+import it.polimi.ingsw.utils.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

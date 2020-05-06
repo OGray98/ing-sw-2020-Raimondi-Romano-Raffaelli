@@ -10,7 +10,7 @@ public class BuildPowerMessage extends Message {
     private final BuildType buildType;
 
     public BuildPowerMessage(PlayerIndex client, Position buildPos, BuildType buildType) {
-        super(client, TypeMessage.BUILD);
+        super(client, TypeMessage.BUILD_POWER);
         if (buildPos == null) throw new NullPointerException("buildPos");
         this.buildPos = buildPos;
         this.buildType = buildType;

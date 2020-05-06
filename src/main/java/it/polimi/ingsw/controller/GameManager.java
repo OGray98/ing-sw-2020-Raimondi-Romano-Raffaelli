@@ -60,6 +60,7 @@ public class GameManager implements Observer<Message> {
         if (remoteViews.containsKey(index))
             throw new AlreadyPresentRemoteViewOfPlayerException(index);
         remoteViews.put(index, remoteView);
+        remoteView.putMessage(new ConnectionPlayerIndex(index));
     }
 
     @Override
