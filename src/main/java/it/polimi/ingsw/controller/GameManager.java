@@ -116,7 +116,7 @@ public class GameManager implements Observer<Message> {
         PlayerIndex clientIndex = message.getClient();
         String name = message.getNickname();
 
-        if (lobby.isFull()) {
+        if (lobby.isFull()) {//TODO: delete it?
             respondErrorToRemoteView(
                     clientIndex,
                     "You can't join the lobby because is already full",
@@ -137,7 +137,7 @@ public class GameManager implements Observer<Message> {
         if (lobby.isPlayerAlreadyInLobby(clientIndex)) {
             respondErrorToRemoteView(
                     clientIndex,
-                    "You already set your name" + name,
+                    "You already set your name " + name,
                     TypeMessage.ALREADY_SET_NICKNAME
             );
             return;
@@ -163,7 +163,7 @@ public class GameManager implements Observer<Message> {
         PlayerIndex clientIndex = message.getClient();
         boolean isThreePlayerGame = message.isThreePlayersMatch();
 
-        if (lobby.isFull()) {
+        if (lobby.isFull()) { //TODO : delete it?
             respondErrorToRemoteView(
                     clientIndex,
                     "You can't set now the number of players",
@@ -203,7 +203,7 @@ public class GameManager implements Observer<Message> {
         PlayerIndex clientIndex = message.getClient();
         List<String> godNames = message.getGodNames();
 
-        if (godNames.stream().filter(Deck::isCorrectedName).count() != godNames.size()) {
+        if (godNames.stream().filter(Deck::isCorrectedName).count() != godNames.size()) {//TODO: exception exist already
             respondErrorToRemoteView(
                     clientIndex,
                     "You insert wrong names",
@@ -272,7 +272,7 @@ public class GameManager implements Observer<Message> {
             return;
         }
         //Godlike can't choose the card
-        if (clientIndex.equals(godPhaseManager.getGodLikePlayerIndex())) {
+        if (clientIndex.equals(godPhaseManager.getGodLikePlayerIndex())) {//TODO: non serve
             respondErrorToRemoteView(
                     clientIndex,
                     "Godlike player can not choose a card",
@@ -557,7 +557,7 @@ public class GameManager implements Observer<Message> {
             return;
         }
         //Send an error if the position given is not a worker of current player
-        if(!gameModel.getBoard().workerPositions(clientIndex).contains(workerPos)){
+        if(!gameModel.getBoard().workerPositions(clientIndex).contains(workerPos)){//TODO: not used
             respondErrorToRemoteView(
                     clientIndex,
                     "You select a wrong position",
