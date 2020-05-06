@@ -660,7 +660,6 @@ public class Game extends Observable<Message> {
      * Notify this change to remoteView
      */
     public void removeCurrentPlayer() {
-        notify(new LoserMessage(currentPlayer.getPlayerNum()));
         this.board.removePlayerWorkers(currentPlayer.getPlayerNum());
 
         PlayerInterface lostPlayer = currentPlayer;
@@ -668,7 +667,7 @@ public class Game extends Observable<Message> {
 
         updateCurrentPlayer();
         this.players.remove(lostPlayer);
-        notify(new LoserMessage(playerIndex));
+        notify(new LoserMessage(playerIndex, playerIndex));
 
     }
 }

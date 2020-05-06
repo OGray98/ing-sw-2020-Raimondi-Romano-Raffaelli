@@ -3,16 +3,16 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.utils.CloseConnectionMessage;
 import it.polimi.ingsw.utils.EndGameMessage;
 import it.polimi.ingsw.view.RemoteView;
-import it.polimi.ingsw.view.View;
-
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
@@ -107,7 +107,7 @@ public class Server {
                     else if(client != null && !client.getValue().isConnected()){
                         for(Map.Entry<PlayerIndex,ClientConnection> clientActive : waitingConnection.entrySet()){
                             if(clientActive != null && !clientActive.equals(client)){
-                                client.getValue().asyncSend(new EndGameMessage());
+                                client.getValue().asyncSend(new EndGameMessage(client.getKey()));
                             }
                         }
                     }

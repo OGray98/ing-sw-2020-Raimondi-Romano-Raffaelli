@@ -6,8 +6,8 @@ public class LoserMessage extends Message {
 
     private final PlayerIndex loserPlayer;
 
-    public LoserMessage(PlayerIndex loserPlayer) {
-        super(PlayerIndex.ALL, TypeMessage.LOSER);
+    public LoserMessage(PlayerIndex client, PlayerIndex loserPlayer) {
+        super(client, TypeMessage.LOSER);
         this.loserPlayer = loserPlayer;
     }
 
