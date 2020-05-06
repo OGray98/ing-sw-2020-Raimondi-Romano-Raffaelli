@@ -14,8 +14,8 @@ import java.util.Map;
  */
 public class Board {
 
-    private static final int NUM_ROW = 5;
-    private static final int NUM_COLUMNS = 5;
+    public static final int NUM_ROW = 5;
+    public static final int NUM_COLUMNS = 5;
     private static final int capacityPlayerPosition = 3;
     private final Cell[][] map;
     private final Map<PlayerIndex, List<Position>> playerPosition;
