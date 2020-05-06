@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.utils.ActionType;
 import it.polimi.ingsw.utils.Message;
 
 import java.util.ArrayList;
@@ -41,16 +42,35 @@ public class ClientModel extends Observable<Message> {
     );
     private final List<String> chosenGods = new ArrayList<>(0);
     private String clientGod;
+    private final List<String> nicknames = new ArrayList<>(2);
     private String playerNickname;
     private PlayerIndex playerIndex;
     private GameState currentState = GameState.NULL;
     private GameState powerGodState = GameState.NULL;
+
+
+    List<Position> normalActionPositions = new ArrayList<>();
+    List<Position> powerActionPositions = new ArrayList<>();
 
     public ClientModel() {
         for (int i = 0; i < Board.NUM_ROW; i++)
             for (int j = 0; j < Board.NUM_COLUMNS; j++)
                 this.levelsPositions.put(new Position(i, j), 0);
     }
+
+
+    /**
+     * Add nickname to list of players nicknames
+     *
+     * @param nickname nickname of new player
+     * @throws NullPointerException if nickname is null
+     */
+    public void addNickname(String nickname) throws NullPointerException {
+        if (nickname == null) throw new NullPointerException("nickname");
+
+        nicknames.add(nickname);
+    }
+
 
     /**
      * Increment level of a cell in passed Position
@@ -77,19 +97,22 @@ public class ClientModel extends Observable<Message> {
     /**
      * Move a worker of playerIndex from oldPos to newPos
      *
-     * @param playerIndex playerIndex of worker that have to move
-     * @param oldPos      old Position of worker
-     * @param newPos      new Position of worker
+     * @param oldPos old Position of worker
+     * @param newPos new Position of worker
      * @throws NullPointerException     if oldPos or newPos is null
      * @throws IllegalArgumentException if oldPos is equal to newPos
      */
-    public void movePlayer(PlayerIndex playerIndex, Position oldPos, Position newPos) throws NullPointerException, IllegalArgumentException {
+    public void movePlayer(Position oldPos, Position newPos) throws NullPointerException, IllegalArgumentException {
         if (oldPos == null) throw new NullPointerException("oldPos");
         if (newPos == null) throw new NullPointerException("newPos");
         if (oldPos.equals(newPos)) throw new IllegalArgumentException();
 
-        playersPositions.get(playerIndex).remove(oldPos);
-        playersPositions.get(playerIndex).add(newPos);
+        this.playersPositions.entrySet().stream()
+                .filter(entry -> entry.getValue().contains(oldPos))
+                .forEach(entry -> {
+                    entry.getValue().remove(oldPos);
+                    entry.getValue().add(newPos);
+                });
     }
 
     /**
@@ -123,6 +146,8 @@ public class ClientModel extends Observable<Message> {
         this.chosenGods.add(name);
     }
 
+
+
     public GameState getCurrentState() {
         return currentState;
     }
@@ -154,6 +179,31 @@ public class ClientModel extends Observable<Message> {
 
     public String getClientGod() {
         return clientGod;
+    }
+
+    /**
+     * Return position useful for the next action of passed type
+     *
+     * @param type type of next action
+     * @return position useful for the next action of passed type
+     */
+    public List<Position> getActionPositions(ActionType type) {
+        if (type == ActionType.POWER)
+            return this.powerActionPositions;
+        return this.normalActionPositions;
+    }
+
+    /**
+     * Set Position usable when you want do an action of passed ActionType
+     *
+     * @param type            type of action that you want to do
+     * @param actionPositions positions passed by server
+     */
+    public void setActionPositions(ActionType type, List<Position> actionPositions) {
+        if (type == ActionType.POWER)
+            this.powerActionPositions = actionPositions;
+        else
+            this.normalActionPositions = actionPositions;
     }
 
     /**
