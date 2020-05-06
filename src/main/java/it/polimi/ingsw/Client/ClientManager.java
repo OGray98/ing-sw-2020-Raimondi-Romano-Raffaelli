@@ -148,6 +148,7 @@ public class ClientManager {
     }
 
     public void updateLoserMessage(LoserMessage message){
+        //TODO: metodo lose in clientmodel
         //clientModel.lose(message.getLoserPlayer());
     }
 }
