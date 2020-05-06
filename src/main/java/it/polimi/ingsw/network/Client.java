@@ -19,7 +19,7 @@ public class Client {
     private final int port;
     private Message message;
     private transient Timer pingTimer;
-    private transient List<Message> messageQueue;
+    private transient final List<Message> messageQueue;
     private  Socket socket;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
@@ -44,12 +44,6 @@ public class Client {
         return messageQueue;
     }
 
-    /**
-     * @param mesQueue : List upgrade after client read a message
-     */
-    public void setMessageQueue(List<Message> mesQueue){
-        this.messageQueue = mesQueue;
-    }
 
     private boolean active = true;
 

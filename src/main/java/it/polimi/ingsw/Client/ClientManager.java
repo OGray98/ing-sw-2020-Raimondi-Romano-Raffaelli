@@ -1,10 +1,11 @@
-package it.polimi.ingsw.network;
+package it.polimi.ingsw.Client;
 
 
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.deck.CardInterface;
 import it.polimi.ingsw.model.deck.Deck;
+import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.utils.*;
 
 import java.util.ArrayList;
@@ -28,10 +29,8 @@ public class ClientManager {
     public void start(){
         if(client.getMessageQueue() != null){
             for(Message mes : client.getMessageQueue()){
-                List<Message> newQueue = new ArrayList<>(client.getMessageQueue());
                 updateClient(mes);
-                newQueue.remove(mes);
-                client.setMessageQueue(newQueue);
+                client.getMessageQueue().remove(mes);
             }
         }
     }
