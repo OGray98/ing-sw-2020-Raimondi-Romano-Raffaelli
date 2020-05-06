@@ -12,9 +12,9 @@ public class ClientManager {
     private final ClientModel clientModel;
     //private final ClientView clientView;
 
-    public ClientManager(ServerConnection serverConnection){
+    public ClientManager(ServerConnection serverConnection, ClientModel clientModel){
         this.serverConnection = serverConnection;
-        this.clientModel = new ClientModel();
+        this.clientModel = clientModel;
     }
 
     /**
@@ -30,8 +30,10 @@ public class ClientManager {
                 break;
             case CURRENT_PLAYER:
                 updateCurrentPlayer((CurrentPlayerMessage) message);
+                break;
             case PLAYERINDEX_CONNECTION:
                 updateIndex((ConnectionPlayerIndex) message);
+                break;
             case UPDATE_STATE:
                 updateState((UpdateStateMessage) message);
                 break;
