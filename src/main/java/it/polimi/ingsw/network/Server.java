@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
@@ -51,13 +50,8 @@ public class Server {
      * @param c connection to eliminate from the list of client player in lobby
      */
     public synchronized void deleteClient(ClientConnection c){
-        Iterator<PlayerIndex> iterator = waitingConnection.keySet().iterator();
-        while(iterator.hasNext()){
-            if(waitingConnection.get(iterator.next())==c){
-                iterator.remove();
-            }
-        }
-        waitingConnection.remove(c);
+        this.waitingConnection.entrySet().stream().filter(entry -> entry.getValue().equals(c))
+                .forEach(entry -> this.waitingConnection.remove(entry.getKey()));
         lobbyCount--;
 
     }

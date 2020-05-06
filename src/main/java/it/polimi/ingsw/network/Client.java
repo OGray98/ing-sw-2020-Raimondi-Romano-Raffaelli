@@ -1,9 +1,8 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.Client.ClientManager;
-import it.polimi.ingsw.model.player.PlayerIndex;
+import it.polimi.ingsw.Client.ClientModel;
 import it.polimi.ingsw.utils.Message;
-import it.polimi.ingsw.utils.PingMessage;
 import it.polimi.ingsw.utils.PongMessage;
 import it.polimi.ingsw.utils.TypeMessage;
 
@@ -11,44 +10,39 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.*;
+import java.util.NoSuchElementException;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-public class Client implements ServerConnection{
+public class Client implements ServerConnection {
 
     private final ClientManager clientManager;
+    private final ClientModel clientModel;
     private final String ip;
     private final int port;
     private Message message;
     private transient Timer pingTimer;
-    //private transient final List<Message> messageQueue;
-    private  Socket socket;
+    private transient final BlockingQueue<Message> inputMessageQueue = new ArrayBlockingQueue<>(10);
+    private transient final BlockingQueue<Message> outputMessageQueue = new ArrayBlockingQueue<>(10);
+    private Socket socket;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
     private Thread threadWrite;
+    private boolean active = true;
 
 
     static final int DISCONNECTION_TIME = 10000;
 
-    public Client(String ip, int port){
-        this.clientManager = new ClientManager(this);
+    public Client(String ip, int port) {
+
         this.ip = ip;
         this.port = port;
         this.message = null;
         this.pingTimer = new Timer();
-        //this.messageQueue = new ArrayList<>();
-
     }
-
-    /*
-     * @return List where message input are insert to read by client manager
-     */
-    /*public List<Message> getMessageQueue(){
-        return messageQueue;
-    }*/
-
-
-    private boolean active = true;
 
     public synchronized boolean isActive(){
         return active;
@@ -68,8 +62,9 @@ public class Client implements ServerConnection{
             try {
                 while (isActive()) {
                     Message inputMessage = (Message) socketIn.readObject();
-                    if(inputMessage != null && inputMessage.getType() == TypeMessage.PING){
-                        createClientMessage(new PongMessage());
+                    if(inputMessage != null && inputMessage.getType() == TypeMessage.PING) {
+                        System.out.println("PING");
+                        outputMessageQueue.put(new PongMessage());
                         pingTimer.cancel();
                         pingTimer = new Timer();
                         pingTimer.schedule(new TimerTask() {
@@ -78,15 +73,13 @@ public class Client implements ServerConnection{
                                 disconnect();
                             }
                         }, DISCONNECTION_TIME);
-                    } else if(inputMessage != null && inputMessage.getType() != TypeMessage.PING){
-                        synchronized (clientManager){
-                            clientManager.updateClient(inputMessage);
-                        }
+                    } else if (inputMessage != null && inputMessage.getType() != TypeMessage.PING) {
+                        inputMessageQueue.put(inputMessage);
                     } else {
                         throw new IllegalArgumentException();
                     }
                 }
-            } catch (Exception e){
+            } catch (InterruptedException | IOException | ClassNotFoundException e) {
                 setActive(false);
             }
         });
@@ -103,20 +96,11 @@ public class Client implements ServerConnection{
         Thread t = new Thread(() -> {
             try {
                 while (isActive()) {
-                    if(getClientMessage() != null && getClientMessage().getType() == TypeMessage.PONG){
                     socketOut.reset();
-                    socketOut.writeObject(getClientMessage());
+                    socketOut.writeObject(outputMessageQueue.take());
                     socketOut.flush();
-                    createClientMessage(null);
-                    }
-                    else if(getClientMessage() != null && getClientMessage().getType() != TypeMessage.PONG){
-                        socketOut.reset();
-                        socketOut.writeObject(getClientMessage());
-                        socketOut.flush();
-                        createClientMessage(null);
-                    }
                 }
-            }catch(Exception e){
+            } catch (IOException | InterruptedException e) {
                 setActive(false);
             }
         });
@@ -124,32 +108,38 @@ public class Client implements ServerConnection{
         return t;
     }
 
-    /**
-     * @param message to send to server
-     */
-    public void createClientMessage(Message message){
-        this.message = message;
+    public Thread clientManageReadMessage() {
+        Thread t = new Thread(() -> {
+            try {
+                while (isActive()) {
+                    clientManager.updateClient(inputMessageQueue.take());
+                }
+            } catch (InterruptedException e) {
+                setActive(false);
+            }
+        });
+        t.start();
+        return t;
     }
 
-    public Message getClientMessage(){
-        return message;
-    }
-
 
     /**
-     * @throws IOException
-     * Create the socket, the output and input stream and run the threads of writing and reading on socket
+     * @throws IOException Create the socket, the output and input stream and run the threads of writing and reading on socket
      */
     public void run() throws IOException {
+        this.clientModel = new ClientModel();
+        this.clientManager = new ClientManager(this, this.clientModel);
         socket = new Socket(ip, port);
         System.out.println("Connection established");
         socketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new ObjectOutputStream(socket.getOutputStream());
-        try{
+        try {
             Thread t0 = asyncReadFromSocket(socketIn);
             threadWrite = asyncWriteToSocket(socketOut);
+            Thread threadController = clientManageReadMessage();
             t0.join();
             threadWrite.join();
+            threadController.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
             Logger.getAnonymousLogger().severe(e.getMessage());
@@ -180,8 +170,13 @@ public class Client implements ServerConnection{
     }
 
     public void sendToServer(Message message){
-        createClientMessage(message);
-        asyncWriteToSocket(socketOut);
+        try {
+            outputMessageQueue.put(message);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            setActive(false);
+        }
+
     }
 
 }

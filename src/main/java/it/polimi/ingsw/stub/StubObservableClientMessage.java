@@ -14,7 +14,7 @@ public class StubObservableClientMessage {
     }
 
     public void sendFromClientMessage(){
-        client.createClientMessage(mes);
+        client.sendToServer(mes);
     }
 
     public void setMessageToSend(Message mes){
