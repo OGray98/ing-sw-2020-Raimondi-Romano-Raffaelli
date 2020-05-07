@@ -153,6 +153,9 @@ public class ClientModel extends Observable<Message> {
     }
 
 
+    public List<String> getChosenGods(){
+        return this.chosenGods;
+    }
 
     public GameState getCurrentState() {
         return currentState;
@@ -166,6 +169,10 @@ public class ClientModel extends Observable<Message> {
         return playerNickname;
     }
 
+    public List<String> getNicknames(){
+        return this.nicknames;
+    }
+
     public void setPlayerNickname(String playerNickname) {
         this.playerNickname = playerNickname;
     }
@@ -176,6 +183,10 @@ public class ClientModel extends Observable<Message> {
 
     public void setPlayerIndex(PlayerIndex playerIndex) {
         this.playerIndex = playerIndex;
+    }
+
+    public List<Position> getDomesPositions(){
+        return this.domesPositions;
     }
 
     public GameState getPowerGodState() {

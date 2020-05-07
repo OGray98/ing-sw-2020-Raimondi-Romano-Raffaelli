@@ -1,9 +1,11 @@
 package it.polimi.ingsw.utils;
 
-public class CloseConnectionMessage extends Message{
+import it.polimi.ingsw.model.player.PlayerIndex;
 
-    public CloseConnectionMessage(){
-        super(null,TypeMessage.CLOSE_CONNECTION);
+public class CloseConnectionMessage extends Message {
+
+    public CloseConnectionMessage(PlayerIndex index) {
+        super(index, TypeMessage.CLOSE_CONNECTION);
     }
 
     @Override

@@ -9,9 +9,9 @@ import it.polimi.ingsw.utils.Message;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StubObservableClientConnection extends Observable<Message> implements ClientConnection, Observer {
+public class StubObservableClientConnection extends Observable<Message> implements ClientConnection, Observer<Message> {
 
-    private List<Message> mesRemoteToView;
+    private final List<Message> mesRemoteToView;
 
     public StubObservableClientConnection(Message m) {
         mesRemoteToView = new ArrayList<>();
@@ -26,6 +26,11 @@ public class StubObservableClientConnection extends Observable<Message> implemen
 
     @Override
     public void ping(PlayerIndex player) {
+
+    }
+
+    @Override
+    public void forceDisconnection() {
 
     }
 
@@ -51,7 +56,7 @@ public class StubObservableClientConnection extends Observable<Message> implemen
     }
 
     @Override
-    public void update(Object message) {
-        asyncSend((Message) message);
+    public void update(Message message) {
+        asyncSend(message);
     }
 }
