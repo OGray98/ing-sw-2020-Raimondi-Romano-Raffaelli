@@ -337,11 +337,77 @@ public class ControllerTestSOLOPERORA {
         assertEquals(init.getGameState(), GameState.INITURN);
 
         //after the end of the turn the next player is able to play
-        obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0, new Position(0,4)));
-        ActionMessage select2 = (ActionMessage) obs1.getMesRemoteToView().get(2);
-        assertEquals(select2.getWorkerPos(), new Position(0,4));
+        obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0, new Position(0,3)));
+        ActionMessage select2 = (ActionMessage) obs1.getMesRemoteToView().get(1);
+        assertEquals(select2.getWorkerPos(), new Position(0,3));
 
-    //TODO: rimangono da fare alcuni test di casi particolari(vittorie, sconfitte)
+
+
+        obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0,new Position(0,3),new Position(0,2)));
+        MoveMessage moveObs1 = (MoveMessage) obs1.getMesRemoteToView().get(0);
+        assertEquals(moveObs1.getMovePosition(),new Position(0,2));
+
+        obs1.setMsg(new BuildMessage(PlayerIndex.PLAYER0,new Position(1,2)));
+        obs1.setMsg(new EndTurnMessage(PlayerIndex.PLAYER0));
+        UpdateStateMessage init1 = (UpdateStateMessage) obs1.getMesRemoteToView().get(1);
+        assertEquals(init1.getGameState(),GameState.INITURN);
+
+        obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(1,3)));
+        ActionMessage select3 = (ActionMessage) obs2.getMesRemoteToView().get(1);
+        assertEquals(select3.getWorkerPos(),new Position(1,3));
+
+        obs2.setMsg(new MoveMessage(PlayerIndex.PLAYER1,new Position(1,3),new Position(2,3)));
+        obs2.setMsg(new BuildMessage(PlayerIndex.PLAYER1,new Position(1,2)));
+        obs2.setMsg(new EndTurnMessage(PlayerIndex.PLAYER1));
+
+        obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2,new Position(1,0)));
+        obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2,new Position(1,0),new Position(2,1)));
+        obs3.setMsg(new BuildMessage(PlayerIndex.PLAYER2,new Position(1,2)));
+        obs3.setMsg(new UsePowerMessage(PlayerIndex.PLAYER2,new Position(2,1),new Position(1,1)));
+        obs3.setMsg(new EndTurnMessage(PlayerIndex.PLAYER2));
+
+        obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0,new Position(0,4)));
+        obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0,new Position(0,4),new Position(0,3)));
+        obs1.setMsg(new BuildMessage(PlayerIndex.PLAYER0,new Position(1,3)));
+        obs1.setMsg(new EndTurnMessage(PlayerIndex.PLAYER0));
+
+        obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(2,3)));
+        ActionMessage select4 = (ActionMessage) obs2.getMesRemoteToView().get(2);
+        assertEquals(select4.getWorkerPos(),new Position(2,3));
+        obs2.setMsg(new MoveMessage(PlayerIndex.PLAYER1,new Position(2,3),new Position(3,3)));
+        obs2.setMsg(new BuildMessage(PlayerIndex.PLAYER1,new Position(4,3)));
+        obs2.setMsg(new EndTurnMessage(PlayerIndex.PLAYER1));
+
+        obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2,new Position(2,1)));
+        obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2,new Position(2,1),new Position(1,1)));
+        obs3.setMsg(new BuildMessage(PlayerIndex.PLAYER2,new Position(1,0)));
+        obs3.setMsg(new EndTurnMessage(PlayerIndex.PLAYER2));
+
+        obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0,new Position(0,3)));
+        obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0,new Position(0,3),new Position(0,4)));
+        obs1.setMsg(new BuildMessage(PlayerIndex.PLAYER0,new Position(1,3)));
+        obs1.setMsg(new EndTurnMessage(PlayerIndex.PLAYER0));
+
+        obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(3,3)));
+        obs2.setMsg(new MoveMessage(PlayerIndex.PLAYER1,new Position(3,3),new Position(3,2)));
+        obs2.setMsg(new BuildMessage(PlayerIndex.PLAYER1,new Position(3,1)));
+        obs2.setMsg(new EndTurnMessage(PlayerIndex.PLAYER1));
+
+        obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2,new Position(1,1)));
+        obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2,new Position(1,1),new Position(1,2)));
+        UpdateStateMessage win = (UpdateStateMessage) obs3.getMesRemoteToView().get(3);
+        assertEquals(win.getGameState(),GameState.MATCH_ENDED);
+        OkMessage ok = (OkMessage) obs3.getMesRemoteToView().get(4);
+        assertEquals("PiccoloPietro has won the game!",ok.getErrorMessage());
+        OkMessage okLose1 = (OkMessage) obs2.getMesRemoteToView().get(9);
+        assertEquals("PiccoloPietro has won the game!",okLose1.getErrorMessage());
+        OkMessage okLose2 = (OkMessage) obs1.getMesRemoteToView().get(20);
+        assertEquals("PiccoloPietro has won the game!",okLose2.getErrorMessage());
+
+        //TODO : Rimane caso della removePlayer da testare!!!
+
+
+
 
 
     }
