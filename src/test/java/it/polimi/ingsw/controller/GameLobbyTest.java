@@ -24,6 +24,7 @@ public class GameLobbyTest {
     @Test
     public void isPlayerAlreadyInLobbyTest(){
         lobby2p.setThreePlayersGame(false);
+        assertEquals(2,lobby2p.getNumberOfPlayerInLobby());
 
         assertFalse(lobby2p.isPlayerAlreadyInLobby(PlayerIndex.PLAYER0));
         lobby2p.addPlayer(PlayerIndex.PLAYER0, "Jack");
@@ -56,6 +57,7 @@ public class GameLobbyTest {
     @Test
     public void addPlayerTest3Player(){
         lobby3p.setThreePlayersGame(true);
+        assertEquals(3,lobby3p.getNumberOfPlayerInLobby());
 
         lobby3p.addPlayer(PlayerIndex.PLAYER0, "Jack");
         assertEquals(lobby3p.getLobbyPlayers().size(), 1);
