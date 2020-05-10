@@ -14,6 +14,8 @@ public interface ClientConnection {
 
     void asyncSend(Message message);
 
+    void setClientIndex(PlayerIndex clientIndex);
+
     boolean isConnected();
 
     void ping(PlayerIndex player) throws IOException;

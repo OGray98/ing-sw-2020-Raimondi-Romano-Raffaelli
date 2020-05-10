@@ -45,13 +45,18 @@ public class StubObservableClientConnection extends Observable<Message> implemen
         mesRemoteToView.add(message);
     }
 
+    @Override
+    public void setClientIndex(PlayerIndex clientIndex) {
+
+    }
+
     //->controller
-    public void setMsg(Message message){
+    public void setMsg(Message message) {
         this.mesRemoteToView.clear();
         notify(message);
     }
 
-    public List<Message> getMesRemoteToView(){
+    public List<Message> getMesRemoteToView() {
         return this.mesRemoteToView;
     }
 

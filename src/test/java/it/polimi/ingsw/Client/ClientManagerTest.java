@@ -1,13 +1,12 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Client.ClientManager;
-import it.polimi.ingsw.Client.ClientModel;
 import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.board.BuildType;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.utils.*;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -60,14 +59,14 @@ public class ClientManagerTest {
         godnames.add("Apollo");
         godnames.add("Demeter");
         clientManager.updateClient(new GodLikeChoseMessage(PlayerIndex.PLAYER0, godnames));
-        assertEquals(clientModel.getChosenGods().size(),2);
+        assertEquals(clientModel.getChosenGodsByGodLike().size(), 2);
 
         //Testing updateSelectedCard()
         clientManager.updateCurrentPlayer(new CurrentPlayerMessage(PlayerIndex.PLAYER1));
         clientManager.updateClient(new PlayerSelectGodMessage(PlayerIndex.PLAYER1, "Demeter"));
         assertNull(clientModel.getClientGod());
         clientManager.updateCurrentPlayer(new CurrentPlayerMessage(PlayerIndex.PLAYER0));
-        clientManager.updateClient(new PlayerSelectGodMessage(PlayerIndex.PLAYER1, "Demeter"));
+        clientManager.updateClient(new PlayerSelectGodMessage(PlayerIndex.PLAYER0, "Demeter"));
         assertEquals(clientModel.getClientGod(), "Demeter");
 
         //Testing updatePutWorkerMessage()
@@ -88,21 +87,28 @@ public class ClientManagerTest {
 
         //Testing updateBuildPowerMessage()
         assertEquals(clientModel.getDomesPositions().size(), 0);
-        clientManager.updateClient(new BuildPowerMessage(PlayerIndex.PLAYER0, new Position(2,0), BuildType.DOME));
+        clientManager.updateClient(new BuildPowerMessage(PlayerIndex.PLAYER0, new Position(2, 0), BuildType.DOME));
         assertEquals(clientModel.getDomesPositions().size(), 1);
-        assertTrue(clientModel.getDomesPositions().contains(new Position(2,0)));
-        clientManager.updateClient(new BuildPowerMessage(PlayerIndex.PLAYER0, new Position(2,1), BuildType.LEVEL));
-        assertEquals(clientModel.getLevelPosition(new Position(2,1)), 1);
+        assertTrue(clientModel.getDomesPositions().contains(new Position(2, 0)));
+        clientManager.updateClient(new BuildPowerMessage(PlayerIndex.PLAYER0, new Position(2, 1), BuildType.LEVEL));
+        assertEquals(clientModel.getLevelPosition(new Position(2, 1)), 1);
 
         //Testing updateAction()
         List<Position> movePos = new ArrayList<>();
-        movePos.add(new Position(0,0));
-        movePos.add(new Position(1,1));
-        clientManager.updateClient(new ActionMessage(PlayerIndex.PLAYER0, new Position(1,0), movePos, ActionType.MOVE));
+        movePos.add(new Position(0, 0));
+        movePos.add(new Position(1, 1));
+        clientManager.updateClient(new ActionMessage(PlayerIndex.PLAYER0, new Position(1, 0), movePos, ActionType.MOVE));
         assertEquals(clientModel.getActionPositions(ActionType.MOVE).size(), 2);
         assertEquals(clientModel.getActionPositions(ActionType.POWER).size(), 0);
-        clientManager.updateClient(new ActionMessage(PlayerIndex.PLAYER0, new Position(1,0), movePos, ActionType.POWER));
+        clientManager.updateClient(new ActionMessage(PlayerIndex.PLAYER0, new Position(1, 0), movePos, ActionType.POWER));
         assertEquals(clientModel.getActionPositions(ActionType.MOVE).size(), 2);
         assertEquals(clientModel.getActionPositions(ActionType.POWER).size(), 2);
+    }
+
+    @After
+    public void delete() {
+        client = null;
+        clientModel = null;
+        clientManager = null;
     }
 }

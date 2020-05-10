@@ -4,8 +4,6 @@ import it.polimi.ingsw.model.board.BuildType;
 import it.polimi.ingsw.network.ServerConnection;
 import it.polimi.ingsw.utils.*;
 
-import javax.swing.*;
-
 public class ClientManager {
 
     private final ServerConnection serverConnection;
@@ -89,18 +87,11 @@ public class ClientManager {
      * */
 
     public void updateNicknames(NicknameMessage message){
-        clientModel.addNickname(message.getNickname());
-        if(message.getClient() == clientModel.getPlayerIndex()){
-            clientModel.setPlayerNickname(message.getNickname());
-        }
+        clientModel.addNickname(message.getClient(), message.getNickname());
     }
 
     public void updateCurrentPlayer(CurrentPlayerMessage message){
-        if(message.getCurrentPlayerIndex() == clientModel.getPlayerIndex()){
-            clientModel.setAmICurrentPlayer(true);
-        }
-        else
-            clientModel.setAmICurrentPlayer(false);
+        clientModel.setAmICurrentPlayer(message.getCurrentPlayerIndex() == clientModel.getPlayerIndex());
     }
 
     public void updateIndex(ConnectionPlayerIndex message){
@@ -117,15 +108,12 @@ public class ClientManager {
 
     public void updateGodCards(GodLikeChoseMessage message){
         for(String god : message.getGodNames()){
-            clientModel.addGodChosen(god);
+            clientModel.addGodChosenByGodLike(god);
         }
     }
 
     public void updateSelectedCard(PlayerSelectGodMessage message){
-        if(clientModel.isAmICurrentPlayer()){
-            clientModel.setClientGod(message.getGodName());
-        }
-        //TODO: altri giocatori cosa vedono?
+        clientModel.setGodChosenByPlayer(message.getClient(), message.getGodName());
     }
 
     public void updatePutWorkerMessage(PutWorkerMessage message){
