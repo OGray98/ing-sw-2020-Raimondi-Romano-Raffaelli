@@ -68,6 +68,7 @@ public class Server {
             player1View.addObserver(controller);
             controller.addRemoteView(PlayerIndex.PLAYER0, player1View);
             lobbyCount++;
+            c.setClientIndex(PlayerIndex.PLAYER0);
         }
         else if(lobbyCount == 1){
             waitingConnection.put(PlayerIndex.PLAYER1, c);
@@ -77,6 +78,7 @@ public class Server {
                 player2View.addObserver(controller);
                 controller.addRemoteView(PlayerIndex.PLAYER1, player2View);
                 lobbyCount++;
+                c.setClientIndex(PlayerIndex.PLAYER1);
             }
         }
         else if (lobbyCount == 2 && controller.getPlayerNum() == 3) {
@@ -87,6 +89,7 @@ public class Server {
                 player3View.addObserver(controller);
                 controller.addRemoteView(PlayerIndex.PLAYER2, player3View);
                 lobbyCount++;
+                c.setClientIndex(PlayerIndex.PLAYER2);
                 }
             }
         }

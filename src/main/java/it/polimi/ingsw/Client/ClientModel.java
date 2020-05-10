@@ -40,10 +40,9 @@ public class ClientModel extends Observable<Message> {
                     "Prometheus", "If your Worker does not move up, it may build both before and after moving."
             )
     );
-    private final List<String> chosenGods = new ArrayList<>(0);
-    private String clientGod;
-    private final List<String> nicknames = new ArrayList<>(2);
-    private String playerNickname;
+    private final Map<PlayerIndex, String> chosenGods = new HashMap<>(2);
+    private final Map<PlayerIndex, String> nicknames = new HashMap<>(2);
+    private final List<String> godsChosenByGodLike = new ArrayList<>(2);
     private PlayerIndex playerIndex;
     private GameState currentState = GameState.NULL;
     private GameState powerGodState = GameState.NULL;
@@ -67,10 +66,9 @@ public class ClientModel extends Observable<Message> {
      * @param nickname nickname of new player
      * @throws NullPointerException if nickname is null
      */
-    public void addNickname(String nickname) throws NullPointerException {
+    public void addNickname(PlayerIndex index, String nickname) throws NullPointerException {
         if (nickname == null) throw new NullPointerException("nickname");
-
-        nicknames.add(nickname);
+        nicknames.put(index, nickname);
     }
 
 
@@ -147,14 +145,24 @@ public class ClientModel extends Observable<Message> {
      * @param name name of god chosen by god like
      * @throws NullPointerException if name is null
      */
-    public void addGodChosen(String name) throws NullPointerException {
+    public void addGodChosenByGodLike(String name) throws NullPointerException {
         if (name == null) throw new NullPointerException("name");
-        this.chosenGods.add(name);
+        this.godsChosenByGodLike.add(name);
     }
 
 
-    public List<String> getChosenGods(){
-        return this.chosenGods;
+    /**
+     * Delete worker of indexLoser from board
+     *
+     * @param indexLoser PlayerIndex of player who lose
+     */
+    public void playerLose(PlayerIndex indexLoser) {
+        playersPositions.remove(indexLoser);
+    }
+
+
+    public List<String> getChosenGodsByGodLike() {
+        return this.godsChosenByGodLike;
     }
 
     public GameState getCurrentState() {
@@ -166,15 +174,15 @@ public class ClientModel extends Observable<Message> {
     }
 
     public String getPlayerNickname() {
-        return playerNickname;
-    }
-
-    public List<String> getNicknames(){
-        return this.nicknames;
+        return nicknames.get(playerIndex);
     }
 
     public void setPlayerNickname(String playerNickname) {
-        this.playerNickname = playerNickname;
+        nicknames.put(playerIndex, playerNickname);
+    }
+
+    public List<String> getNicknames() {
+        return new ArrayList<>(this.nicknames.values());
     }
 
     public PlayerIndex getPlayerIndex() {
@@ -193,36 +201,32 @@ public class ClientModel extends Observable<Message> {
         return powerGodState;
     }
 
-    public int getLevelPosition(Position position){
-       for(Position pos : levelsPositions.keySet()){
-           if(pos.equals(position)){
-               return levelsPositions.get(pos);
-           }
-       }
-       return -1;
+    public int getLevelPosition(Position position) {
+        for (Position pos : levelsPositions.keySet()) {
+            if (pos.equals(position)) {
+                return levelsPositions.get(pos);
+            }
+        }
+        return -1;
     }
 
-    public List<Position> getPlayerIndexPosition(PlayerIndex playerIndex){
-        for(PlayerIndex player: playersPositions.keySet()){
-            if(player.equals(playerIndex)){
+    public List<Position> getPlayerIndexPosition(PlayerIndex playerIndex) {
+        for (PlayerIndex player : playersPositions.keySet()) {
+            if (player.equals(playerIndex)) {
                 return this.playersPositions.get(player);
             }
         }
         return null;
     }
 
-    public boolean nicknameIsPresent(String nickname){
-        for(String nick : nicknames){
-            if(nick.equalsIgnoreCase(nickname)){
-                return true;
-            }
-        }
-        return false;
+    public boolean nicknameIsPresent(String nickname) throws NullPointerException {
+        if (nickname == null) throw new NullPointerException("nickname");
+        return nicknames.containsValue(nickname);
     }
 
-    public boolean thePositionContainDome(Position position){
-        for(Position pos: domesPositions){
-            if(pos.equals(position)){
+    public boolean thePositionContainDome(Position position) {
+        for (Position pos : domesPositions) {
+            if (pos.equals(position)) {
                 return true;
             }
         }
@@ -230,7 +234,7 @@ public class ClientModel extends Observable<Message> {
     }
 
     public String getClientGod() {
-        return clientGod;
+        return chosenGods.get(playerIndex);
     }
 
     /**
@@ -259,20 +263,34 @@ public class ClientModel extends Observable<Message> {
     }
 
     /**
-     * Set god of this client's player
+     * Create the correlation playerIndex/God chosen
      *
-     * @param clientGod name of god
-     * @throws NullPointerException    if clientGod is null
-     * @throws NotSelectedGodException if clientGod isn't a chosen god by god like
+     * @param index PlayerIndex of player who chose god
+     * @param god   god chosen by player
+     * @throws NullPointerException    if god is null
+     * @throws NotSelectedGodException if god isn't a chosen god by god like
      */
-    public void setClientGod(String clientGod) throws NullPointerException, NotSelectedGodException {
-        if (clientGod == null) throw new NullPointerException("clientGod");
-        if (!chosenGods.contains(clientGod)) throw new NotSelectedGodException(clientGod);
-        this.clientGod = clientGod;
+    public void setGodChosenByPlayer(PlayerIndex index, String god) throws NullPointerException, NotSelectedGodException {
+        if (god == null) throw new NullPointerException("god");
+        if (!godsChosenByGodLike.contains(god)) throw new NotSelectedGodException(god);
+        this.chosenGods.put(index, god);
+        if (index.equals(playerIndex))
+            setClientPowerState();
+    }
+
+    public String getGodChosenByPlayer(PlayerIndex index) {
+        return this.chosenGods.get(index);
+    }
+
+
+    /**
+     * Set power state of this client
+     */
+    private void setClientPowerState() {
 
         //TODO DA CAMBIARE FA SCHIFO STO SWITCH
 
-        switch (clientGod) {
+        switch (this.chosenGods.get(playerIndex)) {
             case "Apollo":
             case "Athena":
             case "Prometheus":
@@ -289,7 +307,7 @@ public class ClientModel extends Observable<Message> {
                 this.powerGodState = GameState.ENDPHASE;
                 break;
             default:
-                throw new WrongGodNameException(clientGod);
+                throw new WrongGodNameException(this.chosenGods.get(playerIndex));
         }
     }
 

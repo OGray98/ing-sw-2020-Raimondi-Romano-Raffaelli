@@ -3,6 +3,7 @@ import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.InvalidPutWorkerException;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,14 +32,14 @@ public class ClientModelTest {
     @Test
     public void testNickname(){
         try{
-            clientModel.addNickname(null);
+            clientModel.addNickname(PlayerIndex.PLAYER0, null);
         }catch (NullPointerException e){
             assertEquals("nickname",e.getMessage());
         }
-        clientModel.addNickname("Jack");
+        clientModel.addNickname(PlayerIndex.PLAYER0, "Jack");
         assertTrue(clientModel.nicknameIsPresent("Jack"));
         assertFalse(clientModel.nicknameIsPresent("Pluto"));
-        clientModel.addNickname("Creed");
+        clientModel.addNickname(PlayerIndex.PLAYER1, "Creed");
         assertTrue(clientModel.nicknameIsPresent("Creed"));
     }
 
@@ -85,7 +86,7 @@ public class ClientModelTest {
     @Test
     public void godChosenTest(){
         try{
-            clientModel.addGodChosen(null);
+            clientModel.addGodChosenByGodLike(null);
         }catch (NullPointerException e){
             assertEquals("name",e.getMessage());
         }
@@ -107,7 +108,7 @@ public class ClientModelTest {
         try{
             clientModel.movePlayer(new Position(2,2),new Position(2,2));
         }catch (IllegalArgumentException e){
-            assertEquals(null,e.getMessage());
+            assertNull(e.getMessage());
         }
 
         clientModel.putWorker(PlayerIndex.PLAYER0,new Position(3,3));
@@ -123,13 +124,17 @@ public class ClientModelTest {
     @Test
     public void getSetTest(){
         clientModel.setCurrentState(GameState.PUT_WORKER);
-        assertEquals(GameState.PUT_WORKER,clientModel.getCurrentState());
+        assertEquals(GameState.PUT_WORKER, clientModel.getCurrentState());
         clientModel.setPlayerNickname("Lock");
-        assertEquals("Lock",clientModel.getPlayerNickname());
+        assertEquals("Lock", clientModel.getPlayerNickname());
         clientModel.setPlayerIndex(PlayerIndex.PLAYER0);
-        assertEquals(PlayerIndex.PLAYER0,clientModel.getPlayerIndex());
+        assertEquals(PlayerIndex.PLAYER0, clientModel.getPlayerIndex());
         clientModel.setAmICurrentPlayer(true);
         assertTrue(clientModel.amICurrentPlayer);
     }
 
+    @After
+    public void delete() {
+        clientModel = null;
+    }
 }

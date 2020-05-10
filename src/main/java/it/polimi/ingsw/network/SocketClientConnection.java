@@ -26,7 +26,7 @@ public class SocketClientConnection extends Observable<Message> implements Clien
     private ObjectInputStream in;
 
     private transient final BlockingQueue<Message> inputMessageQueue = new ArrayBlockingQueue<>(10);
-
+    private PlayerIndex clientIndex;
 
     public SocketClientConnection(Socket socket, Server server) {
         this.server = server;
@@ -51,8 +51,6 @@ public class SocketClientConnection extends Observable<Message> implements Clien
         out.writeObject(message);
         out.flush();
     }
-
-
 
 
     public synchronized void closeConnection() {
@@ -105,20 +103,22 @@ public class SocketClientConnection extends Observable<Message> implements Clien
                 }
             }).start();
             while (isConnected()) {
-                try {
-                    Message inputMessage = (Message) in.readObject();
-                    if (inputMessage != null && inputMessage.getType() != TypeMessage.PONG) {
-                        try {
-                            inputMessageQueue.put(inputMessage);
-                        } catch (InterruptedException e) {
-                            System.err.println("Error!" + e.getMessage());
-                            Logger.getAnonymousLogger().severe(e.getMessage());
-                            setIsActiveFalse();
+                if (in.available() != 0) {
+                    try {
+                        Message inputMessage = (Message) in.readObject();
+                        if (inputMessage != null && inputMessage.getType() != TypeMessage.PONG) {
+                            try {
+                                inputMessageQueue.put(inputMessage);
+                            } catch (InterruptedException e) {
+                                System.err.println("Error!" + e.getMessage());
+                                Logger.getAnonymousLogger().severe(e.getMessage());
+                                setIsActiveFalse();
+                            }
                         }
+                    } catch (ClassNotFoundException e) {
+                        Logger.getAnonymousLogger().severe(e.getMessage());
+                        setIsActiveFalse();
                     }
-                } catch (ClassNotFoundException e) {
-                    Logger.getAnonymousLogger().severe(e.getMessage());
-                    setIsActiveFalse();
                 }
             }
 
@@ -136,11 +136,11 @@ public class SocketClientConnection extends Observable<Message> implements Clien
 
     @Override
     public void forceDisconnection() {
-        notify(new CloseConnectionMessage(PlayerIndex.PLAYER0));
-
+        notify(new CloseConnectionMessage(this.clientIndex));
         setIsActiveFalse();
-
     }
 
-
+    public void setClientIndex(PlayerIndex clientIndex) {
+        this.clientIndex = clientIndex;
+    }
 }

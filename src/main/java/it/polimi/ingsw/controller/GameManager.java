@@ -5,14 +5,11 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.deck.Deck;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.model.player.PlayerInterface;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.view.RemoteView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +24,7 @@ public class GameManager implements Observer<Message> {
 
     private final GameLobby lobby;
 
-    private Game gameModel;
+    private final Game gameModel;
     private GodPhaseManager godPhaseManager;
     private final Map<PlayerIndex, RemoteView> remoteViews;
     //TurnManager instance
@@ -184,12 +181,7 @@ public class GameManager implements Observer<Message> {
 
         lobby.setThreePlayersGame(isThreePlayerGame);
 
-        if(isThreePlayerGame){
-            gameModel.setNumPlayer(true);
-        }
-        else{
-            gameModel.setNumPlayer(false);
-        }
+        gameModel.setNumPlayer(isThreePlayerGame);
     }
 
     /**
