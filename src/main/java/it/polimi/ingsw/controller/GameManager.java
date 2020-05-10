@@ -641,12 +641,8 @@ public class GameManager implements Observer<Message> {
         );
         //remove loser player
         gameModel.removeCurrentPlayer();
-        //Set state and start new turn of other player
-        gameModel.setCurrentState(GameState.MOVE);
-        this.turnManager.endTurn();
-        this.turnManager.startTurn();
         //if only 1 player remains he wins the game!
-        if(gameModel.getNumPlayer() == 1){
+        if(gameModel.getNumGamingPlayer() == 1){
             respondOkToRemoteView(
                     gameModel.getCurrentPlayerIndex(),
                     "You win!",
@@ -655,6 +651,13 @@ public class GameManager implements Observer<Message> {
             //Set state
             gameModel.setCurrentState(GameState.MATCH_ENDED);
         }
+        else {
+            //Set state and start new turn of other player
+            gameModel.setCurrentState(GameState.MOVE);
+            this.turnManager.endTurn();
+            this.turnManager.startTurn();
+        }
+
     }
 
     /**
@@ -686,13 +689,17 @@ public class GameManager implements Observer<Message> {
      * @param specificType specific type of this errorMessage
      */
     private void respondErrorToRemoteView(PlayerIndex clientIndex, String text, TypeMessage specificType) {
-        remoteViews.get(clientIndex).putMessage(
-                new ErrorMessage(
-                        clientIndex,
-                        specificType,
-                        text
-                )
-        );
+        for(PlayerIndex client : remoteViews.keySet()) {
+            if (client.equals(clientIndex)) {
+                remoteViews.get(client).putMessage(
+                        new ErrorMessage(
+                                clientIndex,
+                                specificType,
+                                text
+                        )
+                );
+            }
+        }
     }
 
     /**
@@ -703,13 +710,17 @@ public class GameManager implements Observer<Message> {
      * @param specificType specific type of this okMessage
      */
     private void respondOkToRemoteView(PlayerIndex clientIndex, String text, TypeMessage specificType) {
-        remoteViews.get(clientIndex).putMessage(
-                new OkMessage(
-                        clientIndex,
-                        specificType,
-                        text
-                )
-        );
+        for(PlayerIndex client : remoteViews.keySet()) {
+            if(client.equals(clientIndex)) {
+                remoteViews.get(client).putMessage(
+                        new OkMessage(
+                                clientIndex,
+                                specificType,
+                                text
+                        )
+                );
+            }
+        }
     }
 
     /**

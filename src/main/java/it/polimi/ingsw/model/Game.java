@@ -51,9 +51,15 @@ public class Game extends Observable<Message> {
         return numPlayer;
     }
 
+
+
     public void setNumPlayer(boolean threePlayer) {
         this.numPlayer = threePlayer ? 3 : 2;
         this.deck.setPlayersNumber(threePlayer);
+    }
+
+    public int getNumGamingPlayer(){
+        return this.players.size();
     }
 
 

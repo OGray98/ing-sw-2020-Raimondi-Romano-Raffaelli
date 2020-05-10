@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.stub.StubObservableClientConnection;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.view.RemoteView;
+import org.junit.After;
 import org.junit.Test;
 
 import javax.swing.*;
@@ -136,7 +137,7 @@ public class ControllerTestSOLOPERORA {
             assertEquals("There isn't a god named Apollo", e.getMessage());
         }
         obs2.setMsg(new PlayerSelectGodMessage(PlayerIndex.PLAYER1, "Athena"));
-        assertEquals(obs2.getMesRemoteToView().size(), 1);
+        assertEquals(obs2.getMesRemoteToView().size(), 2);
 
         PlayerSelectGodMessage god1 = (PlayerSelectGodMessage) obs2.getMesRemoteToView().get(0);
         assertEquals(god1.getGodName(), "Athena");
@@ -197,7 +198,7 @@ public class ControllerTestSOLOPERORA {
         assertEquals(put3.getPositionTwo(), new Position(1,4));
 
         //Check that the new state is INITURN
-        UpdateStateMessage initState = (UpdateStateMessage) obs2.getMesRemoteToView().get(1);
+        UpdateStateMessage initState = (UpdateStateMessage) obs2.getMesRemoteToView().get(2);
         assertEquals(initState.getGameState(), GameState.INITURN);
 
         //Check that player can't choose card duringINIT TURN
@@ -404,8 +405,15 @@ public class ControllerTestSOLOPERORA {
         OkMessage okLose2 = (OkMessage) obs1.getMesRemoteToView().get(20);
         assertEquals("PiccoloPietro has won the game!",okLose2.getErrorMessage());
 
-        //TODO : Rimane caso della removePlayer da testare!!!
 
+
+       obs1 = null;
+       obs2 = null;
+       obs3 = null;
+       game = null;
+       remoteView1 = null;
+       remoteView2 = null;
+       remoteView3 = null;
 
 
 
