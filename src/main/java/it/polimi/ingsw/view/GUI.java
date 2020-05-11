@@ -14,7 +14,9 @@ public class GUI extends JFrame{
     private JLabel label;
     private JLabel labelWorker;
     private JLabel labelWorker2;
+    private JLabel labelTerminal;
     private JPanel panel1;
+    private JLabel labelGod;
     private static final Dimension FRAME_DIM = new Dimension(1400,820);
     private static final int ROW_NUM = 5;
     private JButton[][] buttonMatrix = new JButton[ROW_NUM][ROW_NUM];
@@ -44,13 +46,21 @@ public class GUI extends JFrame{
         labelWorker2 = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
         labelWorker2.setPreferredSize(new Dimension(5,5));
 
+        labelTerminal = new JLabel("Terminal");
+        Image imageTerminal = new ImageIcon(this.getClass().getResource("/bg_panelEdgeLeft.png")).getImage().getScaledInstance(350,800,Image.SCALE_DEFAULT);
+        labelTerminal.setIcon(new ImageIcon(imageTerminal));
 
+        labelGod = new JLabel("God");
+        Image imageGod = new ImageIcon(this.getClass().getResource("/bg_panelEdgeRight.png")).getImage().getScaledInstance(350,800,Image.SCALE_DEFAULT);
+        labelGod.setIcon(new ImageIcon(imageGod));
 
 
         panel1 = new JPanel(){
             @Override
             public void paintComponent(Graphics g){
                 g.drawImage(image, 0 ,0,null);
+                g.drawImage(imageTerminal,0,0,null);
+                g.drawImage(imageGod,1050,0,null);
             }
         };
 
@@ -75,7 +85,12 @@ public class GUI extends JFrame{
         buttonMatrix[0][3].add(labelWorker2,BorderLayout.CENTER);
         buttonMatrix[2][2].add(labelWorker,BorderLayout.CENTER);
 
-        add(panel1, BorderLayout.CENTER);
+
+        add(panel1,BorderLayout.CENTER);
+
+
+
+
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         pack();
