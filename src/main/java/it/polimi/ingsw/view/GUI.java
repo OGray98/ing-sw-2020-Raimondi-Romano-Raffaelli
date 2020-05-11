@@ -6,10 +6,14 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 
 public class GUI extends JFrame{
 
     private JLabel label;
+    private JLabel labelWorker;
+    private JLabel labelWorker2;
     private JPanel panel1;
     private static final Dimension FRAME_DIM = new Dimension(1400,820);
     private static final int ROW_NUM = 5;
@@ -34,6 +38,15 @@ public class GUI extends JFrame{
         Image image = new ImageIcon(this.getClass().getResource("/SantoriniBoard.png")).getImage().getScaledInstance(1400,800, Image.SCALE_DEFAULT);
         label.setIcon(new ImageIcon(image));
 
+        labelWorker = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
+        labelWorker.setPreferredSize(new Dimension(5,5));
+
+        labelWorker2 = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
+        labelWorker2.setPreferredSize(new Dimension(5,5));
+
+
+
+
         panel1 = new JPanel(){
             @Override
             public void paintComponent(Graphics g){
@@ -51,10 +64,16 @@ public class GUI extends JFrame{
                 buttonMatrix[i][j] = new JButton("" + i + j);
                 buttonMatrix[i][j].setOpaque(false);
                 buttonMatrix[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                buttonMatrix[i][j].setMargin(new Insets(0,0,0,0));
+                buttonMatrix[i][j].setPreferredSize(new Dimension(20,20));
+                buttonMatrix[i][j].setLayout(new BorderLayout());
                 layout.setConstraints(buttonMatrix[i][j], lim);
                 panel1.add(buttonMatrix[i][j]);
             }
         }
+
+        buttonMatrix[0][3].add(labelWorker2,BorderLayout.CENTER);
+        buttonMatrix[2][2].add(labelWorker,BorderLayout.CENTER);
 
         add(panel1, BorderLayout.CENTER);
 
