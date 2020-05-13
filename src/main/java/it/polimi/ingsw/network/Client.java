@@ -5,6 +5,8 @@ import it.polimi.ingsw.Client.ClientModel;
 import it.polimi.ingsw.utils.Message;
 import it.polimi.ingsw.utils.PongMessage;
 import it.polimi.ingsw.utils.TypeMessage;
+import it.polimi.ingsw.view.GUI;
+import it.polimi.ingsw.view.GUIMain;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

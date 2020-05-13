@@ -3,6 +3,8 @@ import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.InvalidPutWorkerException;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
+import it.polimi.ingsw.stub.StubView;
+import it.polimi.ingsw.utils.MoveMessage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +20,8 @@ public class ClientModelTest {
     @Before
     public void init(){
         clientModel = new ClientModel();
+        StubView gui = new StubView();
+        clientModel.addObserver(gui);
     }
 
     @Test
@@ -69,15 +73,19 @@ public class ClientModelTest {
     @Test
     public void putWorkerTest(){
         try{
-            clientModel.putWorker(PlayerIndex.PLAYER0,null);
+            clientModel.putWorker(PlayerIndex.PLAYER0,null, null);
         }catch (NullPointerException e){
-            assertEquals("pos",e.getMessage());
+            assertEquals("pos1",e.getMessage());
         }
-        clientModel.putWorker(PlayerIndex.PLAYER0,new Position(3,3));
-        clientModel.putWorker(PlayerIndex.PLAYER0,new Position(3,4));
+        try{
+            clientModel.putWorker(PlayerIndex.PLAYER0,new Position(1,1), null);
+        }catch (NullPointerException e){
+            assertEquals("pos2",e.getMessage());
+        }
+        clientModel.putWorker(PlayerIndex.PLAYER0,new Position(3,3), new Position(3,4));
 
         try{
-            clientModel.putWorker(PlayerIndex.PLAYER0,new Position(2,2));
+            clientModel.putWorker(PlayerIndex.PLAYER0,new Position(2,2), new Position(3,2));
         }catch (InvalidPutWorkerException e){
             assertEquals( "PLAYER0 cannot put a worker in : [2][2], because he already have 2 worker in your board",e.getMessage());
         }
@@ -95,28 +103,27 @@ public class ClientModelTest {
     @Test
     public void moveWorkerTest(){
         try{
-            clientModel.movePlayer(null,new Position(2,2));
+            clientModel.movePlayer(new MoveMessage(PlayerIndex.PLAYER0,null,new Position(2,2)));
         }catch (NullPointerException e){
-            assertEquals("oldPos",e.getMessage());
+            assertEquals("pos1",e.getMessage());
         }
         try{
-            clientModel.movePlayer(new Position(2,2),null);
+            clientModel.movePlayer(new MoveMessage(PlayerIndex.PLAYER0,new Position(2,2),null));
         }catch (NullPointerException e){
-            assertEquals("newPos",e.getMessage());
+            assertEquals("pos2",e.getMessage());
         }
 
         try{
-            clientModel.movePlayer(new Position(2,2),new Position(2,2));
+            clientModel.movePlayer(new MoveMessage(PlayerIndex.PLAYER0, new Position(2,2),new Position(2,2)));
         }catch (IllegalArgumentException e){
             assertNull(e.getMessage());
         }
 
-        clientModel.putWorker(PlayerIndex.PLAYER0,new Position(3,3));
-        clientModel.putWorker(PlayerIndex.PLAYER0,new Position(3,4));
+        clientModel.putWorker(PlayerIndex.PLAYER0,new Position(3,3), new Position(3,4));
         assertEquals(new Position(3,3),clientModel.getPlayerIndexPosition(PlayerIndex.PLAYER0).get(0));
         assertEquals(new Position(3,4),clientModel.getPlayerIndexPosition(PlayerIndex.PLAYER0).get(1));
 
-        clientModel.movePlayer(new Position(3,3),new Position(2,3));
+        clientModel.movePlayer(new MoveMessage(PlayerIndex.PLAYER0,new Position(3,3),new Position(2,3)));
         assertEquals(new Position(2,3),clientModel.getPlayerIndexPosition(PlayerIndex.PLAYER0).get(1));
 
     }
