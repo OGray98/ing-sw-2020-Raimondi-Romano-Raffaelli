@@ -7,9 +7,11 @@ import it.polimi.ingsw.exception.WrongGodNameException;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
+import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.utils.ActionType;
-import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.stub.StubView;
+import it.polimi.ingsw.utils.*;
+import it.polimi.ingsw.view.GUI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +26,10 @@ public class ClientModel extends Observable<Message> {
     //TODO MANCANO TUTTE LE NOTIFY ALLA VIEW
     //TODO RAPPRESENTAZIONE DEI GOD UN PO' SCHIFOSA, FARE UN' INTERFACCIA/CLASSE COMUNE CON CARDINTERFACE?
     //TODO FARE INTERFACCE/CLASSI COMUNI CON I VARI ELEMENTI DEL MODEL? ESEMPIO BOARD IMPLEMENT BOARDINTERFACE E CLIENTBOARD IMPLEMENT BOARDINTERFACE?
+
+    //TODO: provvisorio per testare le notifiche alla gui
+    private ClientView gui;
+
     private final Map<Position, Integer> levelsPositions = new HashMap<>(Board.NUM_COLUMNS * Board.NUM_ROW);
     private final List<Position> domesPositions = new ArrayList<>(0);
     private final Map<PlayerIndex, List<Position>> playersPositions = new HashMap<>(2);
@@ -54,6 +60,7 @@ public class ClientModel extends Observable<Message> {
     boolean amICurrentPlayer = false;
 
     public ClientModel() {
+
         for (int i = 0; i < Board.NUM_ROW; i++)
             for (int j = 0; j < Board.NUM_COLUMNS; j++)
                 this.levelsPositions.put(new Position(i, j), 0);
@@ -80,11 +87,18 @@ public class ClientModel extends Observable<Message> {
      */
     public void incrementLevel(Position pos) throws NullPointerException {
         if (pos == null) throw new NullPointerException("pos");
+
+        int level = 0;
         for(Position p: levelsPositions.keySet()){
             if(p.equals(pos)){
                 this.levelsPositions.replace(p,this.levelsPositions.get(p) + 1);
+                //save the level to notify the view
+                level = levelsPositions.get(p);
             }
         }
+
+        //notify to view
+        notify(new BuildViewMessage(playerIndex, pos, level));
     }
 
     /**
@@ -96,46 +110,55 @@ public class ClientModel extends Observable<Message> {
     public void addDome(Position pos) throws NullPointerException {
         if (pos == null) throw new NullPointerException("pos");
         this.domesPositions.add(pos);
+
+        //notify to view
+        notify(new BuildViewMessage(playerIndex, pos, 4));
     }
 
     /**
      * Move a worker of playerIndex from oldPos to newPos
      *
-     * @param oldPos old Position of worker
-     * @param newPos new Position of worker
+     * @param message MoveMessage received from ClientManager
      * @throws NullPointerException     if oldPos or newPos is null
      * @throws IllegalArgumentException if oldPos is equal to newPos
      */
-    public void movePlayer(Position oldPos, Position newPos) throws NullPointerException, IllegalArgumentException {
-        if (oldPos == null) throw new NullPointerException("oldPos");
-        if (newPos == null) throw new NullPointerException("newPos");
-        if (oldPos.equals(newPos)) throw new IllegalArgumentException();
+    public void movePlayer(MoveMessage message) throws NullPointerException, IllegalArgumentException {
+        if (message.getWorkerPosition() == null) throw new NullPointerException("pos1");
+        if (message.getMovePosition() == null) throw new NullPointerException("pos2");
+        if (message.getWorkerPosition().equals(message.getMovePosition())) throw new IllegalArgumentException();
 
         this.playersPositions.entrySet().stream()
-                .filter(entry -> entry.getValue().contains(oldPos))
+                .filter(entry -> entry.getValue().contains(message.getWorkerPosition()))
                 .forEach(entry -> {
-                    entry.getValue().remove(oldPos);
-                    entry.getValue().add(newPos);
+                    entry.getValue().remove(message.getWorkerPosition());
+                    entry.getValue().add(message.getMovePosition());
                 });
+        //notify to view
+        notify(new MoveMessage(message.getClient(), message.getWorkerPosition(), message.getMovePosition()));
     }
 
     /**
-     * Put a worker of playerIndex in position pos
+     * Put a worker of playerIndex in positions pos1 and pos2
      *
      * @param playerIndex player who put the worker
-     * @param pos         Position where put the worker
+     * @param pos1         first Position where put worker
+     * @param pos2         second Position where put worker
      * @throws NullPointerException      if pos is null
      * @throws InvalidPutWorkerException if the player has already had 2 worker on board
      */
-    public void putWorker(PlayerIndex playerIndex, Position pos) throws NullPointerException, InvalidPutWorkerException {
-        if (pos == null) throw new NullPointerException("pos");
-        if (this.playersPositions.containsKey(playerIndex) && this.playersPositions.get(playerIndex).size() >= 2)
-            throw new InvalidPutWorkerException(pos.row, pos.col, playerIndex);
+    public void putWorker(PlayerIndex playerIndex, Position pos1, Position pos2) throws NullPointerException, InvalidPutWorkerException {
+        if (pos1 == null) throw new NullPointerException("pos1");
+        if (pos2 == null) throw new NullPointerException("pos2");
+        if (this.playersPositions.containsKey(playerIndex) && this.playersPositions.get(playerIndex).size() != 0)
+            throw new InvalidPutWorkerException(pos1.row, pos1.col, playerIndex);
 
-        if (this.playersPositions.containsKey(playerIndex))
-            this.playersPositions.get(playerIndex).add(pos);
+        if (this.playersPositions.containsKey(playerIndex)){
+            this.playersPositions.get(playerIndex).add(pos1);
+            this.playersPositions.get(playerIndex).add(pos2);
+        }
         else
-            this.playersPositions.put(playerIndex, new ArrayList<>(List.of(pos)));
+            this.playersPositions.put(playerIndex, new ArrayList<>(List.of(pos1,pos2)));
+        notify(new PutWorkerMessage(playerIndex, pos1, pos2));
     }
 
 
