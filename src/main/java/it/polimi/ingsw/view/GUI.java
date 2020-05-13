@@ -16,6 +16,7 @@ import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GUI extends ClientView {
 
@@ -28,6 +29,7 @@ public class GUI extends ClientView {
     private static final Dimension FRAME_DIM = new Dimension(1400,820);
     private static final int ROW_NUM = 5;
     private JButton[][] buttonMatrix = new JButton[ROW_NUM][ROW_NUM];
+
 
 
     public GUI(){
@@ -267,7 +269,7 @@ public class GUI extends ClientView {
 
         JLabel labelWorker = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
         labelWorker.setPreferredSize(new Dimension(5,5));
-        JLabel labelWorker2 = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
+        JLabel labelWorker2 = new JLabel(new ImageIcon(this.getClass().getResource("/title_boat_bottom.png")));
         labelWorker2.setPreferredSize(new Dimension(5,5));
 
         SwingUtilities.invokeLater(new Runnable() {
@@ -285,20 +287,80 @@ public class GUI extends ClientView {
         Position oldPos = message.getWorkerPosition();
         Position newPos = message.getMovePosition();
 
-        JLabel labelWorker = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
+        JLabel labelWorker = new JLabel(new ImageIcon(this.getClass().getResource("/title_boat_bottom.png")));
+        labelWorker.setLayout(new BorderLayout());
         labelWorker.setPreferredSize(new Dimension(5,5));
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                int labelNum = buttonMatrix[oldPos.row][oldPos.col].getComponentCount();
-                JLabel l = (JLabel) buttonMatrix[oldPos.row][oldPos.col].getComponent(labelNum-1);
+                int labelNumNewPos = buttonMatrix[newPos.row][newPos.col].getComponentCount();
+                int labelNumOldPos = buttonMatrix[oldPos.row][oldPos.col].getComponentCount();
+                if(labelNumNewPos != 0){
+                        //Tower level 1
+                        JLabel l;
+                        l = (JLabel) buttonMatrix[newPos.row][newPos.col].getComponent(labelNumNewPos -1);
+                        if(l.getComponentCount() != 0){
+                            //Tower level 2
+                            l = (JLabel) l.getComponent(l.getComponentCount() - 1);
+                            if(l.getComponentCount() != 0){
+                                //Tower level 3
+                                l = (JLabel) l.getComponent(l.getComponentCount() - 1);
+                            }
+                        }
+                        JLabel labelIcon;
+                        //Tower level 1
+                        labelIcon = (JLabel) buttonMatrix[oldPos.row][oldPos.col].getComponent(labelNumOldPos - 1);
+                        if(labelIcon.getComponentCount() != 0){
+                            //Tower level 2
+                            JLabel labelIcon2;
+                            labelIcon2 = (JLabel) labelIcon.getComponent(labelIcon.getComponentCount() - 1);
+                            if(labelIcon2.getComponentCount() != 0){
+                                //Tower level 3
+                                JLabel labelIcon3;
+                                labelIcon3 = (JLabel) labelIcon.getComponent(labelIcon.getComponentCount() - 1);
+                                if(labelIcon3.getComponentCount() != 0){
+                                    labelIcon3.remove(labelIcon3.getComponentCount() - 1);
+                                }else{
+                                    labelIcon2.remove(labelIcon2.getComponentCount() - 1);
+                                }
+                            }else{
+                            labelIcon.remove(labelIcon.getComponentCount() - 1);}
+                        }else{
+                        buttonMatrix[oldPos.row][oldPos.col].remove(labelNumOldPos - 1);
+                        buttonMatrix[oldPos.row][oldPos.col].revalidate();
+                        buttonMatrix[oldPos.row][oldPos.col].repaint();
+                        }
+                        l.add(labelWorker, BorderLayout.CENTER);
+                        buttonMatrix[newPos.row][newPos.col].add(l);
+                } else{
+                        JLabel labelOldRemove;
+                        //Tower level 1
+                        labelOldRemove = (JLabel) buttonMatrix[oldPos.row][oldPos.col].getComponent(labelNumOldPos - 1);
+                        if(labelOldRemove.getComponentCount() != 0){
+                            //Tower level 2
+                            JLabel labelOldRemove2;
+                            labelOldRemove2 = (JLabel) labelOldRemove.getComponent(labelOldRemove.getComponentCount() - 1);
 
-                buttonMatrix[oldPos.row][oldPos.col].remove(labelNum - 1);
-                buttonMatrix[oldPos.row][oldPos.col].revalidate();
-                buttonMatrix[oldPos.row][oldPos.col].repaint();
-                l.add(labelWorker, BorderLayout.CENTER);
-                buttonMatrix[newPos.row][newPos.col].add(l);
+                            if(labelOldRemove2.getComponentCount() != 0){
+                                //Tower level 3
+                                JLabel labelOldRemove3;
+                                labelOldRemove3 = (JLabel) labelOldRemove.getComponent(labelOldRemove.getComponentCount() - 1);
+                                if(labelOldRemove3.getComponentCount() != 0){
+                                    labelOldRemove3.remove(labelOldRemove3.getComponentCount() - 1);
+                                }else{
+                                    labelOldRemove2.remove(labelOldRemove2.getComponentCount() - 1);
+                                }
+                            }else{
+                                labelOldRemove.remove(labelOldRemove.getComponentCount() - 1);
+                            }
+                        }else{
+                            buttonMatrix[oldPos.row][oldPos.col].remove(labelNumOldPos - 1);
+                        }
+                        buttonMatrix[oldPos.row][oldPos.col].revalidate();
+                        buttonMatrix[oldPos.row][oldPos.col].repaint();
+                        buttonMatrix[newPos.row][newPos.col].add(labelWorker);
+                }
             }
         });
     }
@@ -318,18 +380,19 @@ public class GUI extends ClientView {
                 switch (level){
                     case 1:
                         buildLabel = new JLabel(new ImageIcon(this.getClass().getResource("/bg_panelEdgeRight.png")));
+                        buildLabel.setLayout(new BorderLayout());
                         buttonMatrix[buildPos.row][buildPos.col].add(buildLabel, BorderLayout.CENTER);
                         break;
                     case 2:
-                        buildLabel = new JLabel();
+                        //buildLabel = new JLabel();
                         //buttonMatrix[buildPos.row][buildPos.col].add(buildLabel);
                         break;
                     case 3:
-                        buildLabel = new JLabel();
+                        //buildLabel = new JLabel();
                         //buttonMatrix[buildPos.row][buildPos.col].add(buildLabel);
                         break;
                     case 4:
-                        buildLabel = new JLabel();
+                        //buildLabel = new JLabel();
                         //buttonMatrix[buildPos.row][buildPos.col].add(buildLabel);
                         break;
                     default:
