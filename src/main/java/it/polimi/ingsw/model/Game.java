@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * Game contains every object of model
  */
-public class Game extends Observable<Message> {
+public class Game extends Observable<MessageToClient> {
 
     private final List<PlayerInterface> players;
     private final Board board;

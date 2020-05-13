@@ -1,9 +1,9 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.model.board.Position;
-import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.utils.*;
+import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.MoveMessage;
+import it.polimi.ingsw.utils.PutWorkerMessage;
 
 public abstract class ClientView implements Observer<Message>{
     /**
@@ -19,7 +19,7 @@ public abstract class ClientView implements Observer<Message>{
 
     public void updateMoveWorker(MoveMessage message){}
 
-    public void updateBuild(BuildViewMessage message){}
+    //public void updateBuild(BuildViewMessage message){}
 
     //method from Observer
     @Override
@@ -34,7 +34,7 @@ public abstract class ClientView implements Observer<Message>{
                 updateMoveWorker((MoveMessage)message);
                 break;
             case BUILD:
-                updateBuild((BuildViewMessage) message);
+                //updateBuild((BuildViewMessage) message);
                 break;
         }
     }

@@ -76,13 +76,12 @@ public class ClientManager implements ControllableByServerMessage {
 
     @Override
     public void updatePutWorkerMessage(PutWorkerMessage message) {
-        clientModel.putWorker(message.getClient(), message.getPositionOne());
-        clientModel.putWorker(message.getClient(), message.getPositionTwo());
+        clientModel.putWorker(message.getClient(), message.getPositionOne(), message.getPositionTwo());
     }
 
     @Override
     public void updateMoveMessage(MoveMessage message) {
-        clientModel.movePlayer(message.getWorkerPosition(), message.getMovePosition());
+        clientModel.movePlayer(message);
     }
 
     @Override

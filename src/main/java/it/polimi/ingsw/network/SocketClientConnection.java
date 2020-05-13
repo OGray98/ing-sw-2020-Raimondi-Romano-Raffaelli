@@ -43,7 +43,7 @@ public class SocketClientConnection extends Observable<MessageToServer> implemen
     /**
      * @param message to write on socket server -> client
      */
-    private synchronized void send(Message message) throws IOException {
+    private synchronized void send(MessageToClient message) throws IOException {
         out.reset();
         out.writeObject(message);
         out.flush();
@@ -67,9 +67,8 @@ public class SocketClientConnection extends Observable<MessageToServer> implemen
         setIsActiveFalse();
     }
 
-
-
-    public void asyncSend(final Message message) {
+    @Override
+    public void asyncSend(final MessageToClient message) {
         new Thread(() -> {
             try {
                 send(message);

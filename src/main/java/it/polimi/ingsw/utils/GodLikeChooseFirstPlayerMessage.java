@@ -1,5 +1,6 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.Client.ControllableByServerMessage;
 import it.polimi.ingsw.controller.ControllableByClientMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
@@ -8,7 +9,7 @@ import it.polimi.ingsw.model.player.PlayerIndex;
  * chosen by the GodLike Player
  */
 
-public class GodLikeChooseFirstPlayerMessage extends Message implements MessageToServer {
+public class GodLikeChooseFirstPlayerMessage extends Message implements MessageToServer, MessageToClient {
 
     private final PlayerIndex playerFirst;
 
@@ -25,5 +26,10 @@ public class GodLikeChooseFirstPlayerMessage extends Message implements MessageT
     public void execute(ControllableByClientMessage controllable) throws NullPointerException {
         if (controllable == null) throw new NullPointerException("controllable");
         controllable.handleGodLikeChooseFirstPlayerMessage(this);
+    }
+
+    @Override
+    public void execute(ControllableByServerMessage controllable) throws NullPointerException {
+
     }
 }

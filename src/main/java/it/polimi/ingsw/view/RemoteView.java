@@ -4,14 +4,14 @@ import it.polimi.ingsw.exception.WrongAssociationViewPlayerException;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ClientConnection;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.MessageToClient;
 import it.polimi.ingsw.utils.MessageToServer;
 
 /**
  * RemoteView is an abstract class which represents an abstraction of RemoteView
  * in the pattern MVC.
  */
-public class RemoteView extends View implements Observer<Message> {
+public class RemoteView extends View implements Observer<MessageToClient> {
 
     private ClientConnection clientConnection;
 
@@ -34,13 +34,13 @@ public class RemoteView extends View implements Observer<Message> {
     }
 
     @Override
-    public void update(Message message) throws NullPointerException {
+    public void update(MessageToClient message) throws NullPointerException {
         if (message == null)
             throw new NullPointerException("msg");
         sendUpdates(message);
     }
 
-    public void putMessage(Message msg) throws NullPointerException, WrongAssociationViewPlayerException {
+    public void putMessage(MessageToClient msg) throws NullPointerException, WrongAssociationViewPlayerException {
         if (msg == null)
             throw new NullPointerException("msg");
         if (!(msg.getClient().equals(getPlayer())))
@@ -48,7 +48,7 @@ public class RemoteView extends View implements Observer<Message> {
         sendUpdates(msg);
     }
 
-    public void sendUpdates(Message message) {
+    public void sendUpdates(MessageToClient message) {
         clientConnection.asyncSend(message);
     }
 

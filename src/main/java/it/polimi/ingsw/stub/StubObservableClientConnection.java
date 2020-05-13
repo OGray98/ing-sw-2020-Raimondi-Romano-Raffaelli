@@ -4,18 +4,18 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ClientConnection;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.MessageToClient;
+import it.polimi.ingsw.utils.MessageToServer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StubObservableClientConnection extends Observable<Message> implements ClientConnection, Observer<Message> {
+public class StubObservableClientConnection extends Observable<MessageToServer> implements ClientConnection, Observer<MessageToClient> {
 
-    private final List<Message> mesRemoteToView;
+    private final List<MessageToClient> mesRemoteToView;
 
-    public StubObservableClientConnection(Message m) {
+    public StubObservableClientConnection(MessageToServer m) {
         mesRemoteToView = new ArrayList<>();
-        mesRemoteToView.add(m);
         notify(m);
     }
 
@@ -41,7 +41,7 @@ public class StubObservableClientConnection extends Observable<Message> implemen
 
     //remote->view
     @Override
-    public void asyncSend(Message message) {
+    public void asyncSend(MessageToClient message) {
         mesRemoteToView.add(message);
     }
 
@@ -51,17 +51,17 @@ public class StubObservableClientConnection extends Observable<Message> implemen
     }
 
     //->controller
-    public void setMsg(Message message) {
+    public void setMsg(MessageToServer message) {
         this.mesRemoteToView.clear();
         notify(message);
     }
 
-    public List<Message> getMesRemoteToView() {
+    public List<MessageToClient> getMesRemoteToView() {
         return this.mesRemoteToView;
     }
 
     @Override
-    public void update(Message message) {
+    public void update(MessageToClient message) {
         asyncSend(message);
     }
 }
