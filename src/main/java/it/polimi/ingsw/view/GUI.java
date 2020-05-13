@@ -110,7 +110,7 @@ public class GUI extends JFrame{
 
         JButton buttonGod;
         JButton buttonExit = new JButton();
-        buttonGod = getIconGodProfile("/Users/ogkush/IdeaProjects/ing-sw-2020-Raimondi-Romano-RaffaelliFinal/src/main/resources/_0000s_0004_god_and_hero_cards_0052_Prometheus.png");
+        buttonGod = getIconGodProfile( "src/main/resources/_0000s_0004_god_and_hero_cards_0052_Prometheus.png");
         labelBorderGod.add(buttonGod);
 
 
@@ -131,13 +131,13 @@ public class GUI extends JFrame{
 
 
         try{
-            BufferedImage imageMove = ImageIO.read(new File("/Users/ogkush/IdeaProjects/ing-sw-2020-Raimondi-Romano-RaffaelliFinal/src/main/resources/castorpollux_bothMove.png"));
-            BufferedImage imageBuild = ImageIO.read(new File("/Users/ogkush/IdeaProjects/ing-sw-2020-Raimondi-Romano-RaffaelliFinal/src/main/resources/castorpollux_bothBuild.png"));
-            BufferedImage imagePower = ImageIO.read(new File("/Users/ogkush/IdeaProjects/ing-sw-2020-Raimondi-Romano-RaffaelliFinal/src/main/resources/heropower_active_small.png"));
-            BufferedImage imageEndTurn = ImageIO.read(new File("/Users/ogkush/IdeaProjects/ing-sw-2020-Raimondi-Romano-RaffaelliFinal/src/main/resources/Chronus_ClockFace.png"));
-            BufferedImage imageTutorial = ImageIO.read(new File("/Users/ogkush/IdeaProjects/ing-sw-2020-Raimondi-Romano-RaffaelliFinal/src/main/resources/TutorialOn.png"));
-            BufferedImage imageMenu = ImageIO.read(new File("/Users/ogkush/IdeaProjects/ing-sw-2020-Raimondi-Romano-RaffaelliFinal/src/main/resources/menu_button.png"));
-            BufferedImage imageExit = ImageIO.read(new File("/Users/ogkush/IdeaProjects/ing-sw-2020-Raimondi-Romano-RaffaelliFinal/src/main/resources/Exit.png"));
+            BufferedImage imageMove = ImageIO.read(new File("src/main/resources/castorpollux_bothMove.png"));
+            BufferedImage imageBuild = ImageIO.read(new File("src/main/resources/castorpollux_bothBuild.png"));
+            BufferedImage imagePower = ImageIO.read(new File("src/main/resources/heropower_active_small.png"));
+            BufferedImage imageEndTurn = ImageIO.read(new File("src/main/resources/Chronus_ClockFace.png"));
+            BufferedImage imageTutorial = ImageIO.read(new File("src/main/resources/TutorialOn.png"));
+            BufferedImage imageMenu = ImageIO.read(new File("src/main/resources/menu_button.png"));
+            BufferedImage imageExit = ImageIO.read(new File("src/main/resources/Exit.png"));
 
 
 
@@ -202,7 +202,6 @@ public class GUI extends JFrame{
         buttonGod.setBounds(31,35,90,160);
         buttonGod.setOpaque(false);
         return buttonGod;
-
     }
 
     private static BufferedImage getScaledImage(BufferedImage originalImage,int max_width,int max_height) {
