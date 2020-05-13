@@ -1,14 +1,14 @@
 package it.polimi.ingsw.stub;
 
 import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.MessageToServer;
 
 public class StubObservableClientMessage {
 
     private Client client;
-    private Message mes;
+    private MessageToServer mes;
 
-    public StubObservableClientMessage(Message m, Client c){
+    public StubObservableClientMessage(MessageToServer m, Client c) {
         this.client = c;
         this.mes = m;
     }
@@ -17,7 +17,7 @@ public class StubObservableClientMessage {
         client.sendToServer(mes);
     }
 
-    public void setMessageToSend(Message mes){
+    public void setMessageToSend(MessageToServer mes) {
         this.mes = mes;
     }
 

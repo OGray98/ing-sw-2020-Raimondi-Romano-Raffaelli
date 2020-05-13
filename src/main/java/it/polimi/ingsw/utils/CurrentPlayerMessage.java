@@ -1,8 +1,9 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.Client.ControllableByServerMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
-public class CurrentPlayerMessage extends Message{
+public class CurrentPlayerMessage extends Message implements MessageToClient {
 
     private PlayerIndex currentPlayerIndex;
 
@@ -11,7 +12,13 @@ public class CurrentPlayerMessage extends Message{
         this.currentPlayerIndex = currentPlayerIndex;
     }
 
-    public PlayerIndex getCurrentPlayerIndex(){
+    public PlayerIndex getCurrentPlayerIndex() {
         return this.currentPlayerIndex;
+    }
+
+    @Override
+    public void execute(ControllableByServerMessage controllable) throws NullPointerException {
+        if (controllable == null) throw new NullPointerException("controllable");
+        controllable.updateCurrentPlayer(this);
     }
 }

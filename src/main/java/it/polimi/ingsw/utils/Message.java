@@ -1,6 +1,5 @@
 package it.polimi.ingsw.utils;
 
-import it.polimi.ingsw.controller.MessageControllable;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
 import java.io.Serializable;
@@ -25,10 +24,6 @@ public abstract class Message implements Serializable {
 
     public TypeMessage getType() {
         return type;
-    }
-
-    public void execute(MessageControllable controllable) throws NullPointerException {
-        if (controllable == null) throw new NullPointerException("controllable");
     }
 
 }

@@ -7,16 +7,18 @@ import it.polimi.ingsw.exception.WrongGodNameException;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.stub.StubView;
-import it.polimi.ingsw.utils.*;
-import it.polimi.ingsw.view.GUI;
+import it.polimi.ingsw.utils.ActionType;
+import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.MoveMessage;
+import it.polimi.ingsw.utils.PutWorkerMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+//import it.polimi.ingsw.stub.StubView;
 
 /**
  * This class is the model which contains data used by clients
@@ -98,7 +100,7 @@ public class ClientModel extends Observable<Message> {
         }
 
         //notify to view
-        notify(new BuildViewMessage(playerIndex, pos, level));
+        //notify(new BuildViewMessage(playerIndex, pos, level));
     }
 
     /**
@@ -112,7 +114,7 @@ public class ClientModel extends Observable<Message> {
         this.domesPositions.add(pos);
 
         //notify to view
-        notify(new BuildViewMessage(playerIndex, pos, 4));
+        //notify(new BuildViewMessage(playerIndex, pos, 4));
     }
 
     /**
