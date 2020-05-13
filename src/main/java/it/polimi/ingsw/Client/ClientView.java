@@ -1,8 +1,41 @@
 package it.polimi.ingsw.Client;
 
-public interface ClientView {
+import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.MoveMessage;
+import it.polimi.ingsw.utils.PutWorkerMessage;
+
+public abstract class ClientView implements Observer<Message>{
     /**
      * When the client receives an error it send it to the view
      * */
-    void receiveErrorMessage(String error);
+    public void receiveErrorMessage(String error){}
+
+    /**
+     * Method that update the view when player put a worker
+     * Implented in GUI or CLI
+     * */
+    public void updatePutWorker(PutWorkerMessage message){}
+
+    public void updateMoveWorker(MoveMessage message){}
+
+    //public void updateBuild(BuildViewMessage message){}
+
+    //method from Observer
+    @Override
+    public void update(Message message) {
+        if(message == null)
+            throw new NullPointerException("message");
+        switch(message.getType()){
+            case PUT_WORKER:
+                updatePutWorker((PutWorkerMessage) message);
+                break;
+            case MOVE:
+                updateMoveWorker((MoveMessage)message);
+                break;
+            case BUILD:
+                //updateBuild((BuildViewMessage) message);
+                break;
+        }
+    }
 }

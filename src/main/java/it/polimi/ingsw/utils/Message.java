@@ -26,5 +26,4 @@ public abstract class Message implements Serializable {
         return type;
     }
 
-
 }

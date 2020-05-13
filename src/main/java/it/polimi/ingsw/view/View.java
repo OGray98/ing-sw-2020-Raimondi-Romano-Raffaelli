@@ -1,15 +1,14 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.MessageToServer;
 
 /**
  * View is an abstract class which represents an abstraction of View
  * in the pattern MVC.
  */
-public abstract class View extends Observable<Message> {
+public abstract class View extends Observable<MessageToServer> {
 
     private final PlayerIndex player;
 
@@ -27,7 +26,7 @@ public abstract class View extends Observable<Message> {
      * @param msg message sent by client to be forwarded to the controller
      * @throws NullPointerException if msg is null
      */
-    public void handleMessage(Message msg) throws NullPointerException {
+    public void handleMessage(MessageToServer msg) throws NullPointerException {
         if (msg == null)
             throw new NullPointerException("msg");
         if (msg.getClient().compareTo(player) == 0)

@@ -1,12 +1,13 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.controller.ControllableByClientMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
 /**
  * TypeMatchMessage extends Message and represent an exchanged Message that say if
  * this is a two or three players game
  */
-public class TypeMatchMessage extends Message {
+public class TypeMatchMessage extends Message implements MessageToServer {
 
     private final boolean isThreePlayersMatch;
 
@@ -17,5 +18,11 @@ public class TypeMatchMessage extends Message {
 
     public boolean isThreePlayersMatch() {
         return isThreePlayersMatch;
+    }
+
+    @Override
+    public void execute(ControllableByClientMessage controllable) throws NullPointerException {
+        if (controllable == null) throw new NullPointerException("controllable");
+        controllable.handleIsThreePlayersGameMessage(this);
     }
 }

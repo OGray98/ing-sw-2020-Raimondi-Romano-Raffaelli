@@ -1,11 +1,12 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.Client.ControllableByServerMessage;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
 import java.util.List;
 
-public class ActionMessage extends Message {
+public class ActionMessage extends Message implements MessageToClient {
 
     private final Position workerPos;
     private final List<Position> possiblePosition;
@@ -33,5 +34,11 @@ public class ActionMessage extends Message {
 
     public ActionType getActionType() {
         return actionType;
+    }
+
+    @Override
+    public void execute(ControllableByServerMessage controllable) throws NullPointerException {
+        if (controllable == null) throw new NullPointerException("controllable");
+        controllable.updateAction(this);
     }
 }
