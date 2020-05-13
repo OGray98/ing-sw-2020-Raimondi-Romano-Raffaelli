@@ -1,6 +1,11 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.Client.ClientView;
+import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.utils.BuildViewMessage;
+import it.polimi.ingsw.utils.MoveMessage;
+import it.polimi.ingsw.utils.PutWorkerMessage;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,7 +17,7 @@ import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.IOException;
 
-public class GUI extends JFrame{
+public class GUI extends ClientView {
 
     private JLabel label;
     private JLabel labelWorker;
@@ -26,12 +31,10 @@ public class GUI extends JFrame{
 
 
     public GUI(){
-        super("Santorini");
     }
 
     public void initGUI(){
-
-
+        JFrame frame = new JFrame("Santorini");
 
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints lim = new GridBagConstraints();
@@ -39,9 +42,9 @@ public class GUI extends JFrame{
         lim.ipady = 100;
 
 
-        setLayout(new BorderLayout());
-        setPreferredSize(FRAME_DIM);
-        setResizable(false);
+        frame.setLayout(new BorderLayout());
+        frame.setPreferredSize(FRAME_DIM);
+        frame.setResizable(false);
 
         label = new JLabel("");
         Image image = new ImageIcon(this.getClass().getResource("/SantoriniBoard.png")).getImage().getScaledInstance(1400,800,Image.SCALE_DEFAULT);
@@ -177,7 +180,7 @@ public class GUI extends JFrame{
             labelGod.add(buttonPower);
             labelGod.add(buttonMove);
             labelGod.add(buttonBuild);
-            validate();
+            frame.validate();
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -186,13 +189,13 @@ public class GUI extends JFrame{
         label.add(labelGod,BorderLayout.EAST);
         label.add(labelTerminal,BorderLayout.WEST);
         label.add(panel1,BorderLayout.CENTER);
-        add(label);
+        frame.add(label);
 
 
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        pack();
-        setVisible(true);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 
     private static JButton getIconGodProfile(String fileImg){
@@ -256,5 +259,83 @@ public class GUI extends JFrame{
         }
 
         return new Dimension(new_width, new_height);
+    }
+    @Override
+    public void updatePutWorker(PutWorkerMessage message){
+        Position pos1 = message.getPositionOne();
+        Position pos2 = message.getPositionTwo();
+
+        JLabel labelWorker = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
+        labelWorker.setPreferredSize(new Dimension(5,5));
+        JLabel labelWorker2 = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
+        labelWorker2.setPreferredSize(new Dimension(5,5));
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                buttonMatrix[pos1.row][pos1.col].add(labelWorker, BorderLayout.CENTER);
+                buttonMatrix[pos2.row][pos2.col].add(labelWorker2, BorderLayout.CENTER);
+            }
+        });
+        //TODO: aggiungere differenziazione per playerindex!
+    }
+
+    @Override
+    public void updateMoveWorker(MoveMessage message){
+        Position oldPos = message.getWorkerPosition();
+        Position newPos = message.getMovePosition();
+
+        JLabel labelWorker = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
+        labelWorker.setPreferredSize(new Dimension(5,5));
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                int labelNum = buttonMatrix[oldPos.row][oldPos.col].getComponentCount();
+                JLabel l = (JLabel) buttonMatrix[oldPos.row][oldPos.col].getComponent(labelNum-1);
+
+                buttonMatrix[oldPos.row][oldPos.col].remove(labelNum - 1);
+                buttonMatrix[oldPos.row][oldPos.col].revalidate();
+                buttonMatrix[oldPos.row][oldPos.col].repaint();
+                l.add(labelWorker, BorderLayout.CENTER);
+                buttonMatrix[newPos.row][newPos.col].add(l);
+            }
+        });
+    }
+
+    @Override
+    public void updateBuild(BuildViewMessage message){
+        Position buildPos = message.getBuildPosition();
+        int level = message.getLevel();
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                //TODO: nei vari casi inserire le immagini dei diversi livelli! cambiare l'immagine nel caso 1
+
+                JLabel buildLabel;
+
+                switch (level){
+                    case 1:
+                        buildLabel = new JLabel(new ImageIcon(this.getClass().getResource("/bg_panelEdgeRight.png")));
+                        buttonMatrix[buildPos.row][buildPos.col].add(buildLabel, BorderLayout.CENTER);
+                        break;
+                    case 2:
+                        buildLabel = new JLabel();
+                        //buttonMatrix[buildPos.row][buildPos.col].add(buildLabel);
+                        break;
+                    case 3:
+                        buildLabel = new JLabel();
+                        //buttonMatrix[buildPos.row][buildPos.col].add(buildLabel);
+                        break;
+                    case 4:
+                        buildLabel = new JLabel();
+                        //buttonMatrix[buildPos.row][buildPos.col].add(buildLabel);
+                        break;
+                    default:
+                        //error
+                }
+            }
+        });
     }
 }
