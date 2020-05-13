@@ -1,9 +1,10 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.Client.ControllableByServerMessage;
 import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
-public class UpdateStateMessage extends Message {
+public class UpdateStateMessage extends Message implements MessageToClient {
 
     private final GameState gameState;
 
@@ -14,5 +15,11 @@ public class UpdateStateMessage extends Message {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    @Override
+    public void execute(ControllableByServerMessage controllable) throws NullPointerException {
+        if (controllable == null) throw new NullPointerException("controllable");
+        controllable.updateState(this);
     }
 }

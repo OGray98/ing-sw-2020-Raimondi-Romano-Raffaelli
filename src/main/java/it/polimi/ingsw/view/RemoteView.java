@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ClientConnection;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.MessageToServer;
 
 /**
  * RemoteView is an abstract class which represents an abstraction of RemoteView
@@ -24,10 +25,10 @@ public class RemoteView extends View implements Observer<Message> {
      * MessageReceiver is a class used by RemoteView to Observer the
      * messages sent by clients.
      */
-    private class MessageReceiver implements Observer<Message> {
+    private class MessageReceiver implements Observer<MessageToServer> {
 
         @Override
-        public void update(Message message) {
+        public void update(MessageToServer message) {
             handleMessage(message);
         }
     }

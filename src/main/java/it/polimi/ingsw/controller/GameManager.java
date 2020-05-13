@@ -19,7 +19,7 @@ import java.util.Map;
  * the message incoming from every RemoteView, and update the model
  * based on these message.
  */
-public class GameManager implements Observer<Message>, MessageControllable {
+public class GameManager implements Observer<MessageToServer>, ControllableByClientMessage {
 
     private final GameLobby lobby;
 
@@ -60,7 +60,7 @@ public class GameManager implements Observer<Message>, MessageControllable {
     }
 
     @Override
-    public void update(Message message) throws NullPointerException {
+    public void update(MessageToServer message) throws NullPointerException {
         if (message == null) throw new NullPointerException("message");
         message.execute(this);
     }

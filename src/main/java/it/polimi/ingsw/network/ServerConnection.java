@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.utils.Message;
+import it.polimi.ingsw.utils.MessageToServer;
 
 public interface ServerConnection {
-    void sendToServer(Message message);
+    void sendToServer(MessageToServer message);
 }

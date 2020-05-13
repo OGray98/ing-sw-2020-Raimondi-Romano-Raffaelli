@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.utils.*;
 
-public interface MessageControllable {
+public interface ControllableByClientMessage {
 
     /**
      * Handle a TypeMatchMessage

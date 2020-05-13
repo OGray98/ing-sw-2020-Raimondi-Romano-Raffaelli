@@ -1,13 +1,20 @@
 package it.polimi.ingsw.utils;
 
-public class PongMessage extends Message {
+import it.polimi.ingsw.controller.ControllableByClientMessage;
 
-    public PongMessage(){
-        super(null,TypeMessage.PONG);
+public class PongMessage extends Message implements MessageToServer {
+
+    public PongMessage() {
+        super(null, TypeMessage.PONG);
     }
 
     @Override
     public String toString() {
         return "Pong message from client";
+    }
+
+    @Override
+    public void execute(ControllableByClientMessage controllable) throws NullPointerException {
+
     }
 }

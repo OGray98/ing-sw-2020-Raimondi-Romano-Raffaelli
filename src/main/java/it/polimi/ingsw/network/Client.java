@@ -2,9 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.Client.ClientManager;
 import it.polimi.ingsw.Client.ClientModel;
-import it.polimi.ingsw.utils.Message;
-import it.polimi.ingsw.utils.PongMessage;
-import it.polimi.ingsw.utils.TypeMessage;
+import it.polimi.ingsw.utils.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,8 +23,8 @@ public class Client implements ServerConnection {
     private final int port;
     private Message message;
     private transient Timer pingTimer;
-    private transient final BlockingQueue<Message> inputMessageQueue = new ArrayBlockingQueue<>(10);
-    private transient final BlockingQueue<Message> outputMessageQueue = new ArrayBlockingQueue<>(10);
+    private transient final BlockingQueue<MessageToClient> inputMessageQueue = new ArrayBlockingQueue<>(10);
+    private transient final BlockingQueue<MessageToServer> outputMessageQueue = new ArrayBlockingQueue<>(10);
     private Socket socket;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
@@ -63,7 +61,7 @@ public class Client implements ServerConnection {
         Thread t = new Thread(() -> {
             try {
                 while (isActive()) {
-                    Message inputMessage = (Message) socketIn.readObject();
+                    MessageToClient inputMessage = (MessageToClient) socketIn.readObject();
                     if (inputMessage != null && inputMessage.getType() == TypeMessage.PING) {
                         System.out.println("PING");
                         outputMessageQueue.put(new PongMessage());
@@ -159,24 +157,23 @@ public class Client implements ServerConnection {
 
     }
 
-    public void disconnect(){
-        try{
+    public void disconnect() {
+        try {
             close();
-        }catch (IOException e){
+        } catch (IOException e) {
             System.err.println("Error during disconnection of client");
             Logger.getAnonymousLogger().severe(e.getMessage());
 
         }
     }
 
-    public void sendToServer(Message message){
+    @Override
+    public void sendToServer(MessageToServer message) {
         try {
             outputMessageQueue.put(message);
         } catch (InterruptedException e) {
             e.printStackTrace();
             setActive(false);
         }
-
     }
-
 }

@@ -1,16 +1,16 @@
 package it.polimi.ingsw.utils;
 
-import it.polimi.ingsw.controller.MessageControllable;
+import it.polimi.ingsw.controller.ControllableByClientMessage;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
-public class UsePowerMessage extends TwoPositionMessage{
+public class UsePowerMessage extends TwoPositionMessage implements MessageToServer {
 
-    public UsePowerMessage(PlayerIndex client, Position workerPos, Position powerPos){
+    public UsePowerMessage(PlayerIndex client, Position workerPos, Position powerPos) {
         super(client, TypeMessage.USE_POWER, workerPos, powerPos);
-        if(workerPos == null)
+        if (workerPos == null)
             throw new NullPointerException("workerPos");
-        if(powerPos == null)
+        if (powerPos == null)
             throw new NullPointerException("powerPos");
     }
 
@@ -23,8 +23,8 @@ public class UsePowerMessage extends TwoPositionMessage{
     }
 
     @Override
-    public void execute(MessageControllable controllable) throws NullPointerException {
-        super.execute(controllable);
+    public void execute(ControllableByClientMessage controllable) throws NullPointerException {
+        if (controllable == null) throw new NullPointerException("controllable");
         controllable.handleUsePowerMessage(this);
     }
 }

@@ -2,10 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.utils.CloseConnectionMessage;
-import it.polimi.ingsw.utils.Message;
-import it.polimi.ingsw.utils.PingMessage;
-import it.polimi.ingsw.utils.TypeMessage;
+import it.polimi.ingsw.utils.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,7 +14,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
 
-public class SocketClientConnection extends Observable<Message> implements ClientConnection,Runnable{
+public class SocketClientConnection extends Observable<MessageToServer> implements ClientConnection, Runnable {
 
     private ObjectOutputStream out;
     private final Socket socket;
@@ -25,7 +22,7 @@ public class SocketClientConnection extends Observable<Message> implements Clien
     private boolean active = true;
     private ObjectInputStream in;
 
-    private transient final BlockingQueue<Message> inputMessageQueue = new ArrayBlockingQueue<>(10);
+    private transient final BlockingQueue<MessageToServer> inputMessageQueue = new ArrayBlockingQueue<>(10);
     private PlayerIndex clientIndex;
 
     public SocketClientConnection(Socket socket, Server server) {
@@ -55,7 +52,7 @@ public class SocketClientConnection extends Observable<Message> implements Clien
 
     public synchronized void closeConnection() {
 
-        notify(new CloseConnectionMessage(PlayerIndex.PLAYER0));
+        notify(new CloseConnectionMessage(this.clientIndex));
 
         try {
             out.close();
@@ -105,7 +102,7 @@ public class SocketClientConnection extends Observable<Message> implements Clien
             while (isConnected()) {
                 if (in.available() != 0) {
                     try {
-                        Message inputMessage = (Message) in.readObject();
+                        MessageToServer inputMessage = (MessageToServer) in.readObject();
                         if (inputMessage != null && inputMessage.getType() != TypeMessage.PONG) {
                             try {
                                 inputMessageQueue.put(inputMessage);
