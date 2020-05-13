@@ -269,7 +269,7 @@ public class GUI extends ClientView {
 
         JLabel labelWorker = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
         labelWorker.setPreferredSize(new Dimension(5,5));
-        JLabel labelWorker2 = new JLabel(new ImageIcon(this.getClass().getResource("/title_boat_bottom.png")));
+        JLabel labelWorker2 = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
         labelWorker2.setPreferredSize(new Dimension(5,5));
 
         SwingUtilities.invokeLater(new Runnable() {
@@ -287,7 +287,7 @@ public class GUI extends ClientView {
         Position oldPos = message.getWorkerPosition();
         Position newPos = message.getMovePosition();
 
-        JLabel labelWorker = new JLabel(new ImageIcon(this.getClass().getResource("/title_boat_bottom.png")));
+        JLabel labelWorker = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
         labelWorker.setLayout(new BorderLayout());
         labelWorker.setPreferredSize(new Dimension(5,5));
 
