@@ -1,5 +1,6 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.controller.MessageControllable;
 import it.polimi.ingsw.exception.WrongGodNameException;
 import it.polimi.ingsw.model.deck.Deck;
 import it.polimi.ingsw.model.player.PlayerIndex;
@@ -25,5 +26,11 @@ public class GodLikeChoseMessage extends Message {
 
     public List<String> getGodNames() {
         return godNames;
+    }
+
+    @Override
+    public void execute(MessageControllable controllable) throws NullPointerException {
+        super.execute(controllable);
+        controllable.handleGodLikeChoseMessage(this);
     }
 }

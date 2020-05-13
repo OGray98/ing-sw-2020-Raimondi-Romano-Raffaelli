@@ -19,8 +19,7 @@ import java.util.Map;
  * the message incoming from every RemoteView, and update the model
  * based on these message.
  */
-public class GameManager implements Observer<Message> {
-
+public class GameManager implements Observer<Message>, MessageControllable {
 
     private final GameLobby lobby;
 
@@ -62,45 +61,8 @@ public class GameManager implements Observer<Message> {
 
     @Override
     public void update(Message message) throws NullPointerException {
-        if (message == null)
-            throw new NullPointerException("message");
-        switch (message.getType()) {
-            case NICKNAME:
-                handleNicknameMessage((NicknameMessage) message);
-                break;
-            case IS_THREE_PLAYERS_GAME:
-                handleIsThreePlayersGameMessage((TypeMatchMessage) message);
-                break;
-            case GODLIKE_CHOOSE_CARDS:
-                handleGodLikeChoseMessage((GodLikeChoseMessage) message);
-                break;
-            case SELECT_CARD:
-                handleSelectCardMessage((PlayerSelectGodMessage) message);
-                break;
-            case GODLIKE_CHOOSE_FIRST_PLAYER:
-                handleGodLikeChooseFirstPlayerMessage((GodLikeChooseFirstPlayerMessage) message);
-                break;
-            case PUT_WORKER:
-                handlePutWorkerMessage((PutWorkerMessage) message);
-                break;
-            case SELECT_WORKER:
-                handleSelectWorkerMessage((SelectWorkerMessage) message);
-                break;
-            case MOVE:
-                handleMoveMessage((MoveMessage) message);
-                break;
-            case USE_POWER:
-                handleUsePowerMessage((UsePowerMessage) message);
-                break;
-            case BUILD:
-                handleBuildMessage((BuildMessage) message);
-                break;
-            case END_TURN:
-                handleEndTurnMessage((EndTurnMessage) message);
-            default:
-                //Error message
-                break;
-        }
+        if (message == null) throw new NullPointerException("message");
+        message.execute(this);
     }
 
     /**
@@ -109,7 +71,8 @@ public class GameManager implements Observer<Message> {
      *
      * @param message input message. Must be corrected
      */
-    private void handleNicknameMessage(NicknameMessage message) {
+    @Override
+    public void handleNicknameMessage(NicknameMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
         String name = message.getNickname();
@@ -156,7 +119,8 @@ public class GameManager implements Observer<Message> {
      *
      * @param message input message. Must be corrected
      */
-    private void handleIsThreePlayersGameMessage(TypeMatchMessage message) {
+    @Override
+    public void handleIsThreePlayersGameMessage(TypeMatchMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
         boolean isThreePlayerGame = message.isThreePlayersMatch();
@@ -191,7 +155,8 @@ public class GameManager implements Observer<Message> {
      *
      * @param message input message. Must be corrected
      */
-    private void handleGodLikeChoseMessage(GodLikeChoseMessage message) {
+    @Override
+    public void handleGodLikeChoseMessage(GodLikeChoseMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
         List<String> godNames = message.getGodNames();
@@ -243,7 +208,8 @@ public class GameManager implements Observer<Message> {
      *
      * @param message is the input message sent from the current player
      */
-    private void handleSelectCardMessage(PlayerSelectGodMessage message) {
+    @Override
+    public void handleSelectCardMessage(PlayerSelectGodMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
 
@@ -287,7 +253,8 @@ public class GameManager implements Observer<Message> {
      *
      * @param message is input message which contains the index of the first player chosen
      */
-    private void handleGodLikeChooseFirstPlayerMessage(GodLikeChooseFirstPlayerMessage message) {
+    @Override
+    public void handleGodLikeChooseFirstPlayerMessage(GodLikeChooseFirstPlayerMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
 
@@ -322,7 +289,8 @@ public class GameManager implements Observer<Message> {
      *
      * @param message is the input message of type PutWorkerMessage
      */
-    private void handlePutWorkerMessage(PutWorkerMessage message) {
+    @Override
+    public void handlePutWorkerMessage(PutWorkerMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
 
@@ -366,13 +334,14 @@ public class GameManager implements Observer<Message> {
     /**
      * This method is used to select the worker that user wants to use
      * it will notify the positions where the player can move or use a power
-     * */
-    private void handleSelectWorkerMessage(SelectWorkerMessage message){
+     */
+    @Override
+    public void handleSelectWorkerMessage(SelectWorkerMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
         Position workerPos = message.getWorkerPos();
 
-        if(isNotMessageSentByCurrentPlayer(message)){
+        if (isNotMessageSentByCurrentPlayer(message)) {
             respondErrorToRemoteView(
                     clientIndex,
                     "Not your turn",
@@ -400,15 +369,16 @@ public class GameManager implements Observer<Message> {
      * It's not the turn of the player
      * The player has selected a wrong worker cell
      * The player has selected an illegal move
-     * */
-    private void handleMoveMessage(MoveMessage message) {
+     */
+    @Override
+    public void handleMoveMessage(MoveMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
         Position workerPos = message.getWorkerPosition();
         Position movePos = message.getMovePosition();
 
         //Move allowed only in states MOVE and INITPOWER
-        if(isNotCurrentGameState(GameState.MOVE) && isNotCurrentGameState(GameState.INITPOWER)){
+        if (isNotCurrentGameState(GameState.MOVE) && isNotCurrentGameState(GameState.INITPOWER)) {
             respondErrorToRemoteView(
                     clientIndex,
                     "You can't move a worker now!",
@@ -469,7 +439,8 @@ public class GameManager implements Observer<Message> {
      * It's not the turn of the player
      * The player has selected an illegal build
      */
-    private void handleBuildMessage(BuildMessage message) {
+    @Override
+    public void handleBuildMessage(BuildMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
         Position buildPos = message.getBuildPosition();
@@ -516,15 +487,16 @@ public class GameManager implements Observer<Message> {
      * It is not the turn of the player
      * Player selects an invalid power use
      * Player did not select a valid position of the worker
-     * */
-    private void handleUsePowerMessage(UsePowerMessage message){
+     */
+    @Override
+    public void handleUsePowerMessage(UsePowerMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
         Position workerPos = message.getWorkerPosition();
         Position powerPos = message.getPowerPosition();
 
         //Check that the player can use the power in this state
-        if(isNotCurrentGameState(gameModel.getCurrentPlayerPowerState())){
+        if (isNotCurrentGameState(gameModel.getCurrentPlayerPowerState())) {
             respondErrorToRemoteView(
                     clientIndex,
                     "You cannot use power in this turn phase!",
@@ -584,13 +556,14 @@ public class GameManager implements Observer<Message> {
     /**
      * Method used to end the turn of the current player
      * It start the turn of the next player and it change the state of th game
-     * */
-    private void handleEndTurnMessage(EndTurnMessage message){
+     */
+    @Override
+    public void handleEndTurnMessage(EndTurnMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
 
         //only in ENDPHASE and BUILDPOWER state is allowed to end the current turn
-        if(isNotCurrentGameState(GameState.ENDPHASE) && isNotCurrentGameState(GameState.BUILDPOWER)){
+        if (isNotCurrentGameState(GameState.ENDPHASE) && isNotCurrentGameState(GameState.BUILDPOWER)) {
             respondErrorToRemoteView(
                     clientIndex,
                     "You cannot end the turn now!",
@@ -623,7 +596,7 @@ public class GameManager implements Observer<Message> {
      * Method called when a player has lost
      * It remove his workers and start the turn of the next player
      * If the remains only one player he wins the game
-     * */
+     */
     private void removeLoser(PlayerIndex loserIndex){
         //notify loser payer
         respondOkToRemoteView(

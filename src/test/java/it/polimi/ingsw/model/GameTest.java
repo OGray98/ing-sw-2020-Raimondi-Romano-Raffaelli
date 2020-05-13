@@ -425,7 +425,7 @@ public class GameTest {
                 game.build(powerPosAthena);
                 assertFalse(game.canMoveWorker(powerPosAthena));
                 assertTrue(game.canUsePowerWorker(powerPosAthena));
-                game.usePowerWorker(posMosse.get(5));
+                game.usePowerWorker(powerPosAthena);
             }
             assertFalse(game.hasWonCurrentPlayer());
             if (game.getCurrentPlayerGodName().equals("Hephaestus")) {

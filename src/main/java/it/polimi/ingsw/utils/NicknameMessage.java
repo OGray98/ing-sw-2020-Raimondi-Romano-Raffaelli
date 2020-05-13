@@ -1,5 +1,6 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.controller.MessageControllable;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
 /**
@@ -14,5 +15,11 @@ public class NicknameMessage extends StringMessage {
 
     public String getNickname() {
         return super.getString();
+    }
+
+    @Override
+    public void execute(MessageControllable controllable) throws NullPointerException {
+        super.execute(controllable);
+        controllable.handleNicknameMessage(this);
     }
 }
