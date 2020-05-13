@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.model.board.BuildType;
+import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ServerConnection;
 import it.polimi.ingsw.utils.*;
 
@@ -117,12 +118,12 @@ public class ClientManager {
     }
 
     public void updatePutWorkerMessage(PutWorkerMessage message){
-        clientModel.putWorker(message.getClient(), message.getPositionOne());
-        clientModel.putWorker(message.getClient(), message.getPositionTwo());
+        clientModel.putWorker(message.getClient(), message.getPositionOne(), message.getPositionTwo());
+
     }
 
     public void updateMoveMessage(MoveMessage message){
-        clientModel.movePlayer(message.getWorkerPosition(), message.getMovePosition());
+        clientModel.movePlayer(message);
     }
 
     public void updateBuildMessage(BuildMessage message){
