@@ -1,5 +1,6 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.controller.MessageControllable;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
@@ -19,5 +20,11 @@ public class MoveMessage extends TwoPositionMessage {
 
     public Position getMovePosition() {
         return super.getPositions().get(1);
+    }
+
+    @Override
+    public void execute(MessageControllable controllable) throws NullPointerException {
+        super.execute(controllable);
+        controllable.handleMoveMessage(this);
     }
 }
