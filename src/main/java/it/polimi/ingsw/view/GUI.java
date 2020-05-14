@@ -377,23 +377,32 @@ public class GUI extends ClientView {
 
                 JLabel buildLabel;
 
-                switch (level){
+                switch (level){  //TODO: è giusto il level?
                     case 1:
                         buildLabel = new JLabel(new ImageIcon(this.getClass().getResource("/bg_panelEdgeRight.png")));
                         buildLabel.setLayout(new BorderLayout());
                         buttonMatrix[buildPos.row][buildPos.col].add(buildLabel, BorderLayout.CENTER);
                         break;
                     case 2:
-                        //buildLabel = new JLabel();
-                        //buttonMatrix[buildPos.row][buildPos.col].add(buildLabel);
+                        buildLabel = new JLabel();//Missed the icon
+                        buildLabel.setLayout(new BorderLayout());
+                        JLabel buildCorrect = (JLabel) buttonMatrix[buildPos.row][buildPos.col].getComponent(buttonMatrix[buildPos.row][buildPos.col].getComponentCount() - 1);
+                        buildCorrect.add(buildLabel,BorderLayout.CENTER);
                         break;
                     case 3:
-                        //buildLabel = new JLabel();
-                        //buttonMatrix[buildPos.row][buildPos.col].add(buildLabel);
+                        buildLabel = new JLabel();//Missed icon
+                        buildLabel.setLayout(new BorderLayout());
+                        JLabel buildCorrect1 = (JLabel)buttonMatrix[buildPos.row][buildPos.col].getComponent(buttonMatrix[buildPos.row][buildPos.col].getComponentCount() - 1);
+                        JLabel buildFinal = (JLabel) buildCorrect1.getComponent(buildCorrect1.getComponentCount() - 1);
+                        buildFinal.add(buildLabel,BorderLayout.CENTER);
                         break;
                     case 4:
-                        //buildLabel = new JLabel();
-                        //buttonMatrix[buildPos.row][buildPos.col].add(buildLabel);
+                        buildLabel = new JLabel();//Missed icon
+                        buildLabel.setLayout(new BorderLayout());
+                        JLabel build1 = (JLabel) buttonMatrix[buildPos.row][buildPos.col].getComponent(buttonMatrix[buildPos.row][buildPos.col].getComponentCount() - 1);
+                        JLabel build2 = (JLabel) build1.getComponent(build1.getComponentCount() - 1);
+                        JLabel build3 = (JLabel) build2.getComponent(build2.getComponentCount() - 1);
+                        build3.add(buildLabel,BorderLayout.CENTER);
                         break;
                     default:
                         //error
