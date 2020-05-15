@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.utils.ActionMessage;
 import it.polimi.ingsw.utils.BuildViewMessage;
 import it.polimi.ingsw.utils.MoveMessage;
 import it.polimi.ingsw.utils.PutWorkerMessage;
@@ -467,6 +468,20 @@ public class GUI extends ClientView {
                         break;
                     default:
                         //error
+                }
+            }
+        });
+    }
+
+    @Override
+    public void updateActionView(ActionMessage message){
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                for(Position p : message.getPossiblePosition()){
+                    JLabel ledLbl = new JLabel("");
+                    ledLbl.setBackground(Color.BLUE);
+                    buttonMatrix[p.row][p.col].add(ledLbl, BorderLayout.CENTER);
                 }
             }
         });
