@@ -7,24 +7,29 @@ import java.awt.geom.Ellipse2D;
 public class ButtonCircle extends JButton {
     Shape shape = null;
     private boolean fieldFocusable = false;
+    private Color colorButton;
 
-    public ButtonCircle() {
+    public ButtonCircle(Color colorButton) {
         super();
+        this.colorButton = colorButton;
         ridimensiona();
     }
 
-    public ButtonCircle(String text) {
+    public ButtonCircle(String text,Color colorButton) {
         super(text);
+        this.colorButton = colorButton;
         ridimensiona();
     }
 
-    public ButtonCircle(String text, Icon icon) {
+    public ButtonCircle(String text, Icon icon,Color colorButton) {
         super(text, icon);
+        this.colorButton = colorButton;
         ridimensiona();
     }
 
-    public ButtonCircle(Icon icon) {
+    public ButtonCircle(Icon icon,Color colorButton) {
         super(icon);
+        this.colorButton = colorButton;
         ridimensiona();
     }
 
@@ -47,7 +52,7 @@ public class ButtonCircle extends JButton {
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         Color c1 = new Color(100,100,100);
-        Color c2 = Color.WHITE;
+        Color c2 = colorButton;
         Color b1 = getBackground();
         int red = b1.getRed();
         int gre = b1.getGreen();

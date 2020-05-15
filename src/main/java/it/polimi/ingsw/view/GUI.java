@@ -23,8 +23,8 @@ import java.util.ArrayList;
 public class GUI extends ClientView {
 
     private JLabel label;
-    private JLabel labelWorker;
-    private JLabel labelWorker2;
+    private ButtonCircle labelWorker;
+    private ButtonCircle labelWorker2;
     private JLabel labelTerminal;
     private JLabel labelPlayer;
     private JPanel panel1;
@@ -32,6 +32,7 @@ public class GUI extends ClientView {
     private static final Dimension FRAME_DIM = new Dimension(1400,820);
     private static final int ROW_NUM = 5;
     private JButton[][] buttonMatrix = new JButton[ROW_NUM][ROW_NUM];
+    private JFrame frame;
 
 
 
@@ -39,7 +40,7 @@ public class GUI extends ClientView {
     }
 
     public void initGUI(){
-        JFrame frame = new JFrame("Santorini");
+        frame = new JFrame("Santorini");
 
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints lim = new GridBagConstraints();
@@ -67,8 +68,7 @@ public class GUI extends ClientView {
         labelPlayer.setBounds(8,22,95,83);*/
 
 
-        labelWorker2 = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
-        labelWorker2.setPreferredSize(new Dimension(5,5));
+
 
         labelTerminal = new JLabel("");
         Image imageTerminal = new ImageIcon(this.getClass().getResource("/bg_panelEdgeLeft.png")).getImage().getScaledInstance(350,800,Image.SCALE_DEFAULT);
@@ -84,10 +84,6 @@ public class GUI extends ClientView {
         Image imageBorderGod = new ImageIcon(this.getClass().getResource("/clp_frame_gold.png")).getImage().getScaledInstance(150,230,Image.SCALE_DEFAULT);
         labelBorderGod.setIcon(new ImageIcon(imageBorderGod));
         labelBorderGod.setBounds(90,140,150,230);
-        labelGod.add(labelBorderGod);
-
-
-
 
 
 
@@ -102,19 +98,14 @@ public class GUI extends ClientView {
                 buttonMatrix[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 buttonMatrix[i][j].setPreferredSize(new Dimension(18,19));
                 buttonMatrix[i][j].setLayout(new BorderLayout());
+                JLabel labelEmpty = new JLabel("");
+                labelEmpty.setOpaque(false);
+                buttonMatrix[i][j].add(labelEmpty,BorderLayout.CENTER);
                 layout.setConstraints(buttonMatrix[i][j], lim);
                 panel1.add(buttonMatrix[i][j]);
 
             }
         }
-
-        labelWorker = getPlayerIcon(PlayerIndex.PLAYER2);
-        buttonMatrix[0][3].add(labelWorker2,BorderLayout.CENTER);
-        buttonMatrix[2][2].add(labelWorker,BorderLayout.CENTER);
-
-
-
-
         panel1.setOpaque(false);
 
 
@@ -124,19 +115,19 @@ public class GUI extends ClientView {
         ButtonCircle buttonEndTurn;
         ButtonCircle buttonTutorial;
         ButtonCircle buttonMenu;
-
-
-        JButton buttonGod;
         JButton buttonExit = new JButton();
-        buttonGod = getIconGodProfile( "src/main/resources/_0000s_0004_god_and_hero_cards_0052_Prometheus.png");
-        labelBorderGod.add(buttonGod);
+
+
+
+        labelBorderGod = getIconGodProfile( "src/main/resources/_0000s_0004_god_and_hero_cards_0052_Prometheus.png");
+        labelGod.add(labelBorderGod);
 
 
 
         JTextArea textArea = new JTextArea(50, 60);
         textArea.setWrapStyleWord(true);
         textArea.setLineWrap(true);
-        for (int i = 0; i < 150; i++) {
+        for (int i = 0; i < 75; i++) {
             textArea.append("Hello world!");
         }
         textArea.setBackground(Color.BLACK);
@@ -172,12 +163,12 @@ public class GUI extends ClientView {
 
             //Setting icon button
             buttonExit.setIcon(new ImageIcon(scaledExit));
-            buttonMenu = new ButtonCircle(new ImageIcon(scaledMenu));
-            buttonTutorial = new ButtonCircle(new ImageIcon(scaledTutorial));
-            buttonEndTurn = new ButtonCircle(new ImageIcon(scaledEndTurn));
-            buttonPower = new ButtonCircle(new ImageIcon(scaledPower));
-            buttonBuild = new ButtonCircle(new ImageIcon(scaledBuild));
-            buttonMove = new ButtonCircle(new ImageIcon(scaledImage));
+            buttonMenu = new ButtonCircle(new ImageIcon(scaledMenu),Color.WHITE);
+            buttonTutorial = new ButtonCircle(new ImageIcon(scaledTutorial),Color.WHITE);
+            buttonEndTurn = new ButtonCircle(new ImageIcon(scaledEndTurn),Color.WHITE);
+            buttonPower = new ButtonCircle(new ImageIcon(scaledPower),Color.WHITE);
+            buttonBuild = new ButtonCircle(new ImageIcon(scaledBuild),Color.WHITE);
+            buttonMove = new ButtonCircle(new ImageIcon(scaledImage),Color.WHITE);
 
 
             //Setting dimension button
@@ -217,58 +208,38 @@ public class GUI extends ClientView {
         frame.setVisible(true);
     }
 
-    private static JLabel getPlayerIcon(PlayerIndex playerIndex){
-        JLabel labelBase = null;
-        switch (playerIndex) {
-            case PLAYER0:
-                labelBase = new JLabel("");
-                Image imageIcon = new ImageIcon(("src/main/resources/playerplaceindicator_blue.png")).getImage().getScaledInstance(110, 100, Image.SCALE_DEFAULT);
-                labelBase.setIcon(new ImageIcon(imageIcon));
-                break;
-            case PLAYER1:
-                labelBase = new JLabel("");
-                Image imageIcon1 = new ImageIcon(("src/main/resources/playerplaceindicator_gold.png")).getImage().getScaledInstance(110, 100, Image.SCALE_DEFAULT);
-                labelBase.setIcon(new ImageIcon(imageIcon1));
-                break;
-            case PLAYER2:
-                labelBase = new JLabel("");
-                Image imageIcon2 = new ImageIcon(("src/main/resources/SeleneMoonSprite.png")).getImage().getScaledInstance(118, 113, Image.SCALE_DEFAULT);
-                labelBase.setIcon(new ImageIcon(imageIcon2));
-                JLabel labelPlayerGame = new JLabel("");
-                Image imagePlayer = new ImageIcon(("src/main/resources/om_gloryIcon.png")).getImage().getScaledInstance(95,83,Image.SCALE_DEFAULT);
-                labelPlayerGame.setIcon(new ImageIcon(imagePlayer));
-                labelPlayerGame.setBounds(12,22,95,83);
-
-                labelBase.add(labelPlayerGame);
-                return labelBase;
-                /*JLabel labelPlayerGame = new JLabel("");
-                Image imagePlayer = new ImageIcon(("src/main/resources/om_gloryIcon.png")).getImage().getScaledInstance(95,83,Image.SCALE_DEFAULT);
-                labelPlayerGame.setIcon(new ImageIcon(imagePlayer));
-                labelPlayerGame.setBounds(8,20,95,83);
-
-                labelBase.add(labelPlayerGame);
-                return labelBase;*/
-                default:
-                //Error;
+    private static ButtonCircle getPlayerIcon(PlayerIndex playerIndex){
+        ButtonCircle buttonPlayer = null;
+        if(playerIndex.equals(PlayerIndex.PLAYER0)){
+            Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(80,80,Image.SCALE_DEFAULT);
+            buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer),Color.RED);
+            buttonPlayer.setBounds(17, 15, 83, 83);
+        }else if(playerIndex.equals(PlayerIndex.PLAYER1)){
+            Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(80,80,Image.SCALE_DEFAULT);
+            buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer),Color.BLUE);
+            buttonPlayer.setBounds(17, 15, 83, 83);
+        }else if(playerIndex.equals(PlayerIndex.PLAYER2)){
+            Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(80,80,Image.SCALE_DEFAULT);
+            buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer),Color.MAGENTA);
+            buttonPlayer.setBounds(17, 15, 83, 83);
         }
 
-        JLabel labelPlayerGame = new JLabel("");
-        Image imagePlayer = new ImageIcon(("src/main/resources/om_gloryIcon.png")).getImage().getScaledInstance(95,83,Image.SCALE_DEFAULT);
-        labelPlayerGame.setIcon(new ImageIcon(imagePlayer));
-        labelPlayerGame.setBounds(8,22,95,83);
-
-        labelBase.add(labelPlayerGame);
-        return labelBase;
+        return buttonPlayer;
 
     }
 
-    private static JButton getIconGodProfile(String fileImg){
+    private static JLabel getIconGodProfile(String fileImg){
+        JLabel labelBorderGod = new JLabel("");
+        Image imageBorderGod = new ImageIcon(("src/main/resources/clp_frame_gold.png")).getImage().getScaledInstance(150,230,Image.SCALE_DEFAULT);
+        labelBorderGod.setIcon(new ImageIcon(imageBorderGod));
+        labelBorderGod.setBounds(90,140,150,230);
         JButton buttonGod = new JButton();
         Image God = new ImageIcon((fileImg)).getImage().getScaledInstance(90,170,Image.SCALE_DEFAULT);
         buttonGod.setIcon(new ImageIcon(God));
         buttonGod.setBounds(31,35,90,160);
         buttonGod.setOpaque(false);
-        return buttonGod;
+        labelBorderGod.add(buttonGod);
+        return labelBorderGod;
     }
 
     private static BufferedImage getScaledImage(BufferedImage originalImage,int max_width,int max_height) {
@@ -329,16 +300,17 @@ public class GUI extends ClientView {
         Position pos1 = message.getPositionOne();
         Position pos2 = message.getPositionTwo();
 
-        JLabel labelWorker = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
-        labelWorker.setPreferredSize(new Dimension(5,5));
-        JLabel labelWorker2 = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
-        labelWorker2.setPreferredSize(new Dimension(5,5));
+        ButtonCircle labelWorker = getPlayerIcon(message.getClient());
+        ButtonCircle labelWorker2 = getPlayerIcon(message.getClient());
+
+        JLabel labelButton = (JLabel) buttonMatrix[pos1.row][pos1.col].getComponent(buttonMatrix[pos1.row][pos1.col].getComponentCount() - 1);
+        JLabel labelButton1 = (JLabel) buttonMatrix[pos2.row][pos2.col].getComponent(buttonMatrix[pos2.row][pos2.col].getComponentCount() - 1);
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                buttonMatrix[pos1.row][pos1.col].add(labelWorker, BorderLayout.CENTER);
-                buttonMatrix[pos2.row][pos2.col].add(labelWorker2, BorderLayout.CENTER);
+                labelButton.add(labelWorker);
+                labelButton1.add(labelWorker2);
             }
         });
         //TODO: aggiungere differenziazione per playerindex!
@@ -349,81 +321,59 @@ public class GUI extends ClientView {
         Position oldPos = message.getWorkerPosition();
         Position newPos = message.getMovePosition();
 
-        JLabel labelWorker = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
-        labelWorker.setLayout(new BorderLayout());
-        labelWorker.setPreferredSize(new Dimension(5,5));
+        ButtonCircle labelWorker = getPlayerIcon(message.getClient());
+        //labelWorker.setLayout(new BorderLayout());
+
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                int labelNumNewPos = buttonMatrix[newPos.row][newPos.col].getComponentCount();
-                int labelNumOldPos = buttonMatrix[oldPos.row][oldPos.col].getComponentCount();
-                if(labelNumNewPos != 0){
+                //label on newCell
+                JLabel l;
+                l = (JLabel) buttonMatrix[newPos.row][newPos.col].getComponent(buttonMatrix[newPos.row][newPos.col].getComponentCount() - 1);
+                int labelNumNewPos = l.getComponentCount();
+                if (labelNumNewPos != 0) {
                     //Tower level 1
-                    JLabel l;
-                    l = (JLabel) buttonMatrix[newPos.row][newPos.col].getComponent(labelNumNewPos -1);
-                    if(l.getComponentCount() != 0){
+                    l = (JLabel) l.getComponent(l.getComponentCount() - 1);
+                    if (l.getComponentCount() != 0) {
                         //Tower level 2
                         l = (JLabel) l.getComponent(l.getComponentCount() - 1);
-                        if(l.getComponentCount() != 0){
+                        if (l.getComponentCount() != 0) {
                             //Tower level 3
                             l = (JLabel) l.getComponent(l.getComponentCount() - 1);
                         }
                     }
-                    JLabel labelIcon;
+                }
+                //Label on old cell
+                JLabel labelInit;
+                labelInit = (JLabel) buttonMatrix[oldPos.row][oldPos.col].getComponent(buttonMatrix[oldPos.row][oldPos.col].getComponentCount() - 1);
+                if (labelInit.getComponent(labelInit.getComponentCount() - 1) instanceof ButtonCircle) {
+                    labelInit.remove(labelInit.getComponentCount() - 1);
+                } else {
                     //Tower level 1
-                    labelIcon = (JLabel) buttonMatrix[oldPos.row][oldPos.col].getComponent(labelNumOldPos - 1);
-                    if(labelIcon.getComponentCount() != 0){
+                    JLabel labelIcon = (JLabel) labelInit.getComponent(labelInit.getComponentCount() - 1);
+                    if (labelIcon.getComponent(labelIcon.getComponentCount() - 1) instanceof ButtonCircle) {
+                        labelIcon.remove(labelIcon.getComponentCount() - 1);
+                    } else {
                         //Tower level 2
                         JLabel labelIcon2;
                         labelIcon2 = (JLabel) labelIcon.getComponent(labelIcon.getComponentCount() - 1);
-                        if(labelIcon2.getComponentCount() != 0){
+                        if (labelIcon2.getComponent(labelIcon2.getComponentCount() - 1) instanceof ButtonCircle) {
+                            labelIcon2.remove(labelIcon2.getComponentCount() - 1);
+                        } else {
                             //Tower level 3
                             JLabel labelIcon3;
-                            labelIcon3 = (JLabel) labelIcon.getComponent(labelIcon.getComponentCount() - 1);
-                            if(labelIcon3.getComponentCount() != 0){
+                            labelIcon3 = (JLabel) labelIcon2.getComponent(labelIcon2.getComponentCount() - 1);
+                            if (labelIcon3.getComponent(labelIcon3.getComponentCount() - 1) instanceof ButtonCircle) {
                                 labelIcon3.remove(labelIcon3.getComponentCount() - 1);
-                            }else{
-                                labelIcon2.remove(labelIcon2.getComponentCount() - 1);
                             }
-                        }else{
-                            labelIcon.remove(labelIcon.getComponentCount() - 1);}
-                    }else{
-                        buttonMatrix[oldPos.row][oldPos.col].remove(labelNumOldPos - 1);
-                        buttonMatrix[oldPos.row][oldPos.col].revalidate();
-                        buttonMatrix[oldPos.row][oldPos.col].repaint();
-                    }
-                    l.add(labelWorker, BorderLayout.CENTER);
-                    buttonMatrix[newPos.row][newPos.col].add(l);
-                } else{
-                    JLabel labelOldRemove;
-                    //Tower level 1
-                    labelOldRemove = (JLabel) buttonMatrix[oldPos.row][oldPos.col].getComponent(labelNumOldPos - 1);
-                    if(labelOldRemove.getComponentCount() != 0){
-                        //Tower level 2
-                        JLabel labelOldRemove2;
-                        labelOldRemove2 = (JLabel) labelOldRemove.getComponent(labelOldRemove.getComponentCount() - 1);
-
-                        if(labelOldRemove2.getComponentCount() != 0){
-                            //Tower level 3
-                            JLabel labelOldRemove3;
-                            labelOldRemove3 = (JLabel) labelOldRemove.getComponent(labelOldRemove.getComponentCount() - 1);
-                            if(labelOldRemove3.getComponentCount() != 0){
-                                labelOldRemove3.remove(labelOldRemove3.getComponentCount() - 1);
-                            }else{
-                                labelOldRemove2.remove(labelOldRemove2.getComponentCount() - 1);
-                            }
-                        }else{
-                            labelOldRemove.remove(labelOldRemove.getComponentCount() - 1);
                         }
-                    }else{
-                        buttonMatrix[oldPos.row][oldPos.col].remove(labelNumOldPos - 1);
                     }
-                    buttonMatrix[oldPos.row][oldPos.col].revalidate();
-                    buttonMatrix[oldPos.row][oldPos.col].repaint();
-                    buttonMatrix[newPos.row][newPos.col].add(labelWorker);
                 }
+                l.add(labelWorker);
+                buttonMatrix[newPos.row][newPos.col].add(l);
             }
+
         });
     }
 
@@ -442,8 +392,9 @@ public class GUI extends ClientView {
                 switch (level){  //TODO: è giusto il level?
                     case 1:
                         buildLabel = new JLabel(new ImageIcon(this.getClass().getResource("/bg_panelEdgeRight.png")));
-                        buildLabel.setLayout(new BorderLayout());
-                        buttonMatrix[buildPos.row][buildPos.col].add(buildLabel, BorderLayout.CENTER);
+                        JLabel labelButton = (JLabel) buttonMatrix[buildPos.row][buildPos.col].getComponent(buttonMatrix[buildPos.row][buildPos.col].getComponentCount() - 1);
+                        buildLabel.setBounds(0,0,120,120);
+                        labelButton.add(buildLabel);
                         break;
                     case 2:
                         buildLabel = new JLabel();//Missed the icon
@@ -479,11 +430,19 @@ public class GUI extends ClientView {
             @Override
             public void run() {
                 for(Position p : message.getPossiblePosition()){
-                    JLabel ledLbl = new JLabel("");
-                    ledLbl.setBackground(Color.BLUE);
-                    buttonMatrix[p.row][p.col].add(ledLbl, BorderLayout.CENTER);
+
+                    JLabel labelIndicator = new JLabel("");
+                    Image imageIndicator = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(117,117,Image.SCALE_DEFAULT);
+                    labelIndicator.setIcon(new ImageIcon(imageIndicator));
+                    labelIndicator.setBounds(0,-8,120,130);
+                    JLabel labelButton = (JLabel) buttonMatrix[p.row][p.col].getComponent(buttonMatrix[p.row][p.col].getComponentCount() - 1);
+                    labelButton.add(labelIndicator);
                 }
             }
         });
     }
+
+
+
+
 }
