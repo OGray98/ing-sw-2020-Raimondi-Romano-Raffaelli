@@ -276,6 +276,7 @@ public class ClientModel extends Observable<MessageToView> {
      * @param message positions passed by server
      */
     public void setActionPositions(ActionMessage message) {
+        //TODO: le notify forse non vanno fatte (forse meglio ottenere quelle celle con un getter dalla view??)
         if (message.getActionType() == ActionType.POWER){
             this.powerActionPositions = message.getPossiblePosition();
             notify(message);
