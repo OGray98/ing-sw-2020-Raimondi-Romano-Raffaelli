@@ -59,6 +59,7 @@ public class GUI extends ClientView {
         /*labelWorker = new JLabel("");
         Image imageIcon = new ImageIcon(this.getClass().getResource("/playerplaceindicator_blue.png")).getImage().getScaledInstance(110,100,Image.SCALE_DEFAULT);
         labelWorker.setIcon(new ImageIcon(imageIcon));
+
         labelPlayer = new JLabel("");
         Image imagePlayer = new ImageIcon(this.getClass().getResource("/om_gloryIcon.png")).getImage().getScaledInstance(95,83,Image.SCALE_DEFAULT);
         labelPlayer.setIcon(new ImageIcon(imagePlayer));
@@ -243,9 +244,10 @@ public class GUI extends ClientView {
                 Image imagePlayer = new ImageIcon(("src/main/resources/om_gloryIcon.png")).getImage().getScaledInstance(95,83,Image.SCALE_DEFAULT);
                 labelPlayerGame.setIcon(new ImageIcon(imagePlayer));
                 labelPlayerGame.setBounds(8,20,95,83);
+
                 labelBase.add(labelPlayerGame);
                 return labelBase;*/
-            default:
+                default:
                 //Error;
         }
 
