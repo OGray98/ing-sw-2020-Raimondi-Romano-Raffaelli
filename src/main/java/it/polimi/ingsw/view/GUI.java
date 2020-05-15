@@ -58,18 +58,6 @@ public class GUI extends ClientView {
         label.setLayout(new BorderLayout());
 
 
-        /*labelWorker = new JLabel("");
-        Image imageIcon = new ImageIcon(this.getClass().getResource("/playerplaceindicator_blue.png")).getImage().getScaledInstance(110,100,Image.SCALE_DEFAULT);
-        labelWorker.setIcon(new ImageIcon(imageIcon));
-
-        labelPlayer = new JLabel("");
-        Image imagePlayer = new ImageIcon(this.getClass().getResource("/om_gloryIcon.png")).getImage().getScaledInstance(95,83,Image.SCALE_DEFAULT);
-        labelPlayer.setIcon(new ImageIcon(imagePlayer));
-        labelPlayer.setBounds(8,22,95,83);*/
-
-
-
-
         labelTerminal = new JLabel("");
         Image imageTerminal = new ImageIcon(this.getClass().getResource("/bg_panelEdgeLeft.png")).getImage().getScaledInstance(350,800,Image.SCALE_DEFAULT);
         labelTerminal.setIcon(new ImageIcon(imageTerminal));
@@ -109,15 +97,6 @@ public class GUI extends ClientView {
         panel1.setOpaque(false);
 
 
-        ButtonCircle buttonMove;
-        ButtonCircle buttonBuild;
-        ButtonCircle buttonPower;
-        ButtonCircle buttonEndTurn;
-        ButtonCircle buttonTutorial;
-        ButtonCircle buttonMenu;
-        JButton buttonExit = new JButton();
-
-
 
         labelBorderGod = getIconGodProfile( "src/main/resources/_0000s_0004_god_and_hero_cards_0052_Prometheus.png");
         labelGod.add(labelBorderGod);
@@ -139,61 +118,52 @@ public class GUI extends ClientView {
         labelTerminal.add(terminal);
 
 
-        try{
-            BufferedImage imageMove = ImageIO.read(new File("src/main/resources/castorpollux_bothMove.png"));
-            BufferedImage imageBuild = ImageIO.read(new File("src/main/resources/castorpollux_bothBuild.png"));
-            BufferedImage imagePower = ImageIO.read(new File("src/main/resources/heropower_active_small.png"));
-            BufferedImage imageEndTurn = ImageIO.read(new File("src/main/resources/Chronus_ClockFace.png"));
-            BufferedImage imageTutorial = ImageIO.read(new File("src/main/resources/TutorialOn.png"));
-            BufferedImage imageMenu = ImageIO.read(new File("src/main/resources/menu_button.png"));
-            BufferedImage imageExit = ImageIO.read(new File("src/main/resources/Exit.png"));
+        ButtonCircle buttonMove;
+        ButtonCircle buttonBuild;
+        ButtonCircle buttonPower;
+        ButtonCircle buttonEndTurn;
+        ButtonCircle buttonTutorial;
+        ButtonCircle buttonMenu;
+        JButton buttonExit = new JButton();
+
+        //Image of button
+        Image imageMove = new ImageIcon(this.getClass().getResource("/castorpollux_bothMove.png")).getImage().getScaledInstance(90,90,Image.SCALE_DEFAULT);
+        Image imageBuild = new ImageIcon(this.getClass().getResource("/castorpollux_bothBuild.png")).getImage().getScaledInstance(90,90,Image.SCALE_DEFAULT);
+        Image imagePower = new ImageIcon(this.getClass().getResource("/heropower_active_small.png")).getImage().getScaledInstance(90,90,Image.SCALE_DEFAULT);
+        Image imageEndTurn = new ImageIcon(this.getClass().getResource("/Chronus_ClockFace.png")).getImage().getScaledInstance(100,100,Image.SCALE_DEFAULT);
+        Image imageTutorial = new ImageIcon(this.getClass().getResource("/TutorialOn.png")).getImage().getScaledInstance(90,90,Image.SCALE_DEFAULT);
+        Image imageMenu = new ImageIcon(this.getClass().getResource("/menu_button.png")).getImage().getScaledInstance(95,95,Image.SCALE_DEFAULT);
+        Image imageExit = new ImageIcon(this.getClass().getResource("/Exit.png")).getImage().getScaledInstance(60,50,Image.SCALE_DEFAULT);
+        //Creating button
+        buttonMove = new ButtonCircle(new ImageIcon(imageMove),Color.WHITE);
+        buttonBuild = new ButtonCircle(new ImageIcon(imageBuild),Color.WHITE);
+        buttonPower = new ButtonCircle(new ImageIcon(imagePower),Color.WHITE);
+        buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn),Color.WHITE);
+        buttonTutorial = new ButtonCircle(new ImageIcon(imageTutorial),Color.WHITE);
+        buttonMenu = new ButtonCircle(new ImageIcon(imageMenu),Color.WHITE);
+        buttonExit.setIcon(new ImageIcon(imageExit));
+        buttonExit.setOpaque(false);
+
+
+        //Position of button
+        buttonMove.setBounds(50,470,90,90);
+        buttonBuild.setBounds(180,470,90,90);
+        buttonPower.setBounds(50,365,95,95);
+        buttonEndTurn.setBounds(180,365,90,90);
+        buttonTutorial.setBounds(60,470,92,92);
+        buttonMenu.setBounds(200,470,85,85);
+        buttonExit.setBounds(285,5,55,50);
 
 
 
-
-            //Resized image
-            BufferedImage scaledExit = getScaledImage(imageExit,60,50);
-            BufferedImage scaledMenu = getScaledImage(imageMenu,95,95);
-            BufferedImage scaledTutorial = getScaledImage(imageTutorial,90,90);
-            BufferedImage scaledEndTurn = getScaledImage(imageEndTurn,100,100);
-            BufferedImage scaledPower = getScaledImage(imagePower,90,90);
-            BufferedImage scaledBuild = getScaledImage(imageBuild,90,90);
-            BufferedImage scaledImage = getScaledImage(imageMove,90,90);
-
-
-            //Setting icon button
-            buttonExit.setIcon(new ImageIcon(scaledExit));
-            buttonMenu = new ButtonCircle(new ImageIcon(scaledMenu),Color.WHITE);
-            buttonTutorial = new ButtonCircle(new ImageIcon(scaledTutorial),Color.WHITE);
-            buttonEndTurn = new ButtonCircle(new ImageIcon(scaledEndTurn),Color.WHITE);
-            buttonPower = new ButtonCircle(new ImageIcon(scaledPower),Color.WHITE);
-            buttonBuild = new ButtonCircle(new ImageIcon(scaledBuild),Color.WHITE);
-            buttonMove = new ButtonCircle(new ImageIcon(scaledImage),Color.WHITE);
-
-
-            //Setting dimension button
-            buttonExit.setBounds(285,5,55,50);
-            buttonMenu.setBounds(200,470,85,85);
-            buttonTutorial.setBounds(60,470,92,92);
-            buttonEndTurn.setBounds(180,365,90,90);
-            buttonPower.setBounds(50,365,95,95);
-            buttonBuild.setBounds(180,470,90,90);
-            buttonMove.setBounds(50,470,90,90);
-            buttonExit.setOpaque(false);
-
-
-            //Add button in label
-            labelGod.add(buttonExit);
-            labelTerminal.add(buttonMenu);
-            labelTerminal.add(buttonTutorial);
-            labelGod.add(buttonEndTurn);
-            labelGod.add(buttonPower);
-            labelGod.add(buttonMove);
-            labelGod.add(buttonBuild);
-            frame.validate();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+        //Adding button to lateral panel
+        labelGod.add(buttonMove);
+        labelGod.add(buttonBuild);
+        labelGod.add(buttonPower);
+        labelGod.add(buttonEndTurn);
+        labelTerminal.add(buttonTutorial);
+        labelTerminal.add(buttonMenu);
+        labelGod.add(buttonExit);
 
 
         label.add(labelGod,BorderLayout.EAST);
@@ -441,6 +411,8 @@ public class GUI extends ClientView {
             }
         });
     }
+
+
 
 
 
