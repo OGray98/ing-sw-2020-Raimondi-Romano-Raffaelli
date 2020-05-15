@@ -1,6 +1,7 @@
 package it.polimi.ingsw.utils;
 
 import it.polimi.ingsw.Client.ControllableByServerMessage;
+import it.polimi.ingsw.Client.ControllableByViewMessage;
 import it.polimi.ingsw.controller.ControllableByClientMessage;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
@@ -9,7 +10,7 @@ import it.polimi.ingsw.model.player.PlayerIndex;
  * PutWorkerMessage extends Message and it contains two positions where the player
  * wants to put his workers at the start of the game
  */
-public class PutWorkerMessage extends TwoPositionMessage implements MessageToServer, MessageToClient {
+public class PutWorkerMessage extends TwoPositionMessage implements MessageToServer, MessageToClient, MessageToView {
 
 
     public PutWorkerMessage(PlayerIndex client, Position pos1, Position pos2) {
@@ -34,5 +35,11 @@ public class PutWorkerMessage extends TwoPositionMessage implements MessageToSer
     public void execute(ControllableByServerMessage controllable) throws NullPointerException {
         if (controllable == null) throw new NullPointerException("controllable");
         controllable.updatePutWorkerMessage(this);
+    }
+
+    @Override
+    public void execute(ControllableByViewMessage controllable) throws NullPointerException {
+        if (controllable == null) throw new NullPointerException("controllable");
+        controllable.updatePutWorker(this);
     }
 }

@@ -8,10 +8,7 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.utils.ActionType;
-import it.polimi.ingsw.utils.Message;
-import it.polimi.ingsw.utils.MoveMessage;
-import it.polimi.ingsw.utils.PutWorkerMessage;
+import it.polimi.ingsw.utils.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +20,7 @@ import java.util.Map;
 /**
  * This class is the model which contains data used by clients
  */
-public class ClientModel extends Observable<Message> {
+public class ClientModel extends Observable<MessageToView> {
 
     //TODO MANCANO TUTTE LE NOTIFY ALLA VIEW
     //TODO RAPPRESENTAZIONE DEI GOD UN PO' SCHIFOSA, FARE UN' INTERFACCIA/CLASSE COMUNE CON CARDINTERFACE?
@@ -100,7 +97,7 @@ public class ClientModel extends Observable<Message> {
         }
 
         //notify to view
-        //notify(new BuildViewMessage(playerIndex, pos, level));
+        notify(new BuildViewMessage(playerIndex, pos, level));
     }
 
     /**
@@ -114,7 +111,7 @@ public class ClientModel extends Observable<Message> {
         this.domesPositions.add(pos);
 
         //notify to view
-        //notify(new BuildViewMessage(playerIndex, pos, 4));
+        notify(new BuildViewMessage(playerIndex, pos, 4));
     }
 
     /**
@@ -136,7 +133,7 @@ public class ClientModel extends Observable<Message> {
                     entry.getValue().add(message.getMovePosition());
                 });
         //notify to view
-        notify(new MoveMessage(message.getClient(), message.getWorkerPosition(), message.getMovePosition()));
+        notify(message);
     }
 
     /**
@@ -276,15 +273,17 @@ public class ClientModel extends Observable<Message> {
 
     /**
      * Set Position usable when you want do an action of passed ActionType
-     *
-     * @param type            type of action that you want to do
-     * @param actionPositions positions passed by server
+     * @param message positions passed by server
      */
-    public void setActionPositions(ActionType type, List<Position> actionPositions) {
-        if (type == ActionType.POWER)
-            this.powerActionPositions = actionPositions;
-        else
-            this.normalActionPositions = actionPositions;
+    public void setActionPositions(ActionMessage message) {
+        if (message.getActionType() == ActionType.POWER){
+            this.powerActionPositions = message.getPossiblePosition();
+            notify(message);
+        }
+        else{
+            this.normalActionPositions = message.getPossiblePosition();
+            notify(message);
+        }
     }
 
     /**

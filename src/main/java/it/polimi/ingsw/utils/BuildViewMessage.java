@@ -1,5 +1,7 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.Client.ControllableByServerMessage;
+import it.polimi.ingsw.Client.ControllableByViewMessage;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
@@ -7,7 +9,7 @@ import it.polimi.ingsw.model.player.PlayerIndex;
  * Message used to notify the view from ClientModel after a build action
  * It contains the level of the new building
  * */
-public class BuildViewMessage extends Message{
+public class BuildViewMessage extends Message implements MessageToView{
     private final Position buildPos;
     private int level;
 
@@ -24,5 +26,11 @@ public class BuildViewMessage extends Message{
     }
     public int getLevel(){
         return this.level;
+    }
+
+    @Override
+    public void execute(ControllableByViewMessage controllable) throws NullPointerException {
+        if (controllable == null) throw new NullPointerException("controllable");
+        controllable.updateBuild(this);
     }
 }

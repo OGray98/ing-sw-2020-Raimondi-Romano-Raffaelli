@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.BuildViewMessage;
 import it.polimi.ingsw.utils.MoveMessage;
@@ -24,6 +25,7 @@ public class GUI extends ClientView {
     private JLabel labelWorker;
     private JLabel labelWorker2;
     private JLabel labelTerminal;
+    private JLabel labelPlayer;
     private JPanel panel1;
     private JLabel labelGod;
     private static final Dimension FRAME_DIM = new Dimension(1400,820);
@@ -54,9 +56,14 @@ public class GUI extends ClientView {
         label.setLayout(new BorderLayout());
 
 
+        /*labelWorker = new JLabel("");
+        Image imageIcon = new ImageIcon(this.getClass().getResource("/playerplaceindicator_blue.png")).getImage().getScaledInstance(110,100,Image.SCALE_DEFAULT);
+        labelWorker.setIcon(new ImageIcon(imageIcon));
+        labelPlayer = new JLabel("");
+        Image imagePlayer = new ImageIcon(this.getClass().getResource("/om_gloryIcon.png")).getImage().getScaledInstance(95,83,Image.SCALE_DEFAULT);
+        labelPlayer.setIcon(new ImageIcon(imagePlayer));
+        labelPlayer.setBounds(8,22,95,83);*/
 
-        labelWorker = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
-        labelWorker.setPreferredSize(new Dimension(5,5));
 
         labelWorker2 = new JLabel(new ImageIcon(this.getClass().getResource("/icon_player.png")));
         labelWorker2.setPreferredSize(new Dimension(5,5));
@@ -81,6 +88,7 @@ public class GUI extends ClientView {
 
 
 
+
         panel1 = new JPanel();
         panel1.setLayout(layout);
         for(int i = 0; i < 5; i++){
@@ -98,9 +106,11 @@ public class GUI extends ClientView {
             }
         }
 
-
+        labelWorker = getPlayerIcon(PlayerIndex.PLAYER2);
         buttonMatrix[0][3].add(labelWorker2,BorderLayout.CENTER);
         buttonMatrix[2][2].add(labelWorker,BorderLayout.CENTER);
+
+
 
 
         panel1.setOpaque(false);
@@ -112,6 +122,7 @@ public class GUI extends ClientView {
         ButtonCircle buttonEndTurn;
         ButtonCircle buttonTutorial;
         ButtonCircle buttonMenu;
+
 
         JButton buttonGod;
         JButton buttonExit = new JButton();
@@ -146,6 +157,7 @@ public class GUI extends ClientView {
 
 
 
+
             //Resized image
             BufferedImage scaledExit = getScaledImage(imageExit,60,50);
             BufferedImage scaledMenu = getScaledImage(imageMenu,95,95);
@@ -154,6 +166,7 @@ public class GUI extends ClientView {
             BufferedImage scaledPower = getScaledImage(imagePower,90,90);
             BufferedImage scaledBuild = getScaledImage(imageBuild,90,90);
             BufferedImage scaledImage = getScaledImage(imageMove,90,90);
+
 
             //Setting icon button
             buttonExit.setIcon(new ImageIcon(scaledExit));
@@ -164,6 +177,7 @@ public class GUI extends ClientView {
             buttonBuild = new ButtonCircle(new ImageIcon(scaledBuild));
             buttonMove = new ButtonCircle(new ImageIcon(scaledImage));
 
+
             //Setting dimension button
             buttonExit.setBounds(285,5,55,50);
             buttonMenu.setBounds(200,470,85,85);
@@ -173,6 +187,7 @@ public class GUI extends ClientView {
             buttonBuild.setBounds(180,470,90,90);
             buttonMove.setBounds(50,470,90,90);
             buttonExit.setOpaque(false);
+
 
             //Add button in label
             labelGod.add(buttonExit);
@@ -198,6 +213,50 @@ public class GUI extends ClientView {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private static JLabel getPlayerIcon(PlayerIndex playerIndex){
+        JLabel labelBase = null;
+        switch (playerIndex) {
+            case PLAYER0:
+                labelBase = new JLabel("");
+                Image imageIcon = new ImageIcon(("src/main/resources/playerplaceindicator_blue.png")).getImage().getScaledInstance(110, 100, Image.SCALE_DEFAULT);
+                labelBase.setIcon(new ImageIcon(imageIcon));
+                break;
+            case PLAYER1:
+                labelBase = new JLabel("");
+                Image imageIcon1 = new ImageIcon(("src/main/resources/playerplaceindicator_gold.png")).getImage().getScaledInstance(110, 100, Image.SCALE_DEFAULT);
+                labelBase.setIcon(new ImageIcon(imageIcon1));
+                break;
+            case PLAYER2:
+                labelBase = new JLabel("");
+                Image imageIcon2 = new ImageIcon(("src/main/resources/SeleneMoonSprite.png")).getImage().getScaledInstance(118, 113, Image.SCALE_DEFAULT);
+                labelBase.setIcon(new ImageIcon(imageIcon2));
+                JLabel labelPlayerGame = new JLabel("");
+                Image imagePlayer = new ImageIcon(("src/main/resources/om_gloryIcon.png")).getImage().getScaledInstance(95,83,Image.SCALE_DEFAULT);
+                labelPlayerGame.setIcon(new ImageIcon(imagePlayer));
+                labelPlayerGame.setBounds(12,22,95,83);
+
+                labelBase.add(labelPlayerGame);
+                return labelBase;
+                /*JLabel labelPlayerGame = new JLabel("");
+                Image imagePlayer = new ImageIcon(("src/main/resources/om_gloryIcon.png")).getImage().getScaledInstance(95,83,Image.SCALE_DEFAULT);
+                labelPlayerGame.setIcon(new ImageIcon(imagePlayer));
+                labelPlayerGame.setBounds(8,20,95,83);
+                labelBase.add(labelPlayerGame);
+                return labelBase;*/
+            default:
+                //Error;
+        }
+
+        JLabel labelPlayerGame = new JLabel("");
+        Image imagePlayer = new ImageIcon(("src/main/resources/om_gloryIcon.png")).getImage().getScaledInstance(95,83,Image.SCALE_DEFAULT);
+        labelPlayerGame.setIcon(new ImageIcon(imagePlayer));
+        labelPlayerGame.setBounds(8,22,95,83);
+
+        labelBase.add(labelPlayerGame);
+        return labelBase;
+
     }
 
     private static JButton getIconGodProfile(String fileImg){
@@ -297,69 +356,69 @@ public class GUI extends ClientView {
                 int labelNumNewPos = buttonMatrix[newPos.row][newPos.col].getComponentCount();
                 int labelNumOldPos = buttonMatrix[oldPos.row][oldPos.col].getComponentCount();
                 if(labelNumNewPos != 0){
-                        //Tower level 1
-                        JLabel l;
-                        l = (JLabel) buttonMatrix[newPos.row][newPos.col].getComponent(labelNumNewPos -1);
+                    //Tower level 1
+                    JLabel l;
+                    l = (JLabel) buttonMatrix[newPos.row][newPos.col].getComponent(labelNumNewPos -1);
+                    if(l.getComponentCount() != 0){
+                        //Tower level 2
+                        l = (JLabel) l.getComponent(l.getComponentCount() - 1);
                         if(l.getComponentCount() != 0){
-                            //Tower level 2
+                            //Tower level 3
                             l = (JLabel) l.getComponent(l.getComponentCount() - 1);
-                            if(l.getComponentCount() != 0){
-                                //Tower level 3
-                                l = (JLabel) l.getComponent(l.getComponentCount() - 1);
-                            }
                         }
-                        JLabel labelIcon;
-                        //Tower level 1
-                        labelIcon = (JLabel) buttonMatrix[oldPos.row][oldPos.col].getComponent(labelNumOldPos - 1);
-                        if(labelIcon.getComponentCount() != 0){
-                            //Tower level 2
-                            JLabel labelIcon2;
-                            labelIcon2 = (JLabel) labelIcon.getComponent(labelIcon.getComponentCount() - 1);
-                            if(labelIcon2.getComponentCount() != 0){
-                                //Tower level 3
-                                JLabel labelIcon3;
-                                labelIcon3 = (JLabel) labelIcon.getComponent(labelIcon.getComponentCount() - 1);
-                                if(labelIcon3.getComponentCount() != 0){
-                                    labelIcon3.remove(labelIcon3.getComponentCount() - 1);
-                                }else{
-                                    labelIcon2.remove(labelIcon2.getComponentCount() - 1);
-                                }
+                    }
+                    JLabel labelIcon;
+                    //Tower level 1
+                    labelIcon = (JLabel) buttonMatrix[oldPos.row][oldPos.col].getComponent(labelNumOldPos - 1);
+                    if(labelIcon.getComponentCount() != 0){
+                        //Tower level 2
+                        JLabel labelIcon2;
+                        labelIcon2 = (JLabel) labelIcon.getComponent(labelIcon.getComponentCount() - 1);
+                        if(labelIcon2.getComponentCount() != 0){
+                            //Tower level 3
+                            JLabel labelIcon3;
+                            labelIcon3 = (JLabel) labelIcon.getComponent(labelIcon.getComponentCount() - 1);
+                            if(labelIcon3.getComponentCount() != 0){
+                                labelIcon3.remove(labelIcon3.getComponentCount() - 1);
                             }else{
-                            labelIcon.remove(labelIcon.getComponentCount() - 1);}
+                                labelIcon2.remove(labelIcon2.getComponentCount() - 1);
+                            }
                         }else{
+                            labelIcon.remove(labelIcon.getComponentCount() - 1);}
+                    }else{
                         buttonMatrix[oldPos.row][oldPos.col].remove(labelNumOldPos - 1);
                         buttonMatrix[oldPos.row][oldPos.col].revalidate();
                         buttonMatrix[oldPos.row][oldPos.col].repaint();
-                        }
-                        l.add(labelWorker, BorderLayout.CENTER);
-                        buttonMatrix[newPos.row][newPos.col].add(l);
+                    }
+                    l.add(labelWorker, BorderLayout.CENTER);
+                    buttonMatrix[newPos.row][newPos.col].add(l);
                 } else{
-                        JLabel labelOldRemove;
-                        //Tower level 1
-                        labelOldRemove = (JLabel) buttonMatrix[oldPos.row][oldPos.col].getComponent(labelNumOldPos - 1);
-                        if(labelOldRemove.getComponentCount() != 0){
-                            //Tower level 2
-                            JLabel labelOldRemove2;
-                            labelOldRemove2 = (JLabel) labelOldRemove.getComponent(labelOldRemove.getComponentCount() - 1);
+                    JLabel labelOldRemove;
+                    //Tower level 1
+                    labelOldRemove = (JLabel) buttonMatrix[oldPos.row][oldPos.col].getComponent(labelNumOldPos - 1);
+                    if(labelOldRemove.getComponentCount() != 0){
+                        //Tower level 2
+                        JLabel labelOldRemove2;
+                        labelOldRemove2 = (JLabel) labelOldRemove.getComponent(labelOldRemove.getComponentCount() - 1);
 
-                            if(labelOldRemove2.getComponentCount() != 0){
-                                //Tower level 3
-                                JLabel labelOldRemove3;
-                                labelOldRemove3 = (JLabel) labelOldRemove.getComponent(labelOldRemove.getComponentCount() - 1);
-                                if(labelOldRemove3.getComponentCount() != 0){
-                                    labelOldRemove3.remove(labelOldRemove3.getComponentCount() - 1);
-                                }else{
-                                    labelOldRemove2.remove(labelOldRemove2.getComponentCount() - 1);
-                                }
+                        if(labelOldRemove2.getComponentCount() != 0){
+                            //Tower level 3
+                            JLabel labelOldRemove3;
+                            labelOldRemove3 = (JLabel) labelOldRemove.getComponent(labelOldRemove.getComponentCount() - 1);
+                            if(labelOldRemove3.getComponentCount() != 0){
+                                labelOldRemove3.remove(labelOldRemove3.getComponentCount() - 1);
                             }else{
-                                labelOldRemove.remove(labelOldRemove.getComponentCount() - 1);
+                                labelOldRemove2.remove(labelOldRemove2.getComponentCount() - 1);
                             }
                         }else{
-                            buttonMatrix[oldPos.row][oldPos.col].remove(labelNumOldPos - 1);
+                            labelOldRemove.remove(labelOldRemove.getComponentCount() - 1);
                         }
-                        buttonMatrix[oldPos.row][oldPos.col].revalidate();
-                        buttonMatrix[oldPos.row][oldPos.col].repaint();
-                        buttonMatrix[newPos.row][newPos.col].add(labelWorker);
+                    }else{
+                        buttonMatrix[oldPos.row][oldPos.col].remove(labelNumOldPos - 1);
+                    }
+                    buttonMatrix[oldPos.row][oldPos.col].revalidate();
+                    buttonMatrix[oldPos.row][oldPos.col].repaint();
+                    buttonMatrix[newPos.row][newPos.col].add(labelWorker);
                 }
             }
         });

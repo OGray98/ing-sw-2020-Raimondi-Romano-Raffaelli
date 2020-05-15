@@ -59,7 +59,7 @@ public class ClientManager implements ControllableByServerMessage {
 
     @Override
     public void updateAction(ActionMessage message){
-        clientModel.setActionPositions(message.getActionType(), message.getPossiblePosition());
+        clientModel.setActionPositions(message);
     }
 
     @Override
