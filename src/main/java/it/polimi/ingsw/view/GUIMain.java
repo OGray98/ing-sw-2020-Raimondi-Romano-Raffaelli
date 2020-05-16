@@ -39,7 +39,7 @@ public class GUIMain {
     }
 
     public static void main(String[] args){
-        //new GUIMain();
+        new GUIMain();
         //temporaneo, brutale inserimento di immagini in GodChoiceDialog
         List<JLabel> gods = new ArrayList<>();
         Image image1 = new ImageIcon(("src/main/resources/_0000s_0001_god_and_hero_cards_0059_Castor_and_Pollux.png")).getImage().getScaledInstance(150,230,Image.SCALE_DEFAULT);
@@ -67,6 +67,6 @@ public class GUIMain {
         god5.setIcon(new ImageIcon(image5));
         god5.setLayout(new BorderLayout());
         gods.add(god5);
-        new GodChoiceDialog(new JFrame(), gods);
+        //new GodChoiceDialog(new JFrame(), gods);
     }
 }
