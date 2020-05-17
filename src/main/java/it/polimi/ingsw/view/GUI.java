@@ -25,10 +25,7 @@ import java.util.ArrayList;
 public class GUI extends ClientView {
 
     private JLabel label;
-    private ButtonCircle labelWorker;
-    private ButtonCircle labelWorker2;
     private JLabel labelTerminal;
-    private JLabel labelPlayer;
     private JPanel panel1;
     private JLabel labelGod;
     private static final Dimension FRAME_DIMENSION = Toolkit.getDefaultToolkit().getScreenSize();
@@ -40,7 +37,6 @@ public class GUI extends ClientView {
     private static final int internalFrameEight = getProportionHeight(800,820,FRAME_HEIGHT);
     private static final int labelEmptyWidth = getProportionWidth(18,1400,internalFrameWidth);
     private static final int labelEmptyHeight = getProportionHeight(19,800,internalFrameEight);
-    //private static final Dimension FRAME_DIM = new Dimension(1400,820);
     private static final int ROW_NUM = 5;
     private JButton[][] buttonMatrix = new JButton[ROW_NUM][ROW_NUM];
     private JFrame frame;
@@ -68,7 +64,6 @@ public class GUI extends ClientView {
                 buttonMatrix[i][j] = new JButton("" + i + j);
                 buttonMatrix[i][j].setOpaque(false);
                 buttonMatrix[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                //buttonMatrix[i][j].setPreferredSize(new Dimension(5,5));
                 buttonMatrix[i][j].setPreferredSize(new Dimension(labelEmptyWidth,labelEmptyHeight));
                 buttonMatrix[i][j].setLayout(new BorderLayout());
                 JLabel labelEmpty = new JLabel("");
@@ -125,28 +120,22 @@ public class GUI extends ClientView {
         });*/
 
 
-        /*GridBagLayout layout = new GridBagLayout();
-        GridBagConstraints lim = new GridBagConstraints();
-        lim.ipadx = getProportionWidth(102,1400,internalFrameWidth);
-        lim.ipady = getProportionHeight(102,800,internalFrameEight);*/
+
 
 
 
 
         frame.setLayout(new BorderLayout());
-        //frame.setPreferredSize(FRAME_DIM);
         frame.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT));
         frame.setResizable(false);
 
         label = new JLabel("");
-        //Image image = new ImageIcon(this.getClass().getResource("/SantoriniBoard.png")).getImage().getScaledInstance(1400,800,Image.SCALE_DEFAULT);
         Image image = new ImageIcon(this.getClass().getResource("/SantoriniBoard.png")).getImage().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
         label.setIcon(new ImageIcon(image));
         label.setLayout(new BorderLayout());
 
 
         labelTerminal = new JLabel("");
-        //Image imageTerminal = new ImageIcon(this.getClass().getResource("/bg_panelEdgeLeft.png")).getImage().getScaledInstance(350,800,Image.SCALE_DEFAULT);
         final int labelTerminalWidth = getProportionWidth(350,1400,internalFrameWidth);
         final int labelTerminalEight = getProportionHeight(800,800,internalFrameEight);
         Image imageTerminal = new ImageIcon(this.getClass().getResource("/bg_panelEdgeLeft.png")).getImage().getScaledInstance(labelTerminalWidth,labelTerminalEight,Image.SCALE_DEFAULT);
@@ -154,37 +143,11 @@ public class GUI extends ClientView {
 
 
         labelGod = new JLabel("");
-        //Image imageGod = new ImageIcon(this.getClass().getResource("/bg_panelEdgeRight.png")).getImage().getScaledInstance(350,800,Image.SCALE_DEFAULT);
         labelGodWidth = getProportionWidth(350,1400,internalFrameWidth);
         labelGodHeight = getProportionHeight(800,800,internalFrameEight);
         Image imageGod = new ImageIcon(this.getClass().getResource("/bg_panelEdgeRight.png")).getImage().getScaledInstance(labelGodWidth,labelGodHeight,Image.SCALE_DEFAULT);
         labelGod.setIcon(new ImageIcon(imageGod));
 
-
-
-
-
-       /* panel1 = new JPanel();
-        panel1.setLayout(layout);
-        for(int i = 0; i < 5; i++){
-            lim.gridy = i;
-            for(int j = 0; j < 5; j++){
-                lim.gridx = j;
-                buttonMatrix[i][j] = new JButton("" + i + j);
-                buttonMatrix[i][j].setOpaque(false);
-                buttonMatrix[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                //buttonMatrix[i][j].setPreferredSize(new Dimension(5,5));
-                buttonMatrix[i][j].setPreferredSize(new Dimension(labelEmptyWidth,labelEmptyHeight));
-                buttonMatrix[i][j].setLayout(new BorderLayout());
-                JLabel labelEmpty = new JLabel("");
-                labelEmpty.setOpaque(false);
-                buttonMatrix[i][j].add(labelEmpty,BorderLayout.CENTER);
-                layout.setConstraints(buttonMatrix[i][j], lim);
-                panel1.add(buttonMatrix[i][j]);
-
-            }
-        }
-        panel1.setOpaque(false);*/
 
 
 
@@ -204,7 +167,6 @@ public class GUI extends ClientView {
         textArea.setForeground(Color.GREEN);
         JScrollPane terminal = new JScrollPane(textArea);
         terminal.setBackground(Color.BLACK);
-        //terminal.setBounds(60,170,250,280);
         terminal.setBounds(getProportionWidth(60,350,labelTerminalWidth),getProportionHeight(170,800,labelTerminalEight),getProportionWidth(250,350,labelTerminalWidth),getProportionHeight(280,800,labelTerminalEight));
 
         labelTerminal.add(terminal);
@@ -293,25 +255,17 @@ public class GUI extends ClientView {
     private ButtonCircle getPlayerIcon(PlayerIndex playerIndex){
         ButtonCircle buttonPlayer = null;
         if(playerIndex.equals(PlayerIndex.PLAYER0)){
-            //Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(80,80,Image.SCALE_DEFAULT);
             Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(getProportionWidth(80,18,labelEmptyWidth),getProportionHeight(80,19,labelEmptyHeight),Image.SCALE_DEFAULT);
             buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer),Color.RED);
-            //buttonPlayer.setBounds(17, 15, 83, 83);
-            buttonPlayer.setBounds( getProportionWidth(17,18,labelEmptyWidth),getProportionHeight(15,19,labelEmptyHeight), getProportionWidth(83,18,labelEmptyWidth),getProportionHeight(83,19,labelEmptyHeight));
+            buttonPlayer.setBounds( getProportionWidth(20,18,labelEmptyWidth),getProportionHeight(22,19,labelEmptyHeight), getProportionWidth(83,18,labelEmptyWidth),getProportionHeight(83,19,labelEmptyHeight));
         }else if(playerIndex.equals(PlayerIndex.PLAYER1)){
-
-            //Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(80,80,Image.SCALE_DEFAULT);
             Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(getProportionWidth(80,18,labelEmptyWidth),getProportionHeight(80,19,labelEmptyHeight),Image.SCALE_DEFAULT);
             buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer),Color.BLUE);
-            //buttonPlayer.setBounds(17, 15, 83, 83);
-            buttonPlayer.setBounds( getProportionWidth(17,18,labelEmptyWidth),getProportionHeight(15,19,labelEmptyHeight), getProportionWidth(83,18,labelEmptyWidth),getProportionHeight(83,19,labelEmptyHeight));
+            buttonPlayer.setBounds( getProportionWidth(20,18,labelEmptyWidth),getProportionHeight(22,19,labelEmptyHeight), getProportionWidth(83,18,labelEmptyWidth),getProportionHeight(83,19,labelEmptyHeight));
         }else if(playerIndex.equals(PlayerIndex.PLAYER2)){
-
-            //Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(80,80,Image.SCALE_DEFAULT);
             Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(getProportionWidth(80,18,labelEmptyWidth),getProportionHeight(80,19,labelEmptyHeight),Image.SCALE_DEFAULT);
             buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer),Color.CYAN);
-            //buttonPlayer.setBounds(17, 15, 83, 83);
-            buttonPlayer.setBounds( getProportionWidth(17,18,labelEmptyWidth),getProportionHeight(15,19,labelEmptyHeight), getProportionWidth(83,18,labelEmptyWidth),getProportionHeight(83,19,labelEmptyHeight));
+            buttonPlayer.setBounds( getProportionWidth(20,18,labelEmptyWidth),getProportionHeight(22,19,labelEmptyHeight), getProportionWidth(83,18,labelEmptyWidth),getProportionHeight(83,19,labelEmptyHeight));
         }
 
         return buttonPlayer;
@@ -321,18 +275,14 @@ public class GUI extends ClientView {
     private static JLabel getIconGodProfile(String fileImg){
 
         JLabel labelBorderGod = new JLabel("");
-        //Image imageBorderGod = new ImageIcon(this.getClass().getResource("/clp_frame_gold.png")).getImage().getScaledInstance(150,230,Image.SCALE_DEFAULT);
         Image imageBorderGod = new ImageIcon(("src/main/resources/clp_frame_gold.png")).getImage().getScaledInstance(getProportionWidth(150,350,labelGodWidth),getProportionHeight(230,800,labelGodHeight),Image.SCALE_DEFAULT);
         labelBorderGod.setIcon(new ImageIcon(imageBorderGod));
-        //labelBorderGod.setBounds(90,140,150,230);
-         int labelBorderGodWidth = getProportionWidth(150,350,labelGodWidth);
-         int labelBorderGodHeight = getProportionHeight(230,800,labelGodHeight);
-         labelBorderGod.setBounds(getProportionWidth(90,350,labelGodWidth),getProportionHeight(140,800,labelGodHeight),labelBorderGodWidth,labelBorderGodHeight);
-         JButton buttonGod = new JButton();
-        //Image God = new ImageIcon((fileImg)).getImage().getScaledInstance(90,170,Image.SCALE_DEFAULT);
+        int labelBorderGodWidth = getProportionWidth(150,350,labelGodWidth);
+        int labelBorderGodHeight = getProportionHeight(230,800,labelGodHeight);
+        labelBorderGod.setBounds(getProportionWidth(90,350,labelGodWidth),getProportionHeight(140,800,labelGodHeight),labelBorderGodWidth,labelBorderGodHeight);
+        JButton buttonGod = new JButton();
         Image God = new ImageIcon((fileImg)).getImage().getScaledInstance(getProportionWidth(90,150,labelBorderGodWidth),getProportionHeight(160,230,labelBorderGodHeight),Image.SCALE_DEFAULT);
         buttonGod.setIcon(new ImageIcon(God));
-        // buttonGod.setBounds(31,35,90,160);
         buttonGod.setBounds(getProportionWidth(31,150,labelBorderGodWidth),getProportionHeight(31,230,labelBorderGodHeight),getProportionWidth(90,150,labelBorderGodWidth),getProportionHeight(170,230,labelBorderGodHeight));
         buttonGod.setOpaque(false);
         labelBorderGod.add(buttonGod);
