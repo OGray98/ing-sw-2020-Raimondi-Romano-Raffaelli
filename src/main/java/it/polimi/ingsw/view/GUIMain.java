@@ -20,11 +20,10 @@ public class GUIMain {
             @Override
             public void run() {
                 gui.initGUI();
-            }
-        });
+        }});
 
         gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER0, new Position(2,3), 1));
-        gui.updatePutWorker(new PutWorkerMessage(PlayerIndex.PLAYER0, new Position(4,4), new Position(2,4)));
+        gui.updatePutWorker(new PutWorkerMessage(PlayerIndex.PLAYER0, new Position(0,4), new Position(2,4)));
         gui.updatePutWorker(new PutWorkerMessage(PlayerIndex.PLAYER1, new Position(1,4), new Position(0,0)));
         gui.updatePutWorker(new PutWorkerMessage(PlayerIndex.PLAYER2, new Position(3,4), new Position(0,1)));
         gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER0, new Position(2,4), new Position(2,3)));
@@ -38,7 +37,9 @@ public class GUIMain {
 
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) /*throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+            UnsupportedLookAndFeelException*/{
+        //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         new GUIMain();
         //temporaneo, brutale inserimento di immagini in GodChoiceDialog
         List<JLabel> gods = new ArrayList<>();

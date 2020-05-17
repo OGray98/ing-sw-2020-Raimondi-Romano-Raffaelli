@@ -13,6 +13,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
@@ -30,8 +32,8 @@ public class GUI extends ClientView {
     private JPanel panel1;
     private JLabel labelGod;
     private static final Dimension FRAME_DIMENSION = Toolkit.getDefaultToolkit().getScreenSize();
-    private static final int FRAME_WIDTH = (FRAME_DIMENSION.width/2);
-    private static final int FRAME_HEIGHT = (FRAME_DIMENSION.height/2);
+    private static final int FRAME_WIDTH = (FRAME_DIMENSION.width/2)*3/2;
+    private static final int FRAME_HEIGHT = (FRAME_DIMENSION.height/2)*3/2;
     private static int labelGodWidth;
     private static int labelGodHeight;
     private static final int internalFrameWidth = getProportionWidth(1400,1400,FRAME_WIDTH);
@@ -50,11 +52,85 @@ public class GUI extends ClientView {
 
     public void initGUI(){
         frame = new JFrame("Santorini");
+        frame.setLocation(FRAME_DIMENSION.width/8, FRAME_DIMENSION.height/8);
 
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints lim = new GridBagConstraints();
         lim.ipadx = getProportionWidth(102,1400,internalFrameWidth);
         lim.ipady = getProportionHeight(102,800,internalFrameEight);
+
+        panel1 = new JPanel();
+        panel1.setLayout(layout);
+        for(int i = 0; i < 5; i++){
+            lim.gridy = i;
+            for(int j = 0; j < 5; j++){
+                lim.gridx = j;
+                buttonMatrix[i][j] = new JButton("" + i + j);
+                buttonMatrix[i][j].setOpaque(false);
+                buttonMatrix[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                //buttonMatrix[i][j].setPreferredSize(new Dimension(5,5));
+                buttonMatrix[i][j].setPreferredSize(new Dimension(labelEmptyWidth,labelEmptyHeight));
+                buttonMatrix[i][j].setLayout(new BorderLayout());
+                JLabel labelEmpty = new JLabel("");
+                labelEmpty.setOpaque(false);
+                buttonMatrix[i][j].add(labelEmpty,BorderLayout.CENTER);
+                layout.setConstraints(buttonMatrix[i][j], lim);
+                panel1.add(buttonMatrix[i][j]);
+
+            }
+        }
+        panel1.setOpaque(false);
+
+       /* final JComboBox<UIManager.LookAndFeelInfo> laf = new JComboBox<UIManager.LookAndFeelInfo>();
+        UIManager.LookAndFeelInfo selected = null;
+        for (UIManager.LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
+            laf.addItem(lafInfo);
+            if (lafInfo.getName().equals(UIManager.getLookAndFeel().getName())) {
+                selected = lafInfo;
+            }
+        }
+        laf.setSelectedItem(selected);
+        laf.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                if (value != null) {
+                    UIManager.LookAndFeelInfo lafInfo = (UIManager.LookAndFeelInfo) value;
+                    setText(lafInfo.getName());
+                } else {
+                    setText("");
+                }
+                return this;
+            }
+        });
+
+        laf.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String className = laf.getModel().getElementAt(laf.getSelectedIndex()).getClassName();
+                System.err.println("Changing to " + className);
+                try {
+                    UIManager.setLookAndFeel(className);
+                    SwingUtilities.updateComponentTreeUI(frame.getRootPane());
+                } catch (ClassNotFoundException e1) {
+                    e1.printStackTrace();
+                } catch (InstantiationException e1) {
+                    e1.printStackTrace();
+                } catch (IllegalAccessException e1) {
+                    e1.printStackTrace();
+                } catch (UnsupportedLookAndFeelException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });*/
+
+
+        /*GridBagLayout layout = new GridBagLayout();
+        GridBagConstraints lim = new GridBagConstraints();
+        lim.ipadx = getProportionWidth(102,1400,internalFrameWidth);
+        lim.ipady = getProportionHeight(102,800,internalFrameEight);*/
+
+
 
 
         frame.setLayout(new BorderLayout());
@@ -88,7 +164,7 @@ public class GUI extends ClientView {
 
 
 
-        panel1 = new JPanel();
+       /* panel1 = new JPanel();
         panel1.setLayout(layout);
         for(int i = 0; i < 5; i++){
             lim.gridy = i;
@@ -108,7 +184,7 @@ public class GUI extends ClientView {
 
             }
         }
-        panel1.setOpaque(false);
+        panel1.setOpaque(false);*/
 
 
 
@@ -186,7 +262,10 @@ public class GUI extends ClientView {
         label.add(labelGod,BorderLayout.EAST);
         label.add(labelTerminal,BorderLayout.WEST);
         label.add(panel1,BorderLayout.CENTER);
-        frame.add(label);
+        frame.getContentPane().add(label);
+
+
+
 
 
 
@@ -450,9 +529,9 @@ public class GUI extends ClientView {
                 for(Position p : message.getPossiblePosition()){
 
                     JLabel labelIndicator = new JLabel("");
-                    Image imageIndicator = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(117,18,labelEmptyWidth),getProportionHeight(117,19,labelEmptyHeight),Image.SCALE_DEFAULT);
+                    Image imageIndicator = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(125,18,labelEmptyWidth),getProportionHeight(127,19,labelEmptyHeight),Image.SCALE_DEFAULT);
                     labelIndicator.setIcon(new ImageIcon(imageIndicator));
-                    labelIndicator.setBounds(getProportionWidth(0,18,labelEmptyWidth),getProportionHeight(-8,19,labelEmptyHeight),getProportionWidth(120,18,labelEmptyWidth),getProportionHeight(130,19,labelEmptyHeight));
+                    labelIndicator.setBounds(getProportionWidth(-2,18,labelEmptyWidth),getProportionHeight(-4,19,labelEmptyHeight),getProportionWidth(125,18,labelEmptyWidth),getProportionHeight(130,19,labelEmptyHeight));
                     JLabel labelButton = (JLabel) buttonMatrix[p.row][p.col].getComponent(buttonMatrix[p.row][p.col].getComponentCount() - 1);
                     labelButton.add(labelIndicator);
                 }
