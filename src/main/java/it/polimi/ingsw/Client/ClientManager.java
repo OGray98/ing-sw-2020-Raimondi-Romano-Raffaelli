@@ -71,7 +71,7 @@ public class ClientManager implements ControllableByServerMessage {
 
     @Override
     public void updateSelectedCard(PlayerSelectGodMessage message) {
-        clientModel.setGodChosenByPlayer(message.getClient(), message.getGodName());
+        clientModel.setGodChosenByPlayer(message);
     }
 
     @Override

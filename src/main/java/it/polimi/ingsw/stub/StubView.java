@@ -1,10 +1,7 @@
 package it.polimi.ingsw.stub;
 
 import it.polimi.ingsw.Client.ClientView;
-import it.polimi.ingsw.utils.ActionMessage;
-import it.polimi.ingsw.utils.BuildViewMessage;
-import it.polimi.ingsw.utils.MoveMessage;
-import it.polimi.ingsw.utils.PutWorkerMessage;
+import it.polimi.ingsw.utils.*;
 
 public class StubView extends ClientView {
 
@@ -25,6 +22,11 @@ public class StubView extends ClientView {
 
     @Override
     public void updateActionView(ActionMessage message) {
+
+    }
+
+    @Override
+    public void updateSelectedCardView(PlayerSelectGodMessage message) {
 
     }
 }

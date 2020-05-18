@@ -1,9 +1,6 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.utils.ActionMessage;
-import it.polimi.ingsw.utils.BuildViewMessage;
-import it.polimi.ingsw.utils.MoveMessage;
-import it.polimi.ingsw.utils.PutWorkerMessage;
+import it.polimi.ingsw.utils.*;
 
 public interface ControllableByViewMessage {
 
@@ -18,4 +15,6 @@ public interface ControllableByViewMessage {
     public void updateBuild(BuildViewMessage message);
 
     public void updateActionView(ActionMessage message);
+
+    public void updateSelectedCardView(PlayerSelectGodMessage message);
 }

@@ -290,16 +290,19 @@ public class ClientModel extends Observable<MessageToView> {
     /**
      * Create the correlation playerIndex/God chosen
      *
-     * @param index PlayerIndex of player who chose god
-     * @param god   god chosen by player
+     * @param message contains the GodName chosen and the playerIndex of the player who choosed
      * @throws NullPointerException    if god is null
      * @throws NotSelectedGodException if god isn't a chosen god by god like
      */
-    public void setGodChosenByPlayer(PlayerIndex index, String god) throws NullPointerException, NotSelectedGodException {
-        if (god == null) throw new NullPointerException("god");
-        if (!godsChosenByGodLike.contains(god)) throw new NotSelectedGodException(god);
-        this.chosenGods.put(index, god);
-        if (index.equals(playerIndex))
+    public void setGodChosenByPlayer(PlayerSelectGodMessage message) throws NullPointerException, NotSelectedGodException {
+        if (message.getGodName() == null) throw new NullPointerException("god");
+        if (!godsChosenByGodLike.contains(message.getGodName())) throw new NotSelectedGodException(message.getGodName());
+        this.chosenGods.put(message.getClient(), message.getGodName());
+
+        //notify to View
+        notify(message);
+
+        if (message.getClient().equals(playerIndex))
             setClientPowerState();
     }
 

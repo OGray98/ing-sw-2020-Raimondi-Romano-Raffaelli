@@ -4,10 +4,7 @@ import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.utils.ActionMessage;
-import it.polimi.ingsw.utils.BuildViewMessage;
-import it.polimi.ingsw.utils.MoveMessage;
-import it.polimi.ingsw.utils.PutWorkerMessage;
+import it.polimi.ingsw.utils.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -41,6 +38,8 @@ public class GUI extends ClientView {
     private JButton[][] buttonMatrix = new JButton[ROW_NUM][ROW_NUM];
     private JFrame frame;
 
+    private ImageContainer imageContainer;
+
 
 
     public GUI(){
@@ -49,6 +48,8 @@ public class GUI extends ClientView {
     public void initGUI(){
         frame = new JFrame("Santorini");
         frame.setLocation(FRAME_DIMENSION.width/8, FRAME_DIMENSION.height/8);
+
+        imageContainer = new ImageContainer();
 
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints lim = new GridBagConstraints();
@@ -151,9 +152,9 @@ public class GUI extends ClientView {
 
 
 
-        JLabel labelBorderGod;
-        labelBorderGod = getIconGodProfile( "src/main/resources/_0000s_0004_god_and_hero_cards_0052_Prometheus.png");
-        labelGod.add(labelBorderGod);
+        //JLabel labelBorderGod;
+        //labelBorderGod = getIconGodProfile( imageContainer.getGodimage("Apollo"));
+        //labelGod.add(labelBorderGod);
 
 
 
@@ -272,7 +273,7 @@ public class GUI extends ClientView {
 
     }
 
-    private static JLabel getIconGodProfile(String fileImg){
+    private static JLabel getIconGodProfile(Image godImage){
 
         JLabel labelBorderGod = new JLabel("");
         Image imageBorderGod = new ImageIcon(("src/main/resources/clp_frame_gold.png")).getImage().getScaledInstance(getProportionWidth(150,350,labelGodWidth),getProportionHeight(230,800,labelGodHeight),Image.SCALE_DEFAULT);
@@ -281,7 +282,8 @@ public class GUI extends ClientView {
         int labelBorderGodHeight = getProportionHeight(230,800,labelGodHeight);
         labelBorderGod.setBounds(getProportionWidth(90,350,labelGodWidth),getProportionHeight(140,800,labelGodHeight),labelBorderGodWidth,labelBorderGodHeight);
         JButton buttonGod = new JButton();
-        Image God = new ImageIcon((fileImg)).getImage().getScaledInstance(getProportionWidth(90,150,labelBorderGodWidth),getProportionHeight(160,230,labelBorderGodHeight),Image.SCALE_DEFAULT);
+        Image God = godImage.getScaledInstance(getProportionWidth(90,150,labelBorderGodWidth),getProportionHeight(160,230,labelBorderGodHeight),Image.SCALE_DEFAULT);
+        //Image God = new ImageIcon((fileImg)).getImage().getScaledInstance(getProportionWidth(90,150,labelBorderGodWidth),getProportionHeight(160,230,labelBorderGodHeight),Image.SCALE_DEFAULT);
         buttonGod.setIcon(new ImageIcon(God));
         buttonGod.setBounds(getProportionWidth(31,150,labelBorderGodWidth),getProportionHeight(31,230,labelBorderGodHeight),getProportionWidth(90,150,labelBorderGodWidth),getProportionHeight(170,230,labelBorderGodHeight));
         buttonGod.setOpaque(false);
@@ -489,9 +491,16 @@ public class GUI extends ClientView {
         });
     }
 
-
-
-
+    @Override
+    public void updateSelectedCardView(PlayerSelectGodMessage message) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JLabel godChosen = getIconGodProfile(imageContainer.getGodimage(message.getGodName()));
+                labelGod.add(godChosen);
+            }
+        });
+    }
 
 
 }
