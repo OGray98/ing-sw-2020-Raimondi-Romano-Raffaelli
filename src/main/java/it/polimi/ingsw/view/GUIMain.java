@@ -22,19 +22,24 @@ public class GUIMain {
                 gui.initGUI();
         }});
 
-        gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER0, new Position(2,3), 1));
+        gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER0, new Position(3,1), 1));
         gui.updatePutWorker(new PutWorkerMessage(PlayerIndex.PLAYER0, new Position(0,4), new Position(2,4)));
         gui.updatePutWorker(new PutWorkerMessage(PlayerIndex.PLAYER1, new Position(1,4), new Position(0,0)));
         gui.updatePutWorker(new PutWorkerMessage(PlayerIndex.PLAYER2, new Position(3,4), new Position(0,1)));
+        gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER0, new Position(3,1), 2));
+        gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER0, new Position(3,1), 3));
+        //gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER0, new Position(3,1), 4));
         gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER0, new Position(2,4), new Position(2,3)));
         gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER0, new Position(2,3), new Position(2,2)));
+        gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER0, new Position(2,2), new Position(3,1)));
+
         List<Position> actions = new ArrayList<>();
         actions.add(new Position(3,3));
         actions.add(new Position(4,3));
         actions.add(new Position(4,4));
-        actions.add(new Position(2,2));
+        actions.add(new Position(2,1));
         gui.updateActionView(new ActionMessage(PlayerIndex.PLAYER0, new Position(3,4), actions, ActionType.MOVE));
-        gui.updateSelectedCardView(new PlayerSelectGodMessage(PlayerIndex.PLAYER0, "Artemis"));
+        gui.updateSelectedCardView(new PlayerSelectGodMessage(PlayerIndex.PLAYER0, "Pan"));
 
     }
 
