@@ -16,19 +16,19 @@ public class ButtonMatrix extends JButton implements ActionListener {
         super("" + i + j);
         this.i = i;
         this.j = j;
-        setOpaque(false);
-        setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        setLayout(new BorderLayout());
+        //setOpaque(false);
+        //setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        //setLayout(new BorderLayout());
         this.addActionListener(this);
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e){
-        /*ButtonMatrix buttonClicked = (ButtonMatrix)e.getSource();
-        Position newPos = new Position(buttonClicked.i,buttonClicked.j);*/
+        ButtonMatrix buttonClicked = (ButtonMatrix)e.getSource();
+        Position newPos = new Position(buttonClicked.i,buttonClicked.j);
         //Crea corretamente newPos....
-        setOpaque(true);
+
     }
 
 }

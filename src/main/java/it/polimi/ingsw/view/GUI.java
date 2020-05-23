@@ -35,7 +35,7 @@ public class GUI extends ClientView {
     private static final int labelEmptyWidth = getProportionWidth(18,1400,internalFrameWidth);
     private static final int labelEmptyHeight = getProportionHeight(19,800,internalFrameEight);
     private static final int ROW_NUM = 5;
-    private ButtonMatrix[][] buttonMatrix = new ButtonMatrix[ROW_NUM][ROW_NUM];
+    private JButton[][] buttonMatrix = new JButton[ROW_NUM][ROW_NUM];
     private JFrame frame;
 
     private ImageContainer imageContainer;
@@ -49,24 +49,24 @@ public class GUI extends ClientView {
         frame = new JFrame("Santorini");
         frame.setLocation(FRAME_DIMENSION.width/8, FRAME_DIMENSION.height/8);
 
-        imageContainer = new ImageContainer();
-
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints lim = new GridBagConstraints();
         lim.ipadx = getProportionWidth(102,1400,internalFrameWidth);
         lim.ipady = getProportionHeight(102,800,internalFrameEight);
 
+        lim.fill = lim.BOTH;
+        lim.anchor = lim.CENTER;
         panel1 = new JPanel();
         panel1.setLayout(layout);
         for(int i = 0; i < 5; i++){
             lim.gridy = i;
             for(int j = 0; j < 5; j++){
                 lim.gridx = j;
-                buttonMatrix[i][j] = new ButtonMatrix(i,j);
-                //buttonMatrix[i][j].setOpaque(false);
-                //buttonMatrix[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                buttonMatrix[i][j] = new JButton("" + i + j);
+                buttonMatrix[i][j].setOpaque(false);
+                buttonMatrix[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 buttonMatrix[i][j].setPreferredSize(new Dimension(labelEmptyWidth,labelEmptyHeight));
-                //buttonMatrix[i][j].setLayout(new BorderLayout());
+                buttonMatrix[i][j].setLayout(new BorderLayout());
                 JLabel labelEmpty = new JLabel("");
                 labelEmpty.setOpaque(false);
                 buttonMatrix[i][j].add(labelEmpty,BorderLayout.CENTER);
@@ -77,6 +77,7 @@ public class GUI extends ClientView {
         }
 
         panel1.setOpaque(false);
+        imageContainer = new ImageContainer();
 
         /*final JComboBox<UIManager.LookAndFeelInfo> laf = new JComboBox<UIManager.LookAndFeelInfo>();
         UIManager.LookAndFeelInfo selected = null;
@@ -124,7 +125,7 @@ public class GUI extends ClientView {
 
 
 
-        frame.setLayout(new BorderLayout());
+        //frame.setLayout(new BorderLayout());
         frame.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT));
         frame.setResizable(false);
 
@@ -237,8 +238,6 @@ public class GUI extends ClientView {
         label.add(labelTerminal,BorderLayout.WEST);
         label.add(panel1,BorderLayout.CENTER);
         frame.getContentPane().add(label);
-
-
 
 
 
