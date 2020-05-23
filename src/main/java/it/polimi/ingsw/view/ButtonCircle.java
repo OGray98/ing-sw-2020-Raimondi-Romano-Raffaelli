@@ -12,25 +12,25 @@ public class ButtonCircle extends JButton {
     public ButtonCircle(Color colorButton) {
         super();
         this.colorButton = colorButton;
-        ridimensiona();
+        resize();
     }
 
     public ButtonCircle(String text,Color colorButton) {
         super(text);
         this.colorButton = colorButton;
-        ridimensiona();
+        resize();
     }
 
     public ButtonCircle(String text, Icon icon,Color colorButton) {
         super(text, icon);
         this.colorButton = colorButton;
-        ridimensiona();
+        resize();
     }
 
     public ButtonCircle(Icon icon,Color colorButton) {
         super(icon);
         this.colorButton = colorButton;
-        ridimensiona();
+        resize();
     }
 
     public boolean contains(int x, int y) {
@@ -75,7 +75,7 @@ public class ButtonCircle extends JButton {
 
     }
 
-    private void ridimensiona() {
+    private void resize() {
         Dimension d = getPreferredSize();
         d.width = d.height = Math.max(d.width,d.height);
         setPreferredSize(d);
