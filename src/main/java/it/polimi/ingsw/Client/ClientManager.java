@@ -6,11 +6,16 @@ import it.polimi.ingsw.network.ServerConnection;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ClientManager implements ControllableByServerMessage, Observer<MessageToServer> {
 
     private final ServerConnection serverConnection;
     private final ClientModel clientModel;
     //private final ClientView clientView;
+
+    private List<Position> workersToPut = new ArrayList<>();
 
     public ClientManager(ServerConnection serverConnection, ClientModel clientModel) {
         this.serverConnection = serverConnection;
@@ -50,7 +55,13 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                 sendToServer(message);
                 break;
             case PUT_WORKER:
-                //TODO da fare ricordarsi delle due pedine assieme
+                PositionMessage putMsg = (PositionMessage) message;
+
+                if(this.workersToPut.size() == 0)
+                    this.workersToPut.add(putMsg.getPosition());
+                else{
+                    sendToServer(new PutWorkerMessage(putMsg.getClient(), this.workersToPut.get(0), putMsg.getPosition()));
+                }
                 break;
             case MOVE:
                 PositionMessage moveMsg = (PositionMessage) message;
