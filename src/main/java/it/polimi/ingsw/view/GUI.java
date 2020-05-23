@@ -60,8 +60,12 @@ public class GUI extends ClientView {
             lim.gridy = i;
             for (int j = 0; j < 5; j++) {
                 lim.gridx = j;
-                buttonCells[i][j] = new ButtonCell(i, j, labelEmptyWidth, labelEmptyHeight);
-                buttonCells[i][j].putClientProperty("hideActionText", Boolean.TRUE);
+                buttonCells[i][j] = new ButtonCell(i, j, labelEmptyWidth, labelEmptyHeight,
+                        e -> {
+                            ButtonCell buttonCell = (ButtonCell) e.getSource();
+                            super.handleMessage(new PositionMessage(this.getPlayer(), buttonCell.getPosition()));
+                        }
+                );
                 layout.setConstraints(buttonCells[i][j], lim);
                 panel1.add(buttonCells[i][j]);
             }
