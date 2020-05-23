@@ -1,17 +1,13 @@
 package it.polimi.ingsw.view;
-
 import it.polimi.ingsw.model.board.Position;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ButtonCell extends JButton implements ActionListener {
-
+public class ButtonCell extends JButton {
     private final Position position;
+    public ButtonCell(int x, int y, int width, int height, ActionListener actionListener) {
 
-    public ButtonCell(int x, int y, int width, int height) {
         super();
         this.position = new Position(x, y);
         this.setOpaque(false);
@@ -21,13 +17,9 @@ public class ButtonCell extends JButton implements ActionListener {
         JLabel labelEmpty = new JLabel();
         labelEmpty.setOpaque(false);
         this.add(labelEmpty, BorderLayout.CENTER);
-        this.addActionListener(this);
+        this.addActionListener(actionListener);
     }
-
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        System.out.println("[" + this.position.row + "][" + this.position.col + "]");
+    public Position getPosition() {
+        return position;
     }
-
 }
