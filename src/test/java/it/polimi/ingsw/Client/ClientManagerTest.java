@@ -98,11 +98,11 @@ public class ClientManagerTest {
         movePos.add(new Position(0, 0));
         movePos.add(new Position(1, 1));
         clientManager.updateClient(new ActionMessage(PlayerIndex.PLAYER0, new Position(1, 0), movePos, ActionType.MOVE));
-        assertEquals(clientModel.getActionPositions(ActionType.MOVE).size(), 2);
-        assertEquals(clientModel.getActionPositions(ActionType.POWER).size(), 0);
+        assertEquals(clientModel.getActionPositions(new Position(1,0), ActionType.MOVE).size(), 2);
+        assertEquals(clientModel.getActionPositions(new Position(1,0), ActionType.POWER).size(), 0);
         clientManager.updateClient(new ActionMessage(PlayerIndex.PLAYER0, new Position(1, 0), movePos, ActionType.POWER));
-        assertEquals(clientModel.getActionPositions(ActionType.MOVE).size(), 2);
-        assertEquals(clientModel.getActionPositions(ActionType.POWER).size(), 2);
+        assertEquals(clientModel.getActionPositions(new Position(1,0), ActionType.MOVE).size(), 2);
+        assertEquals(clientModel.getActionPositions(new Position(1,0), ActionType.POWER).size(), 2);
     }
 
     @After
