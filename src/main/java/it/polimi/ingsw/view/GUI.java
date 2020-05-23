@@ -66,7 +66,7 @@ public class GUI extends ClientView {
             lim.gridy = i;
             for(int j = 0; j < 5; j++){
                 lim.gridx = j;
-                buttonMatrix[i][j] = new JButton("" + i + j);
+                buttonMatrix[i][j] = new ButtonMatrix( i , j);
                 buttonMatrix[i][j].setOpaque(false);
                 buttonMatrix[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 buttonMatrix[i][j].setPreferredSize(new Dimension(labelEmptyWidth,labelEmptyHeight));
