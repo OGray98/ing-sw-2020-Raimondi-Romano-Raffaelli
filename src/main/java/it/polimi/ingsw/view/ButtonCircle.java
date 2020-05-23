@@ -7,30 +7,18 @@ import java.awt.geom.Ellipse2D;
 public class ButtonCircle extends JButton {
     Shape shape = null;
     private boolean fieldFocusable = false;
-    private Color colorButton;
+    private final Color colorButton;
 
-    public ButtonCircle(Color colorButton) {
-        super();
-        this.colorButton = colorButton;
-        ridimensiona();
-    }
+    private boolean clicked;
 
-    public ButtonCircle(String text,Color colorButton) {
-        super(text);
-        this.colorButton = colorButton;
-        ridimensiona();
-    }
-
-    public ButtonCircle(String text, Icon icon,Color colorButton) {
-        super(text, icon);
-        this.colorButton = colorButton;
-        ridimensiona();
-    }
-
-    public ButtonCircle(Icon icon,Color colorButton) {
+    public ButtonCircle(Icon icon, Color colorButton) {
         super(icon);
         this.colorButton = colorButton;
-        ridimensiona();
+        this.clicked = false;
+        this.addActionListener(
+                e -> click()
+        );
+        resize();
     }
 
     public boolean contains(int x, int y) {
@@ -43,11 +31,6 @@ public class ButtonCircle extends JButton {
     public boolean getFocusable() {
         return fieldFocusable;
     }
-
-    public boolean isFocusTraversable() {
-        return getFocusable();
-    }
-
 
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -64,6 +47,7 @@ public class ButtonCircle extends JButton {
             c1 = ap;
             b1 = newC;
         }
+
         GradientPaint gr = new GradientPaint(0+10,0+10,c2,getSize().width-10,getSize().height-10,c1);
         g2.setPaint(gr);
         g2.fillOval(0,0,getSize().width-1,getSize().height-1);
@@ -71,13 +55,11 @@ public class ButtonCircle extends JButton {
         g2.fillOval(0+4,0+4,getSize().width-8,getSize().height-8);
 
         super.paintComponent(g);
-
-
     }
 
-    private void ridimensiona() {
+    private void resize() {
         Dimension d = getPreferredSize();
-        d.width = d.height = Math.max(d.width,d.height);
+        d.width = d.height = Math.max(d.width, d.height);
         setPreferredSize(d);
         setContentAreaFilled(false);
         setBorderPainted(false);
@@ -86,6 +68,14 @@ public class ButtonCircle extends JButton {
 
     public void setFocusable(boolean focusable) {
         fieldFocusable = focusable;
+    }
+
+    public boolean isClicked() {
+        return this.clicked;
+    }
+
+    private void click() {
+        this.clicked = !this.clicked;
     }
 }
 

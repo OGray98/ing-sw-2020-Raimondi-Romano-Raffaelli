@@ -18,23 +18,27 @@ public class GUI extends ClientView {
     private JLabel labelGod;
     private static final Dimension FRAME_DIMENSION = Toolkit.getDefaultToolkit().getScreenSize();
     private static final int FRAME_WIDTH = (FRAME_DIMENSION.width/2)*3/2;
-    private static final int FRAME_HEIGHT = (FRAME_DIMENSION.height/2)*3/2;
+    private static final int FRAME_HEIGHT = (FRAME_DIMENSION.height / 2) * 3 / 2;
     private static int labelGodWidth;
     private static int labelGodHeight;
-    private static final int internalFrameWidth = getProportionWidth(1400,1400,FRAME_WIDTH);
-    private static final int internalFrameEight = getProportionHeight(800,820,FRAME_HEIGHT);
-    private static final int labelEmptyWidth = getProportionWidth(18,1400,internalFrameWidth);
-    private static final int labelEmptyHeight = getProportionHeight(19,800,internalFrameEight);
+    private static final int internalFrameWidth = getProportionWidth(1400, 1400, FRAME_WIDTH);
+    private static final int internalFrameEight = getProportionHeight(800, 820, FRAME_HEIGHT);
+    private static final int labelEmptyWidth = getProportionWidth(18, 1400, internalFrameWidth);
+    private static final int labelEmptyHeight = getProportionHeight(19, 800, internalFrameEight);
     private static final int ROW_NUM = 5;
     private final ButtonCell[][] buttonCells = new ButtonCell[ROW_NUM][ROW_NUM];
     private JFrame frame;
+
+    private ButtonCircle buttonPower;
+    private ButtonCircle buttonEndTurn;
+    private ButtonCircle buttonTutorial;
+    private ButtonCircle buttonMenu;
 
     private ImageContainer imageContainer;
     private ViewModelInterface clientModel;
 
 
-
-    public GUI(PlayerIndex playerIndex, ViewModelInterface clientModel){
+    public GUI(PlayerIndex playerIndex, ViewModelInterface clientModel) {
         super(playerIndex);
         this.clientModel = clientModel;
     }
@@ -60,7 +64,13 @@ public class GUI extends ClientView {
                 buttonCells[i][j] = new ButtonCell(i, j, labelEmptyWidth, labelEmptyHeight,
                         e -> {
                             ButtonCell buttonCell = (ButtonCell) e.getSource();
-                            super.handleMessage(new PositionMessage(this.getPlayer(), buttonCell.getPosition()));
+                            super.handleMessage(
+                                    new PositionMessage(
+                                            this.getPlayer(),
+                                            buttonCell.getPosition(),
+                                            buttonPower.isClicked()
+                                    )
+                            );
                         }
                 );
                 layout.setConstraints(buttonCells[i][j], lim);
@@ -166,10 +176,7 @@ public class GUI extends ClientView {
 
         //ButtonCircle buttonMove;
         //ButtonCircle buttonBuild;
-        ButtonCircle buttonPower;
-        ButtonCircle buttonEndTurn;
-        ButtonCircle buttonTutorial;
-        ButtonCircle buttonMenu;
+
         //JButton buttonExit = new JButton();
 
         //Image of button
@@ -182,10 +189,8 @@ public class GUI extends ClientView {
         //Image imageExit = imageContainer.getButtonImage("buttonExit").getScaledInstance(getProportionWidth(60,350,labelGodWidth),getProportionHeight(50,800,labelGodHeight),Image.SCALE_DEFAULT);
 
         //Creating button
-        //buttonMove = new ButtonCircle(new ImageIcon(imageMove),Color.WHITE);
-        //buttonBuild = new ButtonCircle(new ImageIcon(imageBuild),Color.WHITE);
-        buttonPower = new ButtonCircle(new ImageIcon(imagePower),Color.WHITE);
-        buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn),Color.WHITE);
+        buttonPower = new ButtonCircle(new ImageIcon(imagePower), Color.WHITE);
+        buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn), Color.WHITE);
         buttonTutorial = new ButtonCircle(new ImageIcon(imageTutorial),Color.WHITE);
         buttonMenu = new ButtonCircle(new ImageIcon(imageMenu),Color.WHITE);
         //buttonExit.setIcon(new ImageIcon(imageExit));

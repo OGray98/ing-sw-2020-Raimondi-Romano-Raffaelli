@@ -7,10 +7,12 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 public class PositionMessage extends Message implements MessageToServer {
 
     private final Position position;
+    private final Boolean isUsingPower;
 
-    public PositionMessage(PlayerIndex client, Position position) {
+    public PositionMessage(PlayerIndex client, Position position, boolean isUsingPower) {
         super(client, TypeMessage.POSITION);
         this.position = position;
+        this.isUsingPower = isUsingPower;
     }
 
     public Position getPosition() {
@@ -20,5 +22,9 @@ public class PositionMessage extends Message implements MessageToServer {
     @Override
     public void execute(ControllableByClientMessage controllable) throws NullPointerException {
 
+    }
+
+    public boolean isUsingPower() {
+        return isUsingPower;
     }
 }
