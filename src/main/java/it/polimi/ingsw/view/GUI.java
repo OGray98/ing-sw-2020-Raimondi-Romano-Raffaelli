@@ -4,10 +4,7 @@ import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.utils.BuildViewMessage;
-import it.polimi.ingsw.utils.MoveMessage;
-import it.polimi.ingsw.utils.PlayerSelectGodMessage;
-import it.polimi.ingsw.utils.PutWorkerMessage;
+import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,7 +57,12 @@ public class GUI extends ClientView {
             lim.gridy = i;
             for (int j = 0; j < 5; j++) {
                 lim.gridx = j;
-                buttonCells[i][j] = new ButtonCell(i, j, labelEmptyWidth, labelEmptyHeight);
+                buttonCells[i][j] = new ButtonCell(i, j, labelEmptyWidth, labelEmptyHeight,
+                        e -> {
+                            ButtonCell buttonCell = (ButtonCell) e.getSource();
+                            super.handleMessage(new PositionMessage(this.getPlayer(), buttonCell.getPosition()));
+                        }
+                );
                 layout.setConstraints(buttonCells[i][j], lim);
                 panel1.add(buttonCells[i][j]);
             }
