@@ -1,16 +1,13 @@
 package it.polimi.ingsw.view;
-
 import it.polimi.ingsw.model.board.Position;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class ButtonCell extends JButton {
-
     private final Position position;
-
     public ButtonCell(int x, int y, int width, int height, ActionListener actionListener) {
+
         super();
         this.position = new Position(x, y);
         this.setOpaque(false);
@@ -22,7 +19,6 @@ public class ButtonCell extends JButton {
         this.add(labelEmpty, BorderLayout.CENTER);
         this.addActionListener(actionListener);
     }
-
     public Position getPosition() {
         return position;
     }
