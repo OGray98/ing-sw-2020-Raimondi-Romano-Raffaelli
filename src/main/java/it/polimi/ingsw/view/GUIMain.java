@@ -47,12 +47,12 @@ public class GUIMain {
         //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER0, new Position(3,1), new Position(3,0)));
         //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER0, new Position(2,2), new Position(3,1)));
 
-        List<Position> actions = new ArrayList<>();
+       /* List<Position> actions = new ArrayList<>();
         actions.add(new Position(3,1));
         actions.add(new Position(4,3));
         actions.add(new Position(4,4));
         actions.add(new Position(2,1));
-        gui.updateActionView(new ActionMessage(PlayerIndex.PLAYER0, new Position(3,4), actions, ActionType.MOVE));
+        gui.updateActionView(new ActionMessage(PlayerIndex.PLAYER0, new Position(3,4), actions, ActionType.MOVE));*/
         gui.updateSelectedCardView(new PlayerSelectGodMessage(PlayerIndex.PLAYER0, "Pan"));
 
     }

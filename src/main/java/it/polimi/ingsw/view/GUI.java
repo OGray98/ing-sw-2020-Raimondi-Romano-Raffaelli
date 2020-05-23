@@ -4,21 +4,11 @@ import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GUI extends ClientView {
@@ -54,6 +44,7 @@ public class GUI extends ClientView {
         frame = new JFrame("Santorini");
         frame.setLocation(FRAME_DIMENSION.width/8, FRAME_DIMENSION.height/8);
 
+
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints lim = new GridBagConstraints();
         lim.ipadx = getProportionWidth(102,1400,internalFrameWidth);
@@ -67,7 +58,7 @@ public class GUI extends ClientView {
             lim.gridy = i;
             for(int j = 0; j < 5; j++){
                 lim.gridx = j;
-                buttonMatrix[i][j] = new ButtonMatrix( i , j);
+                buttonMatrix[i][j] = new ButtonCell(i,j);
                 buttonMatrix[i][j].setOpaque(false);
                 buttonMatrix[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 buttonMatrix[i][j].setPreferredSize(new Dimension(labelEmptyWidth,labelEmptyHeight));
@@ -80,6 +71,8 @@ public class GUI extends ClientView {
 
             }
         }
+
+
 
         panel1.setOpaque(false);
         imageContainer = new ImageContainer();
@@ -138,6 +131,7 @@ public class GUI extends ClientView {
         Image image = new ImageIcon(this.getClass().getResource("/SantoriniBoard.png")).getImage().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
         label.setIcon(new ImageIcon(image));
         label.setLayout(new BorderLayout());
+
 
 
         labelTerminal = new JLabel("");
