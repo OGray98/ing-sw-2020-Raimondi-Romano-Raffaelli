@@ -19,6 +19,7 @@ import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GUI extends ClientView {
 
@@ -217,14 +218,14 @@ public class GUI extends ClientView {
        /* buttonMove.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                updateActionView();
+                showActionPositions(clientModel.getActionPositions());
             }
         });
 
         buttonBuild.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                updateActionView();
+                showActionPositions(clientModel.getActionPositions());
             }
         });*/
 
@@ -592,12 +593,62 @@ public class GUI extends ClientView {
         });
     }
 
+    /*
+    not used anymore, now is used showActionPositions
     @Override
     public void updateActionView(ActionMessage message){
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 for(Position p : message.getPossiblePosition()){
+
+                    JLabel labelButton = (JLabel) buttonMatrix[p.row][p.col].getComponent(buttonMatrix[p.row][p.col].getComponentCount() - 1);
+                    if(labelButton.getComponentCount() != 0 && !(isButtonCircle(labelButton))){
+                        //Tower 1
+                        JLabel labelTow1 = (JLabel) labelButton.getComponent(labelButton.getComponentCount() - 1);
+                        if(labelTow1.getComponentCount() != 0 && !(isButtonCircle(labelTow1))){
+                            //Tower 2
+                            JLabel labelTow2 = (JLabel) labelTow1.getComponent(labelTow1.getComponentCount() - 1);
+                            if(labelTow2.getComponentCount() != 0 && !(isButtonCircle(labelTow2))){
+                                //Tower 3
+                                JLabel labelTow3 = (JLabel) labelTow2.getComponent(labelTow2.getComponentCount() - 1);
+                                Image imageTow3 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow3.getWidth()), getProportionHeight(15, 19, labelTow3.getHeight()), Image.SCALE_DEFAULT);
+                                JLabel labelIndicatorTow3 = new JLabel("");
+                                labelIndicatorTow3.setIcon(new ImageIcon(imageTow3));
+                                labelIndicatorTow3.setBounds(getProportionWidth(2, 18, labelTow3.getWidth()), getProportionHeight(2, 19, labelTow3.getHeight()), getProportionWidth(15, 19, labelTow3.getWidth()), getProportionHeight(15, 19, labelTow3.getHeight()));
+                                labelTow3.add(labelIndicatorTow3);
+
+                            }else{
+                                Image imageTow2 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow2.getWidth()), getProportionHeight(15, 19, labelTow2.getHeight()), Image.SCALE_DEFAULT);
+                                JLabel labelIndicatorTow2 = new JLabel("");
+                                labelIndicatorTow2.setIcon(new ImageIcon(imageTow2));
+                                labelIndicatorTow2.setBounds(getProportionWidth(2, 18, labelTow2.getWidth()), getProportionHeight(2, 19, labelTow2.getHeight()), getProportionWidth(15, 19, labelTow2.getWidth()), getProportionHeight(15, 19, labelTow2.getHeight()));
+                                labelTow2.add(labelIndicatorTow2);
+                            }
+                        }else{
+                            Image imageTow1 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow1.getWidth()), getProportionHeight(15, 19, labelTow1.getHeight()), Image.SCALE_DEFAULT);
+                            JLabel labelIndicatorTow1 = new JLabel("");
+                            labelIndicatorTow1.setIcon(new ImageIcon(imageTow1));
+                            labelIndicatorTow1.setBounds(getProportionWidth(2, 18, labelTow1.getWidth()), getProportionHeight(2, 19, labelTow1.getHeight()), getProportionWidth(15, 19, labelTow1.getWidth()), getProportionHeight(15, 19, labelTow1.getHeight()));
+                            labelTow1.add(labelIndicatorTow1);
+                        }
+                    }else {
+                        JLabel labelIndicator = new JLabel("");
+                        Image imageIndicator = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
+                        labelIndicator.setIcon(new ImageIcon(imageIndicator));
+                        labelIndicator.setBounds(getProportionWidth(-2, 18, labelEmptyWidth), getProportionHeight(-4, 19, labelEmptyHeight), getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(130, 19, labelEmptyHeight));
+                        labelButton.add(labelIndicator);
+                    }
+                }
+            }
+        });
+    }*/
+
+    public void showActionPositions(List<Position> actionPos){
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                for(Position p : actionPos){
 
                     JLabel labelButton = (JLabel) buttonMatrix[p.row][p.col].getComponent(buttonMatrix[p.row][p.col].getComponentCount() - 1);
                     if(labelButton.getComponentCount() != 0 && !(isButtonCircle(labelButton))){

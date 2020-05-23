@@ -54,6 +54,10 @@ public class GodChoiceDialog extends JDialog {
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         list.setVisibleRowCount(1);
         list.setCellRenderer(new GodChoiceDialogRender());
+        if(godsToShow.size() > 3)
+            list.setSelectionMode(3);
+        else
+            list.setSelectionMode(1);
 
         JScrollPane scrollPane = new JScrollPane(list);
         scrollPane.setPreferredSize(new Dimension(screenSize.width/2,screenSize.height/2));
