@@ -52,9 +52,14 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     private GameState currentState = GameState.NULL;
     private GameState powerGodState = GameState.NULL;
 
+    //boolean use to select a worker
+    private boolean workerSelected;
 
-    List<Position> normalActionPositions = new ArrayList<>();
-    List<Position> powerActionPositions = new ArrayList<>();
+    List<Position> normalActionPositionsWorker1 = new ArrayList<>();
+    List<Position> normalActionPositionsWorker2 = new ArrayList<>();
+
+    List<Position> powerActionPositionsWorker1 = new ArrayList<>();
+    List<Position> powerActionPositionsWorker2 = new ArrayList<>();
 
     boolean amICurrentPlayer = false;
 
@@ -263,12 +268,25 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
      * Return position useful for the next action of passed type
      *
      * @param type type of next action
+     * @param workerPos is the Position of the worker selected
      * @return position useful for the next action of passed type
      */
-    public List<Position> getActionPositions(ActionType type) {
-        if (type == ActionType.POWER)
-            return this.powerActionPositions;
-        return this.normalActionPositions;
+    public List<Position> getActionPositions(Position workerPos, ActionType type) {
+
+        List<Position> actions = new ArrayList<>();
+
+        if (type == ActionType.POWER){
+            if(this.playersPositions.get(playerIndex).get(0).equals(workerPos))
+                actions = powerActionPositionsWorker1;
+            if(this.playersPositions.get(playerIndex).get(1).equals(workerPos))
+                actions = powerActionPositionsWorker2;
+        }
+        if(this.playersPositions.get(playerIndex).get(0).equals(workerPos))
+            actions = normalActionPositionsWorker1;
+        if(this.playersPositions.get(playerIndex).get(1).equals(workerPos))
+            actions = normalActionPositionsWorker2;
+
+        return actions;
     }
 
     /**
@@ -277,10 +295,16 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
      */
     public void setActionPositions(ActionMessage message) {
         if (message.getActionType() == ActionType.POWER){
-            this.powerActionPositions.addAll(message.getPossiblePosition());
+            if(message.getWorkerPos().equals(playersPositions.get(playerIndex).get(0)))
+                this.powerActionPositionsWorker1 = message.getPossiblePosition();
+            else
+                this.powerActionPositionsWorker2 = message.getPossiblePosition();
         }
         else{
-            this.normalActionPositions.addAll(message.getPossiblePosition());
+            if(message.getWorkerPos().equals(playersPositions.get(playerIndex).get(0)))
+                this.normalActionPositionsWorker1 = message.getPossiblePosition();
+            else
+                this.normalActionPositionsWorker2 = message.getPossiblePosition();
         }
     }
 

@@ -108,7 +108,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     @Override
     public void updateLoserMessage(LoserMessage message){
-        //TODO: metodo lose in clientmodel
-        //clientModel.lose(message.getLoserPlayer());
+        clientModel.playerLose(message.getLoserPlayer());
+        //TODO notificare la view della sconfitta
     }
 }
