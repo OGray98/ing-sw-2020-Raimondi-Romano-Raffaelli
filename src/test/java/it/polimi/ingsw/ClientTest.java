@@ -11,7 +11,7 @@ public class ClientTest{
 
     public static void main(String[] args) {
         StubObservableClientMessage clientMessage;
-        Client client = new Client("127.0.0.1", 12345);
+        Client client = new Client("127.0.0.1", 12345, "CLI");
         //clientMessage = new StubObservableClientMessage(new NicknameMessage(PlayerIndex.PLAYER0,"Rock"),client);
         // clientMessage.sendFromClientMessage();
         try {

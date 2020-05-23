@@ -9,7 +9,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     private final ServerConnection serverConnection;
     private final ClientModel clientModel;
-    //private final ClientView clientView;
+    private ClientView clientView;
 
     public ClientManager(ServerConnection serverConnection, ClientModel clientModel) {
         this.serverConnection = serverConnection;

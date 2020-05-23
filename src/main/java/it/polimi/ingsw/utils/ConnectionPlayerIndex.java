@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 
 public class ConnectionPlayerIndex extends Message implements MessageToClient {
 
-    private PlayerIndex playerIndex;
+    private final PlayerIndex playerIndex;
 
     public ConnectionPlayerIndex(PlayerIndex client) {
         super(client, TypeMessage.PLAYERINDEX_CONNECTION);

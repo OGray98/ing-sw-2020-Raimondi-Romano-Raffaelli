@@ -35,12 +35,20 @@ public class GUI extends ClientView {
     private ButtonCircle buttonMenu;
 
     private ImageContainer imageContainer;
-    private ViewModelInterface clientModel;
 
 
-    public GUI(PlayerIndex playerIndex, ViewModelInterface clientModel) {
-        super(playerIndex);
-        this.clientModel = clientModel;
+    public GUI(ViewModelInterface clientModel) {
+        super(clientModel);
+    }
+
+    @Override
+    public void receiveErrorMessage(String error) {
+
+    }
+
+    @Override
+    public void init() {
+        SwingUtilities.invokeLater(this::initGUI);
     }
 
     public void initGUI() {
@@ -80,51 +88,6 @@ public class GUI extends ClientView {
 
         panel1.setOpaque(false);
         imageContainer = new ImageContainer();
-
-        /*final JComboBox<UIManager.LookAndFeelInfo> laf = new JComboBox<UIManager.LookAndFeelInfo>();
-        UIManager.LookAndFeelInfo selected = null;
-        for (UIManager.LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
-            laf.addItem(lafInfo);
-            if (lafInfo.getName().equals(UIManager.getLookAndFeel().getName())) {
-                selected = lafInfo;
-            }
-        }
-        laf.setSelectedItem(selected);
-        laf.setRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                if (value != null) {
-                    UIManager.LookAndFeelInfo lafInfo = (UIManager.LookAndFeelInfo) value;
-                    setText(lafInfo.getName());
-                } else {
-                    setText("");
-                }
-                return this;
-            }
-        });
-
-        laf.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String className = laf.getModel().getElementAt(laf.getSelectedIndex()).getClassName();
-                System.err.println("Changing to " + className);
-                try {
-                    UIManager.setLookAndFeel(className);
-                    SwingUtilities.updateComponentTreeUI(frame.getRootPane());
-                } catch (ClassNotFoundException e1) {
-                    e1.printStackTrace();
-                } catch (InstantiationException e1) {
-                    e1.printStackTrace();
-                } catch (IllegalAccessException e1) {
-                    e1.printStackTrace();
-                } catch (UnsupportedLookAndFeelException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });*/
-
-
 
 
         //frame.setLayout(new BorderLayout());
@@ -274,16 +237,19 @@ public class GUI extends ClientView {
         ButtonCircle buttonPlayer = null;
         if(playerIndex.equals(PlayerIndex.PLAYER0)){
             Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(getProportionWidth(50,18,labelEmptyWidth),getProportionHeight(50,19,labelEmptyHeight),Image.SCALE_DEFAULT);
-            buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer),Color.RED);
-            buttonPlayer.setBounds( getProportionWidth(37,18,labelEmptyWidth),getProportionHeight(34,19,labelEmptyHeight), getProportionWidth(53,18,labelEmptyWidth),getProportionHeight(53,19,labelEmptyHeight));
+            buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer), Color.RED, e -> {
+            });
+            buttonPlayer.setBounds(getProportionWidth(37, 18, labelEmptyWidth), getProportionHeight(34, 19, labelEmptyHeight), getProportionWidth(53, 18, labelEmptyWidth), getProportionHeight(53, 19, labelEmptyHeight));
         }else if(playerIndex.equals(PlayerIndex.PLAYER1)){
             Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(getProportionWidth(50,18,labelEmptyWidth),getProportionHeight(50,19,labelEmptyHeight),Image.SCALE_DEFAULT);
-            buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer),Color.BLUE);
-            buttonPlayer.setBounds( getProportionWidth(37,18,labelEmptyWidth),getProportionHeight(34,19,labelEmptyHeight), getProportionWidth(53,18,labelEmptyWidth),getProportionHeight(53,19,labelEmptyHeight));
+            buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer), Color.BLUE, e -> {
+            });
+            buttonPlayer.setBounds(getProportionWidth(37, 18, labelEmptyWidth), getProportionHeight(34, 19, labelEmptyHeight), getProportionWidth(53, 18, labelEmptyWidth), getProportionHeight(53, 19, labelEmptyHeight));
         }else if(playerIndex.equals(PlayerIndex.PLAYER2)){
             Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(getProportionWidth(50,18,labelEmptyWidth),getProportionHeight(50,19,labelEmptyHeight),Image.SCALE_DEFAULT);
-            buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer),Color.CYAN);
-            buttonPlayer.setBounds( getProportionWidth(37,18,labelEmptyWidth),getProportionHeight(34,19,labelEmptyHeight), getProportionWidth(53,18,labelEmptyWidth),getProportionHeight(53,19,labelEmptyHeight));
+            buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer), Color.CYAN, e -> {
+            });
+            buttonPlayer.setBounds(getProportionWidth(37, 18, labelEmptyWidth), getProportionHeight(34, 19, labelEmptyHeight), getProportionWidth(53, 18, labelEmptyWidth), getProportionHeight(53, 19, labelEmptyHeight));
         }
 
         return buttonPlayer;
@@ -314,59 +280,7 @@ public class GUI extends ClientView {
         return false;
     }
 
-   /* private static BufferedImage getScaledImage(BufferedImage originalImage,int max_width,int max_height) {
 
-        int MAX_IMG_WIDTH = max_width;
-        int MAX_IMG_HEIGHT = max_height;
-
-        int width = originalImage.getWidth();
-        int height = originalImage.getHeight();
-
-        Dimension originalDimension = new Dimension(originalImage.getWidth(),
-                originalImage.getHeight());
-        Dimension boundaryDimension = new Dimension(MAX_IMG_WIDTH,
-                MAX_IMG_HEIGHT);
-        Dimension scalingDimension = getScaledDimension(originalDimension,
-                boundaryDimension);
-
-        width = (int) scalingDimension.getWidth();
-        height = (int) scalingDimension.getHeight();
-
-        BufferedImage resizedImage = new BufferedImage(width, height,
-                originalImage.getType());
-        Graphics2D g = resizedImage.createGraphics();
-
-        g.drawImage(originalImage, 0, 0, width, height, null);
-
-        return resizedImage;
-
-    }*/
-
-   /* public static Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
-
-        int original_width = imgSize.width;
-        int original_height = imgSize.height;
-        int bound_width = boundary.width;
-        int bound_height = boundary.height;
-        int new_width = original_width;
-        int new_height = original_height;
-
-
-        if (original_width > bound_width) {
-
-            new_width = bound_width;
-            new_height = (new_width * original_height) / original_width;
-        }
-
-
-        if (new_height > bound_height) {
-
-            new_height = bound_height;
-            new_width = (new_height * original_width) / original_height;
-        }
-
-        return new Dimension(new_width, new_height);
-    }*/
     @Override
     public void updatePutWorker(PutWorkerMessage message) {
         Position pos1 = message.getPositionOne();
@@ -594,57 +508,6 @@ public class GUI extends ClientView {
             }
         });
     }
-
-    /*
-    not used anymore, now is used showActionPositions
-    @Override
-    public void updateActionView(ActionMessage message){
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                for(Position p : message.getPossiblePosition()){
-
-                    JLabel labelButton = (JLabel) buttonMatrix[p.row][p.col].getComponent(buttonMatrix[p.row][p.col].getComponentCount() - 1);
-                    if(labelButton.getComponentCount() != 0 && !(isButtonCircle(labelButton))){
-                        //Tower 1
-                        JLabel labelTow1 = (JLabel) labelButton.getComponent(labelButton.getComponentCount() - 1);
-                        if(labelTow1.getComponentCount() != 0 && !(isButtonCircle(labelTow1))){
-                            //Tower 2
-                            JLabel labelTow2 = (JLabel) labelTow1.getComponent(labelTow1.getComponentCount() - 1);
-                            if(labelTow2.getComponentCount() != 0 && !(isButtonCircle(labelTow2))){
-                                //Tower 3
-                                JLabel labelTow3 = (JLabel) labelTow2.getComponent(labelTow2.getComponentCount() - 1);
-                                Image imageTow3 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow3.getWidth()), getProportionHeight(15, 19, labelTow3.getHeight()), Image.SCALE_DEFAULT);
-                                JLabel labelIndicatorTow3 = new JLabel("");
-                                labelIndicatorTow3.setIcon(new ImageIcon(imageTow3));
-                                labelIndicatorTow3.setBounds(getProportionWidth(2, 18, labelTow3.getWidth()), getProportionHeight(2, 19, labelTow3.getHeight()), getProportionWidth(15, 19, labelTow3.getWidth()), getProportionHeight(15, 19, labelTow3.getHeight()));
-                                labelTow3.add(labelIndicatorTow3);
-
-                            }else{
-                                Image imageTow2 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow2.getWidth()), getProportionHeight(15, 19, labelTow2.getHeight()), Image.SCALE_DEFAULT);
-                                JLabel labelIndicatorTow2 = new JLabel("");
-                                labelIndicatorTow2.setIcon(new ImageIcon(imageTow2));
-                                labelIndicatorTow2.setBounds(getProportionWidth(2, 18, labelTow2.getWidth()), getProportionHeight(2, 19, labelTow2.getHeight()), getProportionWidth(15, 19, labelTow2.getWidth()), getProportionHeight(15, 19, labelTow2.getHeight()));
-                                labelTow2.add(labelIndicatorTow2);
-                            }
-                        }else{
-                            Image imageTow1 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow1.getWidth()), getProportionHeight(15, 19, labelTow1.getHeight()), Image.SCALE_DEFAULT);
-                            JLabel labelIndicatorTow1 = new JLabel("");
-                            labelIndicatorTow1.setIcon(new ImageIcon(imageTow1));
-                            labelIndicatorTow1.setBounds(getProportionWidth(2, 18, labelTow1.getWidth()), getProportionHeight(2, 19, labelTow1.getHeight()), getProportionWidth(15, 19, labelTow1.getWidth()), getProportionHeight(15, 19, labelTow1.getHeight()));
-                            labelTow1.add(labelIndicatorTow1);
-                        }
-                    }else {
-                        JLabel labelIndicator = new JLabel("");
-                        Image imageIndicator = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
-                        labelIndicator.setIcon(new ImageIcon(imageIndicator));
-                        labelIndicator.setBounds(getProportionWidth(-2, 18, labelEmptyWidth), getProportionHeight(-4, 19, labelEmptyHeight), getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(130, 19, labelEmptyHeight));
-                        labelButton.add(labelIndicator);
-                    }
-                }
-            }
-        });
-    }*/
 
     public void showActionPositions(List<Position> actionPos){
         SwingUtilities.invokeLater(new Runnable() {

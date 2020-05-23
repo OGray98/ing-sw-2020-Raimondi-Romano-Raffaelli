@@ -17,7 +17,7 @@ public class GUIMain {
     private final GUI gui;
 
     public GUIMain() {
-        this.gui = new GUI(PlayerIndex.PLAYER0, new ClientModel());
+        this.gui = new GUI(new ClientModel());
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override

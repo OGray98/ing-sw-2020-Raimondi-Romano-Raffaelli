@@ -10,11 +10,7 @@ import it.polimi.ingsw.utils.MessageToServer;
  */
 public abstract class View extends Observable<MessageToServer> {
 
-    private final PlayerIndex player;
-
-    public View(PlayerIndex player) {
-        this.player = player;
-    }
+    private PlayerIndex player;
 
     public PlayerIndex getPlayer() {
         return player;
@@ -34,4 +30,7 @@ public abstract class View extends Observable<MessageToServer> {
     }
 
 
+    public void setPlayer(PlayerIndex player) {
+        this.player = player;
+    }
 }

@@ -2,7 +2,9 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.Client.ClientManager;
 import it.polimi.ingsw.Client.ClientModel;
+import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.utils.*;
+import it.polimi.ingsw.view.GUI;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,6 +21,7 @@ public class Client implements ServerConnection {
 
     private final ClientManager clientManager;
     private final ClientModel clientModel;
+    private final ClientView clientView;
     private final String ip;
     private final int port;
     private Message message;
@@ -34,7 +37,7 @@ public class Client implements ServerConnection {
 
     static final int DISCONNECTION_TIME = 10000;
 
-    public Client(String ip, int port) {
+    public Client(String ip, int port, String typeView) {
 
         this.ip = ip;
         this.port = port;
@@ -42,6 +45,9 @@ public class Client implements ServerConnection {
         this.pingTimer = new Timer();
         this.clientModel = new ClientModel();
         this.clientManager = new ClientManager(this, this.clientModel);
+        this.clientView = new GUI(this.clientModel);
+        this.clientView.addObserver(this.clientManager);
+        this.clientModel.addObserver(this.clientView);
     }
 
     public synchronized boolean isActive(){
@@ -127,10 +133,12 @@ public class Client implements ServerConnection {
      * @throws IOException Create the socket, the output and input stream and run the threads of writing and reading on socket
      */
     public void run() throws IOException {
+        this.clientView.init();
         socket = new Socket(ip, port);
         System.out.println("Connection established");
         socketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new ObjectOutputStream(socket.getOutputStream());
+        this.clientView.init();
         try{
             Thread t0 = asyncReadFromSocket(socketIn);
             threadWrite = asyncWriteToSocket(socketOut);
