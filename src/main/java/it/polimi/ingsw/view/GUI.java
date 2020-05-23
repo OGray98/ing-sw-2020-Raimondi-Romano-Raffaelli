@@ -290,7 +290,6 @@ public class GUI extends ClientView {
         labelBorderGod.setBounds(getProportionWidth(55,350,labelGodWidth),getProportionHeight(140,800,labelGodHeight),labelBorderGodWidth,labelBorderGodHeight);
         JButton buttonGod = new JButton();
         Image God = godImage.getScaledInstance(getProportionWidth(90,150,labelBorderGodWidth),getProportionHeight(160,230,labelBorderGodHeight),Image.SCALE_DEFAULT);
-        //Image God = new ImageIcon((fileImg)).getImage().getScaledInstance(getProportionWidth(90,150,labelBorderGodWidth),getProportionHeight(160,230,labelBorderGodHeight),Image.SCALE_DEFAULT);
         buttonGod.setIcon(new ImageIcon(God));
         buttonGod.setBounds(getProportionWidth(31,150,labelBorderGodWidth),getProportionHeight(31,230,labelBorderGodHeight),getProportionWidth(90,150,labelBorderGodWidth),getProportionHeight(170,230,labelBorderGodHeight));
         buttonGod.setOpaque(false);
