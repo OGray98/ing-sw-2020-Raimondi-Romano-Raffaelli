@@ -25,10 +25,10 @@ public class StubView extends ClientView {
 
     }
 
-    @Override
+    /*@Override
     public void updateActionView(ActionMessage message) {
 
-    }
+    }*/
 
     @Override
     public void updateSelectedCardView(PlayerSelectGodMessage message) {
