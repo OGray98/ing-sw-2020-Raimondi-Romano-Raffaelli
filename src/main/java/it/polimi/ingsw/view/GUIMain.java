@@ -3,7 +3,6 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.Client.ClientModel;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.utils.BuildViewMessage;
 import it.polimi.ingsw.utils.MoveMessage;
 import it.polimi.ingsw.utils.PlayerSelectGodMessage;
@@ -16,11 +15,9 @@ import java.util.List;
 public class GUIMain {
 
     private final GUI gui;
-    private final Client client;
 
     public GUIMain() {
         this.gui = new GUI(PlayerIndex.PLAYER0, new ClientModel());
-        this.client = new Client("127.0.0.1", 1985);
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
