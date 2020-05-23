@@ -11,14 +11,12 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.stub.StubObservableClientConnection;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.view.RemoteView;
-import org.junit.After;
 import org.junit.Test;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ControllerTestSOLOPERORA {
     private StubObservableClientConnection obs1;
@@ -37,10 +35,6 @@ public class ControllerTestSOLOPERORA {
         obs1 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER0, "Pasquale"));
         obs2 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER1, "Tony"));
         obs3 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER2, "PiccoloPietro"));
-
-        game.addObserver(obs1);
-        game.addObserver(obs2);
-        game.addObserver(obs3);
 
         remoteView1 = new RemoteView(PlayerIndex.PLAYER0, obs1);
         remoteView2 = new RemoteView(PlayerIndex.PLAYER1, obs2);
