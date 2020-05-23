@@ -10,12 +10,9 @@ public abstract class GameDialog extends JDialog {
 
     public GameDialog(JFrame frame, String title) {
         super(frame, title);
-        setLayout(new BorderLayout());
-        panel.setPreferredSize(new Dimension(screenSize.width / 2, screenSize.height / 2));
-        setPreferredSize(new Dimension(screenSize.width - screenSize.width / 3, screenSize.height / 2));
-        setLocation(screenSize.width / 5, screenSize.height / 4);
+        setPreferredSize(new Dimension((screenSize.width/4)*3/2, (screenSize.height / 4)*3/2));
+        setLocation(screenSize.width / 4, screenSize.height / 4);
         setResizable(false);
-        add(panel, BorderLayout.NORTH);
         pack();
         setMinimumSize(new Dimension(screenSize.width / 6, screenSize.height / 3));
         setVisible(true);
