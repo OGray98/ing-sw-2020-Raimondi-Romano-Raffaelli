@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.Client.ClientView;
+import it.polimi.ingsw.Client.ViewModelInterface;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observer;
@@ -39,10 +40,13 @@ public class GUI extends ClientView {
     private JFrame frame;
 
     private ImageContainer imageContainer;
+    private ViewModelInterface clientModel;
 
 
 
-    public GUI(){
+    public GUI(PlayerIndex playerIndex, ViewModelInterface clientModel){
+        super(playerIndex);
+        this.clientModel = clientModel;
     }
 
     public void initGUI(){
