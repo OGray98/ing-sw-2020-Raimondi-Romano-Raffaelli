@@ -20,7 +20,7 @@ public class ClientModelTest {
     @Before
     public void init(){
         clientModel = new ClientModel();
-        StubView gui = new StubView(PlayerIndex.PLAYER0);
+        StubView gui = new StubView(PlayerIndex.PLAYER0, clientModel);
         clientModel.addObserver(gui);
     }
 
