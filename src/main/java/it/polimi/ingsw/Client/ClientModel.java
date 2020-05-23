@@ -52,8 +52,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     private GameState currentState = GameState.NULL;
     private GameState powerGodState = GameState.NULL;
 
-    //boolean use to select a worker
-    private boolean workerSelected;
+    Position selectedWorkerPos;
 
     List<Position> normalActionPositionsWorker1 = new ArrayList<>();
     List<Position> normalActionPositionsWorker2 = new ArrayList<>();
@@ -70,6 +69,14 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                 this.levelsPositions.put(new Position(i, j), 0);
     }
 
+    public void setSelectedWorkerPos(Position selectedWorkerPos){
+        this.selectedWorkerPos = selectedWorkerPos;
+    }
+
+    public Position getSelectedWorkerPos(){
+        if(this.selectedWorkerPos == null) throw new NullPointerException("not selected any worker!");
+        return this.selectedWorkerPos;
+    }
 
     /**
      * Add nickname to list of players nicknames

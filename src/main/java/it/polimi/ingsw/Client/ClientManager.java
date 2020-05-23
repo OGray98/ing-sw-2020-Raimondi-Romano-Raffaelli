@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.model.board.BuildType;
+import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.network.ServerConnection;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
@@ -29,10 +30,135 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     /**
      * Method that receives a message from the client view and send it to the server
+     * @param message is the message received from View
+     * the message sent will be related to the GameState of the turn
      * */
     @Override
     public void update(MessageToServer message) {
-        sendToServer(message);
+
+        switch(clientModel.getCurrentState()){
+            case START_GAME:
+                sendToServer(message);
+                break;
+            case GOD_PLAYER_CHOOSE_CARDS:
+                sendToServer(message);
+                break;
+            case SELECT_CARD:
+                sendToServer(message);
+                break;
+            case GOD_PLAYER_CHOOSE_FIRST_PLAYER:
+                sendToServer(message);
+                break;
+            case PUT_WORKER:
+                //TODO da fare ricordarsi delle due pedine assieme
+                break;
+            case MOVE:
+                PositionMessage moveMsg = (PositionMessage) message;
+
+                //case when player selects a worker
+                if(clientModel.getPlayerIndexPosition(moveMsg.getClient()).contains(moveMsg.getPosition())){
+                    clientModel.setSelectedWorkerPos(moveMsg.getPosition());
+                }
+                //case when player want to move or use a power
+                else{
+
+                    try{
+                        clientModel.getSelectedWorkerPos();
+                    }
+                    catch(NullPointerException e){
+                        break;
+                    }
+
+                    if(!moveMsg.isUsingPower()){
+                        //check if it is a correct position
+                        if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE).contains(moveMsg.getPosition()))
+                            break;
+                        sendToServer(new MoveMessage(moveMsg.getClient(), clientModel.getSelectedWorkerPos(), moveMsg.getPosition()));
+                    }
+                    else{
+                        //check if it is a correct position
+                        if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).contains(moveMsg.getPosition()))
+                            break;
+                        sendToServer(new UsePowerMessage(moveMsg.getClient(), clientModel.getSelectedWorkerPos(), moveMsg.getPosition()));
+                    }
+                }
+                break;
+            case INITPOWER:
+                PositionMessage initPowMoveMsg = (PositionMessage) message;
+
+                try{
+                    clientModel.getSelectedWorkerPos();
+                }
+                catch(NullPointerException e){
+                    break;
+                }
+
+                //check if it is a correct position
+                if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE).contains(initPowMoveMsg.getPosition()))
+                    break;
+                sendToServer(new MoveMessage(initPowMoveMsg.getClient(), clientModel.getSelectedWorkerPos(), initPowMoveMsg.getPosition()));
+                break;
+            case BUILD:
+                PositionMessage buildMsg = (PositionMessage) message;
+
+                try{
+                    clientModel.getSelectedWorkerPos();
+                }
+                catch(NullPointerException e){
+                    break;
+                }
+
+                if(!buildMsg.isUsingPower()){
+                    if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.BUILD).contains(buildMsg.getPosition()))
+                        break;
+                    sendToServer(new BuildMessage(buildMsg.getClient(), buildMsg.getPosition()));
+                }
+                else{
+                    if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).contains(buildMsg.getPosition()))
+                        break;
+                    sendToServer(new UsePowerMessage(buildMsg.getClient(), clientModel.getSelectedWorkerPos(), buildMsg.getPosition()));
+                }
+                break;
+            case ENDPHASE:
+                PositionMessage buildPowerMsg = (PositionMessage) message;
+
+                try{
+                    clientModel.getSelectedWorkerPos();
+                }
+                catch(NullPointerException e){
+                    break;
+                }
+
+                if(buildPowerMsg.isUsingPower()){
+                    //check if it is a correct position
+                    if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).contains(buildPowerMsg.getPosition()))
+                        break;
+                    sendToServer(new UsePowerMessage(buildPowerMsg.getClient(), clientModel.getSelectedWorkerPos(),buildPowerMsg.getPosition()));
+                }
+                break;
+            case BUILDPOWER:
+                //Here will arrive the endTurn message
+                sendToServer(message);
+                break;
+            case SECOND_MOVE:
+                PositionMessage secondMoveMsg = (PositionMessage) message;
+
+                try{
+                    clientModel.getSelectedWorkerPos();
+                }
+                catch(NullPointerException e){
+                    break;
+                }
+
+                if(!secondMoveMsg.isUsingPower()){
+                    if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE).contains(secondMoveMsg.getPosition()))
+                        break;
+                    sendToServer(new BuildMessage(secondMoveMsg.getClient(), secondMoveMsg.getPosition()));
+                }
+                break;
+            case MATCH_ENDED:
+                break;
+        }
     }
 
     /**

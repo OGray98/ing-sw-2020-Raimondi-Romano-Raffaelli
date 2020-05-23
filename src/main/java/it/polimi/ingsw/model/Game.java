@@ -136,9 +136,9 @@ public class Game extends Observable<MessageToClient> {
     public void setCurrentState(GameState nextState) {
         this.currentState = nextState;
         notify(new UpdateStateMessage(currentPlayer.getPlayerNum(), nextState));
-        if (this.currentState == GameState.MOVE)
+        if (this.currentState == GameState.MOVE || this.currentState == GameState.INITPOWER)
             sendPossibleActionMoveState();
-        else if (this.currentState == GameState.BUILD)
+        else if (this.currentState == GameState.BUILD || this.currentState == GameState.SECOND_MOVE)
             sendPossibleActionBuildState();
         if (this.currentPlayer.getPowerState() == this.currentState)
             sendPossibleActionPowerState();
