@@ -158,7 +158,7 @@ public class GUI extends ClientView {
         );
         buttonMenu = new ButtonCircle(new ImageIcon(imageMenu), Color.WHITE,
                 e -> {
-
+                    frame.dispose();
                 }
         );
         buttonPower.setBounds(getProportionWidth(50, 350, labelGodWidth), getProportionHeight(460, 800, labelGodHeight), getProportionWidth(95, 350, labelGodWidth), getProportionHeight(95, 800, labelGodHeight));
