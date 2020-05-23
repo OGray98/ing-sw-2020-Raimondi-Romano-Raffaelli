@@ -59,8 +59,8 @@ public class GUI extends ClientView {
         return labelBorderGod;
     }
 
-    private static boolean isButtonCircle(JLabel component) {
-        if (component.getComponent(component.getComponentCount() - 1) instanceof ButtonCircle)
+    private static boolean isLabelCircle(JLabel component) {
+        if (component.getComponent(component.getComponentCount() - 1) instanceof LabelCircle)
             return true;
         return false;
     }
@@ -175,6 +175,63 @@ public class GUI extends ClientView {
         );
         buttonTutorial = new ButtonCircle(new ImageIcon(imageTutorial), Color.WHITE,
                 e -> {
+                    Font font = new Font("Impatto", Font.PLAIN, 13);
+                    JLabel labelGround = new JLabel("");
+                    Image imageGround = new ImageIcon("src/main/resources/Odyssey-Olympus.png").getImage().getScaledInstance(FRAME_WIDTH/2,FRAME_HEIGHT/2,Image.SCALE_DEFAULT);
+                    labelGround.setIcon(new ImageIcon(imageGround));
+                    JDialog tutorialDescription = new JDialog(frame,"TUTORIAL");
+                    tutorialDescription.setSize(FRAME_WIDTH/2,FRAME_HEIGHT/2);
+                    tutorialDescription.setResizable(false);
+                    tutorialDescription.setLocation(FRAME_WIDTH/4, FRAME_HEIGHT/4);
+                    Image imageEndTur = imageContainer.getButtonImage("buttonEndTurn").getScaledInstance(70,70,Image.SCALE_DEFAULT);
+                    Image imagePow = imageContainer.getButtonImage("buttonPower").getScaledInstance(70,70,Image.SCALE_DEFAULT);
+                    Image imageEx = imageContainer.getButtonImage("buttonMenu").getScaledInstance(70,70,Image.SCALE_DEFAULT);
+                    LabelCircle buttonEnd = new LabelCircle(new ImageIcon(imageEndTur),Color.WHITE);
+                    LabelCircle buttonPow = new LabelCircle(new ImageIcon(imagePow),Color.WHITE);
+                    LabelCircle buttonEx = new LabelCircle(new ImageIcon(imageEx),Color.WHITE);
+                    buttonEnd.setBounds(3,80,70,70);
+                    buttonPow.setBounds(3,3,70,70);
+                    buttonEx.setBounds(3,160,70,70);
+                    JLabel labelEx = new JLabel("Exit button : click on it to quit the game.");
+                    labelEx.setForeground(Color.BLACK);
+                    labelEx.setFont(font);
+                    JLabel labelEnd = new JLabel("End Turn button : click on it when you want to end your turn.");
+                    labelEnd.setForeground(Color.BLACK);
+                    labelEnd.setFont(font);
+                    JLabel labelPower = new JLabel("Use power button : click on it when you want to active your power,");
+                    labelPower.setForeground(Color.BLACK);
+                    labelPower.setFont(font);
+                    JLabel labelPower1 = new JLabel("remember each god have different power and different");
+                    labelPower1.setForeground(Color.BLACK);
+                    labelPower1.setFont(font);
+                    JLabel labelPower2 = new JLabel("state where active his power.");
+                    labelPower2.setForeground(Color.BLACK);
+                    labelPower2.setFont(font);
+                    JLabel labelInstruction = new JLabel("STATE: SELECT WORKER -> SELECT CELL -> MOVE -> SELECT CELL -> BUILD");
+                    labelInstruction.setForeground(Color.BLUE);
+                    labelInstruction.setFont(font);
+                    JLabel labelInstruction1 = new JLabel("POWER STATE: it depends of which god the player choose.");
+                    labelInstruction1.setForeground(Color.BLACK);
+                    labelInstruction1.setFont(font);
+                    labelInstruction1.setBounds(10,250,600,50);
+                    labelInstruction.setBounds(10,230,600,50);
+                    labelEx.setBounds(80,160,600,50);
+                    labelEnd.setBounds(80,85,600,50);
+                    labelPower.setBounds(80,-3,600,50);
+                    labelPower1.setBounds(80,10,600,50);
+                    labelPower2.setBounds(80,24,600,50);
+                    labelGround.add(labelPower2);
+                    labelGround.add(labelPower1);
+                    labelGround.add(labelPower);
+                    labelGround.add(labelEnd);
+                    labelGround.add(labelEx);
+                    labelGround.add(labelInstruction);
+                    labelGround.add(labelInstruction1);
+                    labelGround.add(buttonEx);
+                    labelGround.add(buttonEnd);
+                    labelGround.add(buttonPow);
+                    tutorialDescription.add(labelGround);
+                    tutorialDescription.setVisible(true);
                 }
         );
         buttonMenu = new ButtonCircle(new ImageIcon(imageMenu), Color.WHITE,
@@ -257,22 +314,19 @@ public class GUI extends ClientView {
         SwingUtilities.invokeLater(this::initGUI);
     }
 
-    private ButtonCircle getPlayerIcon(PlayerIndex playerIndex) {
-        ButtonCircle buttonPlayer = null;
+    private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {
+        LabelCircle buttonPlayer = null;
         if (playerIndex.equals(PlayerIndex.PLAYER0)) {
             Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(getProportionWidth(50, 18, labelEmptyWidth), getProportionHeight(50, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
-            buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer), Color.RED, e -> {
-            });
+            buttonPlayer = new LabelCircle(new ImageIcon(imagePlayer), Color.RED);
             buttonPlayer.setBounds(getProportionWidth(37, 18, labelEmptyWidth), getProportionHeight(34, 19, labelEmptyHeight), getProportionWidth(53, 18, labelEmptyWidth), getProportionHeight(53, 19, labelEmptyHeight));
         } else if (playerIndex.equals(PlayerIndex.PLAYER1)) {
             Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(getProportionWidth(50, 18, labelEmptyWidth), getProportionHeight(50, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
-            buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer), Color.BLUE, e -> {
-            });
+            buttonPlayer = new LabelCircle(new ImageIcon(imagePlayer), Color.BLUE);
             buttonPlayer.setBounds(getProportionWidth(37, 18, labelEmptyWidth), getProportionHeight(34, 19, labelEmptyHeight), getProportionWidth(53, 18, labelEmptyWidth), getProportionHeight(53, 19, labelEmptyHeight));
         }else if(playerIndex.equals(PlayerIndex.PLAYER2)) {
             Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(getProportionWidth(50, 18, labelEmptyWidth), getProportionHeight(50, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
-            buttonPlayer = new ButtonCircle(new ImageIcon(imagePlayer), Color.CYAN, e -> {
-            });
+            buttonPlayer = new LabelCircle(new ImageIcon(imagePlayer), Color.CYAN);
             buttonPlayer.setBounds(getProportionWidth(37, 18, labelEmptyWidth), getProportionHeight(34, 19, labelEmptyHeight), getProportionWidth(53, 18, labelEmptyWidth), getProportionHeight(53, 19, labelEmptyHeight));
         }
 
@@ -285,8 +339,8 @@ public class GUI extends ClientView {
         Position pos1 = message.getPositionOne();
         Position pos2 = message.getPositionTwo();
 
-        ButtonCircle labelWorker = getPlayerIcon(message.getClient());
-        ButtonCircle labelWorker2 = getPlayerIcon(message.getClient());
+        LabelCircle labelWorker = getPlayerIcon(message.getClient());
+        LabelCircle labelWorker2 = getPlayerIcon(message.getClient());
 
         JLabel labelButton = (JLabel) buttonCells[pos1.row][pos1.col].getComponent(buttonCells[pos1.row][pos1.col].getComponentCount() - 1);
         JLabel labelButton1 = (JLabel) buttonCells[pos2.row][pos2.col].getComponent(buttonCells[pos2.row][pos2.col].getComponentCount() - 1);
@@ -306,7 +360,7 @@ public class GUI extends ClientView {
         Position oldPos = message.getWorkerPosition();
         Position newPos = message.getMovePosition();
 
-        ButtonCircle labelWorker = getPlayerIcon(message.getClient());
+        LabelCircle labelWorker = getPlayerIcon(message.getClient());
         //labelWorker.setLayout(new BorderLayout());
 
 
@@ -317,25 +371,25 @@ public class GUI extends ClientView {
                 int level = 0;
                 JLabel labelInit;
                 labelInit = (JLabel) buttonCells[oldPos.row][oldPos.col].getComponent(buttonCells[oldPos.row][oldPos.col].getComponentCount() - 1);
-                if (isButtonCircle(labelInit)) {
+                if (isLabelCircle(labelInit)) {
                     labelInit.remove(labelInit.getComponentCount() - 1);
                 } else {
                     //Tower level 1
                     level++;
                     labelInit = (JLabel) labelInit.getComponent(labelInit.getComponentCount() - 1);
-                    if (isButtonCircle(labelInit)) {
+                    if (isLabelCircle(labelInit)) {
                         labelInit.remove(labelInit.getComponentCount() - 1);
                     } else {
                         //Tower level 2
                         level++;
                         labelInit = (JLabel) labelInit.getComponent(labelInit.getComponentCount() - 1);
-                        if (isButtonCircle(labelInit)) {
+                        if (isLabelCircle(labelInit)) {
                             labelInit.remove(labelInit.getComponentCount() - 1);
                         } else {
                             //Tower level 3
                             level++;
                             labelInit = (JLabel) labelInit.getComponent(labelInit.getComponentCount() - 1);
-                            if (isButtonCircle(labelInit)) {
+                            if (isLabelCircle(labelInit)) {
                                 labelInit.remove(labelInit.getComponentCount() - 1);
                             }
                         }
@@ -344,7 +398,7 @@ public class GUI extends ClientView {
                 //label on newCell
                 JLabel l;
                 l = (JLabel) buttonCells[newPos.row][newPos.col].getComponent(buttonCells[newPos.row][newPos.col].getComponentCount() - 1);
-                if (isButtonCircle(l)) {
+                if (isLabelCircle(l)) {
                     switch (level) {
                         case 0:
                             labelInit.add(l.getComponent(l.getComponentCount() - 1));
@@ -359,7 +413,7 @@ public class GUI extends ClientView {
                     //Tower level 1
                     JLabel labelTower1 = (JLabel) l.getComponent(l.getComponentCount() - 1);
                     if(labelTower1.getComponentCount() != 0) {
-                        if (isButtonCircle(labelTower1)) {
+                        if (isLabelCircle(labelTower1)) {
                             switch (level) {
                                 case 0:
                                     labelInit.add(labelTower1.getComponent(labelTower1.getComponentCount() - 1));
@@ -379,7 +433,7 @@ public class GUI extends ClientView {
                         //Tower level 2
                         JLabel labelTower2 = (JLabel) labelTower1.getComponent(labelTower1.getComponentCount() - 1);
                         if(labelTower2.getComponentCount() != 0) {
-                            if (isButtonCircle(labelTower2)) {
+                            if (isLabelCircle(labelTower2)) {
                                 switch (level) {
                                     case 1:
                                         labelTower2.getComponent(labelTower2.getComponentCount() - 1).setBounds(getProportionWidth(5, 18, labelInit.getWidth()), getProportionHeight(5, 19, labelInit.getHeight()), getProportionWidth(8, 18, labelInit.getWidth()), getProportionHeight(8, 19, labelInit.getHeight()));
@@ -400,7 +454,7 @@ public class GUI extends ClientView {
                             //Tower level 3
                             JLabel labelTower3 = (JLabel) labelTower2.getComponent(labelTower2.getComponentCount() - 1);
                             if(labelTower3.getComponentCount() != 0){
-                                if (isButtonCircle(labelTower3)) {
+                                if (isLabelCircle(labelTower3)) {
                                     switch (level) {
                                         case 2:
                                             labelTower3.getComponent(labelTower3.getComponentCount() - 1).setBounds(getProportionWidth(5, 20, labelInit.getWidth()), getProportionHeight(4, 16, labelInit.getHeight()), getProportionWidth(10, 19, labelInit.getWidth()), getProportionHeight(10, 20, labelInit.getHeight()));
@@ -515,13 +569,13 @@ public class GUI extends ClientView {
                 for(Position p : actionPos){
 
                     JLabel labelButton = (JLabel) buttonCells[p.row][p.col].getComponent(buttonCells[p.row][p.col].getComponentCount() - 1);
-                    if (labelButton.getComponentCount() != 0 && !(isButtonCircle(labelButton))) {
+                    if (labelButton.getComponentCount() != 0 && !(isLabelCircle(labelButton))) {
                         //Tower 1
                         JLabel labelTow1 = (JLabel) labelButton.getComponent(labelButton.getComponentCount() - 1);
-                        if (labelTow1.getComponentCount() != 0 && !(isButtonCircle(labelTow1))) {
+                        if (labelTow1.getComponentCount() != 0 && !(isLabelCircle(labelTow1))) {
                             //Tower 2
                             JLabel labelTow2 = (JLabel) labelTow1.getComponent(labelTow1.getComponentCount() - 1);
-                            if (labelTow2.getComponentCount() != 0 && !(isButtonCircle(labelTow2))) {
+                            if (labelTow2.getComponentCount() != 0 && !(isLabelCircle(labelTow2))) {
                                 //Tower 3
                                 JLabel labelTow3 = (JLabel) labelTow2.getComponent(labelTow2.getComponentCount() - 1);
                                 Image imageTow3 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow3.getWidth()), getProportionHeight(15, 19, labelTow3.getHeight()), Image.SCALE_DEFAULT);
