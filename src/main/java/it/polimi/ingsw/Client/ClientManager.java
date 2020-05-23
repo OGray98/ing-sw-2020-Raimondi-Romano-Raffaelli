@@ -2,9 +2,10 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.model.board.BuildType;
 import it.polimi.ingsw.network.ServerConnection;
+import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
 
-public class ClientManager implements ControllableByServerMessage {
+public class ClientManager implements ControllableByServerMessage, Observer<MessageToServer> {
 
     private final ServerConnection serverConnection;
     private final ClientModel clientModel;
@@ -24,6 +25,14 @@ public class ClientManager implements ControllableByServerMessage {
         if (message == null)
             throw new NullPointerException("message");
         message.execute(this);
+    }
+
+    /**
+     * Method that receives a message from the client view and send it to the server
+     * */
+    @Override
+    public void update(MessageToServer message) {
+        sendToServer(message);
     }
 
     /**

@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * This class is the model which contains data used by clients
  */
-public class ClientModel extends Observable<MessageToView> {
+public class ClientModel extends Observable<MessageToView> implements ViewModelInterface{
 
     //TODO MANCANO TUTTE LE NOTIFY ALLA VIEW
     //TODO RAPPRESENTAZIONE DEI GOD UN PO' SCHIFOSA, FARE UN' INTERFACCIA/CLASSE COMUNE CON CARDINTERFACE?
@@ -278,12 +278,10 @@ public class ClientModel extends Observable<MessageToView> {
     public void setActionPositions(ActionMessage message) {
         //TODO: le notify forse non vanno fatte (forse meglio ottenere quelle celle con un getter dalla view??)
         if (message.getActionType() == ActionType.POWER){
-            this.powerActionPositions = message.getPossiblePosition();
-            //notify(message);
+            this.powerActionPositions.addAll(message.getPossiblePosition());
         }
         else{
-            this.normalActionPositions = message.getPossiblePosition();
-            //notify(message);
+            this.normalActionPositions.addAll(message.getPossiblePosition());
         }
     }
 
