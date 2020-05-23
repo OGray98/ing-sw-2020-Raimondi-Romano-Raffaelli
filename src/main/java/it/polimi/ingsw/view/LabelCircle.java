@@ -4,30 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
-public class ButtonCircle extends JButton {
+public class LabelCircle extends JLabel {
+
     Shape shape = null;
     private boolean fieldFocusable = false;
     private Color colorButton;
 
-    public ButtonCircle(Color colorButton) {
-        super();
-        this.colorButton = colorButton;
-        resize();
-    }
-
-    public ButtonCircle(String text,Color colorButton) {
-        super(text);
-        this.colorButton = colorButton;
-        resize();
-    }
-
-    public ButtonCircle(String text, Icon icon,Color colorButton) {
-        super(text, icon);
-        this.colorButton = colorButton;
-        resize();
-    }
-
-    public ButtonCircle(Icon icon,Color colorButton) {
+    public LabelCircle(Icon icon, Color colorButton) {
         super(icon);
         this.colorButton = colorButton;
         resize();
@@ -58,12 +41,6 @@ public class ButtonCircle extends JButton {
         int gre = b1.getGreen();
         int blu = b1.getBlue();
         Color newC = new Color(red-30,gre-30,blu-30);
-        if (getModel().isPressed()){
-            Color ap = c2;
-            c2 = c1;
-            c1 = ap;
-            b1 = newC;
-        }
         GradientPaint gr = new GradientPaint(0+10,0+10,c2,getSize().width-10,getSize().height-10,c1);
         g2.setPaint(gr);
         g2.fillOval(0,0,getSize().width-1,getSize().height-1);
@@ -79,8 +56,8 @@ public class ButtonCircle extends JButton {
         Dimension d = getPreferredSize();
         d.width = d.height = Math.max(d.width,d.height);
         setPreferredSize(d);
-        setContentAreaFilled(false);
-        setBorderPainted(false);
+        //setContentAreaFilled(false);
+        //setBorderPainted(false);
 
     }
 
@@ -88,4 +65,3 @@ public class ButtonCircle extends JButton {
         fieldFocusable = focusable;
     }
 }
-
