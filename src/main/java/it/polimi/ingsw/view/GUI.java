@@ -8,6 +8,7 @@ import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GUI extends ClientView {
@@ -36,14 +37,16 @@ public class GUI extends ClientView {
 
     private ImageContainer imageContainer;
 
+    private static GodChoiceDialog godChoiceDialog;
+
 
     public GUI(ViewModelInterface clientModel) {
         super(clientModel);
     }
 
-    private static JLabel getIconGodProfile(Image godImage) {
+    private static JLabel getIconGodProfile(Image godImage, String godName) {
 
-        JLabel labelBorderGod = new JLabel("");
+        JLabel labelBorderGod = new JLabel(godName);
         Image imageBorderGod = new ImageIcon(("src/main/resources/clp_frame_gold.png")).getImage().getScaledInstance(getProportionWidth(220, 350, labelGodWidth), getProportionHeight(320, 800, labelGodHeight), Image.SCALE_DEFAULT);
         labelBorderGod.setIcon(new ImageIcon(imageBorderGod));
         int labelBorderGodWidth = getProportionWidth(220, 350, labelGodWidth);
@@ -56,8 +59,12 @@ public class GUI extends ClientView {
         buttonGod.setBounds(getProportionWidth(31, 150, labelBorderGodWidth), getProportionHeight(31, 230, labelBorderGodHeight), getProportionWidth(90, 150, labelBorderGodWidth), getProportionHeight(170, 230, labelBorderGodHeight));
         buttonGod.setOpaque(false);
         labelBorderGod.add(buttonGod);
+        buttonGod.addActionListener(
+                e -> godChoiceDialog.selectGod(godName)
+        );
         return labelBorderGod;
     }
+
 
     private static boolean isLabelCircle(JLabel component) {
         if (component.getComponent(component.getComponentCount() - 1) instanceof LabelCircle)
@@ -236,6 +243,15 @@ public class GUI extends ClientView {
     @Override
     public void init() {
         SwingUtilities.invokeLater(this::initGUI);
+    }
+
+    @Override
+    public void showGod(List<String> gods) {
+        List<JLabel> godLabels = new ArrayList<>();
+        gods.forEach(
+                god -> godLabels.add(getIconGodProfile(imageContainer.getGodimage(god), god))
+        );
+        godChoiceDialog = new GodChoiceDialog(this.frame, godLabels);
     }
 
     private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {
@@ -539,7 +555,7 @@ public class GUI extends ClientView {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JLabel godChosen = getIconGodProfile(imageContainer.getGodimage(message.getGodName()));
+                JLabel godChosen = getIconGodProfile(imageContainer.getGodimage(message.getGodName()), message.getGodName());
                 labelGod.add(godChosen);
             }
         });

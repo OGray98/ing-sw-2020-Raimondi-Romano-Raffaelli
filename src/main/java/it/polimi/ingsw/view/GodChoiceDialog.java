@@ -2,15 +2,77 @@ package it.polimi.ingsw.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class GodChoiceDialog extends JDialog {
+
+    private List<String> chosenGod = new ArrayList<>();
+
+    public GodChoiceDialog(JFrame frame, List<JLabel> godsToShow) {
+        super(frame, "God choice");
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setPreferredSize(new Dimension(screenSize.width / 2, screenSize.height / 2));
+        setResizable(false);
+        setLocation(screenSize.width / 4, screenSize.height / 4);
+
+        //this.view = view;
+        GridBagLayout godLayout = new GridBagLayout();
+        GridBagConstraints lim = new GridBagConstraints();
+        lim.ipadx = 50;
+        lim.ipady = 100;
+
+        JPanel panel = new JPanel();
+        panel.setLayout(godLayout);
+
+        for (JLabel l : godsToShow) {
+            panel.setBackground(Color.DARK_GRAY);
+            godLayout.setConstraints(l, lim);
+            panel.add(l);
+        }
+
+        JScrollPane scrollPane = new JScrollPane(panel);
+        add(scrollPane, BorderLayout.CENTER);
+
+        pack();
+        setMinimumSize(new Dimension(300, 30));
+        setVisible(true);
+    }
+
+    public void selectGod(String god) {
+        if (!chosenGod.contains(god)) {
+            //Illuminare il dio
+            chosenGod.add(god);
+        } else {
+            //Spegnere il dio
+            chosenGod.remove(god);
+        }
+    }
+}
+
+
+
+
+
+
+/*
+package it.polimi.ingsw.view;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * Dialog that appears when a player has to select gods,
  * either when godlike chooses the gods of the match or when a normal player has to choose his own god
  * Constructor needs the JFrame GUI, and a list of gods to visualize, and the ImageContainer
- */
+ * <p>
+ * Reimplementation of the DefaultListCellRenderer to visualize images with the JList
+ *//*
+
 public class GodChoiceDialog extends JDialog {
 
     private final JPanel panel = new JPanel();
@@ -24,9 +86,11 @@ public class GodChoiceDialog extends JDialog {
 
         this.container = container;
 
-        /**
-         * Reimplementation of the DefaultListCellRenderer to visualize images with the JList
-         */
+        */
+/**
+ * Reimplementation of the DefaultListCellRenderer to visualize images with the JList
+ *//*
+
         class GodChoiceDialogRender extends DefaultListCellRenderer {
 
             final Font font = new Font("helvetica", Font.PLAIN, 50);
@@ -44,7 +108,7 @@ public class GodChoiceDialog extends JDialog {
         }
 
         imageMap = createImageMap(godsToShow);
-        JList list = new JList(godsToShow.toArray());
+        JList<Object> list = new JList<>(godsToShow.toArray());
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         list.setVisibleRowCount(1);
         list.setCellRenderer(new GodChoiceDialogRender());
@@ -82,4 +146,4 @@ public class GodChoiceDialog extends JDialog {
         }
         return map;
     }
-}
+}*/

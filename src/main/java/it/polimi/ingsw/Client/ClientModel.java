@@ -26,9 +26,6 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     //TODO RAPPRESENTAZIONE DEI GOD UN PO' SCHIFOSA, FARE UN' INTERFACCIA/CLASSE COMUNE CON CARDINTERFACE?
     //TODO FARE INTERFACCE/CLASSI COMUNI CON I VARI ELEMENTI DEL MODEL? ESEMPIO BOARD IMPLEMENT BOARDINTERFACE E CLIENTBOARD IMPLEMENT BOARDINTERFACE?
 
-    //TODO: provvisorio per testare le notifiche alla gui
-    private ClientView gui;
-
     private final Map<Position, Integer> levelsPositions = new HashMap<>(Board.NUM_COLUMNS * Board.NUM_ROW);
     private final List<Position> domesPositions = new ArrayList<>(0);
     private final Map<PlayerIndex, List<Position>> playersPositions = new HashMap<>(2);
@@ -374,5 +371,9 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
 
     public void setAmICurrentPlayer(boolean amICurrentPlayer) {
         this.amICurrentPlayer = amICurrentPlayer;
+    }
+
+    public List<String> getGods() {
+        return new ArrayList<>(gods.keySet());
     }
 }
