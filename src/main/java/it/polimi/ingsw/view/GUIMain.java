@@ -3,7 +3,10 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.Client.ClientModel;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.utils.*;
+import it.polimi.ingsw.utils.BuildViewMessage;
+import it.polimi.ingsw.utils.MoveMessage;
+import it.polimi.ingsw.utils.PlayerSelectGodMessage;
+import it.polimi.ingsw.utils.PutWorkerMessage;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -47,12 +50,12 @@ public class GUIMain {
         //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER0, new Position(3,1), new Position(3,0)));
         //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER0, new Position(2,2), new Position(3,1)));
 
-        List<Position> actions = new ArrayList<>();
+        /*List<Position> actions = new ArrayList<>();
         actions.add(new Position(3,1));
         actions.add(new Position(4,3));
         actions.add(new Position(4,4));
         actions.add(new Position(2,1));
-        gui.updateActionView(new ActionMessage(PlayerIndex.PLAYER0, new Position(3,4), actions, ActionType.MOVE));
+        gui.updateActionView(new ActionMessage(PlayerIndex.PLAYER0, new Position(3,4), actions, ActionType.MOVE));*/
         gui.updateSelectedCardView(new PlayerSelectGodMessage(PlayerIndex.PLAYER0, "Pan"));
 
     }
