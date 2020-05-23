@@ -163,42 +163,42 @@ public class GUI extends ClientView {
         labelTerminal.add(terminal);
 
 
-        ButtonCircle buttonMove;
-        ButtonCircle buttonBuild;
+        //ButtonCircle buttonMove;
+        //ButtonCircle buttonBuild;
         ButtonCircle buttonPower;
         ButtonCircle buttonEndTurn;
         ButtonCircle buttonTutorial;
         ButtonCircle buttonMenu;
-        JButton buttonExit = new JButton();
+        //JButton buttonExit = new JButton();
 
         //Image of button
-        Image imageMove = imageContainer.getButtonImage("buttonMove").getScaledInstance(getProportionWidth(90,350,labelGodWidth),getProportionHeight(90,800,labelGodHeight),Image.SCALE_DEFAULT);
-        Image imageBuild = imageContainer.getButtonImage("buttonBuild").getScaledInstance(getProportionWidth(90,350,labelGodWidth),getProportionHeight(90,800,labelGodHeight),Image.SCALE_DEFAULT);
+        //Image imageMove = imageContainer.getButtonImage("buttonMove").getScaledInstance(getProportionWidth(90,350,labelGodWidth),getProportionHeight(90,800,labelGodHeight),Image.SCALE_DEFAULT);
+        //Image imageBuild = imageContainer.getButtonImage("buttonBuild").getScaledInstance(getProportionWidth(90,350,labelGodWidth),getProportionHeight(90,800,labelGodHeight),Image.SCALE_DEFAULT);
         Image imagePower = imageContainer.getButtonImage("buttonPower").getScaledInstance(getProportionWidth(90,350,labelGodWidth),getProportionHeight(90,800,labelGodHeight),Image.SCALE_DEFAULT);
         Image imageEndTurn = imageContainer.getButtonImage("buttonEndTurn").getScaledInstance(getProportionWidth(100,350,labelGodWidth),getProportionHeight(100,800,labelGodHeight),Image.SCALE_DEFAULT);
         Image imageTutorial = imageContainer.getButtonImage("buttonTutorial").getScaledInstance(getProportionWidth(90,350,labelTerminalWidth),getProportionHeight(90,800,labelTerminalEight),Image.SCALE_DEFAULT);
         Image imageMenu = imageContainer.getButtonImage("buttonMenu").getScaledInstance(getProportionWidth(95,350,labelTerminalWidth),getProportionHeight(95,800,labelTerminalEight),Image.SCALE_DEFAULT);
-        Image imageExit = imageContainer.getButtonImage("buttonExit").getScaledInstance(getProportionWidth(60,350,labelGodWidth),getProportionHeight(50,800,labelGodHeight),Image.SCALE_DEFAULT);
+        //Image imageExit = imageContainer.getButtonImage("buttonExit").getScaledInstance(getProportionWidth(60,350,labelGodWidth),getProportionHeight(50,800,labelGodHeight),Image.SCALE_DEFAULT);
 
         //Creating button
-        buttonMove = new ButtonCircle(new ImageIcon(imageMove),Color.WHITE);
-        buttonBuild = new ButtonCircle(new ImageIcon(imageBuild),Color.WHITE);
+        //buttonMove = new ButtonCircle(new ImageIcon(imageMove),Color.WHITE);
+        //buttonBuild = new ButtonCircle(new ImageIcon(imageBuild),Color.WHITE);
         buttonPower = new ButtonCircle(new ImageIcon(imagePower),Color.WHITE);
         buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn),Color.WHITE);
         buttonTutorial = new ButtonCircle(new ImageIcon(imageTutorial),Color.WHITE);
         buttonMenu = new ButtonCircle(new ImageIcon(imageMenu),Color.WHITE);
-        buttonExit.setIcon(new ImageIcon(imageExit));
-        buttonExit.setOpaque(false);
+        //buttonExit.setIcon(new ImageIcon(imageExit));
+
 
 
         //Position of button
-        buttonMove.setBounds(getProportionWidth(50,350,labelGodWidth),getProportionHeight(470,800,labelGodHeight),getProportionWidth(90,350,labelGodWidth),getProportionHeight(90,800,labelGodHeight));
-        buttonBuild.setBounds(getProportionWidth(180,350,labelGodWidth),getProportionHeight(470,800,labelGodHeight),getProportionWidth(90,350,labelGodWidth),getProportionHeight(90,800,labelGodHeight));
-        buttonPower.setBounds(getProportionWidth(50,350,labelGodWidth),getProportionHeight(365,800,labelGodHeight),getProportionWidth(95,350,labelGodWidth),getProportionHeight(95,800,labelGodHeight));
-        buttonEndTurn.setBounds(getProportionWidth(180,350,labelGodWidth),getProportionHeight(365,800,labelGodHeight),getProportionWidth(90,350,labelGodWidth),getProportionHeight(90,800,labelGodHeight));
+        //buttonMove.setBounds(getProportionWidth(50,350,labelGodWidth),getProportionHeight(470,800,labelGodHeight),getProportionWidth(90,350,labelGodWidth),getProportionHeight(90,800,labelGodHeight));
+        //buttonBuild.setBounds(getProportionWidth(180,350,labelGodWidth),getProportionHeight(470,800,labelGodHeight),getProportionWidth(90,350,labelGodWidth),getProportionHeight(90,800,labelGodHeight));
+        buttonPower.setBounds(getProportionWidth(50,350,labelGodWidth),getProportionHeight(460,800,labelGodHeight),getProportionWidth(95,350,labelGodWidth),getProportionHeight(95,800,labelGodHeight));
+        buttonEndTurn.setBounds(getProportionWidth(180,350,labelGodWidth),getProportionHeight(460,800,labelGodHeight),getProportionWidth(90,350,labelGodWidth),getProportionHeight(90,800,labelGodHeight));
         buttonTutorial.setBounds(getProportionWidth(60,350,labelTerminalWidth),getProportionHeight(470,800,labelTerminalEight),getProportionWidth(92,350,labelTerminalWidth),getProportionHeight(92,800,labelTerminalEight));
         buttonMenu.setBounds(getProportionWidth(200,350,labelTerminalWidth),getProportionHeight(470,800,labelTerminalEight),getProportionWidth(85,350,labelTerminalWidth),getProportionHeight(85,800,labelTerminalEight));
-        buttonExit.setBounds(getProportionWidth(285,5,labelGodWidth),getProportionHeight(90,800,labelGodHeight),getProportionWidth(50,350,labelGodWidth),getProportionHeight(55,800,labelGodHeight));
+        //buttonExit.setBounds(getProportionWidth(285,5,labelGodWidth),getProportionHeight(90,800,labelGodHeight),getProportionWidth(50,350,labelGodWidth),getProportionHeight(55,800,labelGodHeight));
 
 
        /* buttonMove.addActionListener(new ActionListener() {
@@ -216,13 +216,13 @@ public class GUI extends ClientView {
         });*/
 
         //Adding button to lateral panel
-        labelGod.add(buttonMove);
-        labelGod.add(buttonBuild);
+        //labelGod.add(buttonMove);
+        //labelGod.add(buttonBuild);
         labelGod.add(buttonPower);
         labelGod.add(buttonEndTurn);
         labelTerminal.add(buttonTutorial);
         labelTerminal.add(buttonMenu);
-        labelGod.add(buttonExit);
+        //labelGod.add(buttonExit);
 
 
         label.add(labelGod,BorderLayout.EAST);
@@ -278,11 +278,11 @@ public class GUI extends ClientView {
     private static JLabel getIconGodProfile(Image godImage){
 
         JLabel labelBorderGod = new JLabel("");
-        Image imageBorderGod = new ImageIcon(("src/main/resources/clp_frame_gold.png")).getImage().getScaledInstance(getProportionWidth(150,350,labelGodWidth),getProportionHeight(230,800,labelGodHeight),Image.SCALE_DEFAULT);
+        Image imageBorderGod = new ImageIcon(("src/main/resources/clp_frame_gold.png")).getImage().getScaledInstance(getProportionWidth(220,350,labelGodWidth),getProportionHeight(320,800,labelGodHeight),Image.SCALE_DEFAULT);
         labelBorderGod.setIcon(new ImageIcon(imageBorderGod));
-        int labelBorderGodWidth = getProportionWidth(150,350,labelGodWidth);
-        int labelBorderGodHeight = getProportionHeight(230,800,labelGodHeight);
-        labelBorderGod.setBounds(getProportionWidth(90,350,labelGodWidth),getProportionHeight(140,800,labelGodHeight),labelBorderGodWidth,labelBorderGodHeight);
+        int labelBorderGodWidth = getProportionWidth(220,350,labelGodWidth);
+        int labelBorderGodHeight = getProportionHeight(320,800,labelGodHeight);
+        labelBorderGod.setBounds(getProportionWidth(55,350,labelGodWidth),getProportionHeight(140,800,labelGodHeight),labelBorderGodWidth,labelBorderGodHeight);
         JButton buttonGod = new JButton();
         Image God = godImage.getScaledInstance(getProportionWidth(90,150,labelBorderGodWidth),getProportionHeight(160,230,labelBorderGodHeight),Image.SCALE_DEFAULT);
         //Image God = new ImageIcon((fileImg)).getImage().getScaledInstance(getProportionWidth(90,150,labelBorderGodWidth),getProportionHeight(160,230,labelBorderGodHeight),Image.SCALE_DEFAULT);
