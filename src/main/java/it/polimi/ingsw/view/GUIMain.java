@@ -6,8 +6,6 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
-import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +14,13 @@ public class GUIMain {
     private GUI gui;
 
     public GUIMain(){
-        this.gui = new GUI();
+        this.gui = new GUI(PlayerIndex.PLAYER0, new ClientModel());
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 gui.initGUI();
-        }});
+            }
+        });
 
         gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER0, new Position(3,1), 1));
         gui.updatePutWorker(new PutWorkerMessage(PlayerIndex.PLAYER0, new Position(0,4), new Position(2,4)));

@@ -11,10 +11,10 @@ import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.view.RemoteView;
 import org.junit.Test;
 
-import javax.xml.transform.OutputKeys;
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class ControllerTest2Player {
     private StubObservableClientConnection obs1;
@@ -29,9 +29,6 @@ public class ControllerTest2Player {
 
         obs1 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER0,"Creed"));
         obs2 = new StubObservableClientConnection(new NicknameMessage(PlayerIndex.PLAYER1,"Jack"));
-
-        game.addObserver(obs1);
-        game.addObserver(obs2);
 
         remoteView1 = new RemoteView(PlayerIndex.PLAYER0,obs1);
         remoteView2 = new RemoteView(PlayerIndex.PLAYER1,obs2);

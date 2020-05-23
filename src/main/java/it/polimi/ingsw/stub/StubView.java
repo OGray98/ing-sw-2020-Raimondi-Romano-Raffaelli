@@ -1,9 +1,14 @@
 package it.polimi.ingsw.stub;
 
 import it.polimi.ingsw.Client.ClientView;
+import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.utils.*;
 
 public class StubView extends ClientView {
+
+    public StubView(PlayerIndex ind) {
+        super(ind);
+    }
 
     @Override
     public void updatePutWorker(PutWorkerMessage message) {
