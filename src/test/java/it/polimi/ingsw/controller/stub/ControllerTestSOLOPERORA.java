@@ -159,9 +159,9 @@ public class ControllerTestSOLOPERORA {
         assertEquals(firstP.getPlayerFirst(), PlayerIndex.PLAYER2);
 
         //Test if is not the selectWorkerPhase
-        //obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2,new Position(0,0)));
-        //ErrorMessage notSelectWorkerPhase = (ErrorMessage) obs3.getMesRemoteToView().get(0);
-        //assertEquals("You can't move a worker now!",notSelectWorkerPhase.getErrorMessage());
+        obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2,new Position(0,0)));
+        ErrorMessage notSelectWorkerPhase = (ErrorMessage) obs3.getMesRemoteToView().get(0);
+        assertEquals("You can't move a worker now!",notSelectWorkerPhase.getErrorMessage());
 
         //Testing put worker phase
         obs3.setMsg(new PutWorkerMessage(PlayerIndex.PLAYER2, new Position(0,0), new Position(0,1)));
@@ -191,9 +191,9 @@ public class ControllerTestSOLOPERORA {
         assertEquals(put3.getPositionOne(), new Position(1,3));
         assertEquals(put3.getPositionTwo(), new Position(1,4));
 
-        //Check that the new state is MOVE
+        //Check that the new state is INITURN
         UpdateStateMessage initState = (UpdateStateMessage) obs2.getMesRemoteToView().get(2);
-        assertEquals(initState.getGameState(), GameState.MOVE);
+        assertEquals(initState.getGameState(), GameState.INITURN);
 
         //Check that player can't choose card duringINIT TURN
         obs1.setMsg(new PlayerSelectGodMessage(PlayerIndex.PLAYER0,"Athena"));
@@ -211,25 +211,24 @@ public class ControllerTestSOLOPERORA {
 
         //Testing move phase
         //can't move in an enemy turn
-        //obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0, new Position(0,3)));
-        //ErrorMessage selectNotTurn = (ErrorMessage) obs1.getMesRemoteToView().get(0);
-        //assertEquals("Not your turn",selectNotTurn.getErrorMessage());
-        //obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0, new Position(0, 3), new Position(1, 2)));
-        //ErrorMessage notYourMoveTurn = (ErrorMessage) obs1.getMesRemoteToView().get(0);
-        //assertEquals("You can't move a worker now!",notYourMoveTurn.getErrorMessage());
+        obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0, new Position(0,3)));
+        ErrorMessage selectNotTurn = (ErrorMessage) obs1.getMesRemoteToView().get(0);
+        assertEquals("Not your turn",selectNotTurn.getErrorMessage());
+        obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0, new Position(0, 3), new Position(1, 2)));
+        ErrorMessage notYourMoveTurn = (ErrorMessage) obs1.getMesRemoteToView().get(0);
+        assertEquals("You can't move a worker now!",notYourMoveTurn.getErrorMessage());
 
         obs1.setMsg(new GodLikeChoseMessage(PlayerIndex.PLAYER0,godChosen));
         ErrorMessage notChooseGameMoment = (ErrorMessage) obs1.getMesRemoteToView().get(0);
         assertEquals("You can't choose now the cards to play with",notChooseGameMoment.getErrorMessage());
 
         //can't move if workerPos does not contains player worker
-        //obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2, new Position(0,1)));
-        //ActionMessage select1 = (ActionMessage) obs3.getMesRemoteToView().get(2);
-        //assertEquals(select1.getWorkerPos(), new Position(0,1));
-
+        obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2, new Position(0,1)));
+        ActionMessage select1 = (ActionMessage) obs3.getMesRemoteToView().get(2);
+        assertEquals(select1.getWorkerPos(), new Position(0,1));
         //Check that the new state is MOVE
-        //UpdateStateMessage moveState = (UpdateStateMessage) obs3.getMesRemoteToView().get(0);
-        //assertEquals(moveState.getGameState(), GameState.MOVE);
+        UpdateStateMessage moveState = (UpdateStateMessage) obs3.getMesRemoteToView().get(0);
+        assertEquals(moveState.getGameState(), GameState.MOVE);
 
         obs2.setMsg(new MoveMessage(PlayerIndex.PLAYER1,new Position(2,3),new Position(2,2)));
         ErrorMessage IsntYourTurnMove = (ErrorMessage)  obs2.getMesRemoteToView().get(0);
@@ -330,12 +329,12 @@ public class ControllerTestSOLOPERORA {
         //Normal endTurn
         obs3.setMsg(new EndTurnMessage(PlayerIndex.PLAYER2));
         UpdateStateMessage init = (UpdateStateMessage) obs3.getMesRemoteToView().get(1);
-        assertEquals(init.getGameState(), GameState.MOVE);
+        assertEquals(init.getGameState(), GameState.INITURN);
 
         //after the end of the turn the next player is able to play
-        //obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0, new Position(0,3)));
-        //ActionMessage select2 = (ActionMessage) obs1.getMesRemoteToView().get(1);
-        //assertEquals(select2.getWorkerPos(), new Position(0,3));
+        obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0, new Position(0,3)));
+        ActionMessage select2 = (ActionMessage) obs1.getMesRemoteToView().get(1);
+        assertEquals(select2.getWorkerPos(), new Position(0,3));
 
 
 
@@ -346,58 +345,58 @@ public class ControllerTestSOLOPERORA {
         obs1.setMsg(new BuildMessage(PlayerIndex.PLAYER0,new Position(1,2)));
         obs1.setMsg(new EndTurnMessage(PlayerIndex.PLAYER0));
         UpdateStateMessage init1 = (UpdateStateMessage) obs1.getMesRemoteToView().get(1);
-        assertEquals(init1.getGameState(),GameState.MOVE);
+        assertEquals(init1.getGameState(),GameState.INITURN);
 
-        //obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(1,3)));
-        //ActionMessage select3 = (ActionMessage) obs2.getMesRemoteToView().get(1);
-        //assertEquals(select3.getWorkerPos(),new Position(1,3));
+        obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(1,3)));
+        ActionMessage select3 = (ActionMessage) obs2.getMesRemoteToView().get(1);
+        assertEquals(select3.getWorkerPos(),new Position(1,3));
 
         obs2.setMsg(new MoveMessage(PlayerIndex.PLAYER1,new Position(1,3),new Position(2,3)));
         obs2.setMsg(new BuildMessage(PlayerIndex.PLAYER1,new Position(1,2)));
         obs2.setMsg(new EndTurnMessage(PlayerIndex.PLAYER1));
 
-        //obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2,new Position(1,0)));
+        obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2,new Position(1,0)));
         obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2,new Position(1,0),new Position(2,1)));
         obs3.setMsg(new BuildMessage(PlayerIndex.PLAYER2,new Position(1,2)));
         obs3.setMsg(new UsePowerMessage(PlayerIndex.PLAYER2,new Position(2,1),new Position(1,1)));
         obs3.setMsg(new EndTurnMessage(PlayerIndex.PLAYER2));
 
-        //obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0,new Position(0,4)));
+        obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0,new Position(0,4)));
         obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0,new Position(0,4),new Position(0,3)));
         obs1.setMsg(new BuildMessage(PlayerIndex.PLAYER0,new Position(1,3)));
         obs1.setMsg(new EndTurnMessage(PlayerIndex.PLAYER0));
 
-        //obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(2,3)));
-        //ActionMessage select4 = (ActionMessage) obs2.getMesRemoteToView().get(2);
-        //assertEquals(select4.getWorkerPos(),new Position(2,3));
+        obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(2,3)));
+        ActionMessage select4 = (ActionMessage) obs2.getMesRemoteToView().get(2);
+        assertEquals(select4.getWorkerPos(),new Position(2,3));
         obs2.setMsg(new MoveMessage(PlayerIndex.PLAYER1,new Position(2,3),new Position(3,3)));
         obs2.setMsg(new BuildMessage(PlayerIndex.PLAYER1,new Position(4,3)));
         obs2.setMsg(new EndTurnMessage(PlayerIndex.PLAYER1));
 
-        //obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2,new Position(2,1)));
+        obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2,new Position(2,1)));
         obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2,new Position(2,1),new Position(1,1)));
         obs3.setMsg(new BuildMessage(PlayerIndex.PLAYER2,new Position(1,0)));
         obs3.setMsg(new EndTurnMessage(PlayerIndex.PLAYER2));
 
-        //obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0,new Position(0,3)));
+        obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0,new Position(0,3)));
         obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0,new Position(0,3),new Position(0,4)));
         obs1.setMsg(new BuildMessage(PlayerIndex.PLAYER0,new Position(1,3)));
         obs1.setMsg(new EndTurnMessage(PlayerIndex.PLAYER0));
 
-        //obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(3,3)));
+        obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(3,3)));
         obs2.setMsg(new MoveMessage(PlayerIndex.PLAYER1,new Position(3,3),new Position(3,2)));
         obs2.setMsg(new BuildMessage(PlayerIndex.PLAYER1,new Position(3,1)));
         obs2.setMsg(new EndTurnMessage(PlayerIndex.PLAYER1));
 
-        //obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2,new Position(1,1)));
+        obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2,new Position(1,1)));
         obs3.setMsg(new MoveMessage(PlayerIndex.PLAYER2,new Position(1,1),new Position(1,2)));
         UpdateStateMessage win = (UpdateStateMessage) obs3.getMesRemoteToView().get(3);
         assertEquals(win.getGameState(),GameState.MATCH_ENDED);
         OkMessage ok = (OkMessage) obs3.getMesRemoteToView().get(4);
         assertEquals("PiccoloPietro has won the game!",ok.getErrorMessage());
-        OkMessage okLose1 = (OkMessage) obs2.getMesRemoteToView().get(8);
+        OkMessage okLose1 = (OkMessage) obs2.getMesRemoteToView().get(9);
         assertEquals("PiccoloPietro has won the game!",okLose1.getErrorMessage());
-        OkMessage okLose2 = (OkMessage) obs1.getMesRemoteToView().get(19);
+        OkMessage okLose2 = (OkMessage) obs1.getMesRemoteToView().get(20);
         assertEquals("PiccoloPietro has won the game!",okLose2.getErrorMessage());
 
 

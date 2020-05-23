@@ -61,46 +61,46 @@ public class ControllerTest2Player {
 
         //Game start
 
-        //obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(1,3)));
+        obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(1,3)));
         obs2.setMsg(new MoveMessage(PlayerIndex.PLAYER1,new Position(1,3),new Position(0,3)));
         obs2.setMsg(new UsePowerMessage(PlayerIndex.PLAYER1,new Position(0,3),new Position(1,4)));
         BuildPowerMessage atlasBuild = (BuildPowerMessage) obs2.getMesRemoteToView().get(0);
         assertEquals(atlasBuild.getBuildType(), BuildType.DOME);
         obs2.setMsg(new EndTurnMessage(PlayerIndex.PLAYER1));
 
-        //obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0,new Position(0,0)));
+        obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0,new Position(0,0)));
         obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0,new Position(0,0),new Position(1,0)));
         obs1.setMsg(new BuildMessage(PlayerIndex.PLAYER0,new Position(0,1)));
         obs1.setMsg(new EndTurnMessage(PlayerIndex.PLAYER0));
 
-        //obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(0,3)));
+        obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(0,3)));
         obs2.setMsg(new MoveMessage(PlayerIndex.PLAYER1,new Position(0,3),new Position(1,3)));
         obs2.setMsg(new UsePowerMessage(PlayerIndex.PLAYER1,new Position(1,3),new Position(0,3)));
         obs2.setMsg(new EndTurnMessage(PlayerIndex.PLAYER1));
 
-        //obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0,new Position(1,0)));
+        obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0,new Position(1,0)));
         obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0,new Position(1,0),new Position(0,0)));
         obs1.setMsg(new BuildMessage(PlayerIndex.PLAYER0,new Position(0,1)));
         obs1.setMsg(new EndTurnMessage(PlayerIndex.PLAYER0));
 
-        //obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(1,2)));
+        obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(1,2)));
         obs2.setMsg(new MoveMessage(PlayerIndex.PLAYER1,new Position(1,2),new Position(1,1)));
         obs2.setMsg(new UsePowerMessage(PlayerIndex.PLAYER1,new Position(1,1),new Position(1,0)));
         obs2.setMsg(new EndTurnMessage(PlayerIndex.PLAYER1));
 
         UpdateStateMessage stateFinal = (UpdateStateMessage) obs1.getMesRemoteToView().get(1);
-        assertEquals(stateFinal.getGameState(),GameState.MOVE);
+        assertEquals(stateFinal.getGameState(),GameState.INITURN);
 
-        LoserMessage okLoser0 = (LoserMessage) obs1.getMesRemoteToView().get(16);
+        LoserMessage okLoser0 = (LoserMessage) obs1.getMesRemoteToView().get(15);
         assertEquals(okLoser0.getType(), TypeMessage.LOSER);
 
-        OkMessage okLoserPlayer0 = (OkMessage) obs1.getMesRemoteToView().get(14);
+        OkMessage okLoserPlayer0 = (OkMessage) obs1.getMesRemoteToView().get(13);
         assertEquals(okLoserPlayer0.getErrorMessage(),"You have lost!");
 
-        UpdateStateMessage end2 = (UpdateStateMessage) obs2.getMesRemoteToView().get(7);
+        UpdateStateMessage end2 = (UpdateStateMessage) obs2.getMesRemoteToView().get(5);
         assertEquals(end2.getGameState(),GameState.MATCH_ENDED);
 
-        OkMessage end1 = (OkMessage) obs2.getMesRemoteToView().get(6);
+        OkMessage end1 = (OkMessage) obs2.getMesRemoteToView().get(4);
         assertEquals(end1.getErrorMessage(),"You win!");
 
         obs1 = null;

@@ -287,7 +287,6 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                 actions = powerActionPositionsWorker1;
             if(this.playersPositions.get(playerIndex).get(1).equals(workerPos))
                 actions = powerActionPositionsWorker2;
-            return actions;
         }
         if(this.playersPositions.get(playerIndex).get(0).equals(workerPos))
             actions = normalActionPositionsWorker1;

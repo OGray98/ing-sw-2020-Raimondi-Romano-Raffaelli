@@ -13,7 +13,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     private final ServerConnection serverConnection;
     private final ClientModel clientModel;
-    //private final ClientView clientView;
+    private ClientView clientView;
 
     private List<Position> workersToPut = new ArrayList<>();
 

@@ -23,7 +23,7 @@ public class ClientManagerTest {
 
     @Before
     public void init(){
-        client = new Client("127.0.0.1",12345);
+        client = new Client("127.0.0.1", 12345, "GUI");
         clientModel = new ClientModel();
         clientManager = new ClientManager(client, clientModel);
     }
@@ -98,11 +98,11 @@ public class ClientManagerTest {
         movePos.add(new Position(0, 0));
         movePos.add(new Position(1, 1));
         clientManager.updateClient(new ActionMessage(PlayerIndex.PLAYER0, new Position(1, 0), movePos, ActionType.MOVE));
-        assertEquals(clientModel.getActionPositions(new Position(1,0), ActionType.MOVE).size(), 2);
-        assertEquals(clientModel.getActionPositions(new Position(1,0), ActionType.POWER).size(), 0);
+        assertEquals(clientModel.getActionPositions(new Position(1, 0), ActionType.MOVE).size(), 2);
+        assertEquals(clientModel.getActionPositions(new Position(1, 0), ActionType.POWER).size(), 0);
         clientManager.updateClient(new ActionMessage(PlayerIndex.PLAYER0, new Position(1, 0), movePos, ActionType.POWER));
-        assertEquals(clientModel.getActionPositions(new Position(1,0), ActionType.MOVE).size(), 2);
-        assertEquals(clientModel.getActionPositions(new Position(1,0), ActionType.POWER).size(), 2);
+        assertEquals(clientModel.getActionPositions(new Position(1, 0), ActionType.MOVE).size(), 2);
+        assertEquals(clientModel.getActionPositions(new Position(1, 0), ActionType.POWER).size(), 2);
     }
 
     @After

@@ -325,7 +325,7 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         godPhaseManager.puttingWorkerInBoard(message.getPositionOne(), message.getPositionTwo());
 
         if (godPhaseManager.getPlayersWithWorkerPut() == gameModel.getNumPlayer()) {
-            gameModel.setCurrentState(GameState.MOVE);
+            gameModel.setCurrentState(GameState.INITURN);
             //Create an instance of TurnManager and start the first turn
             this.turnManager = new TurnManager(this.gameModel);
             this.turnManager.startTurn();
@@ -336,7 +336,7 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
      * This method is used to select the worker that user wants to use
      * it will notify the positions where the player can move or use a power
      */
-    /*@Override
+    @Override
     public void handleSelectWorkerMessage(SelectWorkerMessage message) {
 
         PlayerIndex clientIndex = message.getClient();
@@ -361,7 +361,7 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
 
         //notify delle celle di entrambi i worker
         gameModel.setCurrentState(GameState.MOVE);
-    }*/
+    }
 
     /**
      * This method is used to move a worker on the board
@@ -585,7 +585,7 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         //setup the new turn
         this.turnManager.endTurn();
         this.turnManager.startTurn();
-        gameModel.setCurrentState(GameState.MOVE);
+        gameModel.setCurrentState(GameState.INITURN);
 
         //If current player has been blocked, he loses
         if(!this.turnManager.canCurrentPlayerMoveAWorker()){
