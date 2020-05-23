@@ -4,6 +4,8 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.MessageToView;
 import it.polimi.ingsw.view.View;
 
+import java.util.List;
+
 public abstract class ClientView extends View implements Observer<MessageToView>, ControllableByViewMessage {
 
     private final ViewModelInterface clientModel;
@@ -19,6 +21,8 @@ public abstract class ClientView extends View implements Observer<MessageToView>
     public abstract void receiveErrorMessage(String error);
 
     public abstract void init();
+
+    public abstract void showGod(List<String> gods);
 
 
     //method from Observer

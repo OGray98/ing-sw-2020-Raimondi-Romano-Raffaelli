@@ -7,8 +7,10 @@ import java.util.List;
 
 /**
  * Interface that allows View (CLI/GUI) to access to some getter of the ClientModel
- * */
+ */
 public interface ViewModelInterface {
+
+    List<String> getGods();
 
     List<Position> getActionPositions(Position workerPos, ActionType type);
 }
