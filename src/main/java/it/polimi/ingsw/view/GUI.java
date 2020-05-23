@@ -8,6 +8,8 @@ import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 public class GUI extends ClientView {
@@ -105,6 +107,8 @@ public class GUI extends ClientView {
 
 
 
+
+
         //frame.setLayout(new BorderLayout());
         frame.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT));
         frame.setResizable(false);
@@ -142,6 +146,7 @@ public class GUI extends ClientView {
         );
         buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn), Color.WHITE,
                 e -> {
+                    //new ErrorDialog(frame,"You can't join the lobby because is already full");
                 }
         );
         buttonTutorial = new ButtonCircle(new ImageIcon(imageTutorial), Color.WHITE,
@@ -151,7 +156,7 @@ public class GUI extends ClientView {
         );
         buttonMenu = new ButtonCircle(new ImageIcon(imageMenu), Color.WHITE,
                 e -> {
-
+                    frame.dispose();
                 }
         );
         buttonPower.setBounds(getProportionWidth(50, 350, labelGodWidth), getProportionHeight(460, 800, labelGodHeight), getProportionWidth(95, 350, labelGodWidth), getProportionHeight(95, 800, labelGodHeight));
