@@ -1,30 +1,24 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.Client.ClientView;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Dialog that appears when a player has to select gods,
  * either when godlike chooses the gods of the match or when a normal player has to choose his own god
  * Constructor needs the JFrame GUI, and a list of gods to visualize, and the ImageContainer
- * */
+ */
 public class GodChoiceDialog extends JDialog {
 
-    private JPanel panel = new JPanel();
-    private JScrollPane scrollPane;
-    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    //private ClientView view;
+    private final JPanel panel = new JPanel();
+    private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final Map<String, Image> imageMap;
-    private ImageContainer container;
+    private final ImageContainer container;
 
-    public GodChoiceDialog(JFrame frame, List<String> godsToShow, ImageContainer container){
+    public GodChoiceDialog(JFrame frame, List<String> godsToShow, ImageContainer container) {
         super(frame, "God choice");
         setLayout(new BorderLayout());
 
@@ -32,10 +26,10 @@ public class GodChoiceDialog extends JDialog {
 
         /**
          * Reimplementation of the DefaultListCellRenderer to visualize images with the JList
-         * */
+         */
         class GodChoiceDialogRender extends DefaultListCellRenderer {
 
-            Font font = new Font("helvetica", Font.PLAIN, 50);
+            final Font font = new Font("helvetica", Font.PLAIN, 50);
 
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus){
@@ -67,28 +61,6 @@ public class GodChoiceDialog extends JDialog {
 
         add(scrollPane, BorderLayout.NORTH);
 
-        /*old implementation:
-
-        setPreferredSize(new Dimension(screenSize.width/2,screenSize.height/2));
-        setResizable(false);
-        setLocation(screenSize.width/4, screenSize.height/4);
-
-        //this.view = view;
-        GridBagLayout godLayout = new GridBagLayout();
-        GridBagConstraints lim = new GridBagConstraints();
-        lim.ipadx = 50;
-        lim.ipady = 100;
-
-        panel.setLayout(godLayout);
-
-        for(JLabel l : godsToShow){
-            panel.setBackground(Color.DARK_GRAY);
-            godLayout.setConstraints(l, lim);
-            panel.add(l);
-        }
-
-        scrollPane = new JScrollPane(panel);
-        add(scrollPane, BorderLayout.CENTER);*/
 
         pack();
         setMinimumSize(new Dimension(screenSize.width/6,screenSize.height/3));
