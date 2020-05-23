@@ -78,7 +78,7 @@ public class GUI extends ClientView {
 
         panel1.setOpaque(false);
 
-       /* final JComboBox<UIManager.LookAndFeelInfo> laf = new JComboBox<UIManager.LookAndFeelInfo>();
+        /*final JComboBox<UIManager.LookAndFeelInfo> laf = new JComboBox<UIManager.LookAndFeelInfo>();
         UIManager.LookAndFeelInfo selected = null;
         for (UIManager.LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
             laf.addItem(lafInfo);

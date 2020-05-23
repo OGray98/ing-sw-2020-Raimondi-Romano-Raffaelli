@@ -25,9 +25,10 @@ public class ButtonMatrix extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e){
-        ButtonMatrix buttonClicked = (ButtonMatrix)e.getSource();
-        Position newPos = new Position(buttonClicked.i,buttonClicked.j);
+        /*ButtonMatrix buttonClicked = (ButtonMatrix)e.getSource();
+        Position newPos = new Position(buttonClicked.i,buttonClicked.j);*/
         //Crea corretamente newPos....
+        setOpaque(true);
     }
 
 }

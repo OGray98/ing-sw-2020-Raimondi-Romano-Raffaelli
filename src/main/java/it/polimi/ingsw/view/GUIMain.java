@@ -58,9 +58,9 @@ public class GUIMain {
 
     }
 
-    public static void main(String[] args) /*throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-            UnsupportedLookAndFeelException*/{
-        //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+            UnsupportedLookAndFeelException{
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         new GUIMain();
 
         //creo lista di gods da visualizzare in GodChoiceDialog
