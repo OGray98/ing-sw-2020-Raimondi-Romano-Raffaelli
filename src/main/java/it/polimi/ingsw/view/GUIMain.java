@@ -18,6 +18,7 @@ public class GUIMain {
 
     public GUIMain() {
         this.gui = new GUI(new ClientModel());
+        this.gui.setPlayer(PlayerIndex.PLAYER0);
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -69,6 +70,6 @@ public class GUIMain {
 
         //creo lista di gods da visualizzare in GodChoiceDialog
         List<String> gods = new ArrayList<>(List.of("Apollo", "Athena", "Minotaur", "Prometheus"));
-        //new GodChoiceDialog(new JFrame(), gods, new ImageContainer());
+        //new GodChoiceDialog(new JFrame(), gods, new ImageContainer(), true);
     }
 }

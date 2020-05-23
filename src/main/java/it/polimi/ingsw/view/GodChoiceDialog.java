@@ -18,7 +18,7 @@ public class GodChoiceDialog extends JDialog {
     private final Map<String, Image> imageMap;
     private final ImageContainer container;
 
-    public GodChoiceDialog(JFrame frame, List<String> godsToShow, ImageContainer container) {
+    public GodChoiceDialog(JFrame frame, List<String> godsToShow, ImageContainer container, boolean threeplayersgame) {
         super(frame, "God choice");
         setLayout(new BorderLayout());
 
@@ -48,22 +48,30 @@ public class GodChoiceDialog extends JDialog {
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         list.setVisibleRowCount(1);
         list.setCellRenderer(new GodChoiceDialogRender());
-        if(godsToShow.size() > 3)
-            list.setSelectionMode(3);
+
+        if(godsToShow.size() > 3){
+            if(threeplayersgame)
+                list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            else
+                list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        }
         else
-            list.setSelectionMode(1);
+            list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane scrollPane = new JScrollPane(list);
         scrollPane.setPreferredSize(new Dimension(screenSize.width/2,screenSize.height/2));
-        setPreferredSize(new Dimension(screenSize.width - screenSize.width/3,screenSize.height/2));
+        //setPreferredSize(new Dimension(screenSize.width - screenSize.width/3,screenSize.height/2));
         setLocation(screenSize.width/5, screenSize.height/4);
         setResizable(false);
 
         add(scrollPane, BorderLayout.NORTH);
 
+        JButton okButton = new JButton("OK");
+        add(okButton, BorderLayout.SOUTH);
 
         pack();
-        setMinimumSize(new Dimension(screenSize.width/6,screenSize.height/3));
+        //setMinimumSize(new Dimension(screenSize.width/6,screenSize.height/3));
+        setPreferredSize(new Dimension((screenSize.width)- screenSize.width/4,screenSize.height/3));
         setVisible(true);
     }
 
