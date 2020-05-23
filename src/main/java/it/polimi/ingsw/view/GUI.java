@@ -61,6 +61,7 @@ public class GUI extends ClientView {
             for (int j = 0; j < 5; j++) {
                 lim.gridx = j;
                 buttonCells[i][j] = new ButtonCell(i, j, labelEmptyWidth, labelEmptyHeight);
+                buttonCells[i][j].putClientProperty("hideActionText", Boolean.TRUE);
                 layout.setConstraints(buttonCells[i][j], lim);
                 panel1.add(buttonCells[i][j]);
             }
