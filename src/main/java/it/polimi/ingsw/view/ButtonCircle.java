@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 
 public class ButtonCircle extends JButton {
@@ -11,13 +12,11 @@ public class ButtonCircle extends JButton {
 
     private boolean clicked;
 
-    public ButtonCircle(Icon icon, Color colorButton) {
+    public ButtonCircle(Icon icon, Color colorButton, ActionListener listener) {
         super(icon);
         this.colorButton = colorButton;
         this.clicked = false;
-        this.addActionListener(
-                e -> click()
-        );
+        this.addActionListener(listener);
         resize();
     }
 
@@ -74,7 +73,7 @@ public class ButtonCircle extends JButton {
         return this.clicked;
     }
 
-    private void click() {
+    public void click() {
         this.clicked = !this.clicked;
     }
 }
