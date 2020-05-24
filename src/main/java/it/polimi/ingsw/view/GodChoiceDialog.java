@@ -2,14 +2,19 @@ package it.polimi.ingsw.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GodChoiceDialog extends JDialog {
 
     private List<String> chosenGod = new ArrayList<>();
+    private final ImageContainer imageContainer = new ImageContainer();
+    private List<JButton> godsShow;
 
-    public GodChoiceDialog(JFrame frame, List<JLabel> godsToShow) {
+
+    public GodChoiceDialog(JFrame frame/* List<JLabel> godsToShow*/,List<String> listGodName) {
         super(frame, "God choice");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setPreferredSize(new Dimension(screenSize.width / 2, screenSize.height / 2));
@@ -24,12 +29,19 @@ public class GodChoiceDialog extends JDialog {
 
         JPanel panel = new JPanel();
         panel.setLayout(godLayout);
+        godsShow = createListGods(listGodName);
+        for(JButton j : godsShow){
+            panel.setBackground(Color.DARK_GRAY);
+            godLayout.setConstraints(j, lim);
+            panel.add(j);
+        }
 
-        for (JLabel l : godsToShow) {
+
+       /* for (JLabel l : godsToShow) {
             panel.setBackground(Color.DARK_GRAY);
             godLayout.setConstraints(l, lim);
             panel.add(l);
-        }
+        }*/
 
         JScrollPane scrollPane = new JScrollPane(panel);
         add(scrollPane, BorderLayout.CENTER);
@@ -48,6 +60,25 @@ public class GodChoiceDialog extends JDialog {
             chosenGod.remove(god);
         }
     }
+
+    private List<JButton> createListGods(List<String> gods){
+        List<JButton> listGods = null;
+        for(String god: gods){
+            Image imageGod = imageContainer.getGodimage(god).getScaledInstance(100,250,Image.SCALE_DEFAULT);
+            JButton buttonGod = new JButton();
+            buttonGod.setIcon(new ImageIcon(imageGod));
+            buttonGod.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    selectGod(god);
+                }
+            });
+            listGods.add(buttonGod);
+        }
+        return listGods;
+    }
+
+
 }
 
 

@@ -8,6 +8,8 @@ import it.polimi.ingsw.utils.MoveMessage;
 import it.polimi.ingsw.utils.PlayerSelectGodMessage;
 import it.polimi.ingsw.utils.PutWorkerMessage;
 
+import java.util.List;
+
 public class StubView extends ClientView {
 
     public StubView(PlayerIndex ind, ViewModelInterface model) {
@@ -43,6 +45,11 @@ public class StubView extends ClientView {
 
     @Override
     public void init() {
+
+    }
+
+    @Override
+    public void showGod(List<String> gods) {
 
     }
 }

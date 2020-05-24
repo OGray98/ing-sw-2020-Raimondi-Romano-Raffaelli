@@ -8,6 +8,9 @@ import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +31,7 @@ public class GUI extends ClientView {
     private static final int labelEmptyHeight = getProportionHeight(19, 800, internalFrameEight);
     private static final int ROW_NUM = 5;
     private final ButtonCell[][] buttonCells = new ButtonCell[ROW_NUM][ROW_NUM];
-    private JFrame frame;
+    private static JFrame frame;
 
     private ButtonCircle buttonPower;
     private ButtonCircle buttonEndTurn;
@@ -60,7 +63,7 @@ public class GUI extends ClientView {
         buttonGod.setOpaque(false);
         labelBorderGod.add(buttonGod);
         buttonGod.addActionListener(
-                e -> godChoiceDialog.selectGod(godName)
+                e -> /*godChoiceDialog.selectGod(godName)*/ new GodIconDialog(frame,godName)
         );
         return labelBorderGod;
     }
@@ -149,6 +152,7 @@ public class GUI extends ClientView {
         );
         buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn), Color.WHITE,
                 e -> {
+
                 }
         );
         buttonTutorial = new ButtonCircle(new ImageIcon(imageTutorial), Color.WHITE,
@@ -219,11 +223,11 @@ public class GUI extends ClientView {
 
     @Override
     public void showGod(List<String> gods) {
-        List<JLabel> godLabels = new ArrayList<>();
+        /*List<JLabel> godLabels = new ArrayList<>();
         gods.forEach(
                 god -> godLabels.add(getIconGodProfile(imageContainer.getGodimage(god), god))
-        );
-        godChoiceDialog = new GodChoiceDialog(this.frame, godLabels);
+        );*/
+        godChoiceDialog = new GodChoiceDialog(this.frame,gods /*godLabels*/);
     }
 
     private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {
