@@ -103,6 +103,9 @@ public class GUI extends ClientView {
                 );
                 layout.setConstraints(buttonCells[i][j], lim);
                 panel1.add(buttonCells[i][j]);
+                buttonCells[i][j].setOpaque(false);
+                buttonCells[i][j].setContentAreaFilled(false);
+                //buttonCells[i][j].setBorderPainted(false);
             }
         }
 
