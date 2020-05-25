@@ -48,13 +48,6 @@ public interface ControllableByClientMessage {
     void handlePutWorkerMessage(PutWorkerMessage message);
 
     /**
-     * Handle a SelectWorkerMessage
-     *
-     * @param message is the input message of type SelectWorkerMessage
-     */
-    void handleSelectWorkerMessage(SelectWorkerMessage message);
-
-    /**
      * Handle a MoveMessage
      *
      * @param message is the input message of type MoveMessage

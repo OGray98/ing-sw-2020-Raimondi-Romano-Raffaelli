@@ -204,7 +204,7 @@ public class Game extends Observable<MessageToClient> {
      */
     public void sendPossibleActionPowerState() throws InvalidStateException {
 
-        if (this.currentState == GameState.INITURN) {
+        if (this.currentState == GameState.MOVE) {
             this.board.workerPositions(currentPlayer.getPlayerNum())
                     .forEach(
                             pos -> notify(

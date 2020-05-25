@@ -325,42 +325,11 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         godPhaseManager.puttingWorkerInBoard(message.getPositionOne(), message.getPositionTwo());
 
         if (godPhaseManager.getPlayersWithWorkerPut() == gameModel.getNumPlayer()) {
-            gameModel.setCurrentState(GameState.INITURN);
+            gameModel.setCurrentState(GameState.MOVE);
             //Create an instance of TurnManager and start the first turn
             this.turnManager = new TurnManager(this.gameModel);
             this.turnManager.startTurn();
         }
-    }
-
-    /**
-     * This method is used to select the worker that user wants to use
-     * it will notify the positions where the player can move or use a power
-     */
-    @Override
-    public void handleSelectWorkerMessage(SelectWorkerMessage message) {
-
-        PlayerIndex clientIndex = message.getClient();
-        Position workerPos = message.getWorkerPos();
-
-        if (isNotMessageSentByCurrentPlayer(message)) {
-            respondErrorToRemoteView(
-                    clientIndex,
-                    "Not your turn",
-                    TypeMessage.NOT_YOUR_TURN
-            );
-            return;
-        }
-        if(isNotCurrentGameState(GameState.INITURN)){
-            respondErrorToRemoteView(
-                    clientIndex,
-                    "You can't move a worker now!",
-                    TypeMessage.WRONG_GAME_STATE
-            );
-            return;
-        }
-
-        //notify delle celle di entrambi i worker
-        gameModel.setCurrentState(GameState.MOVE);
     }
 
     /**
@@ -585,7 +554,7 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         //setup the new turn
         this.turnManager.endTurn();
         this.turnManager.startTurn();
-        gameModel.setCurrentState(GameState.INITURN);
+        gameModel.setCurrentState(GameState.MOVE);
 
         //If current player has been blocked, he loses
         if(!this.turnManager.canCurrentPlayerMoveAWorker()){

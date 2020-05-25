@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class ClientView extends View implements Observer<MessageToView>, ControllableByViewMessage {
 
-    private final ViewModelInterface clientModel;
+    protected final ViewModelInterface clientModel;
 
     public ClientView(ViewModelInterface clientModel) {
         super();
@@ -24,6 +24,11 @@ public abstract class ClientView extends View implements Observer<MessageToView>
 
     public abstract void showGod(List<String> gods);
 
+    /**
+     * Method that remove from view the cells of possible actions when they are not needed anymore
+     * */
+    public abstract void removeActionsFromView();
+
 
     //method from Observer
     @Override
@@ -36,5 +41,6 @@ public abstract class ClientView extends View implements Observer<MessageToView>
     public abstract String showSelectIP(String message);
 
     public abstract void showMessage(String message);
+
 
 }

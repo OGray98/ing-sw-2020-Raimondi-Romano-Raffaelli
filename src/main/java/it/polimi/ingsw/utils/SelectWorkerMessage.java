@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.ControllableByClientMessage;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
-public class SelectWorkerMessage extends Message implements MessageToServer {
+public class SelectWorkerMessage extends Message {
 
     private Position workerPos;
 
@@ -18,9 +18,4 @@ public class SelectWorkerMessage extends Message implements MessageToServer {
         return workerPos;
     }
 
-    @Override
-    public void execute(ControllableByClientMessage controllable) throws NullPointerException {
-        if (controllable == null) throw new NullPointerException("controllable");
-        controllable.handleSelectWorkerMessage(this);
-    }
 }

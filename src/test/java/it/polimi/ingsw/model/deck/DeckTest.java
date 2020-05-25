@@ -47,7 +47,7 @@ public class DeckTest {
         assertEquals("Hephaestus",deckEmpty.getGodCards().get(5).getGodName());
         assertEquals("Your Worker may build one additional block (not dome) on top of your first block.",deckEmpty.getGodCards().get(5).getGodDescription());
         assertEquals("Minotaur",deckEmpty.getGodCards().get(6).getGodName());
-        assertEquals("our Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.",deckEmpty.getGodCards().get(6).getGodDescription());
+        assertEquals("Our Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.",deckEmpty.getGodCards().get(6).getGodDescription());
         assertEquals("Pan",deckEmpty.getGodCards().get(7).getGodName());
         assertEquals("You also win if your Worker moves down two or more levels.",deckEmpty.getGodCards().get(7).getGodDescription());
         assertEquals("Prometheus",deckEmpty.getGodCards().get(8).getGodName());

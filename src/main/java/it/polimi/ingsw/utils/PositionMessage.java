@@ -1,10 +1,11 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.Client.ControllableByViewMessage;
 import it.polimi.ingsw.controller.ControllableByClientMessage;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
-public class PositionMessage extends Message implements MessageToServer {
+public class PositionMessage extends Message implements MessageToServer, MessageToView {
 
     private final Position position;
     private final Boolean isUsingPower;
@@ -26,5 +27,11 @@ public class PositionMessage extends Message implements MessageToServer {
 
     public boolean isUsingPower() {
         return isUsingPower;
+    }
+
+    @Override
+    public void execute(ControllableByViewMessage controllable) throws NullPointerException {
+        if (controllable == null) throw new NullPointerException("controllable");
+        controllable.updateActions(this);
     }
 }

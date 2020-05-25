@@ -2,10 +2,7 @@ package it.polimi.ingsw.ClientViewFactory;
 
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;
-import it.polimi.ingsw.utils.BuildViewMessage;
-import it.polimi.ingsw.utils.MoveMessage;
-import it.polimi.ingsw.utils.PlayerSelectGodMessage;
-import it.polimi.ingsw.utils.PutWorkerMessage;
+import it.polimi.ingsw.utils.*;
 
 import java.util.List;
 
@@ -27,6 +24,11 @@ public class CLI extends ClientView {
 
     @Override
     public void showGod(List<String> gods) {
+
+    }
+
+    @Override
+    public void removeActionsFromView() {
 
     }
 
@@ -57,6 +59,11 @@ public class CLI extends ClientView {
 
     @Override
     public void updateSelectedCardView(PlayerSelectGodMessage message) {
+
+    }
+
+    @Override
+    public void updateActions(PositionMessage message) {
 
     }
 }
