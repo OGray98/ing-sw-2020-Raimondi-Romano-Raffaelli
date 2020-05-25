@@ -31,8 +31,13 @@ public class CLI extends ClientView {
     }
 
     @Override
-    public String showSelectIP() {
+    public String showSelectIP(String message) {
         return null;
+    }
+
+    @Override
+    public void showMessage(String message) {
+
     }
 
     @Override

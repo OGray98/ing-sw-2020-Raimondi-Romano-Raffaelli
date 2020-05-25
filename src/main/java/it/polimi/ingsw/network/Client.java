@@ -145,11 +145,13 @@ public class Client implements ServerConnection {
     public void run() throws IOException {
 
         this.clientView.init();
-        this.ip = this.clientView.showSelectIP();
+        this.ip = this.clientView.showSelectIP("Insert server IP:");
 
-        while (!isServerAvailable())
-            this.ip = this.clientView.showSelectIP();
-        System.out.println("Connection established");
+        while (!isServerAvailable()) {
+            this.ip = this.clientView.showSelectIP(
+                    "There isn't any available server on this IP, try with another IP:");
+        }
+        this.clientView.showMessage("Connected!");
 
         socketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new ObjectOutputStream(socket.getOutputStream());

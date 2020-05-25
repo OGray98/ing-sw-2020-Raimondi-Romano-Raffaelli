@@ -227,8 +227,13 @@ public class GUI extends ClientView {
     }
 
     @Override
-    public String showSelectIP() {
-        return JOptionPane.showInputDialog(frame, "Insert server ip:");
+    public String showSelectIP(String message) {
+        return JOptionPane.showInputDialog(frame, message);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(frame, message);
     }
 
     private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {

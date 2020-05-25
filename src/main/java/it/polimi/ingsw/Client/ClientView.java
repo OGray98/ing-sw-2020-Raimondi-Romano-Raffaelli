@@ -33,6 +33,8 @@ public abstract class ClientView extends View implements Observer<MessageToView>
         message.execute(this);
     }
 
-    public abstract String showSelectIP();
+    public abstract String showSelectIP(String message);
+
+    public abstract void showMessage(String message);
 
 }
