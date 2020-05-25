@@ -68,6 +68,8 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
 
     public void setSelectedWorkerPos(Position selectedWorkerPos){
         this.selectedWorkerPos = selectedWorkerPos;
+        //notify to view
+        notify(new PositionMessage(playerIndex, selectedWorkerPos, false));
     }
 
     public Position getSelectedWorkerPos(){
@@ -285,11 +287,12 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
             if(this.playersPositions.get(playerIndex).get(1).equals(workerPos))
                 actions = powerActionPositionsWorker2;
         }
-        if(this.playersPositions.get(playerIndex).get(0).equals(workerPos))
-            actions = normalActionPositionsWorker1;
-        if(this.playersPositions.get(playerIndex).get(1).equals(workerPos))
-            actions = normalActionPositionsWorker2;
-
+        else{
+            if(this.playersPositions.get(playerIndex).get(0).equals(workerPos))
+                actions = normalActionPositionsWorker1;
+            if(this.playersPositions.get(playerIndex).get(1).equals(workerPos))
+                actions = normalActionPositionsWorker2;
+        }
         return actions;
     }
 
@@ -306,11 +309,30 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                 this.powerActionPositionsWorker2 = message.getPossiblePosition();
         }
         else{
-            if(message.getWorkerPos().equals(playersPositions.get(playerIndex).get(0)))
+            if(message.getWorkerPos().equals(playersPositions.get(playerIndex).get(0))){
                 this.normalActionPositionsWorker1 = message.getPossiblePosition();
-            else
+                //notify view the cells where is possible to build
+                if(message.getActionType() == ActionType.BUILD)
+                    notify(new PositionMessage(playerIndex, message.getWorkerPos(), false));
+            }
+            else{
                 this.normalActionPositionsWorker2 = message.getPossiblePosition();
+                //notify view the cells where is possible to build
+                if(message.getActionType() == ActionType.BUILD)
+                    notify(new PositionMessage(playerIndex, message.getWorkerPos(), false));
+            }
         }
+    }
+
+    /**
+     * When the turn is ended the lists of possible actions will be cleared
+     * */
+    public void clearActionLists(){
+        this.normalActionPositionsWorker1.clear();
+        this.normalActionPositionsWorker2.clear();
+        this.powerActionPositionsWorker1.clear();
+        this.powerActionPositionsWorker2.clear();
+        //TODO selectedWorker? serve una Position da distinguere per capire che non ci sono pedine selezionate
     }
 
     /**

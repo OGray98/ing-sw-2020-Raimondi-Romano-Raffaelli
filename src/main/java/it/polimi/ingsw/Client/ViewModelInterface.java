@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.utils.ActionType;
 
@@ -13,4 +14,10 @@ public interface ViewModelInterface {
     List<String> getGods();
 
     List<Position> getActionPositions(Position workerPos, ActionType type);
+
+    Position getSelectedWorkerPos();
+
+    GameState getCurrentState();
+
+    GameState getPowerGodState();
 }

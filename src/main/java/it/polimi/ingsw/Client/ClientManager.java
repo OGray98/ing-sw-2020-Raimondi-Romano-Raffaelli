@@ -23,6 +23,13 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     }
 
     /**
+     * When the player chooses between GUI/CLI the ClientView will be selected here
+     * */
+    public void setClientView(ClientView view){
+        this.clientView = view;
+    }
+
+    /**
      * Method that receives notifies from the model and modifies the client representation of the model
      *
      * @param message used to take the value to use to modify the model client
@@ -40,6 +47,8 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
      * */
     @Override
     public void update(MessageToServer message) {
+
+        if(message.getType() == TypeMessage.END_TURN)
 
         switch(clientModel.getCurrentState()){
             case START_GAME:
@@ -85,12 +94,14 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                         if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE).contains(moveMsg.getPosition()))
                             break;
                         sendToServer(new MoveMessage(moveMsg.getClient(), clientModel.getSelectedWorkerPos(), moveMsg.getPosition()));
+                        clientView.removeActionsFromView();
                     }
                     else{
                         //check if it is a correct position
                         if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).contains(moveMsg.getPosition()))
                             break;
                         sendToServer(new UsePowerMessage(moveMsg.getClient(), clientModel.getSelectedWorkerPos(), moveMsg.getPosition()));
+                        clientView.removeActionsFromView();
                     }
                 }
                 break;
@@ -108,6 +119,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                 if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE).contains(initPowMoveMsg.getPosition()))
                     break;
                 sendToServer(new MoveMessage(initPowMoveMsg.getClient(), clientModel.getSelectedWorkerPos(), initPowMoveMsg.getPosition()));
+                clientView.removeActionsFromView();
                 break;
             case BUILD:
                 PositionMessage buildMsg = (PositionMessage) message;
@@ -123,14 +135,21 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                     if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.BUILD).contains(buildMsg.getPosition()))
                         break;
                     sendToServer(new BuildMessage(buildMsg.getClient(), buildMsg.getPosition()));
+                    clientView.removeActionsFromView();
                 }
                 else{
                     if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).contains(buildMsg.getPosition()))
                         break;
                     sendToServer(new UsePowerMessage(buildMsg.getClient(), clientModel.getSelectedWorkerPos(), buildMsg.getPosition()));
+                    clientView.removeActionsFromView();
                 }
                 break;
             case ENDPHASE:
+                //case where player wants to end turn
+                if(message.getType() == TypeMessage.END_TURN){
+                    clientModel.clearActionLists();
+                    sendToServer(message);
+                }
                 PositionMessage buildPowerMsg = (PositionMessage) message;
 
                 try{
@@ -145,11 +164,13 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                     if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).contains(buildPowerMsg.getPosition()))
                         break;
                     sendToServer(new UsePowerMessage(buildPowerMsg.getClient(), clientModel.getSelectedWorkerPos(),buildPowerMsg.getPosition()));
+                    clientView.removeActionsFromView();
                 }
                 break;
             case BUILDPOWER:
                 //Here will arrive the endTurn message
                 sendToServer(message);
+                clientModel.clearActionLists();
                 break;
             case SECOND_MOVE:
                 PositionMessage secondMoveMsg = (PositionMessage) message;
@@ -165,6 +186,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                     if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE).contains(secondMoveMsg.getPosition()))
                         break;
                     sendToServer(new BuildMessage(secondMoveMsg.getClient(), secondMoveMsg.getPosition()));
+                    clientView.removeActionsFromView();
                 }
                 break;
             case MATCH_ENDED:

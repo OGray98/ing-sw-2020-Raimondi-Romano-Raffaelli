@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.utils.*;
@@ -148,7 +149,29 @@ public class GUI extends ClientView {
 
         //Creating button
         buttonPower = new ButtonCircle(new ImageIcon(imagePower), Color.WHITE,
-                e -> buttonPower.click()
+                e -> {
+                    if(clientModel.getCurrentState() != GameState.NULL && clientModel.getCurrentState() == clientModel.getPowerGodState()){
+                        try{
+                            clientModel.getSelectedWorkerPos();
+
+                            buttonPower.click();
+                            //if user clicks buttonPower power cells must be showed
+                            if(buttonPower.isClicked())
+                                showActionPositions(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER));
+                                //if user clicks again on buttonPower normal action cells must be showed
+                            else
+                                showActionPositions(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE));
+                        }
+                        catch(NullPointerException npe){
+                            //TODO: non bellissimo magari bloccare il bottone è meglio
+                            JOptionPane.showMessageDialog(frame, "You must select a worker before");
+                        }
+                    }
+                    else{
+                        //TODO: AVVERTI UTENTE caso non puo usare il potere
+                        JOptionPane.showMessageDialog(frame, "You can't use a God Power now");
+                    }
+                }
         );
         buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn), Color.WHITE,
                 e -> {
@@ -228,6 +251,12 @@ public class GUI extends ClientView {
                 god -> godLabels.add(getIconGodProfile(imageContainer.getGodimage(god), god))
         );*/
         godChoiceDialog = new GodChoiceDialog(this.frame,gods /*godLabels*/);
+    }
+
+    //TODO: serve per rimuovere le celle illuminate
+    @Override
+    public void removeActionsFromView() {
+
     }
 
     private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {
@@ -537,5 +566,14 @@ public class GUI extends ClientView {
         });
     }
 
+    @Override
+    public void updateActions(PositionMessage message){
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                showActionPositions(clientModel.getActionPositions(message.getPosition(), ActionType.MOVE));
+            }
+        });
+    }
 
 }
