@@ -262,16 +262,6 @@ public class GUI extends ClientView {
         JOptionPane.showMessageDialog(frame, message);
     }
 
-    @Override
-    public String showSelectIP(String message) {
-        return JOptionPane.showInputDialog(frame, message);
-    }
-
-    @Override
-    public void showMessage(String message) {
-        JOptionPane.showMessageDialog(frame, message);
-    }
-
     //TODO: serve per rimuovere le celle illuminate
     @Override
     public void removeActionsFromView() {

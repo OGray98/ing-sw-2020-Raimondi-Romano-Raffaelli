@@ -3,10 +3,7 @@ package it.polimi.ingsw.stub;
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.utils.BuildViewMessage;
-import it.polimi.ingsw.utils.MoveMessage;
-import it.polimi.ingsw.utils.PlayerSelectGodMessage;
-import it.polimi.ingsw.utils.PutWorkerMessage;
+import it.polimi.ingsw.utils.*;
 
 import java.util.List;
 
@@ -39,6 +36,11 @@ public class StubView extends ClientView {
     }
 
     @Override
+    public void updateActions(PositionMessage message) {
+
+    }
+
+    @Override
     public void receiveErrorMessage(String error) {
 
     }
@@ -61,6 +63,11 @@ public class StubView extends ClientView {
 
     @Override
     public void showMessage(String message) {
+
+    }
+
+    @Override
+    public void removeActionsFromView(){
 
     }
 }
