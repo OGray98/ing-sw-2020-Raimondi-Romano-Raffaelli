@@ -261,7 +261,7 @@ public class GUI extends ClientView {
     //TODO: serve per rimuovere le celle illuminate
     @Override
     public void removeActionsFromView(List<Position> list) {
-
+        
     }
 
     private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {
