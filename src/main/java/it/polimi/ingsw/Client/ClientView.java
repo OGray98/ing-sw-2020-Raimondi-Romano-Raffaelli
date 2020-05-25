@@ -37,4 +37,10 @@ public abstract class ClientView extends View implements Observer<MessageToView>
             throw new NullPointerException("message");
         message.execute(this);
     }
+
+    public abstract String showSelectIP(String message);
+
+    public abstract void showMessage(String message);
+
+
 }

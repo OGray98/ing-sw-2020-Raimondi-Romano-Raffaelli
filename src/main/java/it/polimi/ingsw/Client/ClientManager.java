@@ -23,13 +23,6 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     }
 
     /**
-     * When the player chooses between GUI/CLI the ClientView will be selected here
-     * */
-    public void setClientView(ClientView view){
-        this.clientView = view;
-    }
-
-    /**
      * Method that receives notifies from the model and modifies the client representation of the model
      *
      * @param message used to take the value to use to modify the model client

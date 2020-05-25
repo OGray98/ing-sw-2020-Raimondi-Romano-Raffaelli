@@ -108,6 +108,9 @@ public class GUI extends ClientView {
                 );
                 layout.setConstraints(buttonCells[i][j], lim);
                 panel1.add(buttonCells[i][j]);
+                buttonCells[i][j].setOpaque(false);
+                buttonCells[i][j].setContentAreaFilled(false);
+                //buttonCells[i][j].setBorderPainted(false);
             }
         }
 
@@ -251,6 +254,16 @@ public class GUI extends ClientView {
                 god -> godLabels.add(getIconGodProfile(imageContainer.getGodimage(god), god))
         );*/
         godChoiceDialog = new GodChoiceDialog(this.frame,gods /*godLabels*/);
+    }
+
+    @Override
+    public String showSelectIP(String message) {
+        return JOptionPane.showInputDialog(frame, message);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(frame, message);
     }
 
     //TODO: serve per rimuovere le celle illuminate
