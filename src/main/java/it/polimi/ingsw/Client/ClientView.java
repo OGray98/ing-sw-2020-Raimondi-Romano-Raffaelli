@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.MessageToView;
 import it.polimi.ingsw.view.View;
@@ -27,7 +28,7 @@ public abstract class ClientView extends View implements Observer<MessageToView>
     /**
      * Method that remove from view the cells of possible actions when they are not needed anymore
      * */
-    public abstract void removeActionsFromView();
+    public abstract void removeActionsFromView(List<Position> list);
 
 
     //method from Observer
