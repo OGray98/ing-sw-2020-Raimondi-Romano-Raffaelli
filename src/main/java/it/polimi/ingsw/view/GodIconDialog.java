@@ -17,7 +17,7 @@ public class GodIconDialog extends GameDialog implements ActionListener {
         Font font = new Font("Impatto", Font.PLAIN, 30);
         Font font1 = new Font("Impatto", Font.PLAIN, 10);
         JLabel labelGround = new JLabel("");
-        Image imageGround = new ImageIcon("src/main/resources/Odyssey_UI_Backdrop.png").getImage().getScaledInstance(frame.getWidth()/2,frame.getHeight()/2,Image.SCALE_DEFAULT);
+        Image imageGround = new ImageIcon("src/main/resources/Odyssey_UI_Backdrop.png").getImage().getScaledInstance(getDIALOG_WIDTH(),getDIALOG_HEIGHT(),Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         JLabel labelGod = new JLabel("");
         Image imageGod = imageContainer.getGodimage(godName).getScaledInstance(150,310,Image.SCALE_DEFAULT);

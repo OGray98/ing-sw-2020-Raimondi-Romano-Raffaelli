@@ -16,8 +16,8 @@ public class GUI extends ClientView {
     private JPanel panel1;
     private PrincipalLabel labelGod;
     private static final Dimension FRAME_DIMENSION = Toolkit.getDefaultToolkit().getScreenSize();
-    private static final int FRAME_WIDTH = (FRAME_DIMENSION.width/2)*3/2;
-    private static final int FRAME_HEIGHT = (FRAME_DIMENSION.height / 2) * 3 / 2;
+    private static final int FRAME_WIDTH = (FRAME_DIMENSION.width/2) * 3/2;
+    private static final int FRAME_HEIGHT = (FRAME_DIMENSION.height / 2) * 3/2;
     private static int labelGodWidth;
     private static int labelGodHeight;
     private static final int internalFrameWidth = getProportionWidth(1400, 1400, FRAME_WIDTH);

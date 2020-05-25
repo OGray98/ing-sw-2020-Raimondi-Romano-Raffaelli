@@ -6,8 +6,8 @@ import java.awt.*;
 public class WelcomeFrame extends JFrame {
 
     private static final Dimension FRAME_DIMENSION = Toolkit.getDefaultToolkit().getScreenSize();
-    private static final int FRAME_WIDTH = (FRAME_DIMENSION.width/2)*3/2;
-    private static final int FRAME_HEIGHT = (FRAME_DIMENSION.height / 2)*3/2;
+    private static final int FRAME_WIDTH = (FRAME_DIMENSION.width/2) * 3/2;
+    private static final int FRAME_HEIGHT = (FRAME_DIMENSION.height / 2) * 3/2 ;
 
     public WelcomeFrame(JLabel label){
         super("Santorini");
