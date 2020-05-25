@@ -223,7 +223,17 @@ public class GUI extends ClientView {
         gods.forEach(
                 god -> godLabels.add(getIconGodProfile(imageContainer.getGodimage(god), god))
         );*/
-        godChoiceDialog = new GodChoiceDialog(this.frame,gods /*godLabels*/);
+        godChoiceDialog = new GodChoiceDialog(this.frame, gods /*godLabels*/);
+    }
+
+    @Override
+    public String showSelectIP(String message) {
+        return JOptionPane.showInputDialog(frame, message);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(frame, message);
     }
 
     private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {

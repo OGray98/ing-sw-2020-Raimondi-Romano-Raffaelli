@@ -119,7 +119,7 @@ public class SocketClientConnection extends Observable<MessageToServer> implemen
             }
 
         } catch (IOException | NoSuchElementException e) {
-            System.err.println("Error! oooo " + e.toString());
+            System.err.println("Error! " + e.toString());
             Logger.getAnonymousLogger().severe(e.getMessage());
             setIsActiveFalse();
         }

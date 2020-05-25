@@ -3,8 +3,14 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.Client.ClientManager;
 import it.polimi.ingsw.Client.ClientModel;
 import it.polimi.ingsw.Client.ClientView;
-import it.polimi.ingsw.utils.*;
-import it.polimi.ingsw.view.GUI;
+import it.polimi.ingsw.ClientMain;
+import it.polimi.ingsw.ClientViewFactory.CLICreator;
+import it.polimi.ingsw.ClientViewFactory.ClientViewCreator;
+import it.polimi.ingsw.ClientViewFactory.GUICreator;
+import it.polimi.ingsw.utils.MessageToClient;
+import it.polimi.ingsw.utils.MessageToServer;
+import it.polimi.ingsw.utils.PongMessage;
+import it.polimi.ingsw.utils.TypeMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,9 +28,8 @@ public class Client implements ServerConnection {
     private final ClientManager clientManager;
     private final ClientModel clientModel;
     private final ClientView clientView;
-    private final String ip;
-    private final int port;
-    private Message message;
+    private static final int DISCONNECTION_TIME = 10000;
+    private static final int TCP_SERVER_PORT = 4444;
     private transient Timer pingTimer;
     private transient final BlockingQueue<MessageToClient> inputMessageQueue = new ArrayBlockingQueue<>(10);
     private transient final BlockingQueue<MessageToServer> outputMessageQueue = new ArrayBlockingQueue<>(10);
@@ -33,19 +38,24 @@ public class Client implements ServerConnection {
     private ObjectOutputStream socketOut;
     private Thread threadWrite;
     private boolean active = true;
+    private String ip;
 
+    public Client(String typeView) {
 
-    static final int DISCONNECTION_TIME = 10000;
-
-    public Client(String ip, int port, String typeView) {
-
-        this.ip = ip;
-        this.port = port;
-        this.message = null;
         this.pingTimer = new Timer();
         this.clientModel = new ClientModel();
         this.clientManager = new ClientManager(this, this.clientModel);
-        this.clientView = new GUI(this.clientModel);
+
+        ClientViewCreator clientViewCreator;
+        if (typeView.equals(ClientMain.GUI)) {
+            clientViewCreator = new GUICreator();
+        } else {
+            clientViewCreator = new CLICreator();
+        }
+        this.clientView = clientViewCreator.createView(this.clientModel);
+
+        this.clientManager.setClientView(this.clientView);
+
         this.clientView.addObserver(this.clientManager);
         this.clientModel.addObserver(this.clientView);
     }
@@ -133,13 +143,21 @@ public class Client implements ServerConnection {
      * @throws IOException Create the socket, the output and input stream and run the threads of writing and reading on socket
      */
     public void run() throws IOException {
+
         this.clientView.init();
-        socket = new Socket(ip, port);
-        System.out.println("Connection established");
+        this.ip = this.clientView.showSelectIP("Insert server IP:");
+
+        while (!isServerAvailable()) {
+            this.ip = this.clientView.showSelectIP(
+                    "There isn't any available server on this IP, try with another IP:");
+        }
+        this.clientView.showMessage("Connected!");
+
         socketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new ObjectOutputStream(socket.getOutputStream());
-        this.clientView.init();
-        try{
+
+
+        try {
             Thread t0 = asyncReadFromSocket(socketIn);
             threadWrite = asyncWriteToSocket(socketOut);
             Thread threadController = clientManageReadMessage();
@@ -183,5 +201,15 @@ public class Client implements ServerConnection {
             e.printStackTrace();
             setActive(false);
         }
+    }
+
+    private boolean isServerAvailable() {
+        try {
+            socket = new Socket(this.ip, TCP_SERVER_PORT);
+            return true;
+        } catch (IOException e) {
+            System.err.println("Impossible to initialize the server: " + e.getMessage() + "!");
+        }
+        return false;
     }
 }
