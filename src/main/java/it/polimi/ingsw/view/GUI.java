@@ -70,6 +70,13 @@ public class GUI extends ClientView {
         return false;
     }
 
+    private static boolean isLabelLux(JLabel component) {
+        if (component.getComponent(component.getComponentCount() - 1) instanceof LabelLux)
+            return true;
+        return false;
+    }
+
+
     public void initGUI() {
         //frame = new JFrame("Santorini");
         //frame.setLocation(FRAME_DIMENSION.width / 8, FRAME_DIMENSION.height / 8);
@@ -265,7 +272,28 @@ public class GUI extends ClientView {
     //TODO: serve per rimuovere le celle illuminate
     @Override
     public void removeActionsFromView(List<Position> list) {
-        
+        for(Position pos : list){
+            JLabel firsLabel = (JLabel) buttonCells[pos.row][pos.col].getComponent(buttonCells[pos.row][pos.col].getComponentCount() - 1);
+            if(firsLabel.getComponentCount() != 0 && !(isLabelLux(firsLabel))){
+                //Tower 1
+                JLabel labelT1 = (JLabel) firsLabel.getComponent(firsLabel.getComponentCount() - 1);
+                if(labelT1.getComponentCount() != 0 && !(isLabelLux(firsLabel))){
+                    //Tower 2
+                    JLabel labelT2 = (JLabel) labelT1.getComponent(labelT1.getComponentCount() - 1);
+                    if(labelT2.getComponentCount() != 0 && !(isLabelLux(labelT1))){
+                        //Tower 3
+                        JLabel labelT3 = (JLabel) labelT2.getComponent(labelT2.getComponentCount() - 1);
+                        labelT3.remove(labelT3.getComponentCount() - 1);
+                    }else{
+                        labelT2.remove(labelT2.getComponentCount() - 1);
+                    }
+                }else{
+                    labelT1.remove(labelT1.getComponentCount() - 1);
+                }
+            }else{
+                firsLabel.remove(firsLabel.getComponentCount() - 1);
+            }
+        }
     }
 
     private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {
@@ -533,29 +561,25 @@ public class GUI extends ClientView {
                                 //Tower 3
                                 JLabel labelTow3 = (JLabel) labelTow2.getComponent(labelTow2.getComponentCount() - 1);
                                 Image imageTow3 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow3.getWidth()), getProportionHeight(15, 19, labelTow3.getHeight()), Image.SCALE_DEFAULT);
-                                JLabel labelIndicatorTow3 = new JLabel("");
-                                labelIndicatorTow3.setIcon(new ImageIcon(imageTow3));
+                                LabelLux labelIndicatorTow3 = new LabelLux(imageTow3);
                                 labelIndicatorTow3.setBounds(getProportionWidth(2, 18, labelTow3.getWidth()), getProportionHeight(2, 19, labelTow3.getHeight()), getProportionWidth(15, 19, labelTow3.getWidth()), getProportionHeight(15, 19, labelTow3.getHeight()));
                                 labelTow3.add(labelIndicatorTow3);
 
                             } else {
                                 Image imageTow2 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow2.getWidth()), getProportionHeight(15, 19, labelTow2.getHeight()), Image.SCALE_DEFAULT);
-                                JLabel labelIndicatorTow2 = new JLabel("");
-                                labelIndicatorTow2.setIcon(new ImageIcon(imageTow2));
+                                LabelLux labelIndicatorTow2 = new LabelLux(imageTow2);
                                 labelIndicatorTow2.setBounds(getProportionWidth(2, 18, labelTow2.getWidth()), getProportionHeight(2, 19, labelTow2.getHeight()), getProportionWidth(15, 19, labelTow2.getWidth()), getProportionHeight(15, 19, labelTow2.getHeight()));
                                 labelTow2.add(labelIndicatorTow2);
                             }
                         }else{
                             Image imageTow1 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow1.getWidth()), getProportionHeight(15, 19, labelTow1.getHeight()), Image.SCALE_DEFAULT);
-                            JLabel labelIndicatorTow1 = new JLabel("");
-                            labelIndicatorTow1.setIcon(new ImageIcon(imageTow1));
+                            LabelLux labelIndicatorTow1 = new LabelLux(imageTow1);
                             labelIndicatorTow1.setBounds(getProportionWidth(2, 18, labelTow1.getWidth()), getProportionHeight(2, 19, labelTow1.getHeight()), getProportionWidth(15, 19, labelTow1.getWidth()), getProportionHeight(15, 19, labelTow1.getHeight()));
                             labelTow1.add(labelIndicatorTow1);
                         }
                     }else {
-                        JLabel labelIndicator = new JLabel("");
                         Image imageIndicator = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
-                        labelIndicator.setIcon(new ImageIcon(imageIndicator));
+                        LabelLux labelIndicator = new LabelLux(imageIndicator);
                         labelIndicator.setBounds(getProportionWidth(-2, 18, labelEmptyWidth), getProportionHeight(-4, 19, labelEmptyHeight), getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(130, 19, labelEmptyHeight));
                         labelButton.add(labelIndicator);
                     }
