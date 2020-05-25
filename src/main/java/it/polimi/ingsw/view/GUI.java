@@ -155,11 +155,15 @@ public class GUI extends ClientView {
 
                             buttonPower.click();
                             //if user clicks buttonPower power cells must be showed
-                            if(buttonPower.isClicked())
+                            if(buttonPower.isClicked()){
+                                removeActionsFromView(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE));
                                 showActionPositions(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER));
+                            }
                                 //if user clicks again on buttonPower normal action cells must be showed
-                            else
+                            else{
+                                removeActionsFromView(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER));
                                 showActionPositions(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE));
+                            }
                         }
                         catch(NullPointerException npe){
                             //TODO: non bellissimo magari bloccare il bottone è meglio
