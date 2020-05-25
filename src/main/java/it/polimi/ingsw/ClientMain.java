@@ -23,10 +23,6 @@ public class ClientMain {
                 typed = scanner.next();
             }
 
-            /*String ip = JOptionPane.showInputDialog("Insert server ip:");
-            String portString = JOptionPane.showInputDialog("Insert port:");
-            int port = Integer.parseInt(portString);*/
-
             Client client = new Client(typed);
             client.run();
         } catch (IOException e) {

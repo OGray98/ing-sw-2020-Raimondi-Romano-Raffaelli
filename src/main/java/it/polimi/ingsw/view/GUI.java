@@ -8,10 +8,6 @@ import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GUI extends ClientView {
@@ -227,7 +223,12 @@ public class GUI extends ClientView {
         gods.forEach(
                 god -> godLabels.add(getIconGodProfile(imageContainer.getGodimage(god), god))
         );*/
-        godChoiceDialog = new GodChoiceDialog(this.frame,gods /*godLabels*/);
+        godChoiceDialog = new GodChoiceDialog(this.frame, gods /*godLabels*/);
+    }
+
+    @Override
+    public String showSelectIP() {
+        return JOptionPane.showInputDialog("Insert server ip:");
     }
 
     private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {
