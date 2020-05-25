@@ -26,7 +26,8 @@ public class GUI extends ClientView {
     private static final int labelEmptyHeight = getProportionHeight(19, 800, internalFrameEight);
     private static final int ROW_NUM = 5;
     private final ButtonCell[][] buttonCells = new ButtonCell[ROW_NUM][ROW_NUM];
-    private static JFrame frame;
+    //private static JFrame frame;
+    private static WelcomeFrame frame;
 
     private ButtonCircle buttonPower;
     private ButtonCircle buttonEndTurn;
@@ -70,7 +71,7 @@ public class GUI extends ClientView {
     }
 
     public void initGUI() {
-        frame = new JFrame("Santorini");
+        //frame = new JFrame("Santorini");
         frame.setLocation(FRAME_DIMENSION.width / 8, FRAME_DIMENSION.height / 8);
 
         GridBagLayout layout = new GridBagLayout();

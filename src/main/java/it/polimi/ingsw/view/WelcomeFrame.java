@@ -10,7 +10,7 @@ public class WelcomeFrame extends JFrame {
     private static final int FRAME_HEIGHT = (FRAME_DIMENSION.height / 2)*3/2;
 
     public WelcomeFrame(JLabel label){
-        super("");
+        super("Santorini");
         setLocation(FRAME_DIMENSION.width / 8, FRAME_DIMENSION.height / 8);
         setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT));
         setResizable(false);
