@@ -11,7 +11,7 @@ public class DialogTutorial extends GameDialog{
         super(frame,title);
         Font font = new Font("Impatto", Font.PLAIN, 13);
         JLabel labelGround = new JLabel("");
-        Image imageGround = new ImageIcon("src/main/resources/Odyssey-Olympus.png").getImage().getScaledInstance(getDIALOG_WIDTH(),getDIALOG_HEIGHT(),Image.SCALE_DEFAULT);
+        Image imageGround = new ImageIcon("src/main/resources/Odyssey-Olympus.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         setResizable(false);
         Image imageEndTur = imageContainer.getButtonImage("buttonEndTurn").getScaledInstance(70,70,Image.SCALE_DEFAULT);

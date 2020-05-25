@@ -11,7 +11,7 @@ public class ErrorDialog extends GameDialog implements ActionListener {
         super(frame,"MESSAGE");
         Font font = new Font("Impatto", Font.PLAIN, 18);
         JLabel labelGround = new JLabel("");
-        Image imageGround = new ImageIcon("src/main/resources/ps_backing_stone.png").getImage().getScaledInstance(frame.getWidth()/2,frame.getHeight()/2,Image.SCALE_DEFAULT);
+        Image imageGround = new ImageIcon("src/main/resources/ps_backing_stone.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         JLabel label = new JLabel(errorMessage);
         label.setFont(font);

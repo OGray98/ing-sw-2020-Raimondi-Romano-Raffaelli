@@ -58,7 +58,7 @@ public class GUIMain {
         actions.add(new Position(4,4));
         actions.add(new Position(2,1));
         gui.updateActionView(new ActionMessage(PlayerIndex.PLAYER0, new Position(3,4), actions, ActionType.MOVE));*/
-        gui.updateSelectedCardView(new PlayerSelectGodMessage(PlayerIndex.PLAYER0, "Pan"));
+        gui.updateSelectedCardView(new PlayerSelectGodMessage(PlayerIndex.PLAYER0, "Minotaur"));
 
 
     }

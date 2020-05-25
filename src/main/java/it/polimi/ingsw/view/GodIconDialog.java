@@ -14,46 +14,41 @@ public class GodIconDialog extends GameDialog implements ActionListener {
 
     public GodIconDialog(JFrame frame,String godName){
         super(frame,"GOD PROFILE");
-        Font font = new Font("Impatto", Font.PLAIN, 30);
+        Font font = new Font("Impatto", Font.PLAIN, 33);
         Font font1 = new Font("Impatto", Font.PLAIN, 10);
         JLabel labelGround = new JLabel("");
-        Image imageGround = new ImageIcon("src/main/resources/Odyssey_UI_Backdrop.png").getImage().getScaledInstance(getDIALOG_WIDTH(),getDIALOG_HEIGHT(),Image.SCALE_DEFAULT);
+        Image imageGround = new ImageIcon("src/main/resources/Odyssey_UI_Backdrop.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         JLabel labelGod = new JLabel("");
-        Image imageGod = imageContainer.getGodimage(godName).getScaledInstance(150,310,Image.SCALE_DEFAULT);
+        Image imageGod = imageContainer.getGodimage(godName).getScaledInstance(150,290,Image.SCALE_DEFAULT);
         labelGod.setIcon(new ImageIcon(imageGod));
-        labelGod.setBounds(2,2,150,310);
+        labelGod.setBounds(2,2,150,290);
         labelGround.add(labelGod);
         createMap();
-        JLabel labelGodName = new JLabel("NAME: " + godName.toUpperCase());
-        labelGodName.setBounds(170,10,600,50);
+        JLabel labelGodName = new JLabel(godName.toUpperCase());
+        labelGodName.setBounds(155,10,600,50);
         labelGodName.setFont(font);
         labelGodName.setForeground(Color.WHITE);
         String power = getPower(godName);
         String[] powerSplit = power.split(",");
         String firstPart = powerSplit[0];
         String secondPart = powerSplit[1];
-        JLabel labelPower = new JLabel("POWER: " );
-        labelPower.setBounds(170,90,500,50);
-        labelPower.setFont(font);
-        labelPower.setForeground(Color.WHITE);
         JLabel labelFirst = new JLabel(firstPart);
         JLabel labelSecond = new JLabel(secondPart);
-        labelFirst.setBounds(170,120,500,50);
-        labelSecond.setBounds(170,140,500,50);
+        labelFirst.setBounds(155,45,500,50);
+        labelSecond.setBounds(155,60,500,50);
         labelSecond.setFont(font1);
         labelSecond.setForeground(Color.WHITE);
         labelFirst.setForeground(Color.WHITE);
         labelFirst.setFont(font1);
         JButton buttonClose = new JButton("CLOSE");
-        buttonClose.setBounds(260,250,100,50);
+        buttonClose.setBounds(260,230,100,50);
         buttonClose.setForeground(Color.BLUE);
         buttonClose.addActionListener(this);
         labelGround.add(buttonClose);
         labelGround.add(labelSecond);
         labelGround.add(labelFirst);
         labelGround.add(labelGodName);
-        labelGround.add(labelPower);
         add(labelGround);
     }
 
