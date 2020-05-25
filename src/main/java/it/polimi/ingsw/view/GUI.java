@@ -272,28 +272,33 @@ public class GUI extends ClientView {
     //TODO: serve per rimuovere le celle illuminate
     @Override
     public void removeActionsFromView(List<Position> list) {
-        for(Position pos : list){
-            JLabel firsLabel = (JLabel) buttonCells[pos.row][pos.col].getComponent(buttonCells[pos.row][pos.col].getComponentCount() - 1);
-            if(firsLabel.getComponentCount() != 0 && !(isLabelLux(firsLabel))){
-                //Tower 1
-                JLabel labelT1 = (JLabel) firsLabel.getComponent(firsLabel.getComponentCount() - 1);
-                if(labelT1.getComponentCount() != 0 && !(isLabelLux(firsLabel))){
-                    //Tower 2
-                    JLabel labelT2 = (JLabel) labelT1.getComponent(labelT1.getComponentCount() - 1);
-                    if(labelT2.getComponentCount() != 0 && !(isLabelLux(labelT1))){
-                        //Tower 3
-                        JLabel labelT3 = (JLabel) labelT2.getComponent(labelT2.getComponentCount() - 1);
-                        labelT3.remove(labelT3.getComponentCount() - 1);
-                    }else{
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                for(Position pos : list){
+                    JLabel firsLabel = (JLabel) buttonCells[pos.row][pos.col].getComponent(buttonCells[pos.row][pos.col].getComponentCount() - 1);
+                    if(firsLabel.getComponentCount() != 0 && !(isLabelLux(firsLabel))){
+                    //Tower 1
+                    JLabel labelT1 = (JLabel) firsLabel.getComponent(firsLabel.getComponentCount() - 1);
+                    if(labelT1.getComponentCount() != 0 && !(isLabelLux(firsLabel))){
+                        //Tower 2
+                        JLabel labelT2 = (JLabel) labelT1.getComponent(labelT1.getComponentCount() - 1);
+                        if(labelT2.getComponentCount() != 0 && !(isLabelLux(labelT1))){
+                         //Tower 3
+                         JLabel labelT3 = (JLabel) labelT2.getComponent(labelT2.getComponentCount() - 1);
+                         labelT3.remove(labelT3.getComponentCount() - 1);
+                        }else{
                         labelT2.remove(labelT2.getComponentCount() - 1);
-                    }
-                }else{
-                    labelT1.remove(labelT1.getComponentCount() - 1);
+                        }
+                    }else{
+                     labelT1.remove(labelT1.getComponentCount() - 1);
                 }
-            }else{
+                }else{
                 firsLabel.remove(firsLabel.getComponentCount() - 1);
+                }
             }
-        }
+            }
+        });
     }
 
     private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {
