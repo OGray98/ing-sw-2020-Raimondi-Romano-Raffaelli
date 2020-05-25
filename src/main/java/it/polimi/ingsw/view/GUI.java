@@ -12,10 +12,8 @@ import java.util.List;
 
 public class GUI extends ClientView {
 
-    private JLabel label;
-    private JLabel labelTerminal;
     private JPanel panel1;
-    private JLabel labelGod;
+    private PrincipalLabel labelGod;
     private static final Dimension FRAME_DIMENSION = Toolkit.getDefaultToolkit().getScreenSize();
     private static final int FRAME_WIDTH = (FRAME_DIMENSION.width/2)*3/2;
     private static final int FRAME_HEIGHT = (FRAME_DIMENSION.height / 2) * 3 / 2;
@@ -53,7 +51,6 @@ public class GUI extends ClientView {
         labelBorderGod.setBounds(getProportionWidth(55, 350, labelGodWidth), getProportionHeight(140, 800, labelGodHeight), labelBorderGodWidth, labelBorderGodHeight);
         JButton buttonGod = new JButton();
         Image God = godImage.getScaledInstance(getProportionWidth(90, 150, labelBorderGodWidth), getProportionHeight(160, 230, labelBorderGodHeight), Image.SCALE_DEFAULT);
-        //Image God = new ImageIcon((fileImg)).getImage().getScaledInstance(getProportionWidth(90,150,labelBorderGodWidth),getProportionHeight(160,230,labelBorderGodHeight),Image.SCALE_DEFAULT);
         buttonGod.setIcon(new ImageIcon(God));
         buttonGod.setBounds(getProportionWidth(31, 150, labelBorderGodWidth), getProportionHeight(31, 230, labelBorderGodHeight), getProportionWidth(90, 150, labelBorderGodWidth), getProportionHeight(170, 230, labelBorderGodHeight));
         buttonGod.setOpaque(false);
@@ -118,24 +115,26 @@ public class GUI extends ClientView {
         frame.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT));
         frame.setResizable(false);
 
-        label = new JLabel("");
+
         Image image = new ImageIcon(this.getClass().getResource("/SantoriniBoard.png")).getImage().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
-        label.setIcon(new ImageIcon(image));
-        label.setLayout(new BorderLayout());
+        PrincipalLabel label = new PrincipalLabel(image,new BorderLayout());
 
 
-        labelTerminal = new JLabel("");
+
+
         final int labelTerminalWidth = getProportionWidth(350,1400,internalFrameWidth);
         final int labelTerminalEight = getProportionHeight(800,800,internalFrameEight);
         Image imageTerminal = new ImageIcon(this.getClass().getResource("/bg_panelEdgeLeft.png")).getImage().getScaledInstance(labelTerminalWidth,labelTerminalEight,Image.SCALE_DEFAULT);
-        labelTerminal.setIcon(new ImageIcon(imageTerminal));
+        PrincipalLabel labelTerminal = new PrincipalLabel(imageTerminal);
 
 
-        labelGod = new JLabel("");
+
+
         labelGodWidth = getProportionWidth(350,1400,internalFrameWidth);
         labelGodHeight = getProportionHeight(800,800,internalFrameEight);
         Image imageGod = new ImageIcon(this.getClass().getResource("/bg_panelEdgeRight.png")).getImage().getScaledInstance(labelGodWidth,labelGodHeight,Image.SCALE_DEFAULT);
-        labelGod.setIcon(new ImageIcon(imageGod));
+        labelGod = new PrincipalLabel(imageGod);
+
 
 
         //Image of button
@@ -168,10 +167,6 @@ public class GUI extends ClientView {
         buttonEndTurn.setBounds(getProportionWidth(180, 350, labelGodWidth), getProportionHeight(460, 800, labelGodHeight), getProportionWidth(90, 350, labelGodWidth), getProportionHeight(90, 800, labelGodHeight));
         buttonTutorial.setBounds(getProportionWidth(60, 350, labelTerminalWidth), getProportionHeight(470, 800, labelTerminalEight), getProportionWidth(92, 350, labelTerminalWidth), getProportionHeight(92, 800, labelTerminalEight));
         buttonMenu.setBounds(getProportionWidth(200,350,labelTerminalWidth),getProportionHeight(470,800,labelTerminalEight),getProportionWidth(85,350,labelTerminalWidth),getProportionHeight(85,800,labelTerminalEight));
-
-
-
-
 
         //Adding button to lateral panel
         labelGod.add(buttonPower);

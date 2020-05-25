@@ -14,7 +14,7 @@ public abstract class GameDialog extends JDialog {
         setLocation(screenSize.width / 4, screenSize.height / 4);
         setResizable(false);
         pack();
-        setMinimumSize(new Dimension(screenSize.width / 6, screenSize.height / 3));
+        //setMinimumSize(new Dimension(screenSize.width / 6, screenSize.height / 3));
         setVisible(true);
     }
 
