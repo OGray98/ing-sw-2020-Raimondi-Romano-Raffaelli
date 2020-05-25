@@ -23,7 +23,6 @@ public class ErrorDialog extends GameDialog implements ActionListener {
         labelGround.add(label);
         labelGround.add(buttonClose);
         add(labelGround);
-
     }
 
     @Override

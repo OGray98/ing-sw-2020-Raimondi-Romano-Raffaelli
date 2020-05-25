@@ -9,10 +9,6 @@ import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GUI extends ClientView {
@@ -178,7 +174,7 @@ public class GUI extends ClientView {
         );
         buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn), Color.WHITE,
                 e -> {
-
+                    //new WelcomeDialog(new WelcomeFrame(),this);
                 }
         );
         buttonTutorial = new ButtonCircle(new ImageIcon(imageTutorial), Color.WHITE,
@@ -253,7 +249,17 @@ public class GUI extends ClientView {
         gods.forEach(
                 god -> godLabels.add(getIconGodProfile(imageContainer.getGodimage(god), god))
         );*/
-        godChoiceDialog = new GodChoiceDialog(this.frame,gods /*godLabels*/);
+        godChoiceDialog = new GodChoiceDialog(this.frame, gods /*godLabels*/);
+    }
+
+    @Override
+    public String showSelectIP(String message) {
+        return JOptionPane.showInputDialog(frame, message);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(frame, message);
     }
 
     @Override

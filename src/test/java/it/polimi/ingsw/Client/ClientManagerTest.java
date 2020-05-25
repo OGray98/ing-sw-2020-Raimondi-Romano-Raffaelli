@@ -23,7 +23,7 @@ public class ClientManagerTest {
 
     @Before
     public void init(){
-        client = new Client("127.0.0.1", 12345, "GUI");
+        client = new Client("GUI");
         clientModel = new ClientModel();
         clientManager = new ClientManager(client, clientModel);
     }

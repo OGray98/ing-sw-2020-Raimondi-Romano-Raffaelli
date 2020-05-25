@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class Server {
 
-    private static final int PORT = 12345;
+    private static final int PORT = 4444;
 
     private final ServerSocket serverSocket;
     private final ExecutorService executor = Executors.newFixedThreadPool(3);
@@ -104,6 +104,7 @@ public class Server {
                             } catch (IOException e) {
                                 System.out.println("Tolgo connessione con " + key);
                                 value.forceDisconnection();
+                                lobbyCount--;
                             }
                         }
                 );

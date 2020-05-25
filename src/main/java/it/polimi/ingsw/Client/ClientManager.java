@@ -13,6 +13,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     private final ServerConnection serverConnection;
     private final ClientModel clientModel;
+
     private ClientView clientView;
 
     private List<Position> workersToPut = new ArrayList<>();
@@ -259,8 +260,13 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     }
 
     @Override
-    public void updateLoserMessage(LoserMessage message){
+    public void updateLoserMessage(LoserMessage message) {
         clientModel.playerLose(message.getLoserPlayer());
         //TODO notificare la view della sconfitta
     }
+
+    public void setClientView(ClientView clientView) {
+        this.clientView = clientView;
+    }
+
 }
