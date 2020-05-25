@@ -72,7 +72,7 @@ public class GUI extends ClientView {
 
     public void initGUI() {
         //frame = new JFrame("Santorini");
-        frame.setLocation(FRAME_DIMENSION.width / 8, FRAME_DIMENSION.height / 8);
+        //frame.setLocation(FRAME_DIMENSION.width / 8, FRAME_DIMENSION.height / 8);
 
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints lim = new GridBagConstraints();
@@ -114,8 +114,8 @@ public class GUI extends ClientView {
 
 
         //frame.setLayout(new BorderLayout());
-        frame.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT));
-        frame.setResizable(false);
+        //frame.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT));
+        //frame.setResizable(false);
 
 
         Image image = new ImageIcon(this.getClass().getResource("/SantoriniBoard.png")).getImage().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
@@ -203,14 +203,14 @@ public class GUI extends ClientView {
         label.add(labelGod,BorderLayout.EAST);
         label.add(labelTerminal,BorderLayout.WEST);
         label.add(panel1,BorderLayout.CENTER);
-        frame.getContentPane().add(label);
+        //frame.getContentPane().add(label);
+
+        frame = new WelcomeFrame(label);
 
 
-
-
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //frame.pack();
+        //frame.setVisible(true);
     }
 
     private static int getProportionWidth(int dimensionWidth, int oldContainerDimensionWidth, int newContainerWidth){

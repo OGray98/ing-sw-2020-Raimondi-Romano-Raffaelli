@@ -14,6 +14,7 @@ public class WelcomeFrame extends JFrame {
         setLocation(FRAME_DIMENSION.width / 8, FRAME_DIMENSION.height / 8);
         setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT));
         setResizable(false);
+        setVisible(true);
         pack();
         getContentPane().add(label);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -24,6 +25,7 @@ public class WelcomeFrame extends JFrame {
         setLocation(FRAME_DIMENSION.width / 8, FRAME_DIMENSION.height / 8);
         setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT));
         setResizable(false);
+        setVisible(true);
         pack();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
