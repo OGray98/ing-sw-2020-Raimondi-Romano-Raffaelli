@@ -52,4 +52,9 @@ public class StubView extends ClientView {
     public void showGod(List<String> gods) {
 
     }
+
+    @Override
+    public String showSelectIP() {
+        return null;
+    }
 }

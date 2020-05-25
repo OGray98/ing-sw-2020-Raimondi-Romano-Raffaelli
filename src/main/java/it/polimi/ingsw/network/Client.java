@@ -39,7 +39,6 @@ public class Client implements ServerConnection {
     private Thread threadWrite;
     private boolean active = true;
     private String ip;
-    private int port;
 
     public Client(String typeView) {
 
@@ -54,6 +53,8 @@ public class Client implements ServerConnection {
             clientViewCreator = new CLICreator();
         }
         this.clientView = clientViewCreator.createView(this.clientModel);
+
+        this.clientManager.setClientView(this.clientView);
 
         this.clientView.addObserver(this.clientManager);
         this.clientModel.addObserver(this.clientView);
@@ -143,6 +144,7 @@ public class Client implements ServerConnection {
      */
     public void run() throws IOException {
 
+        this.clientView.init();
         this.ip = this.clientView.showSelectIP();
 
         while (!isServerAvailable())
@@ -152,7 +154,6 @@ public class Client implements ServerConnection {
         socketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new ObjectOutputStream(socket.getOutputStream());
 
-        this.clientView.init();
 
         try {
             Thread t0 = asyncReadFromSocket(socketIn);

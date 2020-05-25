@@ -31,6 +31,11 @@ public class CLI extends ClientView {
     }
 
     @Override
+    public String showSelectIP() {
+        return null;
+    }
+
+    @Override
     public void updatePutWorker(PutWorkerMessage message) {
 
     }
