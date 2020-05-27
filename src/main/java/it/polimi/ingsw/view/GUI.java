@@ -598,8 +598,17 @@ public class GUI extends ClientView {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                //god image
                 JLabel godChosen = getIconGodProfile(imageContainer.getGodimage(message.getGodName()), message.getGodName());
-                labelGod.add(godChosen);
+
+                //case when this is the client god
+                if(message.getClient().equals(clientModel.getPlayerIndex())){
+                    labelGod.add(godChosen);
+                }
+                //case when this is not the client god
+                else{
+                    //TODO: mettere immagine del god scelto da nemici nel pannello a sinistra
+                }
             }
         });
     }
