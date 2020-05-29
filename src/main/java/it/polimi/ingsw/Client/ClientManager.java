@@ -1,7 +1,9 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.board.BuildType;
 import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ServerConnection;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
@@ -217,7 +219,21 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     @Override
     public void updateState(UpdateStateMessage message) {
-        clientModel.setCurrentState(message.getGameState());
+        GameState currentState = message.getGameState();
+        clientModel.setCurrentState(currentState);
+
+        switch (currentState) {
+            case GOD_PLAYER_CHOOSE_CARDS:
+                if (this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER0)
+                    this.clientView.showGodLikeChoice(this.clientModel.getGods());
+                else
+                    this.clientView.showMessage("Player God like is choosing cards");
+                break;
+            case SELECT_CARD:
+                
+            default:
+                break;
+        }
     }
 
     @Override

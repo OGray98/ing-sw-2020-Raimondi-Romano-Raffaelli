@@ -256,11 +256,26 @@ public class GUI extends ClientView {
         gods.forEach(
                 god -> godLabels.add(getIconGodProfile(imageContainer.getGodimage(god), god))
         );*/
-        godChoiceDialog = new GodChoiceDialog(frame, gods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
-                e ->{
-            if(clientModel.isGodLikeChoosingCards())
-                super.handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod()));
-                });
+        SwingUtilities.invokeLater(
+                () -> {
+                    godChoiceDialog = new GodChoiceDialog(
+                            frame,
+                            gods,
+                            clientModel.isThreePlayersGame(),
+                            clientModel.isGodLikeChoosingCards(),
+                            e -> {
+                                if (clientModel.isGodLikeChoosingCards())
+                                    super.handleMessage(
+                                            new GodLikeChoseMessage(
+                                                    clientModel.getPlayerIndex(),
+                                                    godChoiceDialog.getChosenGod()
+                                            )
+                                    );
+                            }
+                    );
+                }
+        );
+
     }
 
     @Override
