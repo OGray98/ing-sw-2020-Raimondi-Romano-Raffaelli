@@ -270,7 +270,7 @@ public class GUI extends ClientView {
     }
 
     @Override
-    public void showGetNickname(PlayerIndex playerIndex) {
+    public void showGetNickname() {
         SwingUtilities.invokeLater(
                 () -> new WelcomeDialog(frame, this)
         );

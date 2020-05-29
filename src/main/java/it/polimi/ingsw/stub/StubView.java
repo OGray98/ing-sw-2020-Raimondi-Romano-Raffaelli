@@ -68,9 +68,10 @@ public class StubView extends ClientView {
     }
 
     @Override
-    public void showGetNickname(PlayerIndex playerIndex) {
+    public void showGetNickname() {
 
     }
+
 
     @Override
     public void removeActionsFromView(List<Position> list) {
