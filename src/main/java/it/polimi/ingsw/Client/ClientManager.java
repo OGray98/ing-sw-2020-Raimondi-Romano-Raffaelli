@@ -238,7 +238,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                 break;
             case GOD_PLAYER_CHOOSE_FIRST_PLAYER:
                 if(this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER0)
-                    //this.clientView.showGodLikeChooseFirstPlayer();
+                    this.clientView.showGodLikeChooseFirstPlayer();
                 break;
             default:
                 break;
