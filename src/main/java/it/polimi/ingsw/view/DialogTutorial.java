@@ -14,7 +14,7 @@ public class DialogTutorial extends GameDialog implements ActionListener {
         Font font = new Font("Impatto", Font.PLAIN, 12);
         Font font1 = new Font("Impatto", Font.PLAIN, 11);
         JLabel labelGround = new JLabel("");
-        Image imageGround = new ImageIcon("src/main/resources/Odyssey-Olympus.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
+        Image imageGround = new ImageIcon("src/main/resources/bg_modeselect.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         setResizable(false);
         Image imageEndTur = imageContainer.getButtonImage("buttonEndTurn").getScaledInstance(70,70,Image.SCALE_DEFAULT);
@@ -25,7 +25,7 @@ public class DialogTutorial extends GameDialog implements ActionListener {
         LabelCircle buttonEx = new LabelCircle(new ImageIcon(imageEx),Color.WHITE);
         buttonEnd.setBounds(3,80,70,70);
         buttonPow.setBounds(3,3,70,70);
-        buttonEx.setBounds(8,160,60,60);
+        buttonEx.setBounds(8,155,60,60);
         JLabel labelEx = new JLabel("Exit button : click on it to quit the game.");
         labelEx.setForeground(Color.BLACK);
         labelEx.setFont(font);
@@ -46,10 +46,10 @@ public class DialogTutorial extends GameDialog implements ActionListener {
         labelInstruction.setFont(font1);
         JLabel labelInstruction1 = new JLabel("POWER STATE: it depends of which god the player choose.");
         labelInstruction1.setForeground(Color.BLACK);
-        labelInstruction1.setFont(font);
-        labelInstruction1.setBounds(10,230,600,50);
-        labelInstruction.setBounds(10,210,500,50);
-        labelEx.setBounds(80,160,600,50);
+        labelInstruction1.setFont(font1);
+        labelInstruction1.setBounds(10,215,600,50);
+        labelInstruction.setBounds(10,200,500,50);
+        labelEx.setBounds(80,150,600,50);
         labelEnd.setBounds(80,85,600,50);
         labelPower.setBounds(80,-3,600,50);
         labelPower1.setBounds(80,10,600,50);
@@ -57,7 +57,7 @@ public class DialogTutorial extends GameDialog implements ActionListener {
         JButton buttonClose = new JButton("CLOSE");
         buttonClose.setForeground(Color.BLUE);
         buttonClose.addActionListener(this);
-        buttonClose.setBounds(340,160,100,40);
+        buttonClose.setBounds(230,255,60,20);
         labelGround.add(buttonClose);
         labelGround.add(labelPower2);
         labelGround.add(labelPower1);
