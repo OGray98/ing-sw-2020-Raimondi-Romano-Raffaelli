@@ -23,4 +23,10 @@ public interface ViewModelInterface {
     GameState getPowerGodState();
 
     PlayerIndex getPlayerIndex();
+
+    List<String> getChosenGodsByGodLike();
+
+    boolean isThreePlayersGame();
+
+    boolean isGodLikeChoosingCards();
 }

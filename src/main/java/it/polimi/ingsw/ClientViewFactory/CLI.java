@@ -25,8 +25,13 @@ public class CLI extends ClientView {
     }
 
     @Override
-    public void showGod(List<String> gods) {
+    public void showGodLikeChoice(List<String> gods) {
 
+    }
+
+    @Override
+    public void showGodToSelect(List<String> godLikeGods) {
+        
     }
 
     @Override

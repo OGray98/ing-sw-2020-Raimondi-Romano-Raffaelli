@@ -12,10 +12,17 @@ public class GodChoiceDialog extends JDialog {
     private List<String> chosenGod = new ArrayList<>();
     private final ImageContainer imageContainer = new ImageContainer();
     private List<JButton> godsShow;
+    boolean isThreePlayerGame;
+    boolean isGodLike;
+    private JButton okButton;
 
 
-    public GodChoiceDialog(JFrame frame/* List<JLabel> godsToShow*/,List<String> listGodName) {
+    public GodChoiceDialog(JFrame frame/* List<JLabel> godsToShow*/,List<String> listGodName, boolean isThreePlayerGame, boolean isGodLike, ActionListener okListener) {
         super(frame, "God choice");
+        this.isThreePlayerGame = isThreePlayerGame;
+        this.isGodLike = isGodLike;
+
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setPreferredSize(new Dimension(screenSize.width / 2, screenSize.height / 2));
         setResizable(false);
@@ -45,13 +52,22 @@ public class GodChoiceDialog extends JDialog {
 
         JScrollPane scrollPane = new JScrollPane(panel);
         add(scrollPane, BorderLayout.CENTER);
+        //bottone per confermare
+        this.okButton = new JButton("OK");
+        okButton.setEnabled(false);
+        okButton.addActionListener(okListener);
+        add(okButton, BorderLayout.SOUTH);
 
         pack();
         setMinimumSize(new Dimension(300, 30));
         setVisible(true);
     }
 
-    public void selectGod(String god) {
+    public List<String> getChosenGod(){
+        return this.chosenGod;
+    }
+
+    public void selectMultipleGod(String god, JButton button) {
         if (!chosenGod.contains(god)) {
             //Illuminare il dio
             chosenGod.add(god);
@@ -59,10 +75,45 @@ public class GodChoiceDialog extends JDialog {
             //Spegnere il dio
             chosenGod.remove(god);
         }
+
+        if(this.isThreePlayerGame){
+            if(chosenGod.size() == 3){
+                okButton.setEnabled(true);
+            }
+            else{
+                okButton.setEnabled(false);
+            }
+
+        }
+        else{
+            if(chosenGod.size() == 2){
+                okButton.setEnabled(true);
+            }
+            else{
+                okButton.setEnabled(false);
+            }
+        }
+    }
+
+    public void selectSingleGod(String god, JButton button){
+        if (!chosenGod.contains(god)) {
+            //Illuminare il dio
+            chosenGod.add(god);
+        } else {
+            //Spegnere il dio
+            chosenGod.remove(god);
+        }
+
+        if(chosenGod.size() == 1){
+            okButton.setEnabled(true);
+        }
+        else{
+            okButton.setEnabled(false);
+        }
     }
 
     private List<JButton> createListGods(List<String> gods){
-        List<JButton> listGods = null;
+        List<JButton> listGods = new ArrayList<>();
         for(String god: gods){
             Image imageGod = imageContainer.getGodimage(god).getScaledInstance(100,250,Image.SCALE_DEFAULT);
             JButton buttonGod = new JButton();
@@ -70,7 +121,12 @@ public class GodChoiceDialog extends JDialog {
             buttonGod.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    selectGod(god);
+                    if(isGodLike){
+                        selectMultipleGod(god, buttonGod);
+                    }
+                    else{
+                        selectSingleGod(god, buttonGod);
+                    }
                 }
             });
             listGods.add(buttonGod);

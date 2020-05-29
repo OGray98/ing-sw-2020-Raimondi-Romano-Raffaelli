@@ -399,4 +399,21 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     public List<String> getGods() {
         return new ArrayList<>(gods.keySet());
     }
+
+    /**
+     * Method needs to be called after initial operations when all players are in lobby
+     * */
+    public boolean isThreePlayersGame(){
+        if(this.playersPositions.size() == 3)
+            return true;
+        else if(this.playersPositions.size() == 2)
+            return false;
+        throw new IllegalStateException("not valid number of players!");
+    }
+
+    public boolean isGodLikeChoosingCards(){
+        if(this.currentState == GameState.GOD_PLAYER_CHOOSE_CARDS)
+            return true;
+        return false;
+    }
 }

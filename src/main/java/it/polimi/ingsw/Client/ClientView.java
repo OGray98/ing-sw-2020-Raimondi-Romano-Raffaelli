@@ -25,7 +25,9 @@ public abstract class ClientView extends View implements Observer<MessageToView>
 
     public abstract void init();
 
-    public abstract void showGod(List<String> gods);
+    public abstract void showGodLikeChoice(List<String> gods);
+
+    public abstract void showGodToSelect(List<String> godLikeGods);
 
     /**
      * Method that remove from view the cells of possible actions when they are not needed anymore
