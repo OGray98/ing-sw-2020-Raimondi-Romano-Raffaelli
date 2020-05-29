@@ -261,20 +261,30 @@ public class GUI extends ClientView {
         gods.forEach(
                 god -> godLabels.add(getIconGodProfile(imageContainer.getGodimage(god), god))
         );*/
-        godChoiceDialog = new GodChoiceDialog(frame, gods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
-                e ->{
-                    super.handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod()));
-                    godChoiceDialog.dispose();
-                });
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                godChoiceDialog = new GodChoiceDialog(frame, gods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
+                        e ->{
+                            handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod()));
+                            godChoiceDialog.dispose();
+                        });
+            }
+        });
     }
 
     @Override
     public void showGodToSelect(List<String> godLikeGods) {
-        godChoiceDialog = new GodChoiceDialog(frame, godLikeGods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
-                e ->{
-                    super.handleMessage(new PlayerSelectGodMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod().get(0)));
-                    godChoiceDialog.dispose();
-                });
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                godChoiceDialog = new GodChoiceDialog(frame, godLikeGods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
+                        e ->{
+                            handleMessage(new PlayerSelectGodMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod().get(0)));
+                            godChoiceDialog.dispose();
+                        });
+            }
+        });
     }
 
     @Override
@@ -295,12 +305,15 @@ public class GUI extends ClientView {
         if(clientModel.isThreePlayersGame()){
             nicksName.put(PlayerIndex.PLAYER2,clientModel.getNickname(PlayerIndex.PLAYER2));
         }
-        choosePlayerDialog = new ChoosingPlayerDialog(frame,clientModel.isThreePlayersGame(),nicksName,e ->{
-            super.handleMessage(new GodLikeChooseFirstPlayerMessage(clientModel.getPlayerIndex(),choosePlayerDialog.getSelectedPlayer()));
-            choosePlayerDialog.dispose();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                choosePlayerDialog = new ChoosingPlayerDialog(frame,clientModel.isThreePlayersGame(),nicksName,e ->{
+                    handleMessage(new GodLikeChooseFirstPlayerMessage(clientModel.getPlayerIndex(),choosePlayerDialog.getSelectedPlayer()));
+                    choosePlayerDialog.dispose();
+                });
+            }
         });
-
-
     }
 
     @Override
