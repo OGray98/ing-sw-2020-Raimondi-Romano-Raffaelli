@@ -44,8 +44,6 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     @Override
     public void update(MessageToServer message) {
 
-        if(message.getType() == TypeMessage.END_TURN)
-
         switch(clientModel.getCurrentState()){
             case START_GAME:
                 sendToServer(message);

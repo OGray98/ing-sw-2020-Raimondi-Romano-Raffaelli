@@ -47,7 +47,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     private final Map<PlayerIndex, String> nicknames = new HashMap<>(2);
     private final List<String> godsChosenByGodLike = new ArrayList<>(2);
     private PlayerIndex playerIndex;
-    private GameState currentState = GameState.NULL;
+    private GameState currentState = GameState.START_GAME;
     private GameState powerGodState = GameState.NULL;
 
     Position selectedWorkerPos;

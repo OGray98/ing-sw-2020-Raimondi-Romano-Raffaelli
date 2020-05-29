@@ -69,6 +69,7 @@ public class WelcomeDialog extends GameDialog{
                         clientView.handleMessage(new TypeMatchMessage(clientView.getPlayer(), false));
                     else if (box3Player.isSelected())
                         clientView.handleMessage(new TypeMatchMessage(clientView.getPlayer(), true));
+                    dispose();
                 }
 
         );
