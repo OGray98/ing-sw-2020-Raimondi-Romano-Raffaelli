@@ -15,7 +15,7 @@ public class AthenaDecorator extends PlayerOpponentTurnDecorator {
 
     public AthenaDecorator(){
 
-        super("Athena", "If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.", GameState.MOVE, GameState.CHECKWIN);
+        super("Athena", "If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.", GameState.MOVE, GameState.BUILD);
 
     }
 

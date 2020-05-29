@@ -17,7 +17,7 @@ public class MinotaurDecorator extends PlayerMoveDecorator {
 
     public MinotaurDecorator(){
 
-        super("Minotaur", "Our Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.", GameState.MOVE, GameState.CHECKWIN);
+        super("Minotaur", "Our Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.", GameState.MOVE, GameState.BUILD);
     }
 
 
