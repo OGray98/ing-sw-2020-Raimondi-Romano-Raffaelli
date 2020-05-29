@@ -18,7 +18,7 @@ public class WelcomeDialog extends GameDialog{
         super(frame,"Welcome");
         Font font = new Font("Impatto", Font.PLAIN, 18);
         JLabel labelGround = new JLabel("");
-        Image imageGround = new ImageIcon("src/main/resources/Santorini.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
+        Image imageGround = new ImageIcon("src/main/resources/title_water.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         JTextField text = new JTextField("Insert name, press send and play",20);
         text.addActionListener(new ActionListener() {
@@ -38,10 +38,10 @@ public class WelcomeDialog extends GameDialog{
             box3Player.setVisible(false);
             box2Player.setVisible(false);
         }
-        box3Player.setForeground(Color.RED);
+        box3Player.setForeground(Color.BLACK);
         box3Player.setFont(font);
         box2Player.setFont(font);
-        box2Player.setForeground(Color.GREEN);
+        box2Player.setForeground(Color.BLACK);
         box3Player.setBounds(208,80,200,20);
         box2Player.setBounds(208,60,200,20);
         text.setVisible(true);
