@@ -57,7 +57,7 @@ public class DialogTutorial extends GameDialog implements ActionListener {
         JButton buttonClose = new JButton("CLOSE");
         buttonClose.setForeground(Color.BLUE);
         buttonClose.addActionListener(this);
-        buttonClose.setBounds(230,255,60,20);
+        buttonClose.setBounds(210,255,100,30);
         labelGround.add(buttonClose);
         labelGround.add(labelPower2);
         labelGround.add(labelPower1);
