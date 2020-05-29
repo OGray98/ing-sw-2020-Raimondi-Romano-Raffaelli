@@ -20,9 +20,9 @@ public class GodIconDialog extends GameDialog implements ActionListener {
         Image imageGround = new ImageIcon("src/main/resources/Odyssey_UI_Backdrop.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         JLabel labelGod = new JLabel("");
-        Image imageGod = imageContainer.getGodimage(godName).getScaledInstance(150,290,Image.SCALE_DEFAULT);
+        Image imageGod = imageContainer.getGodimage(godName).getScaledInstance(150,250,Image.SCALE_DEFAULT);
         labelGod.setIcon(new ImageIcon(imageGod));
-        labelGod.setBounds(2,2,150,290);
+        labelGod.setBounds(2,20,150,250);
         labelGround.add(labelGod);
         createMap();
         JLabel labelGodName = new JLabel(godName.toUpperCase());
@@ -42,7 +42,7 @@ public class GodIconDialog extends GameDialog implements ActionListener {
         labelFirst.setForeground(Color.WHITE);
         labelFirst.setFont(font1);
         JButton buttonClose = new JButton("CLOSE");
-        buttonClose.setBounds(260,230,100,50);
+        buttonClose.setBounds(240,200,100,50);
         buttonClose.setForeground(Color.BLUE);
         buttonClose.addActionListener(this);
         labelGround.add(buttonClose);
