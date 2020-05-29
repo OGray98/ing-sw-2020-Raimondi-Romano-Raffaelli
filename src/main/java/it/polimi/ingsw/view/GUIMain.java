@@ -70,6 +70,6 @@ public class GUIMain {
 
         //creo lista di gods da visualizzare in GodChoiceDialog
         List<String> gods = new ArrayList<>(List.of("Apollo", "Athena", "Minotaur", "Prometheus"));
-        //new GodChoiceDialog(new JFrame(), gods, new ImageContainer(), true);
+        //new GodChoiceDialog(new JFrame(), gods, false, true, e -> {});
     }
 }
