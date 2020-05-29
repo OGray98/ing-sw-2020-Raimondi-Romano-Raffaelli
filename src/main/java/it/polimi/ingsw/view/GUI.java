@@ -265,7 +265,11 @@ public class GUI extends ClientView {
 
     @Override
     public void showGodToSelect(List<String> godLikeGods) {
-
+        godChoiceDialog = new GodChoiceDialog(frame, godLikeGods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
+                e ->{
+                    if(clientModel.isGodLikeChoosingCards())
+                        super.handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod()));
+                });
     }
 
     @Override
