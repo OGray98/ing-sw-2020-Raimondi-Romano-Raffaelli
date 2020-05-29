@@ -7,23 +7,20 @@ import it.polimi.ingsw.utils.TypeMatchMessage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class WelcomeDialog extends GameDialog{
 
     private String n;
 
     public WelcomeDialog(JFrame frame,ClientView clientView){
-        super(frame,"Welcome");
+        super(frame, "Welcome");
         Font font = new Font("Impatto", Font.PLAIN, 18);
         JLabel labelGround = new JLabel("");
-        Image imageGround = new ImageIcon("src/main/resources/title_water.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
+        Image imageGround = new ImageIcon("src/main/resources/title_water.png").getImage().getScaledInstance(520, 315, Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
-        JTextField text = new JTextField("Insert name and press play",20);
-        text.addKeyListener(new KeyListener() {
+        JTextField text = new JTextField("Insert name and press play", 20);
+
+        /*text.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
             }
@@ -38,14 +35,15 @@ public class WelcomeDialog extends GameDialog{
                 String name = textField.getText();
                 n = name;
             }
-        });
+        });*/
+
         JRadioButton box2Player = new JRadioButton("2-PLAYERS");
         JRadioButton box3Player = new JRadioButton("3-PLAYERS");
         ButtonGroup g = new ButtonGroup();
-        if(clientView.getPlayer().equals(PlayerIndex.PLAYER0)) {
+        if (clientView.getPlayer().equals(PlayerIndex.PLAYER0)) {
             box3Player.setVisible(true);
             box2Player.setVisible(true);
-        }else{
+        } else {
             box3Player.setVisible(false);
             box2Player.setVisible(false);
         }
@@ -53,18 +51,33 @@ public class WelcomeDialog extends GameDialog{
         box3Player.setFont(font);
         box2Player.setFont(font);
         box2Player.setForeground(Color.BLACK);
-        box3Player.setBounds(200,80,200,20);
-        box2Player.setBounds(200,60,200,20);
+        box3Player.setBounds(200, 80, 200, 20);
+        box2Player.setBounds(200, 60, 200, 20);
         box2Player.setOpaque(false);
         box3Player.setOpaque(false);
         text.setVisible(true);
-        text.setBounds(150,30,240,20);
-        Image imagePlay = new ImageIcon("src/main/resources/button-play-down.png").getImage().getScaledInstance(100,100,Image.SCALE_DEFAULT);
-        ButtonCircle buttonSend = new ButtonCircle(new ImageIcon(imagePlay),Color.WHITE,e -> clientView.handleMessage(new NicknameMessage(clientView.getPlayer(),n)));
-        buttonSend.setBounds(210,120,95,88);
+        text.setBounds(150, 30, 240, 20);
+        Image imagePlay = new ImageIcon("src/main/resources/button-play-down.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
+
+        ButtonCircle buttonSend = new ButtonCircle(
+                new ImageIcon(imagePlay),
+                Color.WHITE,
+                e -> {
+                    clientView.handleMessage(new NicknameMessage(clientView.getPlayer(), text.getText()));
+                    System.out.println("gang");
+                    if (box2Player.isSelected())
+                        clientView.handleMessage(new TypeMatchMessage(clientView.getPlayer(), false));
+                    else if (box3Player.isSelected())
+                        clientView.handleMessage(new TypeMatchMessage(clientView.getPlayer(), true));
+                    dispose();
+                }
+
+        );
+
+        buttonSend.setBounds(210, 120, 95, 88);
         g.add(box2Player);
         g.add(box3Player);
-        box2Player.addActionListener(new ActionListener() {
+        /*box2Player.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(box2Player.isSelected()){
@@ -80,7 +93,7 @@ public class WelcomeDialog extends GameDialog{
                     clientView.handleMessage(new TypeMatchMessage(clientView.getPlayer(),true));
                 }
             }
-        });
+        });*/
         labelGround.add(buttonSend);
         labelGround.add(box3Player);
         labelGround.add(box2Player);
