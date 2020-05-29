@@ -18,7 +18,7 @@ public class ApolloDecorator extends PlayerMoveDecorator {
 
     public ApolloDecorator() {
 
-       super("Apollo", "Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.", GameState.MOVE, GameState.CHECKWIN);
+       super("Apollo", "Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.", GameState.MOVE, GameState.BUILD);
 
     }
 
