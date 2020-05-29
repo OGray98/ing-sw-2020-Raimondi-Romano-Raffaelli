@@ -51,6 +51,7 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
      * @throws AlreadyPresentRemoteViewOfPlayerException if there already is a RemoteView associated with index.
      */
     public void addRemoteView(PlayerIndex index, RemoteView remoteView) throws NullPointerException, AlreadyPresentRemoteViewOfPlayerException {
+
         if (remoteView == null)
             throw new NullPointerException("remoteView");
         if (remoteViews.containsKey(index))
@@ -58,6 +59,14 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         remoteViews.put(index, remoteView);
         remoteView.putMessage(new ConnectionPlayerIndex(index));
         gameModel.addObserver(remoteViews.get(index));
+
+        remoteViews.forEach((key, value) -> {
+            if (!key.equals(index))
+                remoteView.putMessage(
+                        new NicknameMessage(key, gameModel.getNickname(key))
+                );
+        });
+        System.out.println("finito");
     }
 
     /**

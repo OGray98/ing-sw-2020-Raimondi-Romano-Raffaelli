@@ -234,6 +234,15 @@ public class Game extends Observable<MessageToClient> {
         }
     }
 
+    public String getNickname(PlayerIndex index) {
+        List<PlayerInterface> nickname = players.stream()
+                .filter(
+                        player -> player.getPlayerNum().equals(index)
+                )
+                .collect(Collectors.toList());
+        return nickname.get(0).getNickname();
+    }
+
     /**
      * Method that set the chosen cards in deck.
      *

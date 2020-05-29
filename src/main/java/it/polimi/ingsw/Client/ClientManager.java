@@ -197,7 +197,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         if (message == null)
             throw new NullPointerException("message");
         serverConnection.sendToServer(message);
-        System.out.println("Message receive: " + message.getType());
+        System.out.println("Message sent: " + message.getType());
     }
 
     @Override

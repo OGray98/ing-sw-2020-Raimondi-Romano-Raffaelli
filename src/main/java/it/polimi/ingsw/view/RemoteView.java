@@ -13,7 +13,7 @@ import it.polimi.ingsw.utils.MessageToServer;
  */
 public class RemoteView extends View implements Observer<MessageToClient> {
 
-    private ClientConnection clientConnection;
+    private final ClientConnection clientConnection;
 
     public RemoteView(PlayerIndex player, ClientConnection connection) {
         super.setPlayer(player);
@@ -43,8 +43,8 @@ public class RemoteView extends View implements Observer<MessageToClient> {
     public void putMessage(MessageToClient msg) throws NullPointerException, WrongAssociationViewPlayerException {
         if (msg == null)
             throw new NullPointerException("msg");
-        if (!(msg.getClient().equals(getPlayer())))
-            throw new WrongAssociationViewPlayerException(getPlayer(), msg.getClient());
+        /*if (!(msg.getClient().equals(getPlayer())))
+            throw new WrongAssociationViewPlayerException(getPlayer(), msg.getClient());*/
         sendUpdates(msg);
     }
 

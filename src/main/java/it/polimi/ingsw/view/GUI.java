@@ -9,8 +9,6 @@ import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -294,7 +292,9 @@ public class GUI extends ClientView {
 
     @Override
     public void showMessage(String message) {
-        JOptionPane.showMessageDialog(frame, message);
+        SwingUtilities.invokeLater(
+                () -> JOptionPane.showMessageDialog(frame, message)
+        );
     }
 
     @Override
