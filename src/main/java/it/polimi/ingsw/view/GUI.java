@@ -31,6 +31,7 @@ public class GUI extends ClientView {
     //private static JFrame frame;
     private static WelcomeFrame frame;
 
+
     private ButtonCircle buttonPower;
     private ButtonCircle buttonEndTurn;
     private ButtonCircle buttonTutorial;
@@ -263,11 +264,11 @@ public class GUI extends ClientView {
             @Override
             public void run() {
                 godChoiceDialog = new GodChoiceDialog(frame, gods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
-                        e ->{
-                            handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod()));
-                            godChoiceDialog.dispose();
-                        });
-            }
+                            e -> {
+                                handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod()));
+                                godChoiceDialog.dispose();
+                          });
+                }
         });
     }
 

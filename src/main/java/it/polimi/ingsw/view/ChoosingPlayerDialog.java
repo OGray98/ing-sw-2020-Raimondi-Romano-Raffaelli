@@ -32,6 +32,8 @@ public class ChoosingPlayerDialog extends GameDialog{
         player2 = new JRadioButton(nickNames.get(PlayerIndex.PLAYER2));
         player2.setOpaque(false);
         player2.setFont(font);
+        JButton buttonSend = new JButton("SEND");
+        buttonSend.setBounds(210,150,70,40);
         if(isThreePlayerGame){
             player0.setVisible(true);
             player1.setVisible(true);
@@ -47,19 +49,12 @@ public class ChoosingPlayerDialog extends GameDialog{
         g.add(player0);
         g.add(player1);
         g.add(player2);
-        if(player0.isSelected()){
-        player0.addActionListener(listenerSelect);
-        }
-        if(player1.isSelected()){
-        player1.addActionListener(listenerSelect);
-        }
-        if(player2.isSelected()){
-        player2.addActionListener(listenerSelect);
-        }
+        buttonSend.addActionListener(listenerSelect);
         labelGround.add(labelSel);
         labelGround.add(player0);
         labelGround.add(player1);
         labelGround.add(player2);
+        labelGround.add(buttonSend);
         add(labelGround);
     }
 
