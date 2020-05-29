@@ -18,7 +18,7 @@ public class WelcomeDialog extends GameDialog{
         super(frame,"Welcome");
         Font font = new Font("Impatto", Font.PLAIN, 18);
         JLabel labelGround = new JLabel("");
-        Image imageGround = new ImageIcon("src/main/resources/Santorini.png").getImage().getScaledInstance(frame.getWidth()/2,frame.getHeight()/2,Image.SCALE_DEFAULT);
+        Image imageGround = new ImageIcon("src/main/resources/Santorini.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         JTextField text = new JTextField("Insert name, press send and play",20);
         text.addActionListener(new ActionListener() {
