@@ -99,25 +99,26 @@ public class SocketClientConnection extends Observable<MessageToServer> implemen
                 }
             }).start();
             while (isConnected()) {
-                if (in.available() != 0) {
-                    try {
-                        MessageToServer inputMessage = (MessageToServer) in.readObject();
-                        if (inputMessage != null && inputMessage.getType() != TypeMessage.PONG) {
-                            System.out.println("Message sent by " + inputMessage.getType());
-                            try {
-                                inputMessageQueue.put(inputMessage);
-                            } catch (InterruptedException e) {
-                                System.err.println("Error!" + e.getMessage());
-                                Logger.getAnonymousLogger().severe(e.getMessage());
-                                setIsActiveFalse();
-                            }
+                //if (in.available() != 0) {
+                try {
+                    MessageToServer inputMessage = (MessageToServer) in.readObject();
+                    if (inputMessage != null && inputMessage.getType() == TypeMessage.PONG)
+                        System.out.println("Pong message sent by " + inputMessage.getType());
+                    if (inputMessage != null && inputMessage.getType() != TypeMessage.PONG) {
+                        try {
+                            inputMessageQueue.put(inputMessage);
+                        } catch (InterruptedException e) {
+                            System.err.println("Error!" + e.getMessage());
+                            Logger.getAnonymousLogger().severe(e.getMessage());
+                            setIsActiveFalse();
                         }
-                    } catch (ClassNotFoundException e) {
-                        Logger.getAnonymousLogger().severe(e.getMessage());
-                        setIsActiveFalse();
                     }
+                } catch (ClassNotFoundException e) {
+                    Logger.getAnonymousLogger().severe(e.getMessage());
+                    setIsActiveFalse();
                 }
             }
+            //}
 
         } catch (IOException | NoSuchElementException e) {
             System.err.println("Error! " + e.toString());
