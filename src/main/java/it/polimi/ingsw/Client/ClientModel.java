@@ -347,6 +347,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         if (message.getGodName() == null) throw new NullPointerException("god");
         if (!godsChosenByGodLike.contains(message.getGodName())) throw new NotSelectedGodException(message.getGodName());
         this.chosenGods.put(message.getClient(), message.getGodName());
+        this.godsChosenByGodLike.remove(message.getGodName());
 
         //notify to View
         notify(message);

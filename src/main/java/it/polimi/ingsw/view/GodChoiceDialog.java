@@ -31,14 +31,14 @@ public class GodChoiceDialog extends JDialog {
         //this.view = view;
         GridBagLayout godLayout = new GridBagLayout();
         GridBagConstraints lim = new GridBagConstraints();
-        lim.ipadx = 50;
-        lim.ipady = 100;
+        lim.ipadx = 25;
+        lim.ipady = 50;
 
         JPanel panel = new JPanel();
+        panel.setBackground(Color.DARK_GRAY);
         panel.setLayout(godLayout);
         godsShow = createListGods(listGodName);
         for(JButton j : godsShow){
-            panel.setBackground(Color.DARK_GRAY);
             godLayout.setConstraints(j, lim);
             panel.add(j);
         }
@@ -70,9 +70,13 @@ public class GodChoiceDialog extends JDialog {
     public void selectMultipleGod(String god, JButton button) {
         if (!chosenGod.contains(god)) {
             //Illuminare il dio
+            button.setBackground(Color.GREEN);
+            button.setOpaque(true);
             chosenGod.add(god);
         } else {
             //Spegnere il dio
+            button.setBackground(Color.WHITE);
+            button.setOpaque(true);
             chosenGod.remove(god);
         }
 
@@ -98,9 +102,13 @@ public class GodChoiceDialog extends JDialog {
     public void selectSingleGod(String god, JButton button){
         if (!chosenGod.contains(god)) {
             //Illuminare il dio
+            button.setBackground(Color.GREEN);
+            button.setOpaque(true);
             chosenGod.add(god);
         } else {
             //Spegnere il dio
+            button.setBackground(Color.WHITE);
+            button.setOpaque(true);
             chosenGod.remove(god);
         }
 
@@ -115,7 +123,7 @@ public class GodChoiceDialog extends JDialog {
     private List<JButton> createListGods(List<String> gods){
         List<JButton> listGods = new ArrayList<>();
         for(String god: gods){
-            Image imageGod = imageContainer.getGodimage(god).getScaledInstance(100,250,Image.SCALE_DEFAULT);
+            Image imageGod = imageContainer.getGodimage(god).getScaledInstance(150,300,Image.SCALE_DEFAULT);
             JButton buttonGod = new JButton();
             buttonGod.setIcon(new ImageIcon(imageGod));
             buttonGod.addActionListener(new ActionListener() {

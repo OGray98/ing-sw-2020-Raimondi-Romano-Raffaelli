@@ -3,10 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.Client.ClientModel;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.utils.BuildViewMessage;
-import it.polimi.ingsw.utils.MoveMessage;
-import it.polimi.ingsw.utils.PlayerSelectGodMessage;
-import it.polimi.ingsw.utils.PutWorkerMessage;
+import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -70,6 +67,8 @@ public class GUIMain {
 
         //creo lista di gods da visualizzare in GodChoiceDialog
         List<String> gods = new ArrayList<>(List.of("Apollo", "Athena", "Minotaur", "Prometheus"));
-        //new GodChoiceDialog(new JFrame(), gods, new ImageContainer(), true);
+        /*new GodChoiceDialog(new JFrame(), gods,true, true, e -> {
+            System.out.println("CHOSEN!");
+        });*/
     }
 }
