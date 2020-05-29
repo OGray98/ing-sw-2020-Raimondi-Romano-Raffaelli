@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.MessageToView;
 import it.polimi.ingsw.view.View;
@@ -43,5 +44,11 @@ public abstract class ClientView extends View implements Observer<MessageToView>
 
     public abstract void showMessage(String message);
 
-
+    /**
+     * A seconda del playerIndex fa selezionare il nickname e se sei il
+     * player0 anche il numero di giocatori
+     *
+     * @param playerIndex
+     */
+    public abstract void showGetNickname(PlayerIndex playerIndex);
 }

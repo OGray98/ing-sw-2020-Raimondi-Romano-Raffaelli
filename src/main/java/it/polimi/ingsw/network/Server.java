@@ -91,7 +91,7 @@ public class Server {
                 c.setClientIndex(PlayerIndex.PLAYER2);
             }
         }
-        }
+    }
 
      public Thread pingRunThread(){
         Thread t = new Thread(() -> {
