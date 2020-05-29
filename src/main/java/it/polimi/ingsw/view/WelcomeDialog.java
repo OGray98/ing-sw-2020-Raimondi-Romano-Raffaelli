@@ -22,7 +22,7 @@ public class WelcomeDialog extends GameDialog{
         JLabel labelGround = new JLabel("");
         Image imageGround = new ImageIcon("src/main/resources/title_water.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
-        JTextField text = new JTextField("Insert name, press send and play",20);
+        JTextField text = new JTextField("Insert name and press play",20);
         text.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
