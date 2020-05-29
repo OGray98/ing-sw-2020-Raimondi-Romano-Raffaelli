@@ -51,6 +51,7 @@ public class ChoosingPlayerDialog extends GameDialog{
             public void actionPerformed(ActionEvent e) {
                 if(player0.isSelected()){
                     clientView.handleMessage(new GodLikeChooseFirstPlayerMessage(clientView.getPlayer(), PlayerIndex.PLAYER0));
+                    dispose();
                 }
             }
         });
@@ -60,6 +61,7 @@ public class ChoosingPlayerDialog extends GameDialog{
             public void actionPerformed(ActionEvent e) {
                 if(player1.isSelected()){
                     clientView.handleMessage(new GodLikeChooseFirstPlayerMessage(clientView.getPlayer(), PlayerIndex.PLAYER1));
+                    dispose();
                 }
             }
         });
@@ -69,6 +71,7 @@ public class ChoosingPlayerDialog extends GameDialog{
             public void actionPerformed(ActionEvent e) {
                 if(player2.isSelected()){
                     clientView.handleMessage(new GodLikeChooseFirstPlayerMessage(clientView.getPlayer(), PlayerIndex.PLAYER2));
+                    dispose();
                 }
             }
         });
