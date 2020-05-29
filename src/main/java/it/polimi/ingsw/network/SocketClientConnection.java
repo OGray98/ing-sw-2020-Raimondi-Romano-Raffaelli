@@ -103,6 +103,7 @@ public class SocketClientConnection extends Observable<MessageToServer> implemen
                     try {
                         MessageToServer inputMessage = (MessageToServer) in.readObject();
                         if (inputMessage != null && inputMessage.getType() != TypeMessage.PONG) {
+                            System.out.println(inputMessage.getType());
                             try {
                                 inputMessageQueue.put(inputMessage);
                             } catch (InterruptedException e) {
