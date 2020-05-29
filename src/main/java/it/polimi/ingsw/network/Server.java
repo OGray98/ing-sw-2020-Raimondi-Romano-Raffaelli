@@ -23,22 +23,22 @@ public class Server {
 
     private final ServerSocket serverSocket;
     private final ExecutorService executor = Executors.newFixedThreadPool(3);
-    private final Map<PlayerIndex, ClientConnection> waitingConnection = new HashMap<>();
+    private final Map<PlayerIndex, ClientConnection> currentConnection = new HashMap<>();
 
 
     private static int lobbyCount = 0;
-    private Game game = new Game();
-    private GameManager controller = new GameManager(game);
+    private final Game game = new Game();
+    private final GameManager controller = new GameManager(game);
     private Thread pingThread;
     private Thread runThread;
 
     private boolean isActive = true;
 
-    public synchronized void setActive(boolean condition){
+    public synchronized void setActive(boolean condition) {
         this.isActive = condition;
     }
 
-    public synchronized boolean getActive(){
+    public synchronized boolean getActive() {
         return isActive;
     }
 
@@ -49,11 +49,10 @@ public class Server {
     /**
      * @param c connection to eliminate from the list of client player in lobby
      */
-    public synchronized void deleteClient(ClientConnection c){
-        this.waitingConnection.entrySet().stream().filter(entry -> entry.getValue().equals(c))
-                .forEach(entry -> this.waitingConnection.remove(entry.getKey()));
+    public synchronized void deleteClient(ClientConnection c) {
+        this.currentConnection.entrySet().stream().filter(entry -> entry.getValue().equals(c))
+                .forEach(entry -> this.currentConnection.remove(entry.getKey()));
         lobbyCount--;
-
     }
 
     /**
@@ -62,18 +61,18 @@ public class Server {
     public synchronized void lobby(ClientConnection c) {
 
         if (lobbyCount == 0) {
-            waitingConnection.put(PlayerIndex.PLAYER0, c);
-            ClientConnection c1 = waitingConnection.get(PlayerIndex.PLAYER0);
+            currentConnection.put(PlayerIndex.PLAYER0, c);
+            ClientConnection c1 = currentConnection.get(PlayerIndex.PLAYER0);
             RemoteView player1View = new RemoteView(PlayerIndex.PLAYER0, c1);
             player1View.addObserver(controller);
             controller.addRemoteView(PlayerIndex.PLAYER0, player1View);
             lobbyCount++;
             c.setClientIndex(PlayerIndex.PLAYER0);
         }
-        else if(lobbyCount == 1){
-            waitingConnection.put(PlayerIndex.PLAYER1, c);
-            if(waitingConnection.size() == 2){
-                ClientConnection c2 = waitingConnection.get(PlayerIndex.PLAYER1);
+        else if(lobbyCount == 1) {
+            currentConnection.put(PlayerIndex.PLAYER1, c);
+            if (currentConnection.size() == 2) {
+                ClientConnection c2 = currentConnection.get(PlayerIndex.PLAYER1);
                 RemoteView player2View = new RemoteView(PlayerIndex.PLAYER1, c2);
                 player2View.addObserver(controller);
                 controller.addRemoteView(PlayerIndex.PLAYER1, player2View);
@@ -82,22 +81,22 @@ public class Server {
             }
         }
         else if (lobbyCount == 2 && controller.getPlayerNum() == 3) {
-            waitingConnection.put(PlayerIndex.PLAYER2,c);
-            if(waitingConnection.size() == 3) {
-                ClientConnection c3 = waitingConnection.get(PlayerIndex.PLAYER2);
+            currentConnection.put(PlayerIndex.PLAYER2, c);
+            if (currentConnection.size() == 3) {
+                ClientConnection c3 = currentConnection.get(PlayerIndex.PLAYER2);
                 RemoteView player3View = new RemoteView(PlayerIndex.PLAYER2, c3);
                 player3View.addObserver(controller);
                 controller.addRemoteView(PlayerIndex.PLAYER2, player3View);
                 lobbyCount++;
                 c.setClientIndex(PlayerIndex.PLAYER2);
-                }
             }
+        }
         }
 
      public Thread pingRunThread(){
         Thread t = new Thread(() -> {
             while(getActive()) {
-                waitingConnection.forEach(
+                currentConnection.forEach(
                         (key, value) -> {
                             try {
                                 value.ping(key);
@@ -105,15 +104,16 @@ public class Server {
                                 System.out.println("Tolgo connessione con " + key);
                                 value.forceDisconnection();
                                 lobbyCount--;
+                                this.controller.deleteRemoteView(key);
                             }
                         }
                 );
 
-                final List<PlayerIndex> connectionListInactive = waitingConnection.entrySet().stream()
+                final List<PlayerIndex> connectionListInactive = currentConnection.entrySet().stream()
                         .filter(entry -> !entry.getValue().isConnected())
                         .map(Map.Entry::getKey)
                         .collect(Collectors.toList());
-                connectionListInactive.forEach(waitingConnection::remove);
+                connectionListInactive.forEach(currentConnection::remove);
 
 
                 try {
