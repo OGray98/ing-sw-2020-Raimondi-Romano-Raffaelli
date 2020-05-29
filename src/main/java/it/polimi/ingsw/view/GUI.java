@@ -179,12 +179,12 @@ public class GUI extends ClientView {
                         }
                         catch(NullPointerException npe){
                             //TODO: non bellissimo magari bloccare il bottone è meglio
-                            JOptionPane.showMessageDialog(frame, "You must select a worker before");
+                            showMessage("You must select a worker before");
                         }
                     }
                     else{
                         //TODO: AVVERTI UTENTE caso non puo usare il potere
-                        JOptionPane.showMessageDialog(frame, "You can't use a God Power now");
+                        showMessage("You can't use a God Power now");
                     }
                 }
         );
