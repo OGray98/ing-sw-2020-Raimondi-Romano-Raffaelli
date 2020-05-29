@@ -60,6 +60,17 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         gameModel.addObserver(remoteViews.get(index));
     }
 
+    /**
+     * Remove a RemoteView which is disconnected, and destroy relation between this RemoteView and
+     * gameModel
+     *
+     * @param index PlayerIndex of RemoteView which is being deleted
+     */
+    public void deleteRemoteView(PlayerIndex index) {
+        gameModel.removeObserver(remoteViews.get(index));
+        remoteViews.remove(index);
+    }
+
     @Override
     public void update(MessageToServer message) throws NullPointerException {
         if (message == null) throw new NullPointerException("message");
