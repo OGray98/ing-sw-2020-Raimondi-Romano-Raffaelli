@@ -230,7 +230,11 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                     this.clientView.showMessage("Player God like is choosing cards");
                 break;
             case SELECT_CARD:
-                
+                if (this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER1)
+                    this.clientView.showGodToSelect(this.clientModel.getChosenGodsByGodLike());
+                else
+                    this.clientView.showMessage(this.clientModel.getNickname(PlayerIndex.PLAYER1) +
+                            "is choosing his god card");
             default:
                 break;
         }
