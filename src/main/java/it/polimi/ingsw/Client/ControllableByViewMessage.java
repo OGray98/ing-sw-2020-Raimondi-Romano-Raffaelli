@@ -19,4 +19,6 @@ public interface ControllableByViewMessage {
     public void updateSelectedCardView(PlayerSelectGodMessage message);
 
     public void updateActions(PositionMessage message);
+
+    void updateClientIndex(ConnectionPlayerIndex message);
 }
