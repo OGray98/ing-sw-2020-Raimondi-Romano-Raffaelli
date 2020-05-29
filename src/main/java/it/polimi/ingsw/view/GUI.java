@@ -256,7 +256,7 @@ public class GUI extends ClientView {
         gods.forEach(
                 god -> godLabels.add(getIconGodProfile(imageContainer.getGodimage(god), god))
         );*/
-        godChoiceDialog = new GodChoiceDialog(this.frame, gods /*godLabels*/);
+        godChoiceDialog = new GodChoiceDialog(frame, gods /*godLabels*/);
     }
 
     @Override
@@ -269,15 +269,22 @@ public class GUI extends ClientView {
         JOptionPane.showMessageDialog(frame, message);
     }
 
+    @Override
+    public void showGetNickname(PlayerIndex playerIndex) {
+        SwingUtilities.invokeLater(
+                () -> new WelcomeDialog(frame, this)
+        );
+    }
+
     //TODO: serve per rimuovere le celle illuminate
     @Override
     public void removeActionsFromView(List<Position> list) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                for(Position pos : list){
+                for (Position pos : list) {
                     JLabel firsLabel = (JLabel) buttonCells[pos.row][pos.col].getComponent(buttonCells[pos.row][pos.col].getComponentCount() - 1);
-                    if(firsLabel.getComponentCount() != 0 && !(isLabelLux(firsLabel))){
+                    if (firsLabel.getComponentCount() != 0 && !(isLabelLux(firsLabel))) {
                     //Tower 1
                     JLabel labelT1 = (JLabel) firsLabel.getComponent(firsLabel.getComponentCount() - 1);
                     if(labelT1.getComponentCount() != 0 && !(isLabelLux(firsLabel))){
