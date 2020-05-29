@@ -31,4 +31,6 @@ public interface ViewModelInterface {
     boolean isGodLikeChoosingCards();
 
     String getNickname(PlayerIndex index);
+
+    boolean isAmICurrentPlayer();
 }
