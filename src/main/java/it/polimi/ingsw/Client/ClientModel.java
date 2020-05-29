@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.controller.GameState;
+import it.polimi.ingsw.exception.InvalidPlayerIndexException;
 import it.polimi.ingsw.exception.InvalidPutWorkerException;
 import it.polimi.ingsw.exception.NotSelectedGodException;
 import it.polimi.ingsw.exception.WrongGodNameException;
@@ -88,6 +89,11 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         nicknames.put(index, nickname);
     }
 
+    public String getNickname(PlayerIndex index) {
+        if (!this.nicknames.containsKey(index))
+            throw new InvalidPlayerIndexException(index);
+        return this.nicknames.get(index);
+    }
 
     /**
      * Increment level of a cell in passed Position
@@ -347,6 +353,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         if (message.getGodName() == null) throw new NullPointerException("god");
         if (!godsChosenByGodLike.contains(message.getGodName())) throw new NotSelectedGodException(message.getGodName());
         this.chosenGods.put(message.getClient(), message.getGodName());
+        this.godsChosenByGodLike.remove(message.getGodName());
 
         //notify to View
         notify(message);
@@ -412,8 +419,6 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     }
 
     public boolean isGodLikeChoosingCards(){
-        if(this.currentState == GameState.GOD_PLAYER_CHOOSE_CARDS)
-            return true;
-        return false;
+        return this.currentState == GameState.GOD_PLAYER_CHOOSE_CARDS;
     }
 }

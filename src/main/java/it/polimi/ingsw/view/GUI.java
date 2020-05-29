@@ -258,8 +258,8 @@ public class GUI extends ClientView {
         );*/
         godChoiceDialog = new GodChoiceDialog(frame, gods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
                 e ->{
-            if(clientModel.isGodLikeChoosingCards())
-                super.handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod()));
+                    super.handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod()));
+                    godChoiceDialog.dispose();
                 });
     }
 
@@ -267,8 +267,8 @@ public class GUI extends ClientView {
     public void showGodToSelect(List<String> godLikeGods) {
         godChoiceDialog = new GodChoiceDialog(frame, godLikeGods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
                 e ->{
-                    if(clientModel.isGodLikeChoosingCards())
-                        super.handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod()));
+                    super.handleMessage(new PlayerSelectGodMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod().get(0)));
+                    godChoiceDialog.dispose();
                 });
     }
 
