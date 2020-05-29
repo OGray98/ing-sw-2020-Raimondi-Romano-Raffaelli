@@ -29,4 +29,6 @@ public interface ViewModelInterface {
     boolean isThreePlayersGame();
 
     boolean isGodLikeChoosingCards();
+
+    String getNickname(PlayerIndex index);
 }

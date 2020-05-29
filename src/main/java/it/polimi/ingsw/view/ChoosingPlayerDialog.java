@@ -1,17 +1,19 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.Client.ClientView;
-import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.utils.GodLikeChooseFirstPlayerMessage;
 
+import it.polimi.ingsw.model.player.PlayerIndex;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 public class ChoosingPlayerDialog extends GameDialog{
 
-    public ChoosingPlayerDialog(JFrame frame, boolean isThreePlayerGame, ClientView clientView){
+    private JRadioButton player0;
+    private JRadioButton player1;
+    private JRadioButton player2;
+
+    public ChoosingPlayerDialog(JFrame frame, boolean isThreePlayerGame, Map<PlayerIndex, String> nickNames, ActionListener listenerSelect){
         super(frame,"Choosing first player");
         Font font = new Font("Impatto", Font.PLAIN, 18);
         JLabel labelGround = new JLabel("");
@@ -21,13 +23,13 @@ public class ChoosingPlayerDialog extends GameDialog{
         labelSel.setFont(font);
         labelSel.setBounds(170,30,240,20);
         ButtonGroup g = new ButtonGroup();
-        JRadioButton player0 = new JRadioButton("nick1");
+        player0 = new JRadioButton(nickNames.get(PlayerIndex.PLAYER0));
         player0.setOpaque(false);
         player0.setFont(font);
-        JRadioButton player1 = new JRadioButton("nick2");
+        player1 = new JRadioButton(nickNames.get(PlayerIndex.PLAYER1));
         player1.setOpaque(false);
         player1.setFont(font);
-        JRadioButton player2 = new JRadioButton("nick3");
+        player2 = new JRadioButton(nickNames.get(PlayerIndex.PLAYER2));
         player2.setOpaque(false);
         player2.setFont(font);
         if(isThreePlayerGame){
@@ -45,43 +47,32 @@ public class ChoosingPlayerDialog extends GameDialog{
         g.add(player0);
         g.add(player1);
         g.add(player2);
-
-        player0.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(player0.isSelected()){
-                    clientView.handleMessage(new GodLikeChooseFirstPlayerMessage(clientView.getPlayer(), PlayerIndex.PLAYER0));
-                    dispose();
-                }
-            }
-        });
-
-        player1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(player1.isSelected()){
-                    clientView.handleMessage(new GodLikeChooseFirstPlayerMessage(clientView.getPlayer(), PlayerIndex.PLAYER1));
-                    dispose();
-                }
-            }
-        });
-
-        player2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(player2.isSelected()){
-                    clientView.handleMessage(new GodLikeChooseFirstPlayerMessage(clientView.getPlayer(), PlayerIndex.PLAYER2));
-                    dispose();
-                }
-            }
-        });
-
+        if(player0.isSelected()){
+        player0.addActionListener(listenerSelect);
+        }
+        if(player1.isSelected()){
+        player1.addActionListener(listenerSelect);
+        }
+        if(player2.isSelected()){
+        player2.addActionListener(listenerSelect);
+        }
         labelGround.add(labelSel);
         labelGround.add(player0);
         labelGround.add(player1);
         labelGround.add(player2);
         add(labelGround);
+    }
 
-
+    public PlayerIndex getSelectedPlayer(){
+        if(player0.isSelected()){
+            return PlayerIndex.PLAYER0;
+        }
+        if(player1.isSelected()){
+            return PlayerIndex.PLAYER1;
+        }
+        if(player2.isSelected()){
+            return PlayerIndex.PLAYER2;
+        }
+        return null;
     }
 }

@@ -28,6 +28,8 @@ public abstract class ClientView extends View implements Observer<MessageToView>
 
     public abstract void showGodToSelect(List<String> godLikeGods);
 
+    public abstract void showGodLikeChooseFirstPlayer();
+
     /**
      * Method that remove from view the cells of possible actions when they are not needed anymore
      * */
