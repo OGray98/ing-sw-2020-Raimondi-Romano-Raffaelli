@@ -42,13 +42,15 @@ public class WelcomeDialog extends GameDialog{
         box3Player.setFont(font);
         box2Player.setFont(font);
         box2Player.setForeground(Color.BLACK);
-        box3Player.setBounds(208,80,200,20);
-        box2Player.setBounds(208,60,200,20);
+        box3Player.setBounds(200,80,200,20);
+        box2Player.setBounds(200,60,200,20);
+        box2Player.setOpaque(false);
+        box3Player.setOpaque(false);
         text.setVisible(true);
-        text.setBounds(170,30,240,20);
+        text.setBounds(150,30,240,20);
         Image imagePlay = new ImageIcon("src/main/resources/button-play-down.png").getImage().getScaledInstance(100,100,Image.SCALE_DEFAULT);
-        ButtonCircle buttonSend = new ButtonCircle(new ImageIcon(imagePlay),Color.BLUE,e -> clientView.handleMessage(new NicknameMessage(clientView.getPlayer(),n)));
-        buttonSend.setBounds(228,110,90,90);
+        ButtonCircle buttonSend = new ButtonCircle(new ImageIcon(imagePlay),Color.WHITE,e -> clientView.handleMessage(new NicknameMessage(clientView.getPlayer(),n)));
+        buttonSend.setBounds(210,120,95,88);
         g.add(box2Player);
         g.add(box3Player);
         box2Player.addActionListener(new ActionListener() {
