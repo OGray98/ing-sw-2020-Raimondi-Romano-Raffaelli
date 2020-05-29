@@ -411,9 +411,9 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
      * Method needs to be called after initial operations when all players are in lobby
      * */
     public boolean isThreePlayersGame(){
-        if(this.playersPositions.size() == 3)
+        if (this.nicknames.size() == 3)
             return true;
-        else if(this.playersPositions.size() == 2)
+        else if (this.nicknames.size() == 2)
             return false;
         throw new IllegalStateException("not valid number of players!");
     }
