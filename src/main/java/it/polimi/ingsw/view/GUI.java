@@ -600,7 +600,7 @@ public class GUI extends ClientView {
             public void run() {
                 //god image
                 JLabel godChosen = getIconGodProfile(imageContainer.getGodimage(message.getGodName()), message.getGodName());
-
+                labelGod.add(godChosen);
                 //case when this is the client god
                 if(message.getClient().equals(clientModel.getPlayerIndex())){
                     labelGod.add(godChosen);
