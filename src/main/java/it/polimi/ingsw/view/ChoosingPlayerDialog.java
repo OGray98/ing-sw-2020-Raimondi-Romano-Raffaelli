@@ -1,11 +1,17 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.Client.ClientView;
+import it.polimi.ingsw.model.player.PlayerIndex;
+import it.polimi.ingsw.utils.GodLikeChooseFirstPlayerMessage;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ChoosingPlayerDialog extends GameDialog{
 
-    public ChoosingPlayerDialog(JFrame frame,boolean isThreePlayerGame){
+    public ChoosingPlayerDialog(JFrame frame, boolean isThreePlayerGame, ClientView clientView){
         super(frame,"Choosing first player");
         Font font = new Font("Impatto", Font.PLAIN, 18);
         JLabel labelGround = new JLabel("");
@@ -39,6 +45,34 @@ public class ChoosingPlayerDialog extends GameDialog{
         g.add(player0);
         g.add(player1);
         g.add(player2);
+
+        player0.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(player0.isSelected()){
+                    clientView.handleMessage(new GodLikeChooseFirstPlayerMessage(clientView.getPlayer(), PlayerIndex.PLAYER0));
+                }
+            }
+        });
+
+        player1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(player1.isSelected()){
+                    clientView.handleMessage(new GodLikeChooseFirstPlayerMessage(clientView.getPlayer(), PlayerIndex.PLAYER1));
+                }
+            }
+        });
+
+        player2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(player2.isSelected()){
+                    clientView.handleMessage(new GodLikeChooseFirstPlayerMessage(clientView.getPlayer(), PlayerIndex.PLAYER2));
+                }
+            }
+        });
+
         labelGround.add(labelSel);
         labelGround.add(player0);
         labelGround.add(player1);
