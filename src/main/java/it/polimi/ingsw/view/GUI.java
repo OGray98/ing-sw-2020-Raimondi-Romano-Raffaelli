@@ -185,7 +185,8 @@ public class GUI extends ClientView {
         );
         buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn), Color.WHITE,
                 e -> {
-                    new WelcomeDialog(new WelcomeFrame(),this);
+                    //new WelcomeDialog(new WelcomeFrame(),this);
+                    new ChoosingPlayerDialog(new WelcomeFrame(),false);
                 }
         );
         buttonTutorial = new ButtonCircle(new ImageIcon(imageTutorial), Color.WHITE,
