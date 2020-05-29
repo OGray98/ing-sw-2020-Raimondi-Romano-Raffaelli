@@ -79,7 +79,7 @@ public class Client implements ServerConnection {
                 while (isActive()) {
                     MessageToClient inputMessage = (MessageToClient) socketIn.readObject();
                     if (inputMessage != null && inputMessage.getType() == TypeMessage.PING) {
-                        System.out.println("PING");
+                        //System.out.println("PING");
                         outputMessageQueue.put(new PongMessage());
                         pingTimer.cancel();
                         pingTimer = new Timer();
@@ -114,7 +114,7 @@ public class Client implements ServerConnection {
                 while (isActive()) {
                     socketOut.reset();
                     socketOut.writeObject(outputMessageQueue.take());
-                    System.out.println("Send message");
+                    //System.out.println("Send message");
                     socketOut.flush();
                 }
             } catch (IOException | InterruptedException e) {
