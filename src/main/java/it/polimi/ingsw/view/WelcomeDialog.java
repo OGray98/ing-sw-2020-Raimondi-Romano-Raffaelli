@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class WelcomeDialog extends GameDialog{
 
@@ -21,10 +23,19 @@ public class WelcomeDialog extends GameDialog{
         Image imageGround = new ImageIcon("src/main/resources/title_water.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         JTextField text = new JTextField("Insert name, press send and play",20);
-        text.addActionListener(new ActionListener() {
+        text.addKeyListener(new KeyListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                String name = text.getText();
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                JTextField textField = (JTextField) e.getSource();
+                String name = textField.getText();
                 n = name;
             }
         });
