@@ -101,13 +101,16 @@ public class GUI extends ClientView {
                 buttonCells[i][j] = new ButtonCell(i, j, labelEmptyWidth, labelEmptyHeight,
                         e -> {
                             ButtonCell buttonCell = (ButtonCell) e.getSource();
-                            super.handleMessage(
-                                    new PositionMessage(
-                                            this.getPlayer(),
-                                            buttonCell.getPosition(),
-                                            buttonPower.isClicked()
-                                    )
-                            );
+                            //send message to server if you are current player
+                            if(clientModel.isAmICurrentPlayer()){
+                                super.handleMessage(
+                                        new PositionMessage(
+                                                this.getPlayer(),
+                                                buttonCell.getPosition(),
+                                                buttonPower.isClicked()
+                                        )
+                                );
+                            }
                         }
                 );
                 layout.setConstraints(buttonCells[i][j], lim);
