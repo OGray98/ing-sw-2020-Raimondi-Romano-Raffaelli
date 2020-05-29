@@ -9,7 +9,11 @@ import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GUI extends ClientView {
 
@@ -37,6 +41,7 @@ public class GUI extends ClientView {
     private ImageContainer imageContainer;
 
     private static GodChoiceDialog godChoiceDialog;
+    private static ChoosingPlayerDialog choosePlayerDialog;
 
 
     public GUI(ViewModelInterface clientModel) {
@@ -186,7 +191,6 @@ public class GUI extends ClientView {
         buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn), Color.WHITE,
                 e -> {
                     //new WelcomeDialog(new WelcomeFrame(),this);
-                    new ChoosingPlayerDialog(new WelcomeFrame(),false,this);
                 }
         );
         buttonTutorial = new ButtonCircle(new ImageIcon(imageTutorial), Color.WHITE,
@@ -281,6 +285,22 @@ public class GUI extends ClientView {
     @Override
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(frame, message);
+    }
+
+    @Override
+    public void showGodLikeChooseFirstPlayer() {
+        Map<PlayerIndex,String> nicksName = new HashMap<>();
+        nicksName.put(PlayerIndex.PLAYER0,clientModel.getNickname(PlayerIndex.PLAYER0));
+        nicksName.put(PlayerIndex.PLAYER1,clientModel.getNickname(PlayerIndex.PLAYER1));
+        if(clientModel.isThreePlayersGame()){
+            nicksName.put(PlayerIndex.PLAYER2,clientModel.getNickname(PlayerIndex.PLAYER2));
+        }
+        choosePlayerDialog = new ChoosingPlayerDialog(frame,clientModel.isThreePlayersGame(),nicksName,e ->{
+            super.handleMessage(new GodLikeChooseFirstPlayerMessage(clientModel.getPlayerIndex(),choosePlayerDialog.getSelectedPlayer()));
+            choosePlayerDialog.dispose();
+        });
+
+
     }
 
     @Override

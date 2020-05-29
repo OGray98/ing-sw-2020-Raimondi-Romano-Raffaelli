@@ -79,4 +79,9 @@ public class CLI extends ClientView {
     public void updateActions(PositionMessage message) {
 
     }
+
+    @Override
+    public void showGodLikeChooseFirstPlayer() {
+
+    }
 }
