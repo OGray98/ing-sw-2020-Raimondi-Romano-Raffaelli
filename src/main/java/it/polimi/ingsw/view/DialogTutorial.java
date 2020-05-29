@@ -2,16 +2,19 @@ package it.polimi.ingsw.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class DialogTutorial extends GameDialog{
+public class DialogTutorial extends GameDialog implements ActionListener {
 
     private ImageContainer imageContainer = new ImageContainer();
 
     public DialogTutorial(JFrame frame, String title){
         super(frame,title);
-        Font font = new Font("Impatto", Font.PLAIN, 13);
+        Font font = new Font("Impatto", Font.PLAIN, 12);
+        Font font1 = new Font("Impatto", Font.PLAIN, 11);
         JLabel labelGround = new JLabel("");
-        Image imageGround = new ImageIcon("src/main/resources/Odyssey-Olympus.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
+        Image imageGround = new ImageIcon("src/main/resources/bg_modeselect.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         setResizable(false);
         Image imageEndTur = imageContainer.getButtonImage("buttonEndTurn").getScaledInstance(70,70,Image.SCALE_DEFAULT);
@@ -22,7 +25,7 @@ public class DialogTutorial extends GameDialog{
         LabelCircle buttonEx = new LabelCircle(new ImageIcon(imageEx),Color.WHITE);
         buttonEnd.setBounds(3,80,70,70);
         buttonPow.setBounds(3,3,70,70);
-        buttonEx.setBounds(3,160,70,70);
+        buttonEx.setBounds(8,155,60,60);
         JLabel labelEx = new JLabel("Exit button : click on it to quit the game.");
         labelEx.setForeground(Color.BLACK);
         labelEx.setFont(font);
@@ -39,18 +42,23 @@ public class DialogTutorial extends GameDialog{
         labelPower2.setForeground(Color.BLACK);
         labelPower2.setFont(font);
         JLabel labelInstruction = new JLabel("STATE: SELECT WORKER -> SELECT CELL -> MOVE -> SELECT CELL -> BUILD");
-        labelInstruction.setForeground(Color.BLUE);
-        labelInstruction.setFont(font);
+        labelInstruction.setForeground(Color.BLACK);
+        labelInstruction.setFont(font1);
         JLabel labelInstruction1 = new JLabel("POWER STATE: it depends of which god the player choose.");
         labelInstruction1.setForeground(Color.BLACK);
-        labelInstruction1.setFont(font);
-        labelInstruction1.setBounds(10,250,600,50);
-        labelInstruction.setBounds(10,230,600,50);
-        labelEx.setBounds(80,160,600,50);
+        labelInstruction1.setFont(font1);
+        labelInstruction1.setBounds(10,215,600,50);
+        labelInstruction.setBounds(10,200,500,50);
+        labelEx.setBounds(80,150,600,50);
         labelEnd.setBounds(80,85,600,50);
         labelPower.setBounds(80,-3,600,50);
         labelPower1.setBounds(80,10,600,50);
         labelPower2.setBounds(80,24,600,50);
+        JButton buttonClose = new JButton("CLOSE");
+        buttonClose.setForeground(Color.BLUE);
+        buttonClose.addActionListener(this);
+        buttonClose.setBounds(210,255,100,30);
+        labelGround.add(buttonClose);
         labelGround.add(labelPower2);
         labelGround.add(labelPower1);
         labelGround.add(labelPower);
@@ -63,5 +71,10 @@ public class DialogTutorial extends GameDialog{
         labelGround.add(buttonPow);
         add(labelGround);
         setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        dispose();
     }
 }
