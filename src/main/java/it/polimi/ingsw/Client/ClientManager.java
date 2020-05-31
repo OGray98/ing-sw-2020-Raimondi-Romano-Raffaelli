@@ -281,7 +281,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     @Override
     public void updateMoveMessage(MoveMessage message) {
-        clientModel.setSelectedWorkerPos(message.getMovePosition());
+        //clientModel.setSelectedWorkerPos(message.getMovePosition());
         clientModel.movePlayer(message);
     }
 
