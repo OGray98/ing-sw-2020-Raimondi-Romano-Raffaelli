@@ -406,7 +406,11 @@ public class GUI extends ClientView {
             @Override
             public void run() {
                 labelButton.add(labelWorker);
+                labelButton.revalidate();
+                labelButton.repaint();
                 labelButton1.add(labelWorker2);
+                labelButton1.revalidate();
+                labelButton1.repaint();
             }
         });
     }
@@ -634,28 +638,36 @@ public class GUI extends ClientView {
                             if (labelTow2.getComponentCount() != 0 && !(isLabelCircle(labelTow2))) {
                                 //Tower 3
                                 JLabel labelTow3 = (JLabel) labelTow2.getComponent(labelTow2.getComponentCount() - 1);
-                                Image imageTow3 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow3.getWidth()), getProportionHeight(15, 19, labelTow3.getHeight()), Image.SCALE_DEFAULT);
-                                LabelLux labelIndicatorTow3 = new LabelLux(imageTow3);
+                                Image blueLight = imageContainer.getBlueLight().getScaledInstance(getProportionWidth(15, 19, labelTow3.getWidth()), getProportionHeight(15, 19, labelTow3.getHeight()), Image.SCALE_DEFAULT);
+                                LabelLux labelIndicatorTow3 = new LabelLux(blueLight);
                                 labelIndicatorTow3.setBounds(getProportionWidth(2, 18, labelTow3.getWidth()), getProportionHeight(2, 19, labelTow3.getHeight()), getProportionWidth(15, 19, labelTow3.getWidth()), getProportionHeight(15, 19, labelTow3.getHeight()));
                                 labelTow3.add(labelIndicatorTow3);
+                                labelTow3.revalidate();
+                                labelTow3.repaint();
 
                             } else {
-                                Image imageTow2 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow2.getWidth()), getProportionHeight(15, 19, labelTow2.getHeight()), Image.SCALE_DEFAULT);
-                                LabelLux labelIndicatorTow2 = new LabelLux(imageTow2);
+                                Image blueLight = imageContainer.getBlueLight().getScaledInstance(getProportionWidth(15, 19, labelTow2.getWidth()), getProportionHeight(15, 19, labelTow2.getHeight()), Image.SCALE_DEFAULT);
+                                LabelLux labelIndicatorTow2 = new LabelLux(blueLight);
                                 labelIndicatorTow2.setBounds(getProportionWidth(2, 18, labelTow2.getWidth()), getProportionHeight(2, 19, labelTow2.getHeight()), getProportionWidth(15, 19, labelTow2.getWidth()), getProportionHeight(15, 19, labelTow2.getHeight()));
                                 labelTow2.add(labelIndicatorTow2);
+                                labelTow2.revalidate();
+                                labelTow2.repaint();
                             }
                         }else{
-                            Image imageTow1 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow1.getWidth()), getProportionHeight(15, 19, labelTow1.getHeight()), Image.SCALE_DEFAULT);
-                            LabelLux labelIndicatorTow1 = new LabelLux(imageTow1);
+                            Image blueLight = imageContainer.getBlueLight().getScaledInstance(getProportionWidth(15, 19, labelTow1.getWidth()), getProportionHeight(15, 19, labelTow1.getHeight()), Image.SCALE_DEFAULT);
+                            LabelLux labelIndicatorTow1 = new LabelLux(blueLight);
                             labelIndicatorTow1.setBounds(getProportionWidth(2, 18, labelTow1.getWidth()), getProportionHeight(2, 19, labelTow1.getHeight()), getProportionWidth(15, 19, labelTow1.getWidth()), getProportionHeight(15, 19, labelTow1.getHeight()));
                             labelTow1.add(labelIndicatorTow1);
+                            labelTow1.revalidate();
+                            labelTow1.repaint();
                         }
                     }else {
-                        Image imageIndicator = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
-                        LabelLux labelIndicator = new LabelLux(imageIndicator);
+                        Image blueLight = imageContainer.getBlueLight().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
+                        LabelLux labelIndicator = new LabelLux(blueLight);
                         labelIndicator.setBounds(getProportionWidth(-2, 18, labelEmptyWidth), getProportionHeight(-4, 19, labelEmptyHeight), getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(130, 19, labelEmptyHeight));
                         labelButton.add(labelIndicator);
+                        labelButton.revalidate();
+                        labelButton.repaint();
                     }
                 }
             }
