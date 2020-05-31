@@ -14,9 +14,6 @@ public class ButtonCell extends JButton {
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         this.setPreferredSize(new Dimension(width, height));
         this.setLayout(new BorderLayout());
-        JLabel labelEmpty = new JLabel();
-        labelEmpty.setOpaque(false);
-        this.add(labelEmpty, BorderLayout.CENTER);
         this.addActionListener(actionListener);
     }
     public Position getPosition() {

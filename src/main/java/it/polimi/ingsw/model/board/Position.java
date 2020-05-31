@@ -59,4 +59,9 @@ public class Position implements Serializable {
                 ", col=" + col +
                 '}';
     }
+
+    @Override
+    public int hashCode() {
+        return (Integer.toString(row) + "," + Integer.toString(col)).hashCode();
+    }
 }

@@ -31,6 +31,9 @@ public class GUI extends ClientView {
     //private static JFrame frame;
     private static WelcomeFrame frame;
     private static PrincipalLabel label;
+    private static Map<Position,LabelCircle> listLabelPosition = new HashMap<>();
+    private static Map<Position,LevelPane> listLayerPosition = new HashMap<>();
+    private static Map<Position,LabelLux> listLuxPosition = new HashMap<>();
 
 
     private ButtonCircle buttonPower;
@@ -116,6 +119,12 @@ public class GUI extends ClientView {
                         }
                 );
                 layout.setConstraints(buttonCells[i][j], lim);
+                listLayerPosition.put(new Position(i,j),new LevelPane());
+                for(Position pos : listLayerPosition.keySet()){
+                    if(pos.equals(new Position(i,j))){
+                buttonCells[i][j].add(listLayerPosition.get(pos));
+                    }
+                }
                 panel1.add(buttonCells[i][j]);
                 buttonCells[i][j].setOpaque(false);
                 buttonCells[i][j].setContentAreaFilled(false);
@@ -277,8 +286,8 @@ public class GUI extends ClientView {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-               frame.dispose();
-               frame = new WelcomeFrame(godChoiceDialog);
+                frame.dispose();
+                frame = new WelcomeFrame(godChoiceDialog);
 
             }
         });
@@ -297,7 +306,7 @@ public class GUI extends ClientView {
             public void run() {
                 frame.dispose();
                 frame = new WelcomeFrame(godChoiceDialog);
-                }
+            }
         });
     }
 
@@ -346,26 +355,10 @@ public class GUI extends ClientView {
             @Override
             public void run() {
                 for (Position pos : list) {
-                    JLabel firsLabel = (JLabel) buttonCells[pos.row][pos.col].getComponent(buttonCells[pos.row][pos.col].getComponentCount() - 1);
-                    if (firsLabel.getComponentCount() != 0 && !(isLabelLux(firsLabel))) {
-                        //Tower 1
-                        JLabel labelT1 = (JLabel) firsLabel.getComponent(firsLabel.getComponentCount() - 1);
-                        if(labelT1.getComponentCount() != 0 && !(isLabelLux(firsLabel))){
-                            //Tower 2
-                            JLabel labelT2 = (JLabel) labelT1.getComponent(labelT1.getComponentCount() - 1);
-                            if(labelT2.getComponentCount() != 0 && !(isLabelLux(labelT1))){
-                                //Tower 3
-                                JLabel labelT3 = (JLabel) labelT2.getComponent(labelT2.getComponentCount() - 1);
-                                labelT3.remove(labelT3.getComponentCount() - 1);
-                            }else{
-                                labelT2.remove(labelT2.getComponentCount() - 1);
-                            }
-                        }else{
-                            labelT1.remove(labelT1.getComponentCount() - 1);
-                        }
-                    }else{
-                        firsLabel.remove(firsLabel.getComponentCount() - 1);
-                    }
+                    LabelLux firsLabelLux = listLuxPosition.get(pos);
+                    LevelPane firsLabel = listLayerPosition.get(pos);
+                    firsLabel.remove(firsLabelLux);
+                    listLuxPosition.remove(pos);
                 }
             }
         });
@@ -399,17 +392,28 @@ public class GUI extends ClientView {
         LabelCircle labelWorker = getPlayerIcon(message.getClient());
         LabelCircle labelWorker2 = getPlayerIcon(message.getClient());
 
-        JLabel labelButton = (JLabel) buttonCells[pos1.row][pos1.col].getComponent(buttonCells[pos1.row][pos1.col].getComponentCount() - 1);
-        JLabel labelButton1 = (JLabel) buttonCells[pos2.row][pos2.col].getComponent(buttonCells[pos2.row][pos2.col].getComponentCount() - 1);
+        LevelPane labelButton = listLayerPosition.get(pos1);
+        LevelPane labelButton1 = listLayerPosition.get(pos2);
+
+        listLabelPosition.put(pos1,labelWorker);
+        listLabelPosition.put(pos2,labelWorker2);
+
+
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                labelButton.add(labelWorker);
-                labelButton1.add(labelWorker2);
+
+
+                labelButton.add(labelWorker, labelButton.getLayerPane(4));
+                labelButton.revalidate();
+                labelButton.repaint();
+                labelButton1.add(labelWorker2, labelButton1.getLayerPane(4));
+                labelButton1.revalidate();
+                labelButton1.repaint();
+
             }
         });
-        //TODO: aggiungere differenziazione per playerindex!
     }
 
     @Override
@@ -417,130 +421,28 @@ public class GUI extends ClientView {
         Position oldPos = message.getWorkerPosition();
         Position newPos = message.getMovePosition();
 
-        LabelCircle labelWorker = getPlayerIcon(message.getClient());
-        //labelWorker.setLayout(new BorderLayout());
+
+        LabelCircle labelWorker = listLabelPosition.get(oldPos);
+        listLabelPosition.remove(oldPos);
+        listLabelPosition.put(newPos, labelWorker);
+
+
 
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //Label on old cell
-                int level = 0;
-                JLabel labelInit;
-                labelInit = (JLabel) buttonCells[oldPos.row][oldPos.col].getComponent(buttonCells[oldPos.row][oldPos.col].getComponentCount() - 1);
-                if (isLabelCircle(labelInit)) {
-                    labelInit.remove(labelInit.getComponentCount() - 1);
-                } else {
-                    //Tower level 1
-                    level++;
-                    labelInit = (JLabel) labelInit.getComponent(labelInit.getComponentCount() - 1);
-                    if (isLabelCircle(labelInit)) {
-                        labelInit.remove(labelInit.getComponentCount() - 1);
-                    } else {
-                        //Tower level 2
-                        level++;
-                        labelInit = (JLabel) labelInit.getComponent(labelInit.getComponentCount() - 1);
-                        if (isLabelCircle(labelInit)) {
-                            labelInit.remove(labelInit.getComponentCount() - 1);
-                        } else {
-                            //Tower level 3
-                            level++;
-                            labelInit = (JLabel) labelInit.getComponent(labelInit.getComponentCount() - 1);
-                            if (isLabelCircle(labelInit)) {
-                                labelInit.remove(labelInit.getComponentCount() - 1);
-                            }
-                        }
-                    }
-                }
-                //label on newCell
-                JLabel l;
-                l = (JLabel) buttonCells[newPos.row][newPos.col].getComponent(buttonCells[newPos.row][newPos.col].getComponentCount() - 1);
-                if (isLabelCircle(l)) {
-                    switch (level) {
-                        case 0:
-                            labelInit.add(l.getComponent(l.getComponentCount() - 1));
-                            break;
-                        case 1:
-                            l.getComponent(l.getComponentCount() - 1).setBounds(getProportionWidth(5, 18, labelInit.getWidth()), getProportionHeight(5, 19, labelInit.getHeight()), getProportionWidth(8, 18, labelInit.getWidth()), getProportionHeight(8, 19, labelInit.getHeight()));
-                            labelInit.add(l.getComponent(l.getComponentCount() - 1));
-                            break;
-                    }
-                }
-                if (l.getComponentCount() != 0) {
-                    //Tower level 1
-                    JLabel labelTower1 = (JLabel) l.getComponent(l.getComponentCount() - 1);
-                    if(labelTower1.getComponentCount() != 0) {
-                        if (isLabelCircle(labelTower1)) {
-                            switch (level) {
-                                case 0:
-                                    labelInit.add(labelTower1.getComponent(labelTower1.getComponentCount() - 1));
-                                    break;
-                                case 1:
-                                    labelTower1.getComponent(labelTower1.getComponentCount() - 1).setBounds(getProportionWidth(5, 18, labelInit.getWidth()), getProportionHeight(5, 19, labelInit.getHeight()), getProportionWidth(8, 18, labelInit.getWidth()), getProportionHeight(8, 19, labelInit.getHeight()));
-                                    labelInit.add(l.getComponent(labelTower1.getComponentCount() - 1));
-                                    break;
-                                case 2:
-                                    labelTower1.getComponent(labelTower1.getComponentCount() - 1).setBounds(getProportionWidth(5, 20, labelInit.getWidth()), getProportionHeight(4, 16, labelInit.getHeight()), getProportionWidth(10, 19, labelInit.getWidth()), getProportionHeight(10, 20, labelInit.getHeight()));
-                                    labelInit.add(labelTower1.getComponent(labelTower1.getComponentCount() - 1));
-                                    break;
-                            }
-                        }
-                    }
-                    if (labelTower1.getComponentCount() != 0) {
-                        //Tower level 2
-                        JLabel labelTower2 = (JLabel) labelTower1.getComponent(labelTower1.getComponentCount() - 1);
-                        if(labelTower2.getComponentCount() != 0) {
-                            if (isLabelCircle(labelTower2)) {
-                                switch (level) {
-                                    case 1:
-                                        labelTower2.getComponent(labelTower2.getComponentCount() - 1).setBounds(getProportionWidth(5, 18, labelInit.getWidth()), getProportionHeight(5, 19, labelInit.getHeight()), getProportionWidth(8, 18, labelInit.getWidth()), getProportionHeight(8, 19, labelInit.getHeight()));
-                                        labelInit.add(labelTower2.getComponent(labelTower2.getComponentCount() - 1));
-                                        break;
-                                    case 2:
-                                        labelTower2.getComponent(labelTower2.getComponentCount() - 1).setBounds(getProportionWidth(5, 20, labelInit.getWidth()), getProportionHeight(4, 16, labelInit.getHeight()), getProportionWidth(10, 19, labelInit.getWidth()), getProportionHeight(10, 20, labelInit.getHeight()));
-                                        labelInit.add(labelTower2.getComponent(labelTower2.getComponentCount() - 1));
-                                        break;
-                                    case 3:
-                                        labelTower2.getComponent(labelTower2.getComponentCount() - 1).setBounds(getProportionWidth(4, 20, labelInit.getWidth()), getProportionHeight(4, 19, labelInit.getHeight()), getProportionWidth(12, 19, labelInit.getWidth()), getProportionHeight(11, 20, labelInit.getHeight()));
-                                        labelInit.add(labelTower2.getComponent(labelTower2.getComponentCount() - 1));
-                                        break;
-                                }
-                            }
-                        }
-                        if (labelTower2.getComponentCount() != 0) {
-                            //Tower level 3
-                            JLabel labelTower3 = (JLabel) labelTower2.getComponent(labelTower2.getComponentCount() - 1);
-                            if(labelTower3.getComponentCount() != 0){
-                                if (isLabelCircle(labelTower3)) {
-                                    switch (level) {
-                                        case 2:
-                                            labelTower3.getComponent(labelTower3.getComponentCount() - 1).setBounds(getProportionWidth(5, 20, labelInit.getWidth()), getProportionHeight(4, 16, labelInit.getHeight()), getProportionWidth(10, 19, labelInit.getWidth()), getProportionHeight(10, 20, labelInit.getHeight()));
-                                            labelInit.add(labelTower3.getComponent(labelTower3.getComponentCount() - 1));
-                                            break;
-                                        case 3:
-                                            labelTower3.getComponent(labelTower3.getComponentCount() - 1).setBounds(getProportionWidth(4, 20, labelInit.getWidth()), getProportionHeight(4, 19, labelInit.getHeight()), getProportionWidth(12, 19, labelInit.getWidth()), getProportionHeight(11, 20, labelInit.getHeight()));
-                                            labelInit.add(labelTower3.getComponent(labelTower3.getComponentCount() - 1));
-                                            break;
-                                    }
-                                }
-                            }
-                            labelWorker.setBounds(getProportionWidth(4,20,labelTower3.getWidth()),getProportionHeight(4,19,labelTower3.getHeight()),getProportionWidth(12,19,labelTower3.getWidth()),getProportionHeight(11,20,labelTower3.getHeight()));
-                            labelTower3.add(labelWorker);
-                        }else{
-                            labelWorker.setBounds(getProportionWidth(5,20,labelTower2.getWidth()),getProportionHeight(4,16,labelTower2.getHeight()),getProportionWidth(10,19,labelTower2.getWidth()),getProportionHeight(10,20,labelTower2.getHeight()));
-                            labelTower2.add(labelWorker);
-                        }
-                    }else{
-                        labelWorker.setBounds(getProportionWidth(5,18,labelTower1.getWidth()),getProportionHeight(5,19,labelTower1.getHeight()),getProportionWidth(8,18,labelTower1.getWidth()),getProportionHeight(8,19,labelTower1.getHeight()));
-                        labelTower1.add(labelWorker);
-                    }
-                }else {
-                    l.add(labelWorker);
-                    buttonCells[newPos.row][newPos.col].add(l);
-                }
-            }
 
+                LevelPane l = listLayerPosition.get(newPos);
+                l.add(labelWorker, 4);
+                l.revalidate();
+                l.repaint();
+                removeActionsFromView(clientModel.getActionPositions(oldPos,ActionType.MOVE));
+
+
+            }
         });
+
     }
 
     @Override
@@ -620,47 +522,25 @@ public class GUI extends ClientView {
     }
 
     public void showActionPositions(List<Position> actionPos){
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 for(Position p : actionPos){
 
-                    JLabel labelButton = (JLabel) buttonCells[p.row][p.col].getComponent(buttonCells[p.row][p.col].getComponentCount() - 1);
-                    if (labelButton.getComponentCount() != 0 && !(isLabelCircle(labelButton))) {
-                        //Tower 1
-                        JLabel labelTow1 = (JLabel) labelButton.getComponent(labelButton.getComponentCount() - 1);
-                        if (labelTow1.getComponentCount() != 0 && !(isLabelCircle(labelTow1))) {
-                            //Tower 2
-                            JLabel labelTow2 = (JLabel) labelTow1.getComponent(labelTow1.getComponentCount() - 1);
-                            if (labelTow2.getComponentCount() != 0 && !(isLabelCircle(labelTow2))) {
-                                //Tower 3
-                                JLabel labelTow3 = (JLabel) labelTow2.getComponent(labelTow2.getComponentCount() - 1);
-                                Image imageTow3 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow3.getWidth()), getProportionHeight(15, 19, labelTow3.getHeight()), Image.SCALE_DEFAULT);
-                                LabelLux labelIndicatorTow3 = new LabelLux(imageTow3);
-                                labelIndicatorTow3.setBounds(getProportionWidth(2, 18, labelTow3.getWidth()), getProportionHeight(2, 19, labelTow3.getHeight()), getProportionWidth(15, 19, labelTow3.getWidth()), getProportionHeight(15, 19, labelTow3.getHeight()));
-                                labelTow3.add(labelIndicatorTow3);
+                    LevelPane labelButton = listLayerPosition.get(p);
+                    Image blueLight = imageContainer.getBlueLight().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
+                    LabelLux labelIndicator = new LabelLux(blueLight);
+                    labelIndicator.setBounds(getProportionWidth(-2, 18, labelEmptyWidth), getProportionHeight(-4, 19, labelEmptyHeight), getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(130, 19, labelEmptyHeight));
+                    listLuxPosition.put(p,labelIndicator);
+                    labelButton.add(labelIndicator,labelButton.getLayerPane(0));
+                    labelButton.revalidate();
+                    labelButton.repaint();
 
-                            } else {
-                                Image imageTow2 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow2.getWidth()), getProportionHeight(15, 19, labelTow2.getHeight()), Image.SCALE_DEFAULT);
-                                LabelLux labelIndicatorTow2 = new LabelLux(imageTow2);
-                                labelIndicatorTow2.setBounds(getProportionWidth(2, 18, labelTow2.getWidth()), getProportionHeight(2, 19, labelTow2.getHeight()), getProportionWidth(15, 19, labelTow2.getWidth()), getProportionHeight(15, 19, labelTow2.getHeight()));
-                                labelTow2.add(labelIndicatorTow2);
-                            }
-                        }else{
-                            Image imageTow1 = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(15, 19, labelTow1.getWidth()), getProportionHeight(15, 19, labelTow1.getHeight()), Image.SCALE_DEFAULT);
-                            LabelLux labelIndicatorTow1 = new LabelLux(imageTow1);
-                            labelIndicatorTow1.setBounds(getProportionWidth(2, 18, labelTow1.getWidth()), getProportionHeight(2, 19, labelTow1.getHeight()), getProportionWidth(15, 19, labelTow1.getWidth()), getProportionHeight(15, 19, labelTow1.getHeight()));
-                            labelTow1.add(labelIndicatorTow1);
-                        }
-                    }else {
-                        Image imageIndicator = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
-                        LabelLux labelIndicator = new LabelLux(imageIndicator);
-                        labelIndicator.setBounds(getProportionWidth(-2, 18, labelEmptyWidth), getProportionHeight(-4, 19, labelEmptyHeight), getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(130, 19, labelEmptyHeight));
-                        labelButton.add(labelIndicator);
-                    }
-                }
             }
-        });
+        }
+     });
+
     }
 
     @Override

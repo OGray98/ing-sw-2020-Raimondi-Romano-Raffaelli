@@ -15,6 +15,7 @@ public class ImageContainer {
     //private Image labelGod;
     private Map<String, Image> gods;
     private Map<String, Image> buttons;
+    private Image blueLight;
 
 
     public ImageContainer(){
@@ -62,6 +63,7 @@ public class ImageContainer {
         buttons.put("buttonMenu",menuButton);
         buttons.put("buttonExit",exitButton);
 
+        blueLight = new ImageIcon("src/main/resources/playermoveindicator_blue.png").getImage();
 
     }
 
@@ -71,6 +73,7 @@ public class ImageContainer {
 
     protected Image getButtonImage(String typeButton){ return buttons.get(typeButton);}
 
-
-
+    protected Image getBlueLight(){
+        return blueLight;
+    }
 }
