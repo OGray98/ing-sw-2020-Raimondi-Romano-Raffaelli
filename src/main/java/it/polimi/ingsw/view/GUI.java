@@ -438,6 +438,7 @@ public class GUI extends ClientView {
                     listLuxPosition.clear();
                 });
 
+
     }
 
     @Override
@@ -555,4 +556,5 @@ public class GUI extends ClientView {
             }
         });
     }
+
 }
