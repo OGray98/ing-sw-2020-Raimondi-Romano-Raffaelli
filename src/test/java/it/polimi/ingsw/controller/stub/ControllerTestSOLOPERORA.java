@@ -49,36 +49,32 @@ public class ControllerTestSOLOPERORA {
         } catch (NullPointerException e){
             assertEquals("remoteView",e.getMessage());
         }
-        gameManager.addRemoteView(PlayerIndex.PLAYER0, remoteView1);
-        try{
-            gameManager.addRemoteView(PlayerIndex.PLAYER0,remoteView1);
-        }catch (AlreadyPresentRemoteViewOfPlayerException e){
-            assertEquals("There already is the remote view of PLAYER0",e.getMessage());
-        }
-        gameManager.addRemoteView(PlayerIndex.PLAYER1, remoteView2);
-        gameManager.addRemoteView(PlayerIndex.PLAYER2, remoteView3);
+
 
         List<String> names = new ArrayList<>(List.of("Tony", "Pasquale", "PiccoloPietro"));
-        obs2.setMsg(new TypeMatchMessage(PlayerIndex.PLAYER1,true));
-        ErrorMessage notGodLike = (ErrorMessage) obs2.getMesRemoteToView().get(0);
-        assertEquals("You can't choose the number of players",notGodLike.getErrorMessage());
-        assertEquals(notGodLike.getSpecificErrorType(),TypeMessage.CANT_CHOOSE_PLAYERS_NUMBER);
+       obs1.setMsg(new TypeMatchMessage(PlayerIndex.PLAYER0, true));
+       gameManager.addRemoteView(PlayerIndex.PLAYER0, remoteView1);
+       obs1.setMsg(new NicknameMessage(PlayerIndex.PLAYER0, names.get(0)));
+       assertEquals(obs1.getMesRemoteToView().size(), 1);
+       NicknameMessage nick = (NicknameMessage) obs1.getMesRemoteToView().get(0);
+       assertEquals(nick.getNickname(), "Tony");
 
-        obs1.setMsg(new TypeMatchMessage(PlayerIndex.PLAYER0, true));
-        obs1.setMsg(new NicknameMessage(PlayerIndex.PLAYER0, names.get(0)));
 
-        assertEquals(obs1.getMesRemoteToView().size(), 1);
-        NicknameMessage nick = (NicknameMessage) obs1.getMesRemoteToView().get(0);
-        assertEquals(nick.getNickname(), "Tony");
+       try{
+           gameManager.addRemoteView(PlayerIndex.PLAYER0,remoteView1);
+       }catch (AlreadyPresentRemoteViewOfPlayerException e){
+           assertEquals("There already is the remote view of PLAYER0",e.getMessage());
+       }
+       gameManager.addRemoteView(PlayerIndex.PLAYER1, remoteView2);
+
+
+
 
         try{
             obs2.update(null);
         }catch (NullPointerException e){
             assertEquals("message",e.getMessage());
         }
-        obs2.setMsg(new NicknameMessage(PlayerIndex.PLAYER1, names.get(0)));
-        ErrorMessage errorNick = (ErrorMessage) obs2.getMesRemoteToView().get(0);
-        assertEquals(errorNick.getErrorMessage(),"There already is a player named " + names.get(0));
 
 
         obs2.setMsg(new NicknameMessage(PlayerIndex.PLAYER1, names.get(1)));
@@ -86,12 +82,18 @@ public class ControllerTestSOLOPERORA {
         NicknameMessage nick2 = (NicknameMessage) obs2.getMesRemoteToView().get(0);
         assertEquals(nick2.getNickname(), "Pasquale");
 
+       obs2.setMsg(new TypeMatchMessage(PlayerIndex.PLAYER1,true));
+       ErrorMessage notGodLike = (ErrorMessage) obs2.getMesRemoteToView().get(0);
+       assertEquals("You can't choose the number of players",notGodLike.getErrorMessage());
+       assertEquals(notGodLike.getSpecificErrorType(),TypeMessage.CANT_CHOOSE_PLAYERS_NUMBER);
+
         obs2.setMsg(new NicknameMessage(PlayerIndex.PLAYER1,names.get(2)));
         ErrorMessage errorPlayer = (ErrorMessage) obs2.getMesRemoteToView().get(0);
         assertEquals(errorPlayer.getErrorMessage(),"You already set your name " + names.get(2));
 
-
+        gameManager.addRemoteView(PlayerIndex.PLAYER2, remoteView3);
         obs3.setMsg(new NicknameMessage(PlayerIndex.PLAYER2, names.get(2)));
+
 
         NicknameMessage nick3 = (NicknameMessage) obs3.getMesRemoteToView().get(0);
         assertEquals(nick3.getNickname(), "PiccoloPietro");

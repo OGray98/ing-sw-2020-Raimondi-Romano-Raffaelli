@@ -61,11 +61,11 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         gameModel.addObserver(remoteViews.get(index));
 
         remoteViews.forEach((key, value) -> {
-            if (!key.equals(index))
-                remoteView.putMessage(
-                        new NicknameMessage(key, gameModel.getNickname(key))
-                );
-        });
+                if (!key.equals(index))
+                    remoteView.putMessage(
+                            new NicknameMessage(key, gameModel.getNickname(key))
+                    );
+            });
         System.out.println("finito");
     }
 
