@@ -209,6 +209,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     public void updateCurrentPlayer(CurrentPlayerMessage message) {
         clientModel.setAmICurrentPlayer(message.getCurrentPlayerIndex() == clientModel.getPlayerIndex());
 
+        //TODO: brutto da fare meglio se si riesce!
         if(clientModel.getCurrentState() == GameState.SELECT_CARD && message.getClient()!=PlayerIndex.PLAYER0){
             showGodSelect(message);
         }
