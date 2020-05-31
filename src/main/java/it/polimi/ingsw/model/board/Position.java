@@ -2,10 +2,13 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.exception.InvalidPositionException;
 
+import java.io.Serializable;
+
 /**
  * Position is a pair of Integer which is used to indicate the position on the board
  */
-public class Position {
+public class Position implements Serializable {
+    private static final long serialVersionUID = -1220918273625120376L;
     public Integer row;
     public Integer col;
 

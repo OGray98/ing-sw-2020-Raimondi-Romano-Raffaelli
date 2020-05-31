@@ -208,6 +208,10 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     @Override
     public void updateCurrentPlayer(CurrentPlayerMessage message) {
         clientModel.setAmICurrentPlayer(message.getCurrentPlayerIndex() == clientModel.getPlayerIndex());
+
+        if(clientModel.getCurrentState() == GameState.SELECT_CARD && message.getClient()!=PlayerIndex.PLAYER0){
+            showGodSelect(message);
+        }
     }
 
     @Override
@@ -229,11 +233,12 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                     this.clientView.showMessage("Player God like is choosing cards");
                 break;
             case SELECT_CARD:
-                if (this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER1)
+                showGodSelect(message);
+               /* if (this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER1)
                     this.clientView.showGodToSelect(this.clientModel.getChosenGodsByGodLike());
                 else
                     this.clientView.showMessage(this.clientModel.getNickname(PlayerIndex.PLAYER1) +
-                            "is choosing his god card");
+                            "is choosing his god card");*/
                 break;
             case GOD_PLAYER_CHOOSE_FIRST_PLAYER:
                 if(this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER0)
@@ -292,6 +297,16 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     public void setClientView(ClientView clientView) {
         this.clientView = clientView;
+    }
+
+
+    public void showGodSelect(Message message){
+        if(this.clientModel.getPlayerIndex().equals(message.getClient())){
+            this.clientView.showGodToSelect(this.clientModel.getChosenGodsByGodLike());
+        }
+        else{
+            this.clientView.showMessage(this.clientModel.getNickname(this.clientModel.getPlayerIndex()) + "is choosing his god card");
+        }
     }
 
 }
