@@ -28,4 +28,6 @@ public interface ControllableByServerMessage {
 
     void updateLoserMessage(LoserMessage message);
 
+    void updateCloseConnectionMessage(CloseConnectionMessage message);
+
 }

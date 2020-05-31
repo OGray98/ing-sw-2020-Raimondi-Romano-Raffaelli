@@ -74,4 +74,12 @@ public interface ControllableByClientMessage {
      * @param message is the input message of type EndTurnMessage
      */
     void handleEndTurnMessage(EndTurnMessage message);
+
+
+    /**
+     * Handle a CloseConnection message.
+     *
+     * @param message is the input message of type EndTurnMessage
+     */
+    void handleCloseConnectionMessage(CloseConnectionMessage message);
 }

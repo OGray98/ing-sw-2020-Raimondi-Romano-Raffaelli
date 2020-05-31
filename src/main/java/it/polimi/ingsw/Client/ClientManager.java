@@ -296,13 +296,20 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         //TODO notificare la view della sconfitta
     }
 
+    @Override
+    public void updateCloseConnectionMessage(CloseConnectionMessage message) {
+        this.clientView.showMessage("Player " + this.clientModel.getNickname(message.getClient()) + "has closed connection!"
+                + "\nGame is finished!");
+        //TODO chiedere al client se vuole fare un'altra partita
+    }
+
     public void setClientView(ClientView clientView) {
         this.clientView = clientView;
     }
 
 
-    public void showGodSelect(Message message){
-        if(this.clientModel.getPlayerIndex().equals(message.getClient())){
+    public void showGodSelect(Message message) {
+        if (this.clientModel.getPlayerIndex().equals(message.getClient())) {
             this.clientView.showGodToSelect(this.clientModel.getChosenGodsByGodLike());
         }
         else{

@@ -686,4 +686,8 @@ public class Game extends Observable<MessageToClient> {
         notify(new LoserMessage(playerIndex, playerIndex));
 
     }
+
+    public void delete(PlayerIndex client) {
+        notify(new CloseConnectionMessage(client));
+    }
 }
