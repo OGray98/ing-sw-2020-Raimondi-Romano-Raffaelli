@@ -358,6 +358,8 @@ public class GUI extends ClientView {
                     LabelLux firsLabelLux = listLuxPosition.get(pos);
                     LevelPane firsLabel = listLayerPosition.get(pos);
                     firsLabel.remove(firsLabelLux);
+                    firsLabel.revalidate();
+                    firsLabel.repaint();
                     listLuxPosition.remove(pos);
                 }
             }
