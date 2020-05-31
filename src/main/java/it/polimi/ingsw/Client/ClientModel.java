@@ -291,21 +291,19 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
      */
     public List<Position> getActionPositions(Position workerPos, ActionType type) {
 
-        List<Position> actions = new ArrayList<>();
-
         if (type == ActionType.POWER){
             if(this.playersPositions.get(playerIndex).get(0).equals(workerPos))
-                actions = powerActionPositionsWorker1;
+                return powerActionPositionsWorker1;
             if(this.playersPositions.get(playerIndex).get(1).equals(workerPos))
-                actions = powerActionPositionsWorker2;
+                return powerActionPositionsWorker2;
         }
         else{
             if(this.playersPositions.get(playerIndex).get(0).equals(workerPos))
-                actions = normalActionPositionsWorker1;
+                return normalActionPositionsWorker1;
             if(this.playersPositions.get(playerIndex).get(1).equals(workerPos))
-                actions = normalActionPositionsWorker2;
+                return normalActionPositionsWorker2;
         }
-        return actions;
+        throw new IllegalStateException("Void list returned!");
     }
 
     /**

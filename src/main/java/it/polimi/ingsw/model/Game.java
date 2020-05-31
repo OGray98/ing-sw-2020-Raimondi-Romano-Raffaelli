@@ -158,17 +158,20 @@ public class Game extends Observable<MessageToClient> {
         //Send position where you can move
         this.board.workerPositions(currentPlayer.getPlayerNum())
                 .forEach(
-                        pos -> notify(
-                                new ActionMessage(
-                                        currentPlayer.getPlayerNum(),
-                                        pos,
-                                        board.getAdjacentCells(pos).stream()
-                                                .filter(cell -> canMoveWorker(cell.getPosition()))
-                                                .map(Cell::getPosition)
-                                                .collect(Collectors.toList()),
-                                        ActionType.MOVE
-                                )
-                        )
+                        pos -> {
+                            currentPlayer.setStartingWorkerSituation(board.getCell(pos), cantGoUp);
+                            notify(
+                                    new ActionMessage(
+                                            currentPlayer.getPlayerNum(),
+                                            pos,
+                                            board.getAdjacentCells(pos).stream()
+                                                    .filter(cell -> canMoveWorker(cell.getPosition()))
+                                                    .map(Cell::getPosition)
+                                                    .collect(Collectors.toList()),
+                                            ActionType.MOVE
+                                    )
+                            );
+                        }
                 );
     }
 
