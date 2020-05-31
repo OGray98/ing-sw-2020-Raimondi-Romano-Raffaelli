@@ -30,6 +30,7 @@ public class ClientManagerTest {
 
     @Test
     public void updateClientTest(){
+        // TODO : da rifare
 
         //Testing updateIndex()
         assertNull(clientModel.getPlayerIndex());
@@ -40,7 +41,7 @@ public class ClientManagerTest {
         clientManager.updateClient(new NicknameMessage(PlayerIndex.PLAYER1, "Rock"));
         assertEquals(clientModel.getNicknames().size(), 1);
         assertNull(clientModel.getPlayerNickname());
-        clientManager.updateClient(new NicknameMessage(PlayerIndex.PLAYER0, "Jack"));
+        clientManager.updateClient(new NicknameMessage(PlayerIndex.PLAYER0,"Jack"));
         assertEquals(clientModel.getNicknames().size(), 2);
         assertEquals(clientModel.getPlayerNickname(), "Jack");
 

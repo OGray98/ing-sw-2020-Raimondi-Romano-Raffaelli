@@ -28,7 +28,6 @@ public class GUI extends ClientView {
     private static final int labelEmptyHeight = getProportionHeight(19, 800, internalFrameEight);
     private static final int ROW_NUM = 5;
     private final ButtonCell[][] buttonCells = new ButtonCell[ROW_NUM][ROW_NUM];
-    //private static JFrame frame;
     private static WelcomeFrame frame;
     private static PrincipalLabel label;
     private static Map<Position,LabelCircle> listLabelPosition = new HashMap<>();
@@ -295,7 +294,7 @@ public class GUI extends ClientView {
 
     @Override
     public void showGodToSelect(List<String> godLikeGods) {
-        godChoiceDialog = new GodChoiceDialog(godLikeGods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
+        godChoiceDialog = new GodChoiceDialog(godLikeGods, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
                 e ->{
                     handleMessage(new PlayerSelectGodMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod().get(0)));
                     frame.dispose();
