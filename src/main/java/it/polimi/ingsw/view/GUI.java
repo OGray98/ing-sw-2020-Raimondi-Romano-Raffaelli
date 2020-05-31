@@ -30,6 +30,7 @@ public class GUI extends ClientView {
     private final ButtonCell[][] buttonCells = new ButtonCell[ROW_NUM][ROW_NUM];
     //private static JFrame frame;
     private static WelcomeFrame frame;
+    private static PrincipalLabel label;
 
 
     private ButtonCircle buttonPower;
@@ -133,8 +134,10 @@ public class GUI extends ClientView {
 
 
         Image image = new ImageIcon(this.getClass().getResource("/SantoriniBoard.png")).getImage().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
-        PrincipalLabel label = new PrincipalLabel(image,new BorderLayout());
+        label = new PrincipalLabel(image,new BorderLayout());
 
+        Image image1 = new ImageIcon(this.getClass().getResource("/Odyssey-Olympus.png")).getImage().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
+        PrincipalLabel label1 = new PrincipalLabel(image1,new BorderLayout());
 
 
 
@@ -173,7 +176,7 @@ public class GUI extends ClientView {
                                 removeActionsFromView(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE));
                                 showActionPositions(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER));
                             }
-                                //if user clicks again on buttonPower normal action cells must be showed
+                            //if user clicks again on buttonPower normal action cells must be showed
                             else{
                                 removeActionsFromView(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER));
                                 showActionPositions(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE));
@@ -223,7 +226,9 @@ public class GUI extends ClientView {
         label.add(panel1,BorderLayout.CENTER);
         //frame.getContentPane().add(label);
 
-        frame = new WelcomeFrame(label);
+        frame = new WelcomeFrame(label1);
+
+
 
 
         //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -263,29 +268,36 @@ public class GUI extends ClientView {
         gods.forEach(
                 god -> godLabels.add(getIconGodProfile(imageContainer.getGodimage(god), god))
         );*/
+        godChoiceDialog = new GodChoiceDialog( gods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
+                e -> {
+                    handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod()));
+                    frame.dispose();
+                    frame = new WelcomeFrame(label);
+                });
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                godChoiceDialog = new GodChoiceDialog(frame, gods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
-                            e -> {
-                                handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod()));
-                                godChoiceDialog.dispose();
-                          });
-                }
+               frame.dispose();
+               frame = new WelcomeFrame(godChoiceDialog);
+
+            }
         });
     }
 
     @Override
     public void showGodToSelect(List<String> godLikeGods) {
+        godChoiceDialog = new GodChoiceDialog(godLikeGods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
+                e ->{
+                    handleMessage(new PlayerSelectGodMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod().get(0)));
+                    frame.dispose();
+                    frame = new WelcomeFrame(label);
+                });
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                godChoiceDialog = new GodChoiceDialog(frame, godLikeGods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
-                        e ->{
-                            handleMessage(new PlayerSelectGodMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod().get(0)));
-                            godChoiceDialog.dispose();
-                        });
-            }
+                frame.dispose();
+                frame = new WelcomeFrame(godChoiceDialog);
+                }
         });
     }
 
@@ -336,25 +348,25 @@ public class GUI extends ClientView {
                 for (Position pos : list) {
                     JLabel firsLabel = (JLabel) buttonCells[pos.row][pos.col].getComponent(buttonCells[pos.row][pos.col].getComponentCount() - 1);
                     if (firsLabel.getComponentCount() != 0 && !(isLabelLux(firsLabel))) {
-                    //Tower 1
-                    JLabel labelT1 = (JLabel) firsLabel.getComponent(firsLabel.getComponentCount() - 1);
-                    if(labelT1.getComponentCount() != 0 && !(isLabelLux(firsLabel))){
-                        //Tower 2
-                        JLabel labelT2 = (JLabel) labelT1.getComponent(labelT1.getComponentCount() - 1);
-                        if(labelT2.getComponentCount() != 0 && !(isLabelLux(labelT1))){
-                         //Tower 3
-                         JLabel labelT3 = (JLabel) labelT2.getComponent(labelT2.getComponentCount() - 1);
-                         labelT3.remove(labelT3.getComponentCount() - 1);
+                        //Tower 1
+                        JLabel labelT1 = (JLabel) firsLabel.getComponent(firsLabel.getComponentCount() - 1);
+                        if(labelT1.getComponentCount() != 0 && !(isLabelLux(firsLabel))){
+                            //Tower 2
+                            JLabel labelT2 = (JLabel) labelT1.getComponent(labelT1.getComponentCount() - 1);
+                            if(labelT2.getComponentCount() != 0 && !(isLabelLux(labelT1))){
+                                //Tower 3
+                                JLabel labelT3 = (JLabel) labelT2.getComponent(labelT2.getComponentCount() - 1);
+                                labelT3.remove(labelT3.getComponentCount() - 1);
+                            }else{
+                                labelT2.remove(labelT2.getComponentCount() - 1);
+                            }
                         }else{
-                        labelT2.remove(labelT2.getComponentCount() - 1);
+                            labelT1.remove(labelT1.getComponentCount() - 1);
                         }
                     }else{
-                     labelT1.remove(labelT1.getComponentCount() - 1);
+                        firsLabel.remove(firsLabel.getComponentCount() - 1);
+                    }
                 }
-                }else{
-                firsLabel.remove(firsLabel.getComponentCount() - 1);
-                }
-            }
             }
         });
     }
@@ -658,7 +670,7 @@ public class GUI extends ClientView {
             public void run() {
                 //god image
                 JLabel godChosen = getIconGodProfile(imageContainer.getGodimage(message.getGodName()), message.getGodName());
-                labelGod.add(godChosen);
+
                 //case when this is the client god
                 if(message.getClient().equals(clientModel.getPlayerIndex())){
                     labelGod.add(godChosen);

@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GodChoiceDialog extends JDialog {
+public class GodChoiceDialog extends JLabel {
 
     private List<String> chosenGod = new ArrayList<>();
     private final ImageContainer imageContainer = new ImageContainer();
@@ -17,16 +17,17 @@ public class GodChoiceDialog extends JDialog {
     private JButton okButton;
 
 
-    public GodChoiceDialog(JFrame frame/* List<JLabel> godsToShow*/,List<String> listGodName, boolean isThreePlayerGame, boolean isGodLike, ActionListener okListener) {
-        super(frame, "God choice");
+    public GodChoiceDialog(/*JFrame frame List<JLabel> godsToShow*/List<String> listGodName, boolean isThreePlayerGame, boolean isGodLike, ActionListener okListener) {
+        super("");
         this.isThreePlayerGame = isThreePlayerGame;
         this.isGodLike = isGodLike;
+        setLayout(new BorderLayout());
 
-        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setPreferredSize(new Dimension(screenSize.width / 2, screenSize.height / 2));
-        setResizable(false);
-        setLocation(screenSize.width / 4, screenSize.height / 4);
+        //this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //setPreferredSize(new Dimension(screenSize.width / 2, screenSize.height / 2));
+        //setResizable(false);
+        //setLocation(screenSize.width / 4, screenSize.height / 4);
 
         //this.view = view;
         GridBagLayout godLayout = new GridBagLayout();
@@ -58,8 +59,8 @@ public class GodChoiceDialog extends JDialog {
         okButton.addActionListener(okListener);
         add(okButton, BorderLayout.SOUTH);
 
-        pack();
-        setMinimumSize(new Dimension(300, 30));
+        //pack();
+        //setMinimumSize(new Dimension(300, 30));
         setVisible(true);
     }
 
@@ -152,13 +153,11 @@ public class GodChoiceDialog extends JDialog {
 
 /*
 package it.polimi.ingsw.view;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 */
 /**
  * Dialog that appears when a player has to select gods,
@@ -167,29 +166,21 @@ import java.util.Map;
  * <p>
  * Reimplementation of the DefaultListCellRenderer to visualize images with the JList
  *//*
-
 public class GodChoiceDialog extends JDialog {
-
     private final JPanel panel = new JPanel();
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final Map<String, Image> imageMap;
     private final ImageContainer container;
-
     public GodChoiceDialog(JFrame frame, List<String> godsToShow, ImageContainer container, boolean threeplayersgame) {
         super(frame, "God choice");
         setLayout(new BorderLayout());
-
         this.container = container;
-
         */
 /**
  * Reimplementation of the DefaultListCellRenderer to visualize images with the JList
  *//*
-
         class GodChoiceDialogRender extends DefaultListCellRenderer {
-
             final Font font = new Font("helvetica", Font.PLAIN, 50);
-
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus){
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -201,13 +192,11 @@ public class GodChoiceDialog extends JDialog {
                 return label;
             }
         }
-
         imageMap = createImageMap(godsToShow);
         JList<Object> list = new JList<>(godsToShow.toArray());
         list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         list.setVisibleRowCount(1);
         list.setCellRenderer(new GodChoiceDialogRender());
-
         if(godsToShow.size() > 3){
             if(threeplayersgame)
                 list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -216,24 +205,19 @@ public class GodChoiceDialog extends JDialog {
         }
         else
             list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
         JScrollPane scrollPane = new JScrollPane(list);
         scrollPane.setPreferredSize(new Dimension(screenSize.width/2,screenSize.height/2));
         //setPreferredSize(new Dimension(screenSize.width - screenSize.width/3,screenSize.height/2));
         setLocation(screenSize.width/5, screenSize.height/4);
         setResizable(false);
-
         add(scrollPane, BorderLayout.NORTH);
-
         JButton okButton = new JButton("OK");
         add(okButton, BorderLayout.SOUTH);
-
         pack();
         //setMinimumSize(new Dimension(screenSize.width/6,screenSize.height/3));
         setPreferredSize(new Dimension((screenSize.width)- screenSize.width/4,screenSize.height/3));
         setVisible(true);
     }
-
     private Map<String, Image> createImageMap(List<String> godsToShow) {
         Map<String, Image> map = new HashMap<>();
         for(String s : godsToShow){
