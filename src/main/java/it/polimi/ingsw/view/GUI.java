@@ -409,7 +409,6 @@ public class GUI extends ClientView {
                 labelButton1.add(labelWorker2);
             }
         });
-        //TODO: aggiungere differenziazione per playerindex!
     }
 
     @Override
