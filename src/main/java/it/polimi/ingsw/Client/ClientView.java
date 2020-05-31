@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.ConnectionPlayerIndex;
 import it.polimi.ingsw.utils.MessageToView;
@@ -56,4 +57,6 @@ public abstract class ClientView extends View implements Observer<MessageToView>
 
     //TODO: serve per rimuovere le celle illuminate
     public abstract void removeActionsFromView();
+
+    public abstract void showActionPositions(List<Position> possiblePosition);
 }

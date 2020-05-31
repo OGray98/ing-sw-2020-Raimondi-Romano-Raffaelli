@@ -2,6 +2,7 @@ package it.polimi.ingsw.ClientViewFactory;
 
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;
+import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.utils.*;
 
 import java.util.List;
@@ -50,6 +51,11 @@ public class CLI extends ClientView {
 
     @Override
     public void removeActionsFromView() {
+
+    }
+
+    @Override
+    public void showActionPositions(List<Position> possiblePosition) {
 
     }
 

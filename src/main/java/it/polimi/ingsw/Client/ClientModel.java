@@ -59,7 +59,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     List<Position> powerActionPositionsWorker1 = new ArrayList<>();
     List<Position> powerActionPositionsWorker2 = new ArrayList<>();
 
-    boolean amICurrentPlayer = false;
+    private boolean amICurrentPlayer = false;
 
     public ClientModel() {
 

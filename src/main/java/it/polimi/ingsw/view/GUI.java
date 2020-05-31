@@ -365,6 +365,7 @@ public class GUI extends ClientView {
         });
     }
 
+
     private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {
         LabelCircle buttonPlayer = null;
         if (playerIndex.equals(PlayerIndex.PLAYER0)) {
@@ -435,7 +436,7 @@ public class GUI extends ClientView {
                     l.revalidate();
                     l.repaint();
                     removeActionsFromView();
-                    listLuxPosition.clear();
+                    //listLuxPosition.clear();
                 });
 
 
@@ -502,6 +503,7 @@ public class GUI extends ClientView {
         });
     }
 
+    @Override
     public void showActionPositions(List<Position> actionPos){
 
         SwingUtilities.invokeLater(new Runnable() {
@@ -518,9 +520,9 @@ public class GUI extends ClientView {
                     labelButton.revalidate();
                     labelButton.repaint();
 
+                }
             }
-        }
-     });
+        });
 
     }
 

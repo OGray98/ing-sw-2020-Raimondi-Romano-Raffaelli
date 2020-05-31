@@ -137,7 +137,7 @@ public class ClientModelTest {
         clientModel.setPlayerIndex(PlayerIndex.PLAYER0);
         assertEquals(PlayerIndex.PLAYER0, clientModel.getPlayerIndex());
         clientModel.setAmICurrentPlayer(true);
-        assertTrue(clientModel.amICurrentPlayer);
+        assertTrue(clientModel.isAmICurrentPlayer());
     }
 
     @After

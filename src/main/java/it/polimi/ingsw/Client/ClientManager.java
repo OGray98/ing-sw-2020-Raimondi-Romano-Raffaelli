@@ -261,7 +261,10 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     @Override
     public void updateAction(ActionMessage message){
-        clientModel.setActionPositions(message);
+        if (clientModel.isAmICurrentPlayer())
+            clientModel.setActionPositions(message);
+        else
+            clientView.showActionPositions(message.getPossiblePosition());
     }
 
     @Override
