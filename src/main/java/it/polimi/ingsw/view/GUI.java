@@ -422,25 +422,27 @@ public class GUI extends ClientView {
         Position oldPos = message.getWorkerPosition();
         Position newPos = message.getMovePosition();
 
-
-        LabelCircle labelWorker = listLabelPosition.get(oldPos);
-        listLabelPosition.remove(oldPos);
-        listLabelPosition.put(newPos, labelWorker);
-
-
-
-
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-
+                //Apollo case
+                LabelCircle labelWorker = listLabelPosition.get(oldPos);
+                listLabelPosition.remove(oldPos);
+                if(listLabelPosition.get(newPos) != null){
+                    LabelCircle labelApollo = listLabelPosition.get(newPos);
+                    listLabelPosition.remove(newPos);
+                    listLabelPosition.put(oldPos,labelApollo);
+                    LevelPane lApollo = listLayerPosition.get(oldPos);
+                    lApollo.add(labelApollo,4);
+                    lApollo.revalidate();
+                    lApollo.repaint();
+                }
+                listLabelPosition.put(newPos, labelWorker);
                 LevelPane l = listLayerPosition.get(newPos);
                 l.add(labelWorker, 4);
                 l.revalidate();
                 l.repaint();
                 removeActionsFromView(clientModel.getActionPositions(oldPos,ActionType.MOVE));
-
-
             }
         });
 
