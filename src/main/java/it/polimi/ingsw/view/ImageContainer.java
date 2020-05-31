@@ -2,6 +2,8 @@ package it.polimi.ingsw.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +18,8 @@ public class ImageContainer {
     private Map<String, Image> gods;
     private Map<String, Image> buttons;
     private Image blueLight;
+    private Image borderGod;
+    private Image[] towerImage = new Image[4];
 
 
     public ImageContainer(){
@@ -43,7 +47,15 @@ public class ImageContainer {
         Image menuButton = new ImageIcon(this.getClass().getResource("/menu_button.png")).getImage();
         Image exitButton = new ImageIcon(this.getClass().getResource("/Exit.png")).getImage();
 
+        Image tower1 = new ImageIcon("src/main/resources/frame_blue.png").getImage();
+        Image tower2 = new ImageIcon("src/main/resources/frame_coral.png").getImage();
+        Image tower3 = new ImageIcon("src/main/resources/frame_yellow.png").getImage();
+        Image tower4 = new ImageIcon("src/main/resources/cm_bg.png").getImage();
 
+        towerImage[0] = tower1;
+        towerImage[1] = tower2;
+        towerImage[2] = tower3;
+        towerImage[3] = tower4;
 
         gods.put("Apollo", apollo);
         gods.put("Artemis", artemis);
@@ -64,6 +76,10 @@ public class ImageContainer {
         buttons.put("buttonExit",exitButton);
 
         blueLight = new ImageIcon("src/main/resources/playermoveindicator_blue.png").getImage();
+        borderGod = new ImageIcon("src/main/resources/clp_frame_gold.png").getImage();
+
+
+
 
     }
 
@@ -75,5 +91,13 @@ public class ImageContainer {
 
     protected Image getBlueLight(){
         return blueLight;
+    }
+
+    protected Image getBorderGod(){
+        return borderGod;
+    }
+
+    protected Image getTowerLevel(int level){
+        return towerImage[level];
     }
 }
