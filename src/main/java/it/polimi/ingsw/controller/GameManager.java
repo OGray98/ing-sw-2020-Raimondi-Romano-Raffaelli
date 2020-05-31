@@ -83,6 +83,7 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
     @Override
     public void update(MessageToServer message) throws NullPointerException {
         if (message == null) throw new NullPointerException("message");
+        System.out.println("Message " + message.getType() + " receive from " + message.getClient());
         message.execute(this);
     }
 

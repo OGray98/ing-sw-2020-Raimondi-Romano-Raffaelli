@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.ConnectionPlayerIndex;
 import it.polimi.ingsw.utils.MessageToView;
@@ -30,10 +29,6 @@ public abstract class ClientView extends View implements Observer<MessageToView>
 
     public abstract void showGodLikeChooseFirstPlayer();
 
-    /**
-     * Method that remove from view the cells of possible actions when they are not needed anymore
-     * */
-    public abstract void removeActionsFromView(List<Position> list);
 
 
     //method from Observer
@@ -58,4 +53,7 @@ public abstract class ClientView extends View implements Observer<MessageToView>
     public void updateClientIndex(ConnectionPlayerIndex message) {
         super.setPlayer(message.getPlayerIndex());
     }
+
+    //TODO: serve per rimuovere le celle illuminate
+    public abstract void removeActionsFromView();
 }

@@ -210,17 +210,20 @@ public class Game extends Observable<MessageToClient> {
         if (this.currentState == GameState.MOVE) {
             this.board.workerPositions(currentPlayer.getPlayerNum())
                     .forEach(
-                            pos -> notify(
-                                    new ActionMessage(
-                                            currentPlayer.getPlayerNum(),
-                                            pos,
-                                            board.getAdjacentCells(pos).stream()
-                                                    .filter(cell -> canUsePowerWorker(cell.getPosition()))
-                                                    .map(Cell::getPosition)
-                                                    .collect(Collectors.toList()),
-                                            ActionType.POWER
-                                    )
-                            )
+                            pos -> {
+                                currentPlayer.setStartingWorkerSituation(board.getCell(pos), cantGoUp);
+                                notify(
+                                        new ActionMessage(
+                                                currentPlayer.getPlayerNum(),
+                                                pos,
+                                                board.getAdjacentCells(pos).stream()
+                                                        .filter(cell -> canUsePowerWorker(cell.getPosition()))
+                                                        .map(Cell::getPosition)
+                                                        .collect(Collectors.toList()),
+                                                ActionType.POWER
+                                        )
+                                );
+                            }
                     );
         } else {
             notify(
@@ -620,8 +623,8 @@ public class Game extends Observable<MessageToClient> {
         List<Cell> cells = new ArrayList<>(sizeList);
         cells.add(board.getCell(powerPos));
         if (sizeList == 2) {
-            int diffRow = powerPos.row - currentPosition.row;
-            int diffCol = powerPos.col - currentPosition.col;
+            int diffRow = powerPos.row - currentPlayer.getCellOccupied().getPosition().row;
+            int diffCol = powerPos.col - currentPlayer.getCellOccupied().getPosition().col;
             int newRow = powerPos.row + diffRow;
             int newCol = powerPos.col + diffCol;
             if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))
@@ -642,8 +645,8 @@ public class Game extends Observable<MessageToClient> {
         List<Position> positions = new ArrayList<>();
         positions.add(powerPos);
         if (sizeMap == 2) {
-            int diffRow = powerPos.row - currentPosition.row;
-            int diffCol = powerPos.col - currentPosition.col;
+            int diffRow = powerPos.row - currentPlayer.getCellOccupied().getPosition().row;
+            int diffCol = powerPos.col - currentPlayer.getCellOccupied().getPosition().col;
             int newRow = powerPos.row + diffRow;
             int newCol = powerPos.col + diffCol;
             if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))

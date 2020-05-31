@@ -38,6 +38,7 @@ public class RemoteView extends View implements Observer<MessageToClient> {
         if (message == null)
             throw new NullPointerException("msg");
         sendUpdates(message);
+        System.out.println("Send message " + message.getType() + " to " + message.getClient());
     }
 
     public void putMessage(MessageToClient msg) throws NullPointerException, WrongAssociationViewPlayerException {
@@ -46,6 +47,7 @@ public class RemoteView extends View implements Observer<MessageToClient> {
         /*if (!(msg.getClient().equals(getPlayer())))
             throw new WrongAssociationViewPlayerException(getPlayer(), msg.getClient());*/
         sendUpdates(msg);
+        System.out.println("Send message " + msg.getType() + " to " + msg.getClient());
     }
 
     public void sendUpdates(MessageToClient message) {

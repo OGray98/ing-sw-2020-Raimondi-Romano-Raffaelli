@@ -155,7 +155,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                 });
         //notify to view
         notify(message);
-        this.isSelectedWorker = false;
+        this.selectedWorkerPos = message.getMovePosition();
     }
 
     /**
@@ -342,6 +342,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         this.normalActionPositionsWorker2.clear();
         this.powerActionPositionsWorker1.clear();
         this.powerActionPositionsWorker2.clear();
+        this.isSelectedWorker = false;
         //TODO selectedWorker? serve una Position da distinguere per capire che non ci sono pedine selezionate
     }
 

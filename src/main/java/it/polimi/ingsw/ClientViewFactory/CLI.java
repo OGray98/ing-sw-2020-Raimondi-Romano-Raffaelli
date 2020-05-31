@@ -2,7 +2,6 @@ package it.polimi.ingsw.ClientViewFactory;
 
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;
-import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.utils.*;
 
 import java.util.List;
@@ -33,11 +32,6 @@ public class CLI extends ClientView {
         
     }
 
-    @Override
-    public void removeActionsFromView(List<Position> list) {
-
-    }
-
 
     @Override
     public String showSelectIP(String message) {
@@ -51,6 +45,11 @@ public class CLI extends ClientView {
 
     @Override
     public void showGetNickname() {
+
+    }
+
+    @Override
+    public void removeActionsFromView() {
 
     }
 

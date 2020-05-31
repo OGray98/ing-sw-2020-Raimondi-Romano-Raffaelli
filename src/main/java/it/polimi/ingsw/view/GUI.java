@@ -9,7 +9,6 @@ import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -182,12 +181,12 @@ public class GUI extends ClientView {
                             buttonPower.click();
                             //if user clicks buttonPower power cells must be showed
                             if(buttonPower.isClicked()){
-                                removeActionsFromView(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE));
+                                removeActionsFromView();
                                 showActionPositions(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER));
                             }
                             //if user clicks again on buttonPower normal action cells must be showed
                             else{
-                                removeActionsFromView(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER));
+                                removeActionsFromView();
                                 showActionPositions(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE));
                             }
                         }
@@ -350,18 +349,18 @@ public class GUI extends ClientView {
 
     //TODO: serve per rimuovere le celle illuminate
     @Override
-    public void removeActionsFromView(List<Position> list) {
+    public void removeActionsFromView() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                for (Position pos : list) {
+                for (Position pos : listLuxPosition.keySet()) {
                     LabelLux firsLabelLux = listLuxPosition.get(pos);
                     LevelPane firsLabel = listLayerPosition.get(pos);
                     firsLabel.remove(firsLabelLux);
                     firsLabel.revalidate();
                     firsLabel.repaint();
-                    listLuxPosition.remove(pos);
                 }
+                listLuxPosition.clear();
             }
         });
     }
@@ -435,7 +434,7 @@ public class GUI extends ClientView {
                     l.add(labelWorker, 4);
                     l.revalidate();
                     l.repaint();
-                    removeActionsFromView(clientModel.getActionPositions(oldPos, ActionType.MOVE));
+                    removeActionsFromView();
                     listLuxPosition.clear();
                 });
 
@@ -462,8 +461,8 @@ public class GUI extends ClientView {
                         LevelPane labelButton = listLayerPosition.get(buildPos);
                         buildLabel.setBounds(getProportionWidth(-3,18,labelEmptyWidth),getProportionHeight(1,19,labelEmptyHeight),getProportionWidth(129,18,labelEmptyWidth),getProportionHeight(126,19,labelEmptyHeight));
                         buildLabel.setOpaque(false);
-                        labelButton.add(buildLabel,1);
-                        removeActionsFromView(clientModel.getActionPositions(myPos,ActionType.MOVE));
+                        labelButton.add(buildLabel, 1);
+                        removeActionsFromView();
                         break;
                     case 2:
                         LevelPane buildCorrect = listLayerPosition.get(buildPos);
@@ -472,8 +471,8 @@ public class GUI extends ClientView {
                         buildLabel1.setIcon(new ImageIcon(imageTowerLevel2));
                         buildLabel1.setOpaque(false);
                         buildLabel1.setBounds(getProportionWidth(2,18,buildCorrect.getWidth()),getProportionHeight(1,15,buildCorrect.getHeight()),getProportionWidth(13,16,buildCorrect.getWidth()),getProportionHeight(17,19,buildCorrect.getHeight()));
-                        buildCorrect.add(buildLabel1,2);
-                        removeActionsFromView(clientModel.getActionPositions(myPos,ActionType.MOVE));
+                        buildCorrect.add(buildLabel1, 2);
+                        removeActionsFromView();
                         break;
                     case 3:
                         LevelPane buildTower2 = listLayerPosition.get(buildPos);
@@ -482,8 +481,8 @@ public class GUI extends ClientView {
                         buildLabel3.setIcon(new ImageIcon(imageTowerLevel3));
                         buildLabel3.setOpaque(false);
                         buildLabel3.setBounds(getProportionWidth(2,18,buildTower2.getWidth()),getProportionHeight(1,16,buildTower2.getHeight()),getProportionWidth(14,17,buildTower2.getWidth()),getProportionHeight(14,16,buildTower2.getHeight()));
-                        buildTower2.add(buildLabel3,3);
-                        removeActionsFromView(clientModel.getActionPositions(myPos,ActionType.MOVE));
+                        buildTower2.add(buildLabel3, 3);
+                        removeActionsFromView();
                         break;
                     case 4:
 
@@ -492,8 +491,8 @@ public class GUI extends ClientView {
                         JButton dome = new JButton();
                         dome.setIcon(new ImageIcon(imageDome));
                         dome.setBounds(getProportionWidth(3,18,build1.getWidth()),getProportionHeight(2,16,build1.getHeight()),getProportionWidth(12,18,build1.getWidth()),getProportionHeight(12,16,build1.getHeight()));
-                        build1.add(dome,4);
-                        removeActionsFromView(clientModel.getActionPositions(myPos,ActionType.MOVE));
+                        build1.add(dome, 4);
+                        removeActionsFromView();
                         break;
                     default:
                         //error
@@ -551,10 +550,7 @@ public class GUI extends ClientView {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                if (listLuxPosition.size() != 0) {
-                    List<Position> luxPos = new ArrayList<>(listLuxPosition.keySet());
-                    removeActionsFromView(luxPos);
-                }
+                if (listLuxPosition.size() != 0) removeActionsFromView();
                 showActionPositions(clientModel.getActionPositions(message.getPosition(), ActionType.MOVE));
             }
         });
