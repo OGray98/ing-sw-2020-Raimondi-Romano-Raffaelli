@@ -41,7 +41,7 @@ public class GUI extends ClientView {
     private ButtonCircle buttonTutorial;
     private ButtonCircle buttonMenu;
 
-    private ImageContainer imageContainer;
+    private static ImageContainer imageContainer = new ImageContainer();
 
     private static GodChoiceDialog godChoiceDialog;
     private static ChoosingPlayerDialog choosePlayerDialog;
@@ -54,7 +54,7 @@ public class GUI extends ClientView {
     private static JLabel getIconGodProfile(Image godImage, String godName) {
 
         JLabel labelBorderGod = new JLabel(godName);
-        Image imageBorderGod = new ImageIcon(("src/main/resources/clp_frame_gold.png")).getImage().getScaledInstance(getProportionWidth(220, 350, labelGodWidth), getProportionHeight(320, 800, labelGodHeight), Image.SCALE_DEFAULT);
+        Image imageBorderGod = imageContainer.getBorderGod().getScaledInstance(getProportionWidth(220, 350, labelGodWidth), getProportionHeight(320, 800, labelGodHeight), Image.SCALE_DEFAULT);
         labelBorderGod.setIcon(new ImageIcon(imageBorderGod));
         int labelBorderGodWidth = getProportionWidth(220, 350, labelGodWidth);
         int labelBorderGodHeight = getProportionHeight(320, 800, labelGodHeight);
@@ -66,7 +66,7 @@ public class GUI extends ClientView {
         buttonGod.setOpaque(false);
         labelBorderGod.add(buttonGod);
         buttonGod.addActionListener(
-                e -> /*godChoiceDialog.selectGod(godName)*/ new GodIconDialog(frame,godName)
+                e -> new GodIconDialog(frame,godName)
         );
         return labelBorderGod;
     }
@@ -133,7 +133,7 @@ public class GUI extends ClientView {
         }
 
         panel1.setOpaque(false);
-        imageContainer = new ImageContainer();
+
 
 
 
@@ -448,6 +448,7 @@ public class GUI extends ClientView {
     @Override
     public void updateBuild(BuildViewMessage message){
         Position buildPos = message.getBuildPosition();
+        Position myPos = clientModel.getSelectedWorkerPos();
         int level = message.getLevel();
 
         SwingUtilities.invokeLater(new Runnable() {
@@ -459,60 +460,44 @@ public class GUI extends ClientView {
 
                 switch (level){  //TODO: è giusto il level?
                     case 1:
-                        Image imageTower = new ImageIcon("src/main/resources/frame_blue.png").getImage().getScaledInstance(getProportionWidth(129,18,labelEmptyWidth),getProportionHeight(126,19,labelEmptyHeight),Image.SCALE_DEFAULT);
+                        Image imageTower = imageContainer.getTowerLevel(0).getScaledInstance(getProportionWidth(129,18,labelEmptyWidth),getProportionHeight(126,19,labelEmptyHeight),Image.SCALE_DEFAULT);
                         buildLabel = new JLabel("");
                         buildLabel.setIcon(new ImageIcon(imageTower));
-                        JLabel labelButton = (JLabel) buttonCells[buildPos.row][buildPos.col].getComponent(buttonCells[buildPos.row][buildPos.col].getComponentCount() - 1);
+                        LevelPane labelButton = listLayerPosition.get(buildPos);
                         buildLabel.setBounds(getProportionWidth(-3,18,labelEmptyWidth),getProportionHeight(1,19,labelEmptyHeight),getProportionWidth(129,18,labelEmptyWidth),getProportionHeight(126,19,labelEmptyHeight));
                         buildLabel.setOpaque(false);
-                        labelButton.add(buildLabel);
-                        //buttonMatrix[buildPos.row][buildPos.col].add(labelButton);
+                        labelButton.add(buildLabel,1);
+                        removeActionsFromView(clientModel.getActionPositions(myPos,ActionType.MOVE));
                         break;
                     case 2:
-                        JLabel buildCorrect0 = (JLabel) buttonCells[buildPos.row][buildPos.col].getComponent(buttonCells[buildPos.row][buildPos.col].getComponentCount() - 1);
-                        JLabel buildCorrect = (JLabel) buildCorrect0.getComponent(buildCorrect0.getComponentCount() - 1);
-                        Image imageTowerLevel2 = new ImageIcon("src/main/resources/frame_coral.png").getImage().getScaledInstance(getProportionWidth(13,16,buildCorrect.getWidth()),getProportionHeight(17,19,buildCorrect.getHeight()),Image.SCALE_DEFAULT);
+                        LevelPane buildCorrect = listLayerPosition.get(buildPos);
+                        Image imageTowerLevel2 = imageContainer.getTowerLevel(1).getScaledInstance(getProportionWidth(13,16,buildCorrect.getWidth()),getProportionHeight(17,19,buildCorrect.getHeight()),Image.SCALE_DEFAULT);
                         JLabel buildLabel1 = new JLabel("");
                         buildLabel1.setIcon(new ImageIcon(imageTowerLevel2));
                         buildLabel1.setOpaque(false);
                         buildLabel1.setBounds(getProportionWidth(2,18,buildCorrect.getWidth()),getProportionHeight(1,15,buildCorrect.getHeight()),getProportionWidth(13,16,buildCorrect.getWidth()),getProportionHeight(17,19,buildCorrect.getHeight()));
-                        buildCorrect.add(buildLabel1);
-                        //buildCorrect0.add(buildCorrect);
-                        //buttonMatrix[buildPos.row][buildPos.col].add(buildCorrect0);
+                        buildCorrect.add(buildLabel1,2);
+                        removeActionsFromView(clientModel.getActionPositions(myPos,ActionType.MOVE));
                         break;
                     case 3:
-                        buildLabel = new JLabel();
-                        buildLabel.setLayout(new BorderLayout());
-                        JLabel buildLabel0 = (JLabel) buttonCells[buildPos.row][buildPos.col].getComponent(buttonCells[buildPos.row][buildPos.col].getComponentCount() - 1);
-                        JLabel buildTower1 = (JLabel) buildLabel0.getComponent(buildLabel0.getComponentCount() - 1);
-                        JLabel buildTower2 = (JLabel) buildTower1.getComponent(buildTower1.getComponentCount() - 1);
+                        LevelPane buildTower2 = listLayerPosition.get(buildPos);
                         JLabel buildLabel3 = new JLabel("");
-                        Image imageTowerLevel3 = new ImageIcon("src/main/resources/frame_yellow.png").getImage().getScaledInstance(getProportionWidth(14,17,buildTower2.getWidth()),getProportionHeight(14,16,buildTower2.getHeight()),Image.SCALE_DEFAULT);
+                        Image imageTowerLevel3 = imageContainer.getTowerLevel(2).getScaledInstance(getProportionWidth(14,17,buildTower2.getWidth()),getProportionHeight(14,16,buildTower2.getHeight()),Image.SCALE_DEFAULT);
                         buildLabel3.setIcon(new ImageIcon(imageTowerLevel3));
                         buildLabel3.setOpaque(false);
                         buildLabel3.setBounds(getProportionWidth(2,18,buildTower2.getWidth()),getProportionHeight(1,16,buildTower2.getHeight()),getProportionWidth(14,17,buildTower2.getWidth()),getProportionHeight(14,16,buildTower2.getHeight()));
-                        buildTower2.add(buildLabel3);
+                        buildTower2.add(buildLabel3,3);
+                        removeActionsFromView(clientModel.getActionPositions(myPos,ActionType.MOVE));
                         break;
                     case 4:
 
-                        JLabel build1 = (JLabel) buttonCells[buildPos.row][buildPos.col].getComponent(buttonCells[buildPos.row][buildPos.col].getComponentCount() - 1);
-                        if(build1.getComponentCount() != 0){ //Case atlas power
-                            //Tower 1
-                            build1 = (JLabel) build1.getComponent(build1.getComponentCount() - 1);
-                            if(build1.getComponentCount() != 0){
-                                //Tower 2
-                                build1 = (JLabel) build1.getComponent(build1.getComponentCount() - 1);
-                                if(build1.getComponentCount() != 0){
-                                    //Tower 3
-                                    build1 = (JLabel) build1.getComponent(build1.getComponentCount() - 1);
-                                }
-                            }
-                        }
-                        Image imageDome = new ImageIcon("src/main/resources/cm_bg.png").getImage().getScaledInstance(getProportionWidth(16,18,build1.getWidth()),getProportionHeight(15,16,build1.getHeight()),Image.SCALE_DEFAULT);
+                        LevelPane build1 = listLayerPosition.get(buildPos);
+                        Image imageDome = imageContainer.getTowerLevel(3).getScaledInstance(getProportionWidth(16,18,build1.getWidth()),getProportionHeight(15,16,build1.getHeight()),Image.SCALE_DEFAULT);
                         JButton dome = new JButton();
                         dome.setIcon(new ImageIcon(imageDome));
                         dome.setBounds(getProportionWidth(3,18,build1.getWidth()),getProportionHeight(2,16,build1.getHeight()),getProportionWidth(12,18,build1.getWidth()),getProportionHeight(12,16,build1.getHeight()));
-                        build1.add(dome);
+                        build1.add(dome,4);
+                        removeActionsFromView(clientModel.getActionPositions(myPos,ActionType.MOVE));
                         break;
                     default:
                         //error
@@ -554,6 +539,8 @@ public class GUI extends ClientView {
                 //case when this is the client god
                 if(message.getClient().equals(clientModel.getPlayerIndex())){
                     labelGod.add(godChosen);
+                    labelGod.revalidate();
+                    labelGod.repaint();
                 }
                 //case when this is not the client god
                 else{
