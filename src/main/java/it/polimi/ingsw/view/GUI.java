@@ -9,6 +9,7 @@ import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -419,7 +420,7 @@ public class GUI extends ClientView {
     }
 
     @Override
-    public void updateMoveWorker(MoveMessage message){
+    public void updateMoveWorker(MoveMessage message) {
         Position oldPos = message.getWorkerPosition();
         Position newPos = message.getMovePosition();
 
@@ -429,21 +430,15 @@ public class GUI extends ClientView {
         listLabelPosition.put(newPos, labelWorker);
 
 
-
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-
-                LevelPane l = listLayerPosition.get(newPos);
-                l.add(labelWorker, 4);
-                l.revalidate();
-                l.repaint();
-                removeActionsFromView(clientModel.getActionPositions(oldPos,ActionType.MOVE));
-
-
-            }
-        });
+        SwingUtilities.invokeLater(
+                () -> {
+                    LevelPane l = listLayerPosition.get(newPos);
+                    l.add(labelWorker, 4);
+                    l.revalidate();
+                    l.repaint();
+                    removeActionsFromView(clientModel.getActionPositions(oldPos, ActionType.MOVE));
+                    listLuxPosition.clear();
+                });
 
     }
 
@@ -557,9 +552,12 @@ public class GUI extends ClientView {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                if (listLuxPosition.size() != 0) {
+                    List<Position> luxPos = new ArrayList<>(listLuxPosition.keySet());
+                    removeActionsFromView(luxPos);
+                }
                 showActionPositions(clientModel.getActionPositions(message.getPosition(), ActionType.MOVE));
             }
         });
     }
-
 }
