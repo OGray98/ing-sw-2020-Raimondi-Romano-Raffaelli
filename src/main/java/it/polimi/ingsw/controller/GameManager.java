@@ -577,9 +577,14 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         gameModel.setCurrentState(GameState.MOVE);
 
         //If current player has been blocked, he loses
-        if(!this.turnManager.canCurrentPlayerMoveAWorker()){
+        if (!this.turnManager.canCurrentPlayerMoveAWorker()) {
             removeLoser(gameModel.getCurrentPlayerIndex());
         }
+    }
+
+    @Override
+    public void handleCloseConnectionMessage(CloseConnectionMessage message) {
+        gameModel.delete(message.getClient());
     }
 
     /**
@@ -587,7 +592,7 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
      * It remove his workers and start the turn of the next player
      * If the remains only one player he wins the game
      */
-    private void removeLoser(PlayerIndex loserIndex){
+    private void removeLoser(PlayerIndex loserIndex) {
         //notify loser payer
         respondOkToRemoteView(
                 loserIndex,
