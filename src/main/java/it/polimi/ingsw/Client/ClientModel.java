@@ -50,6 +50,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     private GameState currentState = GameState.START_GAME;
     private GameState powerGodState = GameState.NULL;
 
+    private boolean isSelectedWorker = false;
     Position selectedWorkerPos;
 
     List<Position> normalActionPositionsWorker1 = new ArrayList<>();
@@ -67,10 +68,13 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                 this.levelsPositions.put(new Position(i, j), 0);
     }
 
-    public void setSelectedWorkerPos(Position selectedWorkerPos){
-        this.selectedWorkerPos = selectedWorkerPos;
-        //notify to view
-        notify(new PositionMessage(playerIndex, selectedWorkerPos, false));
+    public void setSelectedWorkerPos(Position selectedWorkerPos) {
+        if (!this.isSelectedWorker || !selectedWorkerPos.equals(this.selectedWorkerPos)) {
+            this.isSelectedWorker = true;
+            this.selectedWorkerPos = selectedWorkerPos;
+            //notify to view
+            notify(new PositionMessage(playerIndex, selectedWorkerPos, false));
+        }
     }
 
     public Position getSelectedWorkerPos(){
@@ -151,6 +155,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                 });
         //notify to view
         notify(message);
+        this.isSelectedWorker = false;
     }
 
     /**

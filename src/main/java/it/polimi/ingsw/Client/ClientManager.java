@@ -60,9 +60,16 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
             case PUT_WORKER:
                 PositionMessage putMsg = (PositionMessage) message;
 
+                if(this.workersToPut.size() == 2){
+                    this.workersToPut.clear();
+                    this.workersToPut.add(putMsg.getPosition());
+                    break;
+                }
+
                 if(this.workersToPut.size() == 0)
                     this.workersToPut.add(putMsg.getPosition());
-                else{
+                else if(this.workersToPut.size() == 1){
+                    this.workersToPut.add(putMsg.getPosition());
                     sendToServer(new PutWorkerMessage(putMsg.getClient(), this.workersToPut.get(0), putMsg.getPosition()));
                 }
                 break;
@@ -209,6 +216,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     public void updateCurrentPlayer(CurrentPlayerMessage message) {
         clientModel.setAmICurrentPlayer(message.getCurrentPlayerIndex() == clientModel.getPlayerIndex());
 
+        //TODO: brutto da fare meglio se si riesce!
         if(clientModel.getCurrentState() == GameState.SELECT_CARD && message.getClient()!=PlayerIndex.PLAYER0){
             showGodSelect(message);
         }
@@ -273,6 +281,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     @Override
     public void updateMoveMessage(MoveMessage message) {
+        clientModel.setSelectedWorkerPos(message.getMovePosition());
         clientModel.movePlayer(message);
     }
 
