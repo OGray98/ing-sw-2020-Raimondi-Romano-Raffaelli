@@ -9,6 +9,8 @@ import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,8 @@ public class GUI extends ClientView {
     private static Map<Position,LabelCircle> listLabelPosition = new HashMap<>();
     private static Map<Position,LevelPane> listLayerPosition = new HashMap<>();
     private static Map<Position,LabelLux> listLuxPosition = new HashMap<>();
+    private static boolean caseApMin = false;
+    private static LabelCircle labelApMin ;
 
 
     private ButtonCircle buttonPower;
@@ -427,6 +431,10 @@ public class GUI extends ClientView {
         });
     }
 
+    private LabelCircle getLabelMinAp(){
+        return labelApMin;
+    }
+
     @Override
     public void updateMoveWorker(MoveMessage message) {
         Position oldPos = message.getWorkerPosition();
@@ -515,6 +523,12 @@ public class GUI extends ClientView {
                         JButton dome = new JButton();
                         dome.setIcon(new ImageIcon(imageDome));
                         dome.setBounds(getProportionWidth(-2,18,build1.getWidth()),getProportionHeight(-1,16,build1.getHeight()),getProportionWidth(50,18,build1.getWidth()),getProportionHeight(50,16,build1.getHeight()));
+                        dome.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                new ErrorDialog(frame,"DOME LEVEL 4: you can't move on it!");
+                            }
+                        });
                         build1.add(dome, 4);
                         removeActionsFromView();
                         break;
@@ -580,5 +594,32 @@ public class GUI extends ClientView {
             }
         });
     }
+
+
+     /*if(caseApMin){
+        LabelCircle labelMin = getLabelMinAp();
+        listLabelPosition.put(newPos,labelMin);
+        LevelPane lMin = listLayerPosition.get(newPos);
+        lMin.add(labelMin,4);
+        lMin.revalidate();
+        lMin.repaint();
+        caseApMin = false;
+    }else {
+        LabelCircle labelWorker = listLabelPosition.get(oldPos);
+        listLabelPosition.remove(oldPos);
+        if (listLabelPosition.get(newPos) != null) {
+            LabelCircle labelApollo = listLabelPosition.get(newPos);
+            listLabelPosition.remove(newPos);
+            labelApMin = labelApollo;
+            caseApMin = true;
+        }
+        listLabelPosition.put(newPos, labelWorker);
+        LevelPane l = listLayerPosition.get(newPos);
+        l.add(labelWorker, 4);
+        l.revalidate();
+        l.repaint();
+        removeActionsFromView();
+        //listLuxPosition.clear();
+    }*/
 
 }
