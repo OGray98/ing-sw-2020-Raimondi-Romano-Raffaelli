@@ -299,10 +299,13 @@ public class Game extends Observable<MessageToClient> {
      * @param playerIndex is the PlayerIndex of the first player
      */
     public void chooseFirstPlayer(PlayerIndex playerIndex) {
+        for(int i = playerIndex.ordinal();i>0;i--){
+            updateCurrentPlayer();
+        }
         Collections.rotate(players, -playerIndex.ordinal());
         contCurrentPlayer = 0;
         currentPlayer = players.get(contCurrentPlayer);
-        notify(new GodLikeChooseFirstPlayerMessage(currentPlayer.getPlayerNum(), playerIndex));
+        //notify(new GodLikeChooseFirstPlayerMessage(currentPlayer.getPlayerNum(), playerIndex));
     }
 
     public boolean canPutWorker(Position putPosition) throws NullPointerException {
