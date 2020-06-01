@@ -1,9 +1,10 @@
 package it.polimi.ingsw.utils;
 
 import it.polimi.ingsw.Client.ControllableByServerMessage;
+import it.polimi.ingsw.Client.ControllableByViewMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
-public class LoserMessage extends Message implements MessageToClient {
+public class LoserMessage extends Message implements MessageToClient{
 
     private final PlayerIndex loserPlayer;
 

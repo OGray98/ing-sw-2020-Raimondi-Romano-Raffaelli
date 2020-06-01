@@ -1,8 +1,9 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.Client.ControllableByViewMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
-public class OkMessage extends InformationMessage {
+public class OkMessage extends InformationMessage{
 
     public OkMessage(PlayerIndex client, TypeMessage specificOkType, String okMessage) {
         super(client, TypeMessage.OK, specificOkType, okMessage);

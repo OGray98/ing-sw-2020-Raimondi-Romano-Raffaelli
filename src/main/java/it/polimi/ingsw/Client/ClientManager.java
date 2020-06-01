@@ -71,6 +71,11 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                 if(this.workersToPut.size() == 0)
                     this.workersToPut.add(putMsg.getPosition());
                 else if(this.workersToPut.size() == 1){
+                    if(this.workersToPut.get(0).equals(putMsg.getPosition())){
+                        clientView.showMessage("You can't put two workers on the same cell");
+                        this.workersToPut.clear();
+                        break;
+                    }
                     this.workersToPut.add(putMsg.getPosition());
                     sendToServer(new PutWorkerMessage(putMsg.getClient(), this.workersToPut.get(0), putMsg.getPosition()));
                 }
@@ -81,6 +86,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                 //case when player selects a worker
                 if(clientModel.getPlayerIndexPosition(moveMsg.getClient()).contains(moveMsg.getPosition())){
                     clientModel.setSelectedWorkerPos(moveMsg.getPosition());
+                    break;
                 }
                 //case when player want to move or use a power
                 else{
