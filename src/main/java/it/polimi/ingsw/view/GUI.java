@@ -467,7 +467,7 @@ public class GUI extends ClientView {
     @Override
     public void updateBuild(BuildViewMessage message){
         Position buildPos = message.getBuildPosition();
-        Position myPos = clientModel.getSelectedWorkerPos();
+        //Position myPos = clientModel.getSelectedWorkerPos();
         int level = message.getLevel();
 
         SwingUtilities.invokeLater(new Runnable() {
