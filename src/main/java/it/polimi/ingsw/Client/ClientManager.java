@@ -104,6 +104,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                         if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).contains(moveMsg.getPosition()))
                             break;
                         clientView.removeActionsFromView();
+                        clientView.deactivatePower();
                         sendToServer(new UsePowerMessage(moveMsg.getClient(), clientModel.getSelectedWorkerPos(), moveMsg.getPosition()));
                     }
                 }
@@ -144,6 +145,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                     if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).contains(buildMsg.getPosition()))
                         break;
                     clientView.removeActionsFromView();
+                    clientView.deactivatePower();
                     sendToServer(new UsePowerMessage(buildMsg.getClient(), clientModel.getSelectedWorkerPos(), buildMsg.getPosition()));
                 }
                 break;
@@ -152,6 +154,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                 if(message.getType() == TypeMessage.END_TURN){
                     clientModel.clearActionLists();
                     sendToServer(message);
+                    break;
                 }
                 PositionMessage buildPowerMsg = (PositionMessage) message;
 
@@ -167,6 +170,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                     if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).contains(buildPowerMsg.getPosition()))
                         break;
                     clientView.removeActionsFromView();
+                    clientView.deactivatePower();
                     sendToServer(new UsePowerMessage(buildPowerMsg.getClient(), clientModel.getSelectedWorkerPos(), buildPowerMsg.getPosition()));
                 }
                 break;
@@ -263,8 +267,11 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     public void updateAction(ActionMessage message){
         if (clientModel.isAmICurrentPlayer())
             clientModel.setActionPositions(message);
-        else
+        else{
+            //TODO: vanno rimosse le celle vecchie, ma non sempre
+            //show new action cells
             clientView.showActionPositions(message.getPossiblePosition());
+        }
     }
 
     @Override

@@ -182,7 +182,7 @@ public class Game extends Observable<MessageToClient> {
      * @throws InvalidStateException if currentState isn't GameState.BUILD
      */
     public void sendPossibleActionBuildState() throws InvalidStateException {
-        if (this.currentState != GameState.BUILD)
+        if (this.currentState != GameState.BUILD && this.currentState != GameState.SECOND_MOVE)
             throw new InvalidStateException(GameState.MOVE, this.currentState);
 
         //Send position where you can move

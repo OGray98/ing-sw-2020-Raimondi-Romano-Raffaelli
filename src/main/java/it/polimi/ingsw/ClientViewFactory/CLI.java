@@ -89,4 +89,9 @@ public class CLI extends ClientView {
     public void showGodLikeChooseFirstPlayer() {
 
     }
+
+    @Override
+    public void deactivatePower(){
+
+    }
 }

@@ -59,4 +59,10 @@ public abstract class ClientView extends View implements Observer<MessageToView>
     public abstract void removeActionsFromView();
 
     public abstract void showActionPositions(List<Position> possiblePosition);
+
+    /**
+     * Method used to deactivate the god power after using it
+     * called in ClientManager after sending the UsePowerMessage
+     * */
+    public abstract void deactivatePower();
 }

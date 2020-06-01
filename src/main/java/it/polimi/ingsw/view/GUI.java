@@ -203,7 +203,11 @@ public class GUI extends ClientView {
         );
         buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn), Color.WHITE,
                 e -> {
-                    //new WelcomeDialog(new WelcomeFrame(),this);
+                    if(clientModel.getCurrentState() == GameState.ENDPHASE || clientModel.getCurrentState() == GameState.BUILDPOWER){
+                        handleMessage(new EndTurnMessage(clientModel.getPlayerIndex()));
+                    }
+                    else
+                        showMessage("You can't end the turn now");
                 }
         );
         buttonTutorial = new ButtonCircle(new ImageIcon(imageTutorial), Color.WHITE,
@@ -242,6 +246,12 @@ public class GUI extends ClientView {
         //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         //frame.pack();
         //frame.setVisible(true);
+    }
+
+    @Override
+    public void deactivatePower(){
+        if(buttonPower.isClicked())
+            this.buttonPower.click();
     }
 
     private static int getProportionWidth(int dimensionWidth, int oldContainerDimensionWidth, int newContainerWidth){
@@ -365,7 +375,6 @@ public class GUI extends ClientView {
         });
     }
 
-
     private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {
         LabelCircle buttonPlayer = null;
         if (playerIndex.equals(PlayerIndex.PLAYER0)) {
@@ -424,13 +433,26 @@ public class GUI extends ClientView {
         Position newPos = message.getMovePosition();
 
 
-        LabelCircle labelWorker = listLabelPosition.get(oldPos);
-        listLabelPosition.remove(oldPos);
-        listLabelPosition.put(newPos, labelWorker);
+        //LabelCircle labelWorker = listLabelPosition.get(oldPos);
+        //listLabelPosition.remove(oldPos);
+        //listLabelPosition.put(newPos, labelWorker);
 
 
         SwingUtilities.invokeLater(
                 () -> {
+                    //Apollo case
+                    LabelCircle labelWorker = listLabelPosition.get(oldPos);
+                    listLabelPosition.remove(oldPos);
+                    if(listLabelPosition.get(newPos) != null){
+                        LabelCircle labelApollo = listLabelPosition.get(newPos);
+                        listLabelPosition.remove(newPos);
+                        listLabelPosition.put(oldPos,labelApollo);
+                        LevelPane lApollo = listLayerPosition.get(oldPos);
+                        lApollo.add(labelApollo,4);
+                        lApollo.revalidate();
+                        lApollo.repaint();
+                    }
+                    listLabelPosition.put(newPos, labelWorker);
                     LevelPane l = listLayerPosition.get(newPos);
                     l.add(labelWorker, 4);
                     l.revalidate();

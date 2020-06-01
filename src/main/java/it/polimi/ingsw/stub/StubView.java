@@ -92,4 +92,9 @@ public class StubView extends ClientView {
     public void showGodLikeChooseFirstPlayer() {
 
     }
+
+    @Override
+    public void deactivatePower(){
+
+    }
 }
