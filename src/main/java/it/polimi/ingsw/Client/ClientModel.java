@@ -324,12 +324,18 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                 //notify view the cells where is possible to build
                 if(message.getActionType() == ActionType.BUILD)
                     notify(new PositionMessage(playerIndex, message.getWorkerPos(), false));
+                if(message.getActionType() == ActionType.MOVE && this.getCurrentState() == GameState.INITPOWER && message.getWorkerPos().equals(this.selectedWorkerPos)){
+                    notify(new PositionMessage(playerIndex, message.getWorkerPos(), false));
+                }
             }
             else{
                 this.normalActionPositionsWorker2 = message.getPossiblePosition();
                 //notify view the cells where is possible to build
                 if(message.getActionType() == ActionType.BUILD)
                     notify(new PositionMessage(playerIndex, message.getWorkerPos(), false));
+                if(message.getActionType() == ActionType.MOVE && this.getCurrentState() == GameState.INITPOWER && message.getWorkerPos().equals(this.selectedWorkerPos)){
+                    notify(new PositionMessage(playerIndex, message.getWorkerPos(), false));
+                }
             }
         }
     }

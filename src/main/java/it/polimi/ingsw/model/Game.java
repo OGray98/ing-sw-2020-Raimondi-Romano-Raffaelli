@@ -159,7 +159,7 @@ public class Game extends Observable<MessageToClient> {
         this.board.workerPositions(currentPlayer.getPlayerNum())
                 .forEach(
                         pos -> {
-                            currentPlayer.setStartingWorkerSituation(board.getCell(pos), cantGoUp);
+                            currentPlayer.setStartingWorkerSituation(board.getCell(pos), currentPlayer.getCantGoUp());
                             notify(
                                     new ActionMessage(
                                             currentPlayer.getPlayerNum(),
