@@ -269,6 +269,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
             clientModel.setActionPositions(message);
         else{
             //TODO: vanno rimosse le celle vecchie, ma non sempre
+            clientView.removeActionsFromView();
             //show new action cells
             clientView.showActionPositions(message.getPossiblePosition());
         }

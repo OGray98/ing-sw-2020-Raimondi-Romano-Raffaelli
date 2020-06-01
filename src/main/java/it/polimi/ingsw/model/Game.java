@@ -152,7 +152,7 @@ public class Game extends Observable<MessageToClient> {
      * @throws InvalidStateException if currentState isn't GameState.MOVE
      */
     public void sendPossibleActionMoveState() throws InvalidStateException {
-        if (this.currentState != GameState.MOVE)
+        if (this.currentState != GameState.MOVE && this.currentState != GameState.INITPOWER)
             throw new InvalidStateException(GameState.MOVE, this.currentState);
 
         //Send position where you can move
