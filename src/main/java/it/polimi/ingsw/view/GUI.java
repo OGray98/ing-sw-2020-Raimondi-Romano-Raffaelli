@@ -501,20 +501,20 @@ public class GUI extends ClientView {
                     case 3:
                         LevelPane buildTower2 = listLayerPosition.get(buildPos);
                         JLabel buildLabel3 = new JLabel("");
-                        Image imageTowerLevel3 = imageContainer.getTowerLevel(2).getScaledInstance(getProportionWidth(14,17,buildTower2.getWidth()),getProportionHeight(14,16,buildTower2.getHeight()),Image.SCALE_DEFAULT);
+                        Image imageTowerLevel3 = imageContainer.getTowerLevel(2).getScaledInstance(getProportionWidth(11,17,buildTower2.getWidth()),getProportionHeight(12,16,buildTower2.getHeight()),Image.SCALE_DEFAULT);
                         buildLabel3.setIcon(new ImageIcon(imageTowerLevel3));
                         buildLabel3.setOpaque(false);
-                        buildLabel3.setBounds(getProportionWidth(2,18,buildTower2.getWidth()),getProportionHeight(1,16,buildTower2.getHeight()),getProportionWidth(14,17,buildTower2.getWidth()),getProportionHeight(14,16,buildTower2.getHeight()));
+                        buildLabel3.setBounds(getProportionWidth(4,21,buildTower2.getWidth()),getProportionHeight(2,16,buildTower2.getHeight()),getProportionWidth(11,17,buildTower2.getWidth()),getProportionHeight(12,16,buildTower2.getHeight()));
                         buildTower2.add(buildLabel3, 3);
                         removeActionsFromView();
                         break;
                     case 4:
 
                         LevelPane build1 = listLayerPosition.get(buildPos);
-                        Image imageDome = imageContainer.getTowerLevel(3).getScaledInstance(getProportionWidth(16,18,build1.getWidth()),getProportionHeight(15,16,build1.getHeight()),Image.SCALE_DEFAULT);
+                        Image imageDome = imageContainer.getTowerLevel(3).getScaledInstance(getProportionWidth(50,18,build1.getWidth()),getProportionHeight(50,16,build1.getHeight()),Image.SCALE_DEFAULT);
                         JButton dome = new JButton();
                         dome.setIcon(new ImageIcon(imageDome));
-                        dome.setBounds(getProportionWidth(3,18,build1.getWidth()),getProportionHeight(2,16,build1.getHeight()),getProportionWidth(12,18,build1.getWidth()),getProportionHeight(12,16,build1.getHeight()));
+                        dome.setBounds(getProportionWidth(-2,18,build1.getWidth()),getProportionHeight(-1,16,build1.getHeight()),getProportionWidth(50,18,build1.getWidth()),getProportionHeight(50,16,build1.getHeight()));
                         build1.add(dome, 4);
                         removeActionsFromView();
                         break;
