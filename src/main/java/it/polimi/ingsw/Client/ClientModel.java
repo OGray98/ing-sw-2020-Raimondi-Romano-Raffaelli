@@ -201,6 +201,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
      * @param indexLoser PlayerIndex of player who lose
      */
     public void playerLose(PlayerIndex indexLoser) {
+        notify(new RemovePlayerMessage(playerIndex, playersPositions.get(indexLoser)));
         playersPositions.remove(indexLoser);
     }
 

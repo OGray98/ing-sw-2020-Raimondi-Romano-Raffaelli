@@ -32,5 +32,7 @@ public interface ViewModelInterface {
 
     String getNickname(PlayerIndex index);
 
+    List<Position> getPlayerIndexPosition(PlayerIndex playerIndex);
+
     boolean isAmICurrentPlayer();
 }

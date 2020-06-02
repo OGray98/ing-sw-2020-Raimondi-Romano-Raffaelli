@@ -86,6 +86,11 @@ public class CLI extends ClientView {
     }
 
     @Override
+    public void updateRemovePlayer(RemovePlayerMessage message) {
+
+    }
+
+    @Override
     public void showGodLikeChooseFirstPlayer() {
 
     }

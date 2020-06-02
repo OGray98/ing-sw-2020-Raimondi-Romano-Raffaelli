@@ -19,4 +19,9 @@ public interface ControllableByViewMessage {
     public void updateActions(PositionMessage message);
 
     void updateClientIndex(ConnectionPlayerIndex message);
+
+    /**
+     * Method that remove a loser player from the board
+     * */
+    void updateRemovePlayer(RemovePlayerMessage message);
 }

@@ -173,6 +173,15 @@ public class Game extends Observable<MessageToClient> {
                             );
                         }
                 );
+
+        if(this.currentState == GameState.INITPOWER){
+            if(board.getAdjacentCells(currentPosition).stream()
+                    .filter(cell -> canMoveWorker(cell.getPosition()))
+                    .map(Cell::getPosition)
+                    .collect(Collectors.toList()).size()==0){
+                this.removeCurrentPlayer();
+            }
+        }
     }
 
     /**

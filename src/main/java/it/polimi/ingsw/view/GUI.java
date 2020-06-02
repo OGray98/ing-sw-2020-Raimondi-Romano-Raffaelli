@@ -448,8 +448,33 @@ public class GUI extends ClientView {
 
         SwingUtilities.invokeLater(
                 () -> {
+                    if(caseApMin){
+                        LabelCircle labelMin = getLabelMinAp();
+                        listLabelPosition.put(newPos,labelMin);
+                        LevelPane lMin = listLayerPosition.get(newPos);
+                        lMin.add(labelMin,4);
+                        lMin.revalidate();
+                        lMin.repaint();
+                        caseApMin = false;
+                    }else {
+                        LabelCircle labelWorker = listLabelPosition.get(oldPos);
+                        listLabelPosition.remove(oldPos);
+                        if (listLabelPosition.get(newPos) != null) {
+                            LabelCircle labelApollo = listLabelPosition.get(newPos);
+                            listLabelPosition.remove(newPos);
+                            labelApMin = labelApollo;
+                            caseApMin = true;
+                        }
+                        listLabelPosition.put(newPos, labelWorker);
+                        LevelPane l = listLayerPosition.get(newPos);
+                        l.add(labelWorker, 4);
+                        l.revalidate();
+                        l.repaint();
+                        removeActionsFromView();
+                        //listLuxPosition.clear();
+                    }
                     //Apollo case
-                    LabelCircle labelWorker = listLabelPosition.get(oldPos);
+                    /*LabelCircle labelWorker = listLabelPosition.get(oldPos);
                     listLabelPosition.remove(oldPos);
                     if(listLabelPosition.get(newPos) != null){
                         LabelCircle labelApollo = listLabelPosition.get(newPos);
@@ -466,7 +491,7 @@ public class GUI extends ClientView {
                     l.revalidate();
                     l.repaint();
                     removeActionsFromView();
-                    //listLuxPosition.clear();
+                    //listLuxPosition.clear();*/
                 });
 
 
@@ -595,31 +620,21 @@ public class GUI extends ClientView {
         });
     }
 
+    @Override
+    public void updateRemovePlayer(RemovePlayerMessage message) {
 
-     /*if(caseApMin){
-        LabelCircle labelMin = getLabelMinAp();
-        listLabelPosition.put(newPos,labelMin);
-        LevelPane lMin = listLayerPosition.get(newPos);
-        lMin.add(labelMin,4);
-        lMin.revalidate();
-        lMin.repaint();
-        caseApMin = false;
-    }else {
-        LabelCircle labelWorker = listLabelPosition.get(oldPos);
-        listLabelPosition.remove(oldPos);
-        if (listLabelPosition.get(newPos) != null) {
-            LabelCircle labelApollo = listLabelPosition.get(newPos);
-            listLabelPosition.remove(newPos);
-            labelApMin = labelApollo;
-            caseApMin = true;
-        }
-        listLabelPosition.put(newPos, labelWorker);
-        LevelPane l = listLayerPosition.get(newPos);
-        l.add(labelWorker, 4);
-        l.revalidate();
-        l.repaint();
-        removeActionsFromView();
-        //listLuxPosition.clear();
-    }*/
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                for(Position p : message.getRemovePositions()){
+                    LevelPane l = listLayerPosition.get(p);
+                    l.remove(listLabelPosition.get(p));
+                    listLabelPosition.remove(p);
+                    l.revalidate();
+                    l.repaint();
+                }
+            }
+        });
+    }
 
 }

@@ -42,6 +42,11 @@ public class StubView extends ClientView {
     }
 
     @Override
+    public void updateRemovePlayer(RemovePlayerMessage message) {
+
+    }
+
+    @Override
     public void receiveErrorMessage(String error) {
 
     }
