@@ -92,6 +92,11 @@ public class StubView extends ClientView {
 
     }
 
+    @Override
+    public  void showActionPositionsPower(List<Position> possiblePosition){
+
+    }
+
 
     @Override
     public void showGodLikeChooseFirstPlayer() {

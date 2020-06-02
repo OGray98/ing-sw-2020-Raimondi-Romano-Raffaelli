@@ -19,6 +19,7 @@ public class ImageContainer {
     private Map<String, Image> buttons;
     private Image blueLight;
     private Image borderGod;
+    private Image purpleLight;
     private Image[] towerImage = new Image[4];
 
 
@@ -77,6 +78,8 @@ public class ImageContainer {
 
         blueLight = new ImageIcon("src/main/resources/playermoveindicator_blue.png").getImage();
         borderGod = new ImageIcon("src/main/resources/clp_frame_gold.png").getImage();
+        purpleLight = new ImageIcon("src/main/resources/playermoveindicator_purple.png").getImage();
+
 
 
 
@@ -96,6 +99,8 @@ public class ImageContainer {
     protected Image getBorderGod(){
         return borderGod;
     }
+
+    protected Image getPurpleLight(){ return purpleLight;}
 
     protected Image getTowerLevel(int level){
         return towerImage[level];

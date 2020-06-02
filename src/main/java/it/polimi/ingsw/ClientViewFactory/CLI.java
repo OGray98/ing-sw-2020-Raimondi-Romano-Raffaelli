@@ -59,6 +59,11 @@ public class CLI extends ClientView {
 
     }
 
+    @Override
+    public  void showActionPositionsPower(List<Position> possiblePosition){
+
+    }
+
 
     @Override
     public void updatePutWorker(PutWorkerMessage message) {
