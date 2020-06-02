@@ -571,6 +571,10 @@ public class Game extends Observable<MessageToClient> {
                     //notify for move power
                     notify(new MoveMessage(currentPlayer.getPlayerNum(), entry.getKey().getOldPosition(), entry.getKey().getOccupiedPosition()));
                 }
+                else{
+                    //notify view to move the enemy player
+                    notify(new MoveMessage(entry.getValue(), entry.getKey().getOldPosition(), entry.getKey().getOccupiedPosition()));
+                }
             }
         }
         if (!changes.isCantGoUpNull()) {

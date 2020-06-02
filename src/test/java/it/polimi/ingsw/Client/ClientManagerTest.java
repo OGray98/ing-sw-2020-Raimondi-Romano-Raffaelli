@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.board.BuildType;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.stub.StubView;
 import it.polimi.ingsw.utils.*;
 import org.junit.After;
 import org.junit.Before;
@@ -32,6 +33,7 @@ public class ClientManagerTest {
     public void updateClientTest(){
         // TODO : da rifare
 
+        clientManager.setClientView(new StubView(PlayerIndex.PLAYER0, clientModel));
         //Testing updateIndex()
         assertNull(clientModel.getPlayerIndex());
         clientManager.updateClient(new ConnectionPlayerIndex(PlayerIndex.PLAYER0));
@@ -64,7 +66,7 @@ public class ClientManagerTest {
 
         //Testing updateSelectedCard()
         clientManager.updateCurrentPlayer(new CurrentPlayerMessage(PlayerIndex.PLAYER1));
-        clientManager.updateClient(new PlayerSelectGodMessage(PlayerIndex.PLAYER1, "Demeter"));
+        clientManager.updateClient(new PlayerSelectGodMessage(PlayerIndex.PLAYER1, "Apollo"));
         assertNull(clientModel.getClientGod());
         clientManager.updateCurrentPlayer(new CurrentPlayerMessage(PlayerIndex.PLAYER0));
         clientManager.updateClient(new PlayerSelectGodMessage(PlayerIndex.PLAYER0, "Demeter"));

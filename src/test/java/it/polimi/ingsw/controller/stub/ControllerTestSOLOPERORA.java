@@ -157,8 +157,8 @@ public class ControllerTestSOLOPERORA {
         //godlike chooses first player
         obs1.setMsg(new GodLikeChooseFirstPlayerMessage(PlayerIndex.PLAYER0, PlayerIndex.PLAYER2));
 
-        GodLikeChooseFirstPlayerMessage firstP = (GodLikeChooseFirstPlayerMessage) obs1.getMesRemoteToView().get(0);
-        assertEquals(firstP.getPlayerFirst(), PlayerIndex.PLAYER2);
+        CurrentPlayerMessage firstP = (CurrentPlayerMessage) obs1.getMesRemoteToView().get(1);
+        assertEquals(firstP.getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
 
         //Test if is not the selectWorkerPhase
         //obs3.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER2,new Position(0,0)));

@@ -633,7 +633,7 @@ public class GameTest {
         game.build(new Position(3, 1));
 
         //Minotaur can move only in the cell with the enemy
-        assertEquals(game.canPlayerMoveAWorker().size(), 2);
+        assertEquals(game.canPlayerMoveAWorker().size(), 1);
 
         //Put an other worker behind the enemy to block Minotaur power
         game.endTurn();
