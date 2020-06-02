@@ -88,15 +88,9 @@ public class StubView extends ClientView {
     }
 
     @Override
-    public void showActionPositions(List<Position> possiblePosition) {
+    public void showActionPositions(List<Position> possiblePosition, boolean isPowerCells) {
 
     }
-
-    @Override
-    public  void showActionPositionsPower(List<Position> possiblePosition){
-
-    }
-
 
     @Override
     public void showGodLikeChooseFirstPlayer() {

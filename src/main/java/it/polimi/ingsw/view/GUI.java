@@ -186,12 +186,12 @@ public class GUI extends ClientView {
                             //if user clicks buttonPower power cells must be showed
                             if(buttonPower.isClicked()){
                                 removeActionsFromView();
-                                showActionPositionsPower(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER));
+                                showActionPositions(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER),true);
                             }
                             //if user clicks again on buttonPower normal action cells must be showed
                             else{
                                 removeActionsFromView();
-                                showActionPositions(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE));
+                                showActionPositions(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE),false);
                             }
                         }
                         catch(NullPointerException npe){
@@ -565,7 +565,7 @@ public class GUI extends ClientView {
     }
 
     @Override
-    public void showActionPositions(List<Position> actionPos){
+    public void showActionPositions(List<Position> actionPos, boolean isPowerCells){
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -573,7 +573,12 @@ public class GUI extends ClientView {
                 for(Position p : actionPos){
 
                     LevelPane labelButton = listLayerPosition.get(p);
-                    Image blueLight = imageContainer.getBlueLight().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
+                    Image blueLight;
+                    if(!isPowerCells) {
+                         blueLight = imageContainer.getBlueLight().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
+                    }else{
+                         blueLight = imageContainer.getPurpleLight().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
+                    }
                     LabelLux labelIndicator = new LabelLux(blueLight);
                     labelIndicator.setBounds(getProportionWidth(-2, 18, labelEmptyWidth), getProportionHeight(-4, 19, labelEmptyHeight), getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(130, 19, labelEmptyHeight));
                     listLuxPosition.put(p,labelIndicator);
@@ -585,28 +590,6 @@ public class GUI extends ClientView {
             }
         });
 
-    }
-
-    @Override
-    public void showActionPositionsPower(List<Position> possiblePosition){
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                for(Position p : possiblePosition){
-
-                    LevelPane labelButton = listLayerPosition.get(p);
-                    Image blueLight = imageContainer.getPurpleLight().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
-                    LabelLux labelIndicatorPower = new LabelLux(blueLight);
-                    labelIndicatorPower.setBounds(getProportionWidth(-2, 18, labelEmptyWidth), getProportionHeight(-4, 19, labelEmptyHeight), getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(130, 19, labelEmptyHeight));
-                    listLuxPosition.put(p,labelIndicatorPower);
-                    labelButton.add(labelIndicatorPower,labelButton.getLayerPane(0));
-                    labelButton.revalidate();
-                    labelButton.repaint();
-
-                }
-            }
-        });
     }
 
     @Override
@@ -637,7 +620,7 @@ public class GUI extends ClientView {
             @Override
             public void run() {
                 if (listLuxPosition.size() != 0) removeActionsFromView();
-                showActionPositions(clientModel.getActionPositions(message.getPosition(), ActionType.MOVE));
+                showActionPositions(clientModel.getActionPositions(message.getPosition(), ActionType.MOVE),false);
             }
         });
     }

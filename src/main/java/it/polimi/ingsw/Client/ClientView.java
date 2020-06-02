@@ -58,9 +58,9 @@ public abstract class ClientView extends View implements Observer<MessageToView>
     //TODO: serve per rimuovere le celle illuminate
     public abstract void removeActionsFromView();
 
-    public abstract void showActionPositions(List<Position> possiblePosition);
+    public abstract void showActionPositions(List<Position> possiblePosition, boolean isPowerCells);
 
-    public abstract void showActionPositionsPower(List<Position> possiblePosition);
+
 
     /**
      * Method used to deactivate the god power after using it
