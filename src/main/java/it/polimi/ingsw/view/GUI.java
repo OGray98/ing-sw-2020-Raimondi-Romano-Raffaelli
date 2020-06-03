@@ -40,6 +40,7 @@ public class GUI extends ClientView {
     private static Map<PlayerIndex,String> listPlayerGod = new HashMap<>();
     private static boolean caseApMin = false;
     private static LabelCircle labelApMin ;
+    private static LabelCircle firstLabelApMin;
     private static Map<PlayerIndex,String> nicksName = new HashMap<>();
 
 
@@ -117,7 +118,7 @@ public class GUI extends ClientView {
                 listLayerPosition.put(new Position(i,j),new LevelPane());
                 for(Position pos : listLayerPosition.keySet()){
                     if(pos.equals(new Position(i,j))){
-                buttonCells[i][j].add(listLayerPosition.get(pos));
+                        buttonCells[i][j].add(listLayerPosition.get(pos));
                     }
                 }
                 panel1.add(buttonCells[i][j]);
@@ -458,9 +459,6 @@ public class GUI extends ClientView {
         });
     }
 
-    private LabelCircle getLabelMinAp(){
-        return labelApMin;
-    }
 
     @Override
     public void updateMoveWorker(MoveMessage message) {
@@ -476,15 +474,22 @@ public class GUI extends ClientView {
         SwingUtilities.invokeLater(
                 () -> {
                     if(caseApMin){
-                        LabelCircle labelMin = getLabelMinAp();
+                        LabelCircle labelMin = labelApMin;
+                        LabelCircle labelSecond = firstLabelApMin;
                         listLabelPosition.put(newPos,labelMin);
+                        listLabelPosition.put(oldPos,labelSecond);
+                        LevelPane lFirst = listLayerPosition.get(oldPos);
                         LevelPane lMin = listLayerPosition.get(newPos);
+                        lFirst.add(labelSecond,4);
+                        lFirst.revalidate();
+                        lFirst.repaint();
                         lMin.add(labelMin,4);
                         lMin.revalidate();
                         lMin.repaint();
                         caseApMin = false;
                     }else {
                         LabelCircle labelWorker = listLabelPosition.get(oldPos);
+                        firstLabelApMin = labelWorker;
                         LevelPane levelToRemove = listLayerPosition.get(oldPos);
                         listLabelPosition.remove(oldPos);
                         levelToRemove.revalidate();
@@ -497,6 +502,7 @@ public class GUI extends ClientView {
                             lToRemove.repaint();
                             labelApMin = labelApollo;
                             caseApMin = true;
+                            return;
                         }
                         listLabelPosition.put(newPos, labelWorker);
                         LevelPane l = listLayerPosition.get(newPos);
@@ -588,9 +594,9 @@ public class GUI extends ClientView {
                     LevelPane labelButton = listLayerPosition.get(p);
                     Image blueLight;
                     if(!isPowerCells) {
-                         blueLight = imageContainer.getBlueLight().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
+                        blueLight = imageContainer.getBlueLight().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
                     }else{
-                         blueLight = imageContainer.getPurpleLight().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
+                        blueLight = imageContainer.getPurpleLight().getScaledInstance(getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(127, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
                     }
                     LabelLux labelIndicator = new LabelLux(blueLight);
                     labelIndicator.setBounds(getProportionWidth(-2, 18, labelEmptyWidth), getProportionHeight(-4, 19, labelEmptyHeight), getProportionWidth(125, 18, labelEmptyWidth), getProportionHeight(130, 19, labelEmptyHeight));
