@@ -47,6 +47,16 @@ public class StubView extends ClientView {
     }
 
     @Override
+    public void showWinner(OkMessage message) {
+
+    }
+
+    @Override
+    public void showLoser(OkMessage message) {
+        
+    }
+
+    @Override
     public void receiveErrorMessage(String error) {
 
     }

@@ -92,6 +92,16 @@ public class CLI extends ClientView {
     }
 
     @Override
+    public void showWinner(OkMessage message) {
+
+    }
+
+    @Override
+    public void showLoser(OkMessage message) {
+
+    }
+
+    @Override
     public void showGodLikeChooseFirstPlayer() {
 
     }

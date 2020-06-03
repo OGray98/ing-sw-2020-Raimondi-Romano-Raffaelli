@@ -24,4 +24,14 @@ public interface ControllableByViewMessage {
      * Method that remove a loser player from the board
      * */
     void updateRemovePlayer(RemovePlayerMessage message);
+
+    /**
+     * Method that will show the winner at the end of the game
+     * */
+    void showWinner(OkMessage message);
+
+    /**
+     * Method that will show the loser during a game
+     * */
+    void showLoser(OkMessage message);
 }
