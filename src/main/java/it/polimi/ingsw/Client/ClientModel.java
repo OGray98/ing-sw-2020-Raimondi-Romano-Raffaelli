@@ -148,7 +148,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         if (message.getWorkerPosition().equals(message.getMovePosition())) throw new IllegalArgumentException();
 
         this.playersPositions.entrySet().stream()
-                .filter(entry -> entry.getValue().contains(message.getWorkerPosition()))
+                .filter(entry -> entry.getValue().contains(message.getWorkerPosition()) && entry.getKey() == message.getClient())
                 .forEach(entry -> {
                     entry.getValue().remove(message.getWorkerPosition());
                     entry.getValue().add(message.getMovePosition());
@@ -436,47 +436,4 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     public boolean isGodLikeChoosingCards() {
         return this.currentState == GameState.GOD_PLAYER_CHOOSE_CARDS;
     }
-
-    public boolean isCellOccupied(Position cellPos) throws NullPointerException {
-        if (cellPos == null) throw new NullPointerException("cellPos");
-
-        return this.playersPositions.values().stream()
-                .anyMatch(list -> list.stream().anyMatch(e -> e.equals(cellPos)));
-    }
-
-    public void moveTwoWorker(MoveMessage moveOne, MoveMessage moveTwo) {
-
-        PlayerIndex index = this.playerIndex;
-
-        for (Map.Entry<PlayerIndex, List<Position>> entry : this.playersPositions.entrySet()) {
-            for (Position pos : entry.getValue()) {
-                if (pos.equals(moveOne.getWorkerPosition())) {
-                    this.playersPositions.get(entry.getKey())
-                            .remove(pos);
-                    this.playersPositions.get(entry.getKey())
-                            .add(moveOne.getMovePosition());
-                    index = entry.getKey();
-                }
-            }
-        }
-
-        for (Map.Entry<PlayerIndex, List<Position>> entry : this.playersPositions.entrySet()) {
-            if (!entry.getKey().equals(index)) {
-                for (Position pos : entry.getValue()) {
-                    if (pos.equals(moveTwo.getWorkerPosition())) {
-                        this.playersPositions.get(entry.getKey())
-                                .remove(pos);
-                        this.playersPositions.get(entry.getKey())
-                                .add(moveTwo.getMovePosition());
-                        index = entry.getKey();
-                    }
-                }
-            }
-        }
-
-        notify(moveOne);
-        notify(moveTwo);
-
-    }
-
 }
