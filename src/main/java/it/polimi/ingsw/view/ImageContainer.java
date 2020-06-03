@@ -21,6 +21,8 @@ public class ImageContainer {
     private Image borderGod;
     private Image purpleLight;
     private Image[] towerImage = new Image[4];
+    private Image[] imageColorPlayer = new Image[3];
+    private Image imageLabelTerminalPlayerNick;
 
 
     public ImageContainer(){
@@ -52,6 +54,16 @@ public class ImageContainer {
         Image tower2 = new ImageIcon("src/main/resources/frame_coral.png").getImage();
         Image tower3 = new ImageIcon("src/main/resources/frame_yellow.png").getImage();
         Image tower4 = new ImageIcon("src/main/resources/cm_bg.png").getImage();
+
+        Image imageColorBlue = new ImageIcon("src/main/resources/cm_btn_blue.png").getImage();
+        Image imageColorRed = new ImageIcon("src/main/resources/cm_btn_coral.png").getImage();
+        Image imageColorGray = new ImageIcon("src/main/resources/cm_btn_gray.png").getImage();
+
+        imageLabelTerminalPlayerNick = new ImageIcon("src/main/resources/cl_bg.png").getImage();
+
+        imageColorPlayer[0] = imageColorBlue;
+        imageColorPlayer[1] = imageColorRed;
+        imageColorPlayer[2] = imageColorGray;
 
         towerImage[0] = tower1;
         towerImage[1] = tower2;
@@ -105,4 +117,8 @@ public class ImageContainer {
     protected Image getTowerLevel(int level){
         return towerImage[level];
     }
+
+    protected Image getButtonColorPlayer(int numPlayerIndex) { return imageColorPlayer[numPlayerIndex];}
+
+    protected Image getPlayersTerminalNick () { return imageLabelTerminalPlayerNick;}
 }
