@@ -153,9 +153,13 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                     entry.getValue().remove(message.getWorkerPosition());
                     entry.getValue().add(message.getMovePosition());
                 });
+
+        if(message.getClient()==playerIndex){
+            this.selectedWorkerPos = message.getMovePosition();
+        }
+
         //notify to view
         notify(message);
-        this.selectedWorkerPos = message.getMovePosition();
     }
 
     /**
