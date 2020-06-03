@@ -433,7 +433,50 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         throw new IllegalStateException("not valid number of players!");
     }
 
-    public boolean isGodLikeChoosingCards(){
+    public boolean isGodLikeChoosingCards() {
         return this.currentState == GameState.GOD_PLAYER_CHOOSE_CARDS;
     }
+
+    public boolean isCellOccupied(Position cellPos) throws NullPointerException {
+        if (cellPos == null) throw new NullPointerException("cellPos");
+
+        return this.playersPositions.values().stream()
+                .anyMatch(list -> list.stream().anyMatch(e -> e.equals(cellPos)));
+    }
+
+    public void moveTwoWorker(MoveMessage moveOne, MoveMessage moveTwo) {
+
+        PlayerIndex index = this.playerIndex;
+
+        for (Map.Entry<PlayerIndex, List<Position>> entry : this.playersPositions.entrySet()) {
+            for (Position pos : entry.getValue()) {
+                if (pos.equals(moveOne.getWorkerPosition())) {
+                    this.playersPositions.get(entry.getKey())
+                            .remove(pos);
+                    this.playersPositions.get(entry.getKey())
+                            .add(moveOne.getMovePosition());
+                    index = entry.getKey();
+                }
+            }
+        }
+
+        for (Map.Entry<PlayerIndex, List<Position>> entry : this.playersPositions.entrySet()) {
+            if (!entry.getKey().equals(index)) {
+                for (Position pos : entry.getValue()) {
+                    if (pos.equals(moveTwo.getWorkerPosition())) {
+                        this.playersPositions.get(entry.getKey())
+                                .remove(pos);
+                        this.playersPositions.get(entry.getKey())
+                                .add(moveTwo.getMovePosition());
+                        index = entry.getKey();
+                    }
+                }
+            }
+        }
+
+        notify(moveOne);
+        notify(moveTwo);
+
+    }
+
 }

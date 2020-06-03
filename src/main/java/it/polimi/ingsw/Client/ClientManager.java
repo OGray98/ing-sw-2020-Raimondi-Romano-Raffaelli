@@ -3,7 +3,6 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.board.BuildType;
 import it.polimi.ingsw.model.board.Position;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ServerConnection;
 import it.polimi.ingsw.observer.Observer;
@@ -20,6 +19,8 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     private ClientView clientView;
 
     private List<Position> workersToPut = new ArrayList<>();
+    private boolean haveToWait;
+    private MoveMessage waitMessage;
 
     public ClientManager(ServerConnection serverConnection, ClientModel clientModel) {
         this.serverConnection = serverConnection;
@@ -301,8 +302,18 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     @Override
     public void updateMoveMessage(MoveMessage message) {
-        //clientModel.setSelectedWorkerPos(message.getMovePosition());
-        clientModel.movePlayer(message);
+
+        if (!this.haveToWait) {
+            if (this.clientModel.isCellOccupied(message.getMovePosition())) {
+                this.haveToWait = true;
+                this.waitMessage = message;
+            } else
+                clientModel.movePlayer(message);
+        } else {
+            this.clientModel.moveTwoWorker(this.waitMessage, message);
+        }
+
+
     }
 
     @Override
