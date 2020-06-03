@@ -53,7 +53,7 @@ public class StubView extends ClientView {
 
     @Override
     public void showLoser(OkMessage message) {
-        
+
     }
 
     @Override

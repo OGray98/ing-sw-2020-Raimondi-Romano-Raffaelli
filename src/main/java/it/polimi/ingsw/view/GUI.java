@@ -683,4 +683,14 @@ public class GUI extends ClientView {
         });
     }
 
+    @Override
+    public void showWinner(OkMessage message) {
+        //TODO: da implementare
+    }
+
+    @Override
+    public void showLoser(OkMessage message) {
+        //TODO: da implementare
+    }
+
 }
