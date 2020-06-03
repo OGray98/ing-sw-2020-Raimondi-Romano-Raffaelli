@@ -74,24 +74,7 @@ public class GUI extends ClientView {
         return labelBorderGod;
     }
 
-
-    private static boolean isLabelCircle(JLabel component) {
-        if (component.getComponent(component.getComponentCount() - 1) instanceof LabelCircle)
-            return true;
-        return false;
-    }
-
-    private static boolean isLabelLux(JLabel component) {
-        if (component.getComponent(component.getComponentCount() - 1) instanceof LabelLux)
-            return true;
-        return false;
-    }
-
-
     public void initGUI() {
-        //frame = new JFrame("Santorini");
-        //frame.setLocation(FRAME_DIMENSION.width / 8, FRAME_DIMENSION.height / 8);
-
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints lim = new GridBagConstraints();
         lim.ipadx = getProportionWidth(102, 1400, internalFrameWidth);
@@ -139,16 +122,10 @@ public class GUI extends ClientView {
 
 
 
-
-        //frame.setLayout(new BorderLayout());
-        //frame.setPreferredSize(new Dimension(FRAME_WIDTH,FRAME_HEIGHT));
-        //frame.setResizable(false);
-
-
         Image image = new ImageIcon(this.getClass().getResource("/SantoriniBoard.png")).getImage().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
         label = new PrincipalLabel(image,new BorderLayout());
 
-        Image image1 = new ImageIcon(this.getClass().getResource("/Odyssey-Olympus.png")).getImage().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
+        Image image1 = new ImageIcon(this.getClass().getResource("/Santorini.png")).getImage().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
         PrincipalLabel label1 = new PrincipalLabel(image1,new BorderLayout());
 
 
