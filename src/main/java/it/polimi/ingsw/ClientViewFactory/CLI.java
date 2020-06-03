@@ -3,6 +3,7 @@ package it.polimi.ingsw.ClientViewFactory;
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;
 import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.utils.*;
 
 import java.util.List;
@@ -103,6 +104,11 @@ public class CLI extends ClientView {
 
     @Override
     public void showGodLikeChooseFirstPlayer() {
+
+    }
+
+    @Override
+    public void showCurrentPlayer(PlayerIndex currentPlayer) {
 
     }
 

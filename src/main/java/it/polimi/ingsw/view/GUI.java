@@ -377,6 +377,11 @@ public class GUI extends ClientView {
     }
 
     @Override
+    public void showCurrentPlayer(PlayerIndex currentPlayer) {
+        //TODO: da implementare
+    }
+
+    @Override
     public void showGetNickname() {
         SwingUtilities.invokeLater(
                 () -> new WelcomeDialog(frame, this)

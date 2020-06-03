@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.ConnectionPlayerIndex;
 import it.polimi.ingsw.utils.MessageToView;
@@ -30,7 +31,10 @@ public abstract class ClientView extends View implements Observer<MessageToView>
 
     public abstract void showGodLikeChooseFirstPlayer();
 
-
+    /**
+     * Method that show the current player to the view
+     * */
+    public abstract void showCurrentPlayer(PlayerIndex currentPlayer);
 
     //method from Observer
     @Override

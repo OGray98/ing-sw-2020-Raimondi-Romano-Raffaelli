@@ -108,6 +108,11 @@ public class StubView extends ClientView {
     }
 
     @Override
+    public void showCurrentPlayer(PlayerIndex currentPlayer) {
+
+    }
+
+    @Override
     public void deactivatePower(){
 
     }

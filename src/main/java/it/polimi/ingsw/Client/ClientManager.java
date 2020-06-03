@@ -227,6 +227,8 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     @Override
     public void updateCurrentPlayer(CurrentPlayerMessage message) {
         clientModel.setAmICurrentPlayer(message.getCurrentPlayerIndex() == clientModel.getPlayerIndex());
+        //Show current player to the view
+        clientView.showCurrentPlayer(message.getCurrentPlayerIndex());
 
         //TODO: brutto da fare meglio se si riesce!
         if(clientModel.getCurrentState() == GameState.SELECT_CARD && message.getClient()!=PlayerIndex.PLAYER0){
