@@ -2,7 +2,10 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.utils.*;
+import it.polimi.ingsw.utils.MessageToClient;
+import it.polimi.ingsw.utils.MessageToServer;
+import it.polimi.ingsw.utils.PingMessage;
+import it.polimi.ingsw.utils.TypeMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -52,7 +55,7 @@ public class SocketClientConnection extends Observable<MessageToServer> implemen
 
     public synchronized void closeConnection() {
 
-        notify(new CloseConnectionMessage(this.clientIndex));
+        //notify(new CloseConnectionMessage(this.clientIndex));
 
         try {
             out.close();
@@ -132,7 +135,7 @@ public class SocketClientConnection extends Observable<MessageToServer> implemen
 
     @Override
     public void forceDisconnection() {
-        notify(new CloseConnectionMessage(this.clientIndex));
+        //notify(new CloseConnectionMessage(this.clientIndex));
         setIsActiveFalse();
     }
 
