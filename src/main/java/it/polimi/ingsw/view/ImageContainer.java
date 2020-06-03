@@ -23,6 +23,7 @@ public class ImageContainer {
     private Image[] towerImage = new Image[4];
     private Image[] imageColorPlayer = new Image[3];
     private Image imageLabelTerminalPlayerNick;
+    private Image imageWinner;
 
 
     public ImageContainer(){
@@ -59,6 +60,7 @@ public class ImageContainer {
         Image imageColorRed = new ImageIcon("src/main/resources/cm_btn_coral.png").getImage();
         Image imageColorGray = new ImageIcon("src/main/resources/cm_btn_gray.png").getImage();
 
+        imageWinner =  new ImageIcon("src/main/resources/endgame_victorywin.png").getImage();
         imageLabelTerminalPlayerNick = new ImageIcon("src/main/resources/cl_bg.png").getImage();
 
         imageColorPlayer[0] = imageColorBlue;
@@ -121,4 +123,6 @@ public class ImageContainer {
     protected Image getButtonColorPlayer(int numPlayerIndex) { return imageColorPlayer[numPlayerIndex];}
 
     protected Image getPlayersTerminalNick () { return imageLabelTerminalPlayerNick;}
+
+    protected Image getImageWinner () { return imageWinner;}
 }

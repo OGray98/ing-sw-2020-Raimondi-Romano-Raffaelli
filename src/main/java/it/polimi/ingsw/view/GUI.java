@@ -480,10 +480,16 @@ public class GUI extends ClientView {
                         caseApMin = false;
                     }else {
                         LabelCircle labelWorker = listLabelPosition.get(oldPos);
+                        LevelPane levelToRemove = listLayerPosition.get(oldPos);
                         listLabelPosition.remove(oldPos);
+                        levelToRemove.revalidate();
+                        levelToRemove.repaint();
                         if (listLabelPosition.get(newPos) != null) {
                             LabelCircle labelApollo = listLabelPosition.get(newPos);
+                            LevelPane lToRemove = listLayerPosition.get(newPos);
                             listLabelPosition.remove(newPos);
+                            lToRemove.revalidate();
+                            lToRemove.repaint();
                             labelApMin = labelApollo;
                             caseApMin = true;
                         }
@@ -493,27 +499,7 @@ public class GUI extends ClientView {
                         l.revalidate();
                         l.repaint();
                         removeActionsFromView();
-                        //listLuxPosition.clear();
                     }
-                    //Apollo case
-                    /*LabelCircle labelWorker = listLabelPosition.get(oldPos);
-                    listLabelPosition.remove(oldPos);
-                    if(listLabelPosition.get(newPos) != null){
-                        LabelCircle labelApollo = listLabelPosition.get(newPos);
-                        listLabelPosition.remove(newPos);
-                        listLabelPosition.put(oldPos,labelApollo);
-                        LevelPane lApollo = listLayerPosition.get(oldPos);
-                        lApollo.add(labelApollo,4);
-                        lApollo.revalidate();
-                        lApollo.repaint();
-                    }
-                    listLabelPosition.put(newPos, labelWorker);
-                    LevelPane l = listLayerPosition.get(newPos);
-                    l.add(labelWorker, 4);
-                    l.revalidate();
-                    l.repaint();
-                    removeActionsFromView();
-                    //listLuxPosition.clear();*/
                 });
 
 
@@ -682,12 +668,16 @@ public class GUI extends ClientView {
 
     @Override
     public void showWinner(OkMessage message) {
-        //TODO: da implementare
+        //TODO: miss label win and close button
+        Image imageWinner = imageContainer.getImageWinner().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
+        PrincipalLabel labelWinner = new PrincipalLabel(imageWinner);
+        frame.dispose();
+        frame = new WelcomeFrame(labelWinner);
     }
 
     @Override
     public void showLoser(OkMessage message) {
-        //TODO: da implementare
+        showMessage(message.getErrorMessage());
     }
 
 
