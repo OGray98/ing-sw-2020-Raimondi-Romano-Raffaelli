@@ -19,8 +19,6 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     private ClientView clientView;
 
     private List<Position> workersToPut = new ArrayList<>();
-    private boolean haveToWait;
-    private MoveMessage waitMessage;
 
     public ClientManager(ServerConnection serverConnection, ClientModel clientModel) {
         this.serverConnection = serverConnection;
@@ -303,7 +301,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     @Override
     public void updateMoveMessage(MoveMessage message) {
 
-        if (!this.haveToWait) {
+        /*if (!this.haveToWait) {
             if (this.clientModel.isCellOccupied(message.getMovePosition())) {
                 this.haveToWait = true;
                 this.waitMessage = message;
@@ -311,9 +309,8 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                 clientModel.movePlayer(message);
         } else {
             this.clientModel.moveTwoWorker(this.waitMessage, message);
-        }
-
-
+        }*/
+        this.clientModel.movePlayer(message);
     }
 
     @Override
