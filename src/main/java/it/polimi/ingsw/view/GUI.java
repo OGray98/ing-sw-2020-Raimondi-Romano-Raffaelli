@@ -19,6 +19,8 @@ public class GUI extends ClientView {
 
     private JPanel panel1;
     private PrincipalLabel labelGod;
+    private PrincipalLabel labelTerminal;
+    private PrincipalLabel labelNick;
     private static final Dimension FRAME_DIMENSION = Toolkit.getDefaultToolkit().getScreenSize();
     private static final int FRAME_WIDTH = (FRAME_DIMENSION.width/2) * 3/2;
     private static final int FRAME_HEIGHT = (FRAME_DIMENSION.height / 2) * 3/2;
@@ -37,17 +39,23 @@ public class GUI extends ClientView {
     private static Map<Position,LabelLux> listLuxPosition = new HashMap<>();
     private static boolean caseApMin = false;
     private static LabelCircle labelApMin ;
+    private static Map<PlayerIndex,String> nicksName = new HashMap<>();
 
 
     private ButtonCircle buttonPower;
     private ButtonCircle buttonEndTurn;
     private ButtonCircle buttonTutorial;
     private ButtonCircle buttonMenu;
+    private JButton buttonPlayerRed;
+    private JButton buttonPlayerBlue;
+    private JButton buttonPlayerGray;
 
     private static ImageContainer imageContainer = new ImageContainer();
 
     private static GodChoiceDialog godChoiceDialog;
     private static ChoosingPlayerDialog choosePlayerDialog;
+    private static final int labelTerminalWidth = getProportionWidth(350,1400,internalFrameWidth);
+    private static final int labelTerminalEight = getProportionHeight(800,800,internalFrameEight);
 
 
     public GUI(ViewModelInterface clientModel) {
@@ -130,10 +138,9 @@ public class GUI extends ClientView {
 
 
 
-        final int labelTerminalWidth = getProportionWidth(350,1400,internalFrameWidth);
-        final int labelTerminalEight = getProportionHeight(800,800,internalFrameEight);
+
         Image imageTerminal = new ImageIcon(this.getClass().getResource("/bg_panelEdgeLeft.png")).getImage().getScaledInstance(labelTerminalWidth,labelTerminalEight,Image.SCALE_DEFAULT);
-        PrincipalLabel labelTerminal = new PrincipalLabel(imageTerminal);
+        labelTerminal = new PrincipalLabel(imageTerminal);
 
 
 
@@ -143,6 +150,33 @@ public class GUI extends ClientView {
         Image imageGod = new ImageIcon(this.getClass().getResource("/bg_panelEdgeRight.png")).getImage().getScaledInstance(labelGodWidth,labelGodHeight,Image.SCALE_DEFAULT);
         labelGod = new PrincipalLabel(imageGod);
 
+        Image imageNick = imageContainer.getPlayersTerminalNick().getScaledInstance(getProportionWidth(200, 350, labelTerminalWidth), getProportionHeight(250, 800, labelTerminalEight),Image.SCALE_DEFAULT);
+        labelNick = new PrincipalLabel(imageNick);
+        labelNick.setBounds(getProportionWidth(80,350,labelTerminalWidth),getProportionHeight(190,800,labelTerminalEight),getProportionWidth(200,350,labelTerminalWidth),getProportionHeight(250,800,labelTerminalEight));
+        /*JLabel labelNickName = new JLabel("Jackor");
+        JLabel labelNickName2 = new JLabel("Lorenz");
+        JLabel labelNickName3 = new JLabel("Creed");*/
+        buttonPlayerBlue = new JButton();
+        buttonPlayerRed = new JButton();
+        buttonPlayerGray = new JButton();
+        Image imageButtonBlue = imageContainer.getButtonColorPlayer(0).getScaledInstance(getProportionWidth(100,350,labelNick.getWidth()),getProportionHeight(100,800,labelNick.getHeight()),Image.SCALE_DEFAULT);
+        Image imageButtonRed = imageContainer.getButtonColorPlayer(1).getScaledInstance(getProportionWidth(100,350,labelNick.getWidth()),getProportionHeight(100,800,labelNick.getHeight()),Image.SCALE_DEFAULT);
+        Image imageButtonGray = imageContainer.getButtonColorPlayer(2).getScaledInstance(getProportionWidth(100,350,labelNick.getWidth()),getProportionHeight(100,800,labelNick.getHeight()),Image.SCALE_DEFAULT);
+        buttonPlayerBlue.setIcon(new ImageIcon(imageButtonBlue));
+        buttonPlayerRed.setIcon(new ImageIcon(imageButtonRed));
+        buttonPlayerGray.setIcon(new ImageIcon(imageButtonGray));
+        buttonPlayerBlue.setBounds(getProportionWidth(245,350,labelNick.getWidth()),getProportionHeight(150,800,labelNick.getHeight()),getProportionWidth(100,350,labelNick.getWidth()),getProportionHeight(100,800,labelNick.getHeight()));
+        buttonPlayerRed.setBounds(getProportionWidth(245,350,labelNick.getWidth()),getProportionHeight(300,800,labelNick.getHeight()),getProportionWidth(100,350,labelNick.getWidth()),getProportionHeight(100,800,labelNick.getHeight()));
+        buttonPlayerGray.setBounds(getProportionWidth(245,350,labelNick.getWidth()),getProportionHeight(445,800,labelNick.getHeight()),getProportionWidth(100,350,labelNick.getWidth()),getProportionHeight(100,800,labelNick.getHeight()));
+        /*labelNickName.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(80,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
+        labelNickName2.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(240,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
+        labelNickName3.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(390,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));*/
+        labelNick.add(buttonPlayerGray);
+        labelNick.add(buttonPlayerRed);
+        labelNick.add(buttonPlayerBlue);
+        /*labelNick.add(labelNickName);
+        labelNick.add(labelNickName2);
+        labelNick.add(labelNickName3);*/
 
 
         //Image of button
@@ -211,6 +245,7 @@ public class GUI extends ClientView {
         labelGod.add(buttonEndTurn);
         labelTerminal.add(buttonTutorial);
         labelTerminal.add(buttonMenu);
+        labelTerminal.add(labelNick);
 
 
 
@@ -267,11 +302,26 @@ public class GUI extends ClientView {
         gods.forEach(
                 god -> godLabels.add(getIconGodProfile(imageContainer.getGodimage(god), god))
         );*/
+        JLabel labelNick1 = new JLabel(clientModel.getNickname(PlayerIndex.PLAYER0));
+        labelNick1.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(80,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
+        labelNick.add(labelNick1);
+        JLabel labelNick2 = new JLabel(clientModel.getNickname(PlayerIndex.PLAYER1));
+        labelNick2.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(240,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
+        labelNick.add(labelNick2);
+        if(clientModel.isThreePlayersGame()){
+            JLabel labelNick3 = new JLabel(clientModel.getNickname(PlayerIndex.PLAYER2));
+            labelNick3.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(390,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
+            labelNick.add(labelNick3);
+        }else{
+            labelNick.remove(buttonPlayerGray);
+        }
         godChoiceDialog = new GodChoiceDialog( gods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
                 e -> {
                     handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod()));
                     frame.dispose();
                     frame = new WelcomeFrame(label);
+                    labelNick.revalidate();
+                    labelNick.repaint();
                 });
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -285,11 +335,26 @@ public class GUI extends ClientView {
 
     @Override
     public void showGodToSelect(List<String> godLikeGods) {
+        JLabel labelNick1 = new JLabel(clientModel.getNickname(PlayerIndex.PLAYER0));
+        labelNick1.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(80,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
+        labelNick.add(labelNick1);
+        JLabel labelNick2 = new JLabel(clientModel.getNickname(PlayerIndex.PLAYER1));
+        labelNick2.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(240,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
+        labelNick.add(labelNick2);
+        if(clientModel.isThreePlayersGame()){
+            JLabel labelNick3 = new JLabel(clientModel.getNickname(PlayerIndex.PLAYER2));
+            labelNick3.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(390,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
+            labelNick.add(labelNick3);
+        }else{
+            labelNick.remove(buttonPlayerGray);
+        }
         godChoiceDialog = new GodChoiceDialog(godLikeGods, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
                 e ->{
                     handleMessage(new PlayerSelectGodMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod().get(0)));
                     frame.dispose();
                     frame = new WelcomeFrame(label);
+                    labelNick.revalidate();
+                    labelNick.repaint();
                 });
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -314,7 +379,6 @@ public class GUI extends ClientView {
 
     @Override
     public void showGodLikeChooseFirstPlayer() {
-        Map<PlayerIndex,String> nicksName = new HashMap<>();
         nicksName.put(PlayerIndex.PLAYER0,clientModel.getNickname(PlayerIndex.PLAYER0));
         nicksName.put(PlayerIndex.PLAYER1,clientModel.getNickname(PlayerIndex.PLAYER1));
         if(clientModel.isThreePlayersGame()){
@@ -368,7 +432,7 @@ public class GUI extends ClientView {
             buttonPlayer.setBounds(getProportionWidth(37, 18, labelEmptyWidth), getProportionHeight(34, 19, labelEmptyHeight), getProportionWidth(53, 18, labelEmptyWidth), getProportionHeight(53, 19, labelEmptyHeight));
         }else if(playerIndex.equals(PlayerIndex.PLAYER2)) {
             Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(getProportionWidth(50, 18, labelEmptyWidth), getProportionHeight(50, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
-            buttonPlayer = new LabelCircle(new ImageIcon(imagePlayer), Color.CYAN);
+            buttonPlayer = new LabelCircle(new ImageIcon(imagePlayer), Color.DARK_GRAY);
             buttonPlayer.setBounds(getProportionWidth(37, 18, labelEmptyWidth), getProportionHeight(34, 19, labelEmptyHeight), getProportionWidth(53, 18, labelEmptyWidth), getProportionHeight(53, 19, labelEmptyHeight));
         }
 
@@ -617,6 +681,16 @@ public class GUI extends ClientView {
                 }
             }
         });
+    }
+
+    @Override
+    public void showWinner(OkMessage message) {
+        //TODO: da implementare
+    }
+
+    @Override
+    public void showLoser(OkMessage message) {
+        //TODO: da implementare
     }
 
 }

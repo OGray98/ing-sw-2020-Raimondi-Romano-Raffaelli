@@ -594,23 +594,26 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
      * If the remains only one player he wins the game
      */
     private void removeLoser(PlayerIndex loserIndex) {
-        //notify loser payer
-        respondOkToRemoteView(
-                loserIndex,
-                "You have lost!",
-                TypeMessage.LOSER
-        );
         //remove loser player
         gameModel.removeCurrentPlayer();
+
+        //notify loser payer
+        if(gameModel.getNumGamingPlayer() > 1){
+            respondMessageToAll(
+                    gameModel.getNickname(loserIndex) + " has lost!",
+                    TypeMessage.LOSER
+            );
+        }
+
         //if only 1 player remains he wins the game!
         if(gameModel.getNumGamingPlayer() == 1){
-            respondOkToRemoteView(
-                    gameModel.getCurrentPlayerIndex(),
-                    "You win!",
+            //Set state
+            gameModel.endTurn();
+            gameModel.setCurrentState(GameState.MATCH_ENDED);
+            respondMessageToAll(
+                    gameModel.getNickname(gameModel.getCurrentPlayerIndex()) + " has won the game!",
                     TypeMessage.WINNER
             );
-            //Set state
-            gameModel.setCurrentState(GameState.MATCH_ENDED);
         }
         else {
             //Set state and start new turn of other player
