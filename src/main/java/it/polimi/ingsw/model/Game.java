@@ -156,32 +156,44 @@ public class Game extends Observable<MessageToClient> {
             throw new InvalidStateException(GameState.MOVE, this.currentState);
 
         //Send position where you can move
-        this.board.workerPositions(currentPlayer.getPlayerNum())
-                .forEach(
-                        pos -> {
-                            currentPlayer.setStartingWorkerSituation(board.getCell(pos), currentPlayer.getCantGoUp());
-                            notify(
-                                    new ActionMessage(
-                                            currentPlayer.getPlayerNum(),
-                                            pos,
-                                            board.getAdjacentCells(pos).stream()
-                                                    .filter(cell -> canMoveWorker(cell.getPosition()))
-                                                    .map(Cell::getPosition)
-                                                    .collect(Collectors.toList()),
-                                            ActionType.MOVE
-                                    )
-                            );
-                        }
-                );
+        if (this.currentState == GameState.MOVE) {
 
-        if(this.currentState == GameState.INITPOWER){
-            if(board.getAdjacentCells(currentPosition).stream()
-                    .filter(cell -> canMoveWorker(cell.getPosition()))
-                    .map(Cell::getPosition)
-                    .collect(Collectors.toList()).size()==0){
+            this.board.workerPositions(currentPlayer.getPlayerNum())
+                    .forEach(
+                            pos -> {
+                                currentPlayer.setStartingWorkerSituation(board.getCell(pos), currentPlayer.getCantGoUp());
+                                notify(
+                                        new ActionMessage(
+                                                currentPlayer.getPlayerNum(),
+                                                pos,
+                                                board.getAdjacentCells(pos).stream()
+                                                        .filter(cell -> canMoveWorker(cell.getPosition()))
+                                                        .map(Cell::getPosition)
+                                                        .collect(Collectors.toList()),
+                                                ActionType.MOVE
+                                        )
+                                );
+                            }
+                    );
+        } else {    //Prometeo
+            if (board.getAdjacentCells(currentPosition).stream()
+                    .noneMatch(cell -> canMoveWorker(cell.getPosition()))) {
                 this.removeCurrentPlayer();
+            } else {
+                notify(
+                        new ActionMessage(
+                                currentPlayer.getPlayerNum(),
+                                currentPosition,
+                                board.getAdjacentCells(currentPosition).stream()
+                                        .filter(cell -> canMoveWorker(cell.getPosition()))
+                                        .map(Cell::getPosition)
+                                        .collect(Collectors.toList()),
+                                ActionType.MOVE
+                        )
+                );
             }
         }
+
     }
 
     /**
@@ -590,6 +602,7 @@ public class Game extends Observable<MessageToClient> {
             cantGoUp = changes.getCantGoUp();
             contEffect = numPlayer;
         }
+
     }
 
     /**
