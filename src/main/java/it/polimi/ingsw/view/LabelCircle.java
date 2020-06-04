@@ -44,7 +44,7 @@ public class LabelCircle extends JLabel {
         int gre = b1.getGreen();
         int blu = b1.getBlue();
         Color newC = new Color(red - 30, gre - 30, blu - 30);
-        GradientPaint gr = new GradientPaint(0 + 10, 0 + 10, c2, getSize().width - 10, getSize().height - 10, c1);
+        GradientPaint gr = new GradientPaint( 10,  10, c2, getSize().width - 10, getSize().height - 10, c1);
         g2.setPaint(gr);
         g2.fillOval(0, 0, getSize().width - 1, getSize().height - 1);
         g2.setColor(b1);
