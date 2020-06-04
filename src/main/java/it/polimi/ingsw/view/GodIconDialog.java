@@ -65,6 +65,7 @@ public class GodIconDialog extends GameDialog implements ActionListener {
         godProfile.put("Prometheus","If your Worker does not move up, it may build both before and after moving.");
         godProfile.put("Zeus","Your worker may build a block under itself.");
         godProfile.put("Hestia","Your worker may build one additional time, but this cannot be on a perimeter space.");
+        godProfile.put("Triton","Each time your worker moves into a perimeter space, it may immediately move again.");
     }
 
     private String getPower(String nameGod){

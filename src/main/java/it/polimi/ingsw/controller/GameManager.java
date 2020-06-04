@@ -532,7 +532,8 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
                 gameModel.getCurrentPlayerGodName().equals("Artemis") ||
                 gameModel.getCurrentPlayerGodName().equals("Athena") ||
                 gameModel.getCurrentPlayerGodName().equals("Minotaur") ||
-                gameModel.getCurrentPlayerGodName().equals("Pan")){
+                gameModel.getCurrentPlayerGodName().equals("Pan") ||
+                gameModel.getCurrentPlayerGodName().equals("Triton")){
 
             if(this.turnManager.hasWonWithMovement()){
                 gameModel.setCurrentState(GameState.MATCH_ENDED);

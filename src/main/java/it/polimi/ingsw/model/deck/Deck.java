@@ -22,10 +22,11 @@ public class Deck {
                     new PanDecorator(),
                     new PrometheusDecorator(),
                     new ZeusDecorator(),
-                    new HestiaDecorator()
+                    new HestiaDecorator(),
+                    new TritonDecorator()
             )
     );
-    public final static int size = 11;
+    public final static int size = 12;
     private int playersNumber;
 
     public Deck() {

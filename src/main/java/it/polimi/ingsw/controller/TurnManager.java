@@ -231,8 +231,12 @@ public class TurnManager {
 
         gameInstance.usePowerWorker(powerPos);
 
-        if (gameInstance.getCurrentPlayerWorkersPosition().contains(powerPos))
+        if (gameInstance.getCurrentPlayerWorkersPosition().contains(powerPos)){
+            currentPlayerWorkersPosition.remove(workerPos);
+            currentPlayerWorkersPosition.add(powerPos);
+            movableWorkersPosition = gameInstance.canPlayerMoveAWorker();
             workerMovedPosition = powerPos;
+        }
         else
             workerMovedPosition = workerPos;
     }

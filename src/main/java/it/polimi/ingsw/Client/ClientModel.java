@@ -65,6 +65,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     public ClientModel() {
 
         gods.put("Hestia","Your worker may build one additional time, but this cannot be on a perimeter space.");
+        gods.put("Triton","Each time your worker moves into a perimeter space, it may immediately move again.");
 
         for (int i = 0; i < Board.NUM_ROW; i++)
             for (int j = 0; j < Board.NUM_COLUMNS; j++)
@@ -403,6 +404,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
             case "Artemis":
             case "Atlas":
             case "Zeus":
+            case "Triton":
                 this.powerGodState = GameState.BUILD;
                 break;
             case "Demeter":
