@@ -92,7 +92,7 @@ public class GameTest {
 
     @Test
     public void getCardsTest() {
-        assertEquals(10, game.getCards().size());
+        assertEquals(11, game.getCards().size());
         Map<String, String> decks = game.getCards();
         for (String godName : decks.keySet()) {
             assertEquals(decks.get(godName), game.getDeck().getGodCard(godName).getGodDescription());
