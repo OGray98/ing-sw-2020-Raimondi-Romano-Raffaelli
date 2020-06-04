@@ -40,7 +40,8 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                     "Hephaestus", "Your Worker may build one additional block (not dome) on top of your first block.",
                     "Minotaur", "our Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.",
                     "Pan", "You also win if your Worker moves down two or more levels.",
-                    "Prometheus", "If your Worker does not move up, it may build both before and after moving."
+                    "Prometheus", "If your Worker does not move up, it may build both before and after moving.",
+                    "Zeus", "Your worker may build a block under itself."
             )
     );
     private final Map<PlayerIndex, String> chosenGods = new HashMap<>(2);
@@ -62,6 +63,9 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     private boolean amICurrentPlayer = false;
 
     public ClientModel() {
+
+        gods.put("Hestia","Your worker may build one additional time, but this cannot be on a perimeter space.");
+        gods.put("Triton","Each time your worker moves into a perimeter space, it may immediately move again.");
 
         for (int i = 0; i < Board.NUM_ROW; i++)
             for (int j = 0; j < Board.NUM_COLUMNS; j++)
@@ -399,10 +403,13 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                 break;
             case "Artemis":
             case "Atlas":
+            case "Zeus":
+            case "Triton":
                 this.powerGodState = GameState.BUILD;
                 break;
             case "Demeter":
             case "Hephaestus":
+            case "Hestia":
                 this.powerGodState = GameState.ENDPHASE;
                 break;
             default:

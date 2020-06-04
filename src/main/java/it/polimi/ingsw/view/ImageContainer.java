@@ -30,8 +30,6 @@ public class ImageContainer {
         gods = new HashMap<>();
         buttons = new HashMap<>();
 
-        //TODO : aggiungere anche la mappa e i due pannelli?
-
         Image apollo = new ImageIcon("src/main/resources/god_cards/Apollo.png").getImage();
         Image artemis = new ImageIcon("src/main/resources/god_cards/Artemis.png").getImage();
         Image athena = new ImageIcon("src/main/resources/god_cards/Athena.png").getImage();
@@ -41,6 +39,9 @@ public class ImageContainer {
         Image minotaur = new ImageIcon("src/main/resources/god_cards/Minotaur.png").getImage();
         Image pan = new ImageIcon("src/main/resources/god_cards/Pan.png").getImage();
         Image prometheus = new ImageIcon("src/main/resources/god_cards/Prometheus.png").getImage();
+        Image zeus = new ImageIcon("src/main/resources/god_cards/Zeus.png").getImage();
+        Image hestia = new ImageIcon("src/main/resources/god_cards/Hestia.png").getImage();
+        Image triton = new ImageIcon("src/main/resources/god_cards/Triton.png").getImage();
 
         //Buttons image
         Image moveButton = new ImageIcon("src/main/resources/castorpollux_bothMove.png").getImage();
@@ -81,6 +82,9 @@ public class ImageContainer {
         gods.put("Minotaur", minotaur);
         gods.put("Pan", pan);
         gods.put("Prometheus", prometheus);
+        gods.put("Zeus", zeus);
+        gods.put("Hestia", hestia);
+        gods.put("Triton", triton);
 
         buttons.put("buttonMove",moveButton);
         buttons.put("buttonBuild",buildButton);
