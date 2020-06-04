@@ -42,6 +42,7 @@ public class ImageContainer {
         Image zeus = new ImageIcon("src/main/resources/god_cards/Zeus.png").getImage();
         Image hestia = new ImageIcon("src/main/resources/god_cards/Hestia.png").getImage();
         Image triton = new ImageIcon("src/main/resources/god_cards/Triton.png").getImage();
+        Image charon = new ImageIcon("src/main/resources/god_cards/Charon.png").getImage();
 
         //Buttons image
         Image moveButton = new ImageIcon("src/main/resources/castorpollux_bothMove.png").getImage();
@@ -85,6 +86,7 @@ public class ImageContainer {
         gods.put("Zeus", zeus);
         gods.put("Hestia", hestia);
         gods.put("Triton", triton);
+        gods.put("Charon", charon);
 
         buttons.put("buttonMove",moveButton);
         buttons.put("buttonBuild",buildButton);

@@ -659,6 +659,14 @@ public class Game extends Observable<MessageToClient> {
             if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))
                 cells.add(board.getCell(new Position(newRow, newCol)));
         }
+        if(sizeList == 3){
+            int diffRow = powerPos.row - currentPlayer.getCellOccupied().getPosition().row;
+            int diffCol = powerPos.col - currentPlayer.getCellOccupied().getPosition().col;
+            int newRow = currentPlayer.getCellOccupied().getPosition().row - (diffRow);
+            int newCol = currentPlayer.getCellOccupied().getPosition().col - (diffCol);
+            if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))
+                cells.add(board.getCell(new Position(newRow, newCol)));
+        }
         return cells;
     }
 
@@ -678,6 +686,14 @@ public class Game extends Observable<MessageToClient> {
             int diffCol = powerPos.col - currentPlayer.getCellOccupied().getPosition().col;
             int newRow = powerPos.row + diffRow;
             int newCol = powerPos.col + diffCol;
+            if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))
+                positions.add(new Position(newRow, newCol));
+        }
+        if(sizeMap == 3){
+            int diffRow = powerPos.row - currentPlayer.getCellOccupied().getPosition().row;
+            int diffCol = powerPos.col - currentPlayer.getCellOccupied().getPosition().col;
+            int newRow = currentPlayer.getCellOccupied().getPosition().row - (diffRow);
+            int newCol = currentPlayer.getCellOccupied().getPosition().col - (diffCol);
             if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))
                 positions.add(new Position(newRow, newCol));
         }

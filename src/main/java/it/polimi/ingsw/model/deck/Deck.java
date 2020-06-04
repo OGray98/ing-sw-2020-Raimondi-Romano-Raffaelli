@@ -23,7 +23,8 @@ public class Deck {
                     new PrometheusDecorator(),
                     new ZeusDecorator(),
                     new HestiaDecorator(),
-                    new TritonDecorator()
+                    new TritonDecorator(),
+                    new CharonDecorator()
             )
     );
     public final static int size = 12;
