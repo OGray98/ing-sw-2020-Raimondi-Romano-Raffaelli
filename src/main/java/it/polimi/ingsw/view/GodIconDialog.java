@@ -63,6 +63,7 @@ public class GodIconDialog extends GameDialog implements ActionListener {
         godProfile.put("Minotaur","Our Worker may move into an opponent Worker’s space if their Worker, can be forced one space straight backwards to an unoccupied space.");
         godProfile.put("Pan","You also win if your Worker, moves down two or more levels.");
         godProfile.put("Prometheus","If your Worker does not move up, it may build both before and after moving.");
+        godProfile.put("Zeus","Your worker may build a block under itself.");
     }
 
     private String getPower(String nameGod){

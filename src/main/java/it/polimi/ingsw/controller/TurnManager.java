@@ -226,7 +226,7 @@ public class TurnManager {
             throw new NullPointerException("powerPos");
         if (!movableWorkersPosition.contains(workerPos))
             throw new NotPresentWorkerException(workerPos.row, workerPos.col, gameInstance.getCurrentPlayerIndex());
-        if (!powerPos.isAdjacent(workerPos))
+        if (!powerPos.isAdjacent(workerPos) && !powerPos.equals(workerPos))
             throw new NotAdjacentMovementException(workerPos.row, workerPos.col, powerPos.row, powerPos.col);
 
         gameInstance.usePowerWorker(powerPos);

@@ -40,7 +40,8 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                     "Hephaestus", "Your Worker may build one additional block (not dome) on top of your first block.",
                     "Minotaur", "our Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.",
                     "Pan", "You also win if your Worker moves down two or more levels.",
-                    "Prometheus", "If your Worker does not move up, it may build both before and after moving."
+                    "Prometheus", "If your Worker does not move up, it may build both before and after moving.",
+                    "Zeus", "Your worker may build a block under itself."
             )
     );
     private final Map<PlayerIndex, String> chosenGods = new HashMap<>(2);
@@ -399,6 +400,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                 break;
             case "Artemis":
             case "Atlas":
+            case "Zeus":
                 this.powerGodState = GameState.BUILD;
                 break;
             case "Demeter":

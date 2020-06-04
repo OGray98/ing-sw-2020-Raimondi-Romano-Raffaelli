@@ -89,6 +89,28 @@ public class Board {
     }
 
     /**
+     * Given the Position centralPosition returns a List of Cell that contains
+     * all the cells adjacent to centralPosition and the central position too
+     *
+     * @param centralPosition Position at the center of the adjacent Cell
+     * @return returns a List of Cell that contains all the cells adjacent to centralPosition
+     * @throws NullPointerException if centralPosition is null
+     */
+    public List<Cell> getAdjacentAndCentralCells(Position centralPosition) throws NullPointerException {
+        if (centralPosition == null)
+            throw new NullPointerException("centralPosition");
+
+        List<Cell> adjacentCells = new ArrayList<>();
+        for (int r = centralPosition.row - 1; r <= centralPosition.row + 1; r++) {
+            for (int c = centralPosition.col - 1; c <= centralPosition.col + 1; c++) {
+                if (r >= 0 && r <= 4 && c >= 0 && c <= 4)
+                    adjacentCells.add(new Cell(this.map[r][c]));
+            }
+        }
+        return adjacentCells;
+    }
+
+    /**
      *  Returns the Cell in Position position on the board
      * @param position position of the cell to get
      * @throws  NullPointerException if position is null

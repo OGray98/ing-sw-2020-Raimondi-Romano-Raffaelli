@@ -251,7 +251,7 @@ public class Game extends Observable<MessageToClient> {
                     new ActionMessage(
                             currentPlayer.getPlayerNum(),
                             currentPosition,
-                            board.getAdjacentCells(currentPosition).stream()
+                            board.getAdjacentAndCentralCells(currentPosition).stream()
                                     .filter(cell -> canUsePowerWorker(cell.getPosition()))
                                     .map(Cell::getPosition)
                                     .collect(Collectors.toList()),

@@ -216,6 +216,22 @@ public class BoardTest {
     }
 
     @Test
+    public void getAdjacentAndCentralCellTest(){
+        try{
+            board.getAdjacentAndCentralCells(null);
+        }catch(NullPointerException e){
+            assertEquals("centralPosition",e.getMessage());
+        }
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                //TODO: sistemare
+                // assertTrue(isStandardCaseCorrectedAdjAndCentral(board.getAdjacentAndCentralCells(new Position(i, j)), i, j));
+            }
+        }
+    }
+
+    @Test
     public void putWorkerTest(){
         try{
             board.putWorker(null,PlayerIndex.PLAYER0);
@@ -415,6 +431,21 @@ public class BoardTest {
         return cells.size() == 8 && board.getCell(new Position(r-1,c-1)).equals(cells.get(0)) && board.getCell(new Position(r-1,c)).equals(cells.get(1)) && board.getCell(new Position(r-1,c+1)).equals(cells.get(2))
                 && board.getCell(new Position(r,c-1)).equals(cells.get(3)) && board.getCell(new Position(r,c+1)).equals(cells.get(4))
                 && board.getCell(new Position(r+1,c-1)).equals(cells.get(5)) && board.getCell(new Position(r+1,c)).equals(cells.get(6)) && board.getCell(new Position(r+1,c+1)).equals(cells.get(7));
+    }
+
+    private boolean isStandardCaseCorrectedAdjAndCentral(List<Cell> cells, int r, int c) {
+        if(r == 0)
+            return isBoundaryUpCorrected(cells, c);
+        else if(r == 4)
+            return isBoundaryDownCorrected(cells, c);
+        if(c == 0)
+            return isBoundaryLeftCorrected(cells, r);
+        else if(c == 4)
+            return isBoundaryRightCorrected(cells, r);
+
+        return cells.size() == 9 && board.getCell(new Position(r-1,c-1)).equals(cells.get(0)) && board.getCell(new Position(r-1,c)).equals(cells.get(1)) && board.getCell(new Position(r-1,c+1)).equals(cells.get(2))
+                && board.getCell(new Position(r,c-1)).equals(cells.get(3)) && board.getCell(new Position(r,c)).equals(cells.get(4)) && board.getCell(new Position(r,c+1)).equals(cells.get(5))
+                && board.getCell(new Position(r+1,c-1)).equals(cells.get(6)) && board.getCell(new Position(r+1,c)).equals(cells.get(7)) && board.getCell(new Position(r+1,c+1)).equals(cells.get(8));
     }
 
     @After
