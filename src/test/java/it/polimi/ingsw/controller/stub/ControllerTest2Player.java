@@ -94,17 +94,17 @@ public class ControllerTest2Player {
         UpdateStateMessage stateFinal = (UpdateStateMessage) obs1.getMesRemoteToView().get(1);
         assertEquals(stateFinal.getGameState(),GameState.MOVE);
 
-        LoserMessage okLoser0 = (LoserMessage) obs1.getMesRemoteToView().get(16);
+        LoserMessage okLoser0 = (LoserMessage) obs1.getMesRemoteToView().get(15);
         assertEquals(okLoser0.getType(), TypeMessage.LOSER);
 
-        OkMessage okLoserPlayer0 = (OkMessage) obs1.getMesRemoteToView().get(14);
-        assertEquals(okLoserPlayer0.getErrorMessage(),"You have lost!");
+        OkMessage okLoserPlayer0 = (OkMessage) obs1.getMesRemoteToView().get(18);
+        assertEquals(okLoserPlayer0.getErrorMessage(),"Jack has won the game!");
 
         UpdateStateMessage end2 = (UpdateStateMessage) obs2.getMesRemoteToView().get(7);
         assertEquals(end2.getGameState(),GameState.MATCH_ENDED);
 
-        OkMessage end1 = (OkMessage) obs2.getMesRemoteToView().get(6);
-        assertEquals(end1.getErrorMessage(),"You win!");
+        OkMessage end1 = (OkMessage) obs2.getMesRemoteToView().get(8);
+        assertEquals(end1.getErrorMessage(),"Jack has won the game!");
 
         obs1 = null;
         obs2 = null;
