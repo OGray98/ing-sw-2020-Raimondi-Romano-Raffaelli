@@ -67,6 +67,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         gods.put("Hestia","Your worker may build one additional time, but this cannot be on a perimeter space.");
         gods.put("Triton","Each time your worker moves into a perimeter space, it may immediately move again.");
         gods.put("Charon","Before your worker moves, you may force a neighboring opponent worker to the space directly on the other side of your worker, if that space is unoccupied.");
+        gods.put("Hera", "An opponent cannot win by moving into a perimeter space.");
 
         for (int i = 0; i < Board.NUM_ROW; i++)
             for (int j = 0; j < Board.NUM_COLUMNS; j++)
@@ -413,6 +414,9 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
             case "Hephaestus":
             case "Hestia":
                 this.powerGodState = GameState.ENDPHASE;
+                break;
+            case "Hera":
+                this.powerGodState = GameState.MATCH_ENDED;
                 break;
             default:
                 throw new WrongGodNameException(this.chosenGods.get(playerIndex));

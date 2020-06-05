@@ -67,6 +67,7 @@ public class GodIconDialog extends GameDialog implements ActionListener {
         godProfile.put("Hestia","Your worker may build one additional time, but this cannot be on a perimeter space.");
         godProfile.put("Triton","Each time your worker moves into a, perimeter space it may immediately move again.");
         godProfile.put("Charon","Before your worker moves, you may force a neighboring opponent worker to the space directly on the other side of your worker, if that space is unoccupied.");
+        godProfile.put("Hera","An opponent cannot win by moving into a perimeter space.");
     }
 
     private String getPower(String nameGod){

@@ -530,6 +530,11 @@ public class Game extends Observable<MessageToClient> {
      * It simply calls the method PlayerInterface.hasWin()
      * */
     public boolean hasWonCurrentPlayer() {
+        for(PlayerInterface p : players){
+            if(p.getGodName().equals("Hera") && p != currentPlayer){
+                return !currentPlayer.getCellOccupied().getPosition().isPerimeterPosition() && currentPlayer.hasWin();
+            }
+        }
         return currentPlayer.hasWin();
     }
 

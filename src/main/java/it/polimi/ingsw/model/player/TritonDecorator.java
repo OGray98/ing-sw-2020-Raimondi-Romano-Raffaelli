@@ -16,7 +16,7 @@ public class TritonDecorator extends PlayerMoveDecorator{
 
     @Override
     public boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList){
-        return canMove(adjacentPlayerList, adjacentList.get(0)) && isPerimeterPos(super.getCellOccupied().getPosition());
+        return canMove(adjacentPlayerList, adjacentList.get(0)) && super.getCellOccupied().getPosition().isPerimeterPosition();
     }
 
     @Override
@@ -34,11 +34,5 @@ public class TritonDecorator extends PlayerMoveDecorator{
     @Override
     public void setChosenGod(Boolean condition){
         super.setChosenGod(condition);
-    }
-
-    private boolean isPerimeterPos(Position position){
-        if(position.row == 0 || position.row == 4 || position.col == 0 || position.col == 4)
-            return true;
-        return false;
     }
 }

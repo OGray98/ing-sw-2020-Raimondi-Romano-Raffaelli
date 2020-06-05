@@ -24,10 +24,11 @@ public class Deck {
                     new ZeusDecorator(),
                     new HestiaDecorator(),
                     new TritonDecorator(),
-                    new CharonDecorator()
+                    new CharonDecorator(),
+                    new HeraDecorator()
             )
     );
-    public final static int size = 12;
+    public final static int size = 14;
     private int playersNumber;
 
     public Deck() {

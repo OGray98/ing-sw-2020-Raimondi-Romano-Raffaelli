@@ -42,6 +42,12 @@ public class Position implements Serializable {
                 && !this.equals(position);
     }
 
+    public boolean isPerimeterPosition(){
+        if(row == 0 || row == 4 || col == 0 || col == 4)
+            return true;
+        return false;
+    }
+
 
     @Override
     public boolean equals(Object o) {
