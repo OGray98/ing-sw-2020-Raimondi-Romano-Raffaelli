@@ -88,6 +88,11 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                     clientModel.setSelectedWorkerPos(moveMsg.getPosition());
                     break;
                 }
+
+                //case when there isn't a selected worker
+                if(!clientModel.isThereASelectedWorker()){
+                    break;
+                }
                 //case when player want to move or use a power
                 else{
 
