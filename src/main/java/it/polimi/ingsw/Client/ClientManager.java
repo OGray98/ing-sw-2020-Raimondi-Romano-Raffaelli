@@ -252,6 +252,14 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         GameState currentState = message.getGameState();
         clientModel.setCurrentState(currentState);
 
+        if(message.getGameState() == clientModel.getPowerGodState()){
+            clientView.showPowerButton();
+        }
+
+        if(message.getGameState() == GameState.ENDPHASE || message.getGameState() == GameState.BUILDPOWER){
+            clientView.showEndTurnButton();
+        }
+
         switch (currentState) {
             case GOD_PLAYER_CHOOSE_CARDS:
                 if (this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER0)
@@ -261,11 +269,6 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                 break;
             case SELECT_CARD:
                 showGodSelect(message);
-               /* if (this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER1)
-                    this.clientView.showGodToSelect(this.clientModel.getChosenGodsByGodLike());
-                else
-                    this.clientView.showMessage(this.clientModel.getNickname(PlayerIndex.PLAYER1) +
-                            "is choosing his god card");*/
                 break;
             case GOD_PLAYER_CHOOSE_FIRST_PLAYER:
                 if(this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER0)

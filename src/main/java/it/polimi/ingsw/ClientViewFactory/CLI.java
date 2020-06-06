@@ -103,6 +103,16 @@ public class CLI extends ClientView {
     }
 
     @Override
+    public void showPowerButton() {
+
+    }
+
+    @Override
+    public void showEndTurnButton() {
+
+    }
+
+    @Override
     public void showGodLikeChooseFirstPlayer() {
 
     }

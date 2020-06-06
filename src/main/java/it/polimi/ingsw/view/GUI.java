@@ -696,6 +696,15 @@ public class GUI extends ClientView {
         showMessage(message.getErrorMessage());
     }
 
+    @Override
+    public void showPowerButton() {
+        
+    }
+
+    @Override
+    public void showEndTurnButton() {
+
+    }
 
 
 }

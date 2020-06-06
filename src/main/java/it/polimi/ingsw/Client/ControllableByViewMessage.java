@@ -34,4 +34,14 @@ public interface ControllableByViewMessage {
      * Method that will show the loser during a game
      * */
     void showLoser(OkMessage message);
+
+    /**
+     * Method that show clearly the possibility of use a god power in the current turn phase
+     * */
+    void showPowerButton();
+
+    /**
+     * Method that show clearly the possibility to end the turn
+     * */
+    void showEndTurnButton();
 }

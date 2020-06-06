@@ -57,6 +57,16 @@ public class StubView extends ClientView {
     }
 
     @Override
+    public void showPowerButton() {
+
+    }
+
+    @Override
+    public void showEndTurnButton() {
+
+    }
+
+    @Override
     public void receiveErrorMessage(String error) {
 
     }
