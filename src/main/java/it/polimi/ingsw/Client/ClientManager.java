@@ -253,11 +253,11 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         clientModel.setCurrentState(currentState);
 
         if(message.getGameState() == clientModel.getPowerGodState()){
-            clientView.showPowerButton();
+            clientView.showPowerButton(true);
         }
 
         if(message.getGameState() == GameState.ENDPHASE || message.getGameState() == GameState.BUILDPOWER){
-            clientView.showEndTurnButton();
+            clientView.showEndTurnButton(true);
         }
 
         switch (currentState) {

@@ -103,12 +103,12 @@ public class CLI extends ClientView {
     }
 
     @Override
-    public void showPowerButton() {
+    public void showPowerButton(boolean isOn) {
 
     }
 
     @Override
-    public void showEndTurnButton() {
+    public void showEndTurnButton(boolean isOn) {
 
     }
 

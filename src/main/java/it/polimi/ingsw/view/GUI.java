@@ -235,6 +235,7 @@ public class GUI extends ClientView {
         buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn), Color.WHITE,
                 e -> {
                     if(clientModel.getCurrentState() == GameState.ENDPHASE || clientModel.getCurrentState() == GameState.BUILDPOWER){
+                        showEndTurnButton(false);
                         handleMessage(new EndTurnMessage(clientModel.getPlayerIndex()));
                     }
                     else
@@ -282,6 +283,7 @@ public class GUI extends ClientView {
 
     @Override
     public void deactivatePower(){
+        showPowerButton(false);
         if(buttonPower.isClicked())
             this.buttonPower.click();
     }
@@ -697,13 +699,15 @@ public class GUI extends ClientView {
     }
 
     @Override
-    public void showPowerButton() {
-        
+    public void showPowerButton(boolean isOn) {
+        //TODO: da implementare
+        /*se isOn è true illuminare il bottone del potere se è false togliere l'illuminazione*/
     }
 
     @Override
-    public void showEndTurnButton() {
-
+    public void showEndTurnButton(boolean isOn) {
+        //TODO: da implementare
+        /*se isOn è true illuminare il bottone endTurn se è false togliere l'illuminazione*/
     }
 
 

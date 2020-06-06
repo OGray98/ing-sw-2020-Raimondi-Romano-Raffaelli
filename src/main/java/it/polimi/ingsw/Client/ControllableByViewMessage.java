@@ -38,10 +38,10 @@ public interface ControllableByViewMessage {
     /**
      * Method that show clearly the possibility of use a god power in the current turn phase
      * */
-    void showPowerButton();
+    void showPowerButton(boolean isOn);
 
     /**
      * Method that show clearly the possibility to end the turn
      * */
-    void showEndTurnButton();
+    void showEndTurnButton(boolean isOn);
 }
