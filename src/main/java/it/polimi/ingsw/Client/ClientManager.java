@@ -285,9 +285,9 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
             clientModel.setActionPositions(message);
         else{
             //TODO: vanno rimosse le celle vecchie, ma non sempre
-            clientView.removeActionsFromView();
+            /*clientView.removeActionsFromView();
             //show new action cells
-            clientView.showActionPositions(message.getPossiblePosition(),false);
+            clientView.showActionPositions(message.getPossiblePosition(),false);*/
         }
     }
 
@@ -310,16 +310,6 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     @Override
     public void updateMoveMessage(MoveMessage message) {
-
-        /*if (!this.haveToWait) {
-            if (this.clientModel.isCellOccupied(message.getMovePosition())) {
-                this.haveToWait = true;
-                this.waitMessage = message;
-            } else
-                clientModel.movePlayer(message);
-        } else {
-            this.clientModel.moveTwoWorker(this.waitMessage, message);
-        }*/
         this.clientModel.movePlayer(message);
     }
 
@@ -364,8 +354,8 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     }
 
     @Override
-    public void showOkMessage(OkMessage message){
-        clientModel.notifyOkMessage(message);
+    public void showInformationMessage(InformationMessage message){
+        clientModel.notifyInformationMessage(message);
     }
 
 }

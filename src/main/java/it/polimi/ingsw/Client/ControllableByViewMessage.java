@@ -28,12 +28,12 @@ public interface ControllableByViewMessage {
     /**
      * Method that will show the winner at the end of the game
      * */
-    void showWinner(OkMessage message);
+    void showWinner(InformationMessage message);
 
     /**
      * Method that will show the loser during a game
      * */
-    void showLoser(OkMessage message);
+    void showLoser(InformationMessage message);
 
     /**
      * Method that show clearly the possibility of use a god power in the current turn phase
@@ -44,4 +44,9 @@ public interface ControllableByViewMessage {
      * Method that show clearly the possibility to end the turn
      * */
     void showEndTurnButton(boolean isOn);
+
+    /**
+     * When a player insert a nickname already taken he must reinsert it
+     * */
+    void reinsertNickname();
 }

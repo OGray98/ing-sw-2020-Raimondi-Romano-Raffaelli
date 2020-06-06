@@ -93,12 +93,12 @@ public class CLI extends ClientView {
     }
 
     @Override
-    public void showWinner(OkMessage message) {
+    public void showWinner(InformationMessage message) {
 
     }
 
     @Override
-    public void showLoser(OkMessage message) {
+    public void showLoser(InformationMessage message) {
 
     }
 
@@ -109,6 +109,11 @@ public class CLI extends ClientView {
 
     @Override
     public void showEndTurnButton(boolean isOn) {
+
+    }
+
+    @Override
+    public void reinsertNickname() {
 
     }
 

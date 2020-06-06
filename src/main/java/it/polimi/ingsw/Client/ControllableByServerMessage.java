@@ -30,6 +30,6 @@ public interface ControllableByServerMessage {
 
     void updateCloseConnectionMessage(CloseConnectionMessage message);
 
-    void showOkMessage(OkMessage message);
+    void showInformationMessage(InformationMessage message);
 
 }

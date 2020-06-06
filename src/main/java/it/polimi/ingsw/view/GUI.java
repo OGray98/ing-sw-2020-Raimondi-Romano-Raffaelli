@@ -685,7 +685,8 @@ public class GUI extends ClientView {
     }
 
     @Override
-    public void showWinner(OkMessage message) {
+    public void showWinner(InformationMessage message) {
+        OkMessage okMsg = (OkMessage) message;
         //TODO: miss label win and close button
         Image imageWinner = imageContainer.getImageWinner().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
         PrincipalLabel labelWinner = new PrincipalLabel(imageWinner);
@@ -694,8 +695,9 @@ public class GUI extends ClientView {
     }
 
     @Override
-    public void showLoser(OkMessage message) {
-        showMessage(message.getErrorMessage());
+    public void showLoser(InformationMessage message) {
+        OkMessage okMsg = (OkMessage) message;
+        showMessage(okMsg.getErrorMessage());
     }
 
     @Override
@@ -708,6 +710,12 @@ public class GUI extends ClientView {
     public void showEndTurnButton(boolean isOn) {
         //TODO: da implementare
         /*se isOn è true illuminare il bottone endTurn se è false togliere l'illuminazione*/
+    }
+
+    @Override
+    public void reinsertNickname() {
+        showMessage("Nickname already take, insert an other");
+        showGetNickname();
     }
 
 
