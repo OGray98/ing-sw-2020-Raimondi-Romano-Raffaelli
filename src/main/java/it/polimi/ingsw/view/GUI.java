@@ -207,6 +207,11 @@ public class GUI extends ClientView {
                             buttonPower.click();
                             //if user clicks buttonPower power cells must be showed
                             if(buttonPower.isClicked()){
+                                if(!clientModel.isThereASelectedWorker()){
+                                    showMessage("You must select a worker before");
+                                    buttonPower.click();
+                                    return;
+                                }
                                 removeActionsFromView();
                                 showActionPositions(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER),true);
                             }

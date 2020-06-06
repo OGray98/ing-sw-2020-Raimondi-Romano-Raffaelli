@@ -35,4 +35,6 @@ public interface ViewModelInterface {
     List<Position> getPlayerIndexPosition(PlayerIndex playerIndex);
 
     boolean isAmICurrentPlayer();
+
+    boolean isThereASelectedWorker();
 }
