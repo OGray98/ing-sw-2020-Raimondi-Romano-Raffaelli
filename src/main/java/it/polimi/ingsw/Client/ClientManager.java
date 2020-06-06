@@ -355,4 +355,9 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         }
     }
 
+    @Override
+    public void showOkMessage(OkMessage message){
+        clientModel.notifyOkMessage(message);
+    }
+
 }

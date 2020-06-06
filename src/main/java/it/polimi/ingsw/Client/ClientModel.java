@@ -449,4 +449,8 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     public boolean isGodLikeChoosingCards() {
         return this.currentState == GameState.GOD_PLAYER_CHOOSE_CARDS;
     }
+
+    public void notifyOkMessage(OkMessage message){
+        notify(message);
+    }
 }

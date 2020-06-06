@@ -1,6 +1,8 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.Client.ControllableByServerMessage;
 import it.polimi.ingsw.Client.ControllableByViewMessage;
+import it.polimi.ingsw.controller.ControllableByClientMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
 public class OkMessage extends InformationMessage implements MessageToView{
@@ -15,6 +17,12 @@ public class OkMessage extends InformationMessage implements MessageToView{
 
     public TypeMessage getSpecificErrorType() {
         return super.getSpecificType();
+    }
+
+    @Override
+    public void execute(ControllableByServerMessage controllable){
+        if (controllable == null) throw new NullPointerException("controllable");
+        controllable.showOkMessage(this);
     }
 
     @Override
