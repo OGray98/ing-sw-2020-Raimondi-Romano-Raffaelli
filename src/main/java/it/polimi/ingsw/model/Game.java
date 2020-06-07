@@ -179,6 +179,9 @@ public class Game extends Observable<MessageToClient> {
             if (board.getAdjacentCells(currentPosition).stream()
                     .noneMatch(cell -> canMoveWorker(cell.getPosition()))) {
                 this.removeCurrentPlayer();
+                if(players.size() == 1){
+                    setCurrentState(GameState.MATCH_ENDED);
+                }
             } else {
                 notify(
                         new ActionMessage(
@@ -729,6 +732,7 @@ public class Game extends Observable<MessageToClient> {
     
     /**
      * Remove current player and delete his workers from the board.
+     * Update the current player and set the state to start the new turn
      * Notify this change to remoteView
      */
     public void removeCurrentPlayer() {
@@ -737,9 +741,11 @@ public class Game extends Observable<MessageToClient> {
         PlayerInterface lostPlayer = currentPlayer;
         PlayerIndex playerIndex = currentPlayer.getPlayerNum();
 
-        updateCurrentPlayer();
         this.players.remove(lostPlayer);
+        updateCurrentPlayer();
+        updateCurrentPlayer();
         notify(new LoserMessage(playerIndex, playerIndex));
+        setCurrentState(GameState.MOVE);
 
     }
 

@@ -363,6 +363,10 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         //TODO selectedWorker? serve una Position da distinguere per capire che non ci sono pedine selezionate
     }
 
+    public boolean isThereASelectedWorker(){
+        return isSelectedWorker;
+    }
+
     /**
      * Create the correlation playerIndex/God chosen
      *
@@ -448,5 +452,9 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
 
     public boolean isGodLikeChoosingCards() {
         return this.currentState == GameState.GOD_PLAYER_CHOOSE_CARDS;
+    }
+
+    public void notifyInformationMessage(InformationMessage message){
+        notify(message);
     }
 }

@@ -76,8 +76,6 @@ public class TurnManager {
             throw new NullPointerException("workerPos");
         if (movePos == null)
             throw new NullPointerException("movePos");
-        if (!currentPlayerWorkersPosition.contains(workerPos) || !movableWorkersPosition.contains(workerPos))
-            return false;
 
         gameInstance.setStartingWorker(workerPos);
         return gameInstance.canMoveWorker(movePos);
@@ -98,7 +96,7 @@ public class TurnManager {
             throw new NullPointerException("workerPos");
         if (movePos == null)
             throw new NullPointerException("movePos");
-        if (!currentPlayerWorkersPosition.contains(workerPos))
+        if (!gameInstance.getCurrentPlayerWorkersPosition().contains(workerPos))
             throw new NotPresentWorkerException(workerPos.row, workerPos.col, gameInstance.getCurrentPlayerIndex());
         if (!movePos.isAdjacent(workerPos))
             throw new NotAdjacentMovementException(workerPos.row, workerPos.col, movePos.row, movePos.col);

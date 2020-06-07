@@ -88,6 +88,11 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                     clientModel.setSelectedWorkerPos(moveMsg.getPosition());
                     break;
                 }
+
+                //case when there isn't a selected worker
+                if(!clientModel.isThereASelectedWorker()){
+                    break;
+                }
                 //case when player want to move or use a power
                 else{
 
@@ -247,6 +252,14 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         GameState currentState = message.getGameState();
         clientModel.setCurrentState(currentState);
 
+        if(message.getGameState() == clientModel.getPowerGodState()){
+            clientView.showPowerButton(true);
+        }
+
+        if(message.getGameState() == GameState.ENDPHASE || message.getGameState() == GameState.BUILDPOWER){
+            clientView.showEndTurnButton(true);
+        }
+
         switch (currentState) {
             case GOD_PLAYER_CHOOSE_CARDS:
                 if (this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER0)
@@ -256,11 +269,6 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                 break;
             case SELECT_CARD:
                 showGodSelect(message);
-               /* if (this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER1)
-                    this.clientView.showGodToSelect(this.clientModel.getChosenGodsByGodLike());
-                else
-                    this.clientView.showMessage(this.clientModel.getNickname(PlayerIndex.PLAYER1) +
-                            "is choosing his god card");*/
                 break;
             case GOD_PLAYER_CHOOSE_FIRST_PLAYER:
                 if(this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER0)
@@ -277,9 +285,9 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
             clientModel.setActionPositions(message);
         else{
             //TODO: vanno rimosse le celle vecchie, ma non sempre
-            clientView.removeActionsFromView();
+            /*clientView.removeActionsFromView();
             //show new action cells
-            clientView.showActionPositions(message.getPossiblePosition(),false);
+            clientView.showActionPositions(message.getPossiblePosition(),false);*/
         }
     }
 
@@ -302,16 +310,6 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     @Override
     public void updateMoveMessage(MoveMessage message) {
-
-        /*if (!this.haveToWait) {
-            if (this.clientModel.isCellOccupied(message.getMovePosition())) {
-                this.haveToWait = true;
-                this.waitMessage = message;
-            } else
-                clientModel.movePlayer(message);
-        } else {
-            this.clientModel.moveTwoWorker(this.waitMessage, message);
-        }*/
         this.clientModel.movePlayer(message);
     }
 
@@ -353,6 +351,11 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         else{
             this.clientView.showMessage(this.clientModel.getNickname(this.clientModel.getPlayerIndex()) + "is choosing his god card");
         }
+    }
+
+    @Override
+    public void showInformationMessage(InformationMessage message){
+        clientModel.notifyInformationMessage(message);
     }
 
 }

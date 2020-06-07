@@ -102,7 +102,6 @@ public class SocketClientConnection extends Observable<MessageToServer> implemen
                 }
             }).start();
             while (isConnected()) {
-                //if (in.available() != 0) {
                 try {
                     MessageToServer inputMessage = (MessageToServer) in.readObject();
                     if (inputMessage != null && inputMessage.getType() != TypeMessage.PONG) {
@@ -119,12 +118,9 @@ public class SocketClientConnection extends Observable<MessageToServer> implemen
                     setIsActiveFalse();
                 }
             }
-            //}
 
         } catch (IOException | NoSuchElementException e) {
-            System.err.println("Error! " + e.toString());
-            Logger.getAnonymousLogger().severe(e.getMessage());
-            setIsActiveFalse();
+            System.out.println(this.clientIndex + " isn't connected");
         }
     }
 

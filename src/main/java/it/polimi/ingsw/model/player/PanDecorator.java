@@ -67,7 +67,7 @@ public class PanDecorator extends PlayerWinConditionDecorator {
             if(p.equals(adjacentList.get(0).getPosition())) return false;
         }
         if(super.getCellOccupied().getPosition().isAdjacent(adjacentList.get(0).getPosition())){
-            return adjacentList.get(0).getLevel() - this.getCellOccupied().getLevel() < (-1);
+            return !adjacentList.get(0).hasDome() && adjacentList.get(0).getLevel() - this.getCellOccupied().getLevel() < (-1);
         }
         return false;
 

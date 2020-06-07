@@ -64,7 +64,6 @@ public class WelcomeDialog extends GameDialog{
                 Color.WHITE,
                 e -> {
                     clientView.handleMessage(new NicknameMessage(clientView.getPlayer(), text.getText()));
-                    System.out.println("gang");
                     if (box2Player.isSelected())
                         clientView.handleMessage(new TypeMatchMessage(clientView.getPlayer(), false));
                     else if (box3Player.isSelected())

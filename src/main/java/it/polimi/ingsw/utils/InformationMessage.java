@@ -1,9 +1,10 @@
 package it.polimi.ingsw.utils;
 
 import it.polimi.ingsw.Client.ControllableByServerMessage;
+import it.polimi.ingsw.Client.ControllableByViewMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
-public class InformationMessage extends StringMessage implements MessageToClient {
+public class InformationMessage extends StringMessage implements MessageToClient, MessageToView {
 
     private final TypeMessage specificType;
 
@@ -18,6 +19,11 @@ public class InformationMessage extends StringMessage implements MessageToClient
 
     @Override
     public void execute(ControllableByServerMessage controllable) throws NullPointerException {
+
+    }
+
+    @Override
+    public void execute(ControllableByViewMessage controllable) throws NullPointerException {
 
     }
 }
