@@ -170,7 +170,7 @@ public class GodChoiceDialog extends JLabel {
         labelFirst.setFont(font1);
         Image imageDone = new ImageIcon("src/main/resources/Done.png").getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT);
         buttonDone = new ButtonCircle(new ImageIcon(imageDone),Color.GREEN,true,e ->{
-            if(buttonDone.isClicked()){
+            if(chosenGod.contains(godName)){
                 dialog.dispose();
                 return;
             }else{
@@ -179,7 +179,7 @@ public class GodChoiceDialog extends JLabel {
                     click();
                 }
                 if(isGodLike){
-                selectMultipleGod(godName,buttonGod);
+                    selectMultipleGod(godName,buttonGod);
                 }else{
                     selectSingleGod(godName,buttonGod);
                 }
@@ -191,7 +191,7 @@ public class GodChoiceDialog extends JLabel {
         buttonDelete = new ButtonCircle(new ImageIcon(imageDelete),Color.RED,true,e ->{
             clicked = false;
             if(isGodLike){
-            selectMultipleGod(godName,buttonGod);
+                selectMultipleGod(godName,buttonGod);
             }else{
                 selectSingleGod(godName,buttonGod);
             }
