@@ -205,6 +205,7 @@ public class Client implements ServerConnection {
     }
 
     private boolean isServerAvailable() {
+        if (ip == null) return false;
         try {
             socket = new Socket(this.ip, TCP_SERVER_PORT);
             return true;
