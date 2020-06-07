@@ -383,29 +383,32 @@ public class GUI extends ClientView {
     @Override
     public void showCurrentPlayer(PlayerIndex currentPlayer) {
 
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                labelNick.revalidate();
+                labelNick.repaint();
                 if(currentPlayer.equals(PlayerIndex.PLAYER0)){
                     labelNickNames.get(PlayerIndex.PLAYER0).setForeground(Color.RED);
                     labelNickNames.get(PlayerIndex.PLAYER1).setForeground(Color.BLACK);
                     if(clientModel.isThreePlayersGame()){
                         labelNickNames.get(PlayerIndex.PLAYER2).setForeground(Color.BLACK);
                     }
-                    labelNick.revalidate();
-                    labelNick.repaint();
                 }else if(currentPlayer.equals(PlayerIndex.PLAYER1)){
                     labelNickNames.get(PlayerIndex.PLAYER0).setForeground(Color.BLACK);
                     labelNickNames.get(PlayerIndex.PLAYER1).setForeground(Color.BLUE);
                     if(clientModel.isThreePlayersGame()){
                         labelNickNames.get(PlayerIndex.PLAYER2).setForeground(Color.BLACK);
                     }
-                    labelNick.revalidate();
-                    labelNick.repaint();
                 }else{
                     labelNickNames.get(PlayerIndex.PLAYER0).setForeground(Color.BLACK);
                     labelNickNames.get(PlayerIndex.PLAYER1).setForeground(Color.BLACK);
                     labelNickNames.get(PlayerIndex.PLAYER2).setForeground(Color.DARK_GRAY);
-                    labelNick.revalidate();
-                    labelNick.repaint();
                 }
+                labelNick.revalidate();
+                labelNick.repaint();
+            }
+        });
 
 
     }
@@ -640,17 +643,20 @@ public class GUI extends ClientView {
         JLabel labelNick1 = new JLabel(clientModel.getNickname(PlayerIndex.PLAYER0));
         labelNick1.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(80,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
         labelNick1.setForeground(Color.BLACK);
+
         labelNickNames.put(PlayerIndex.PLAYER0,labelNick1);
         labelNick.add(labelNick1);
         JLabel labelNick2 = new JLabel(clientModel.getNickname(PlayerIndex.PLAYER1));
         labelNick2.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(240,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
         labelNick2.setForeground(Color.BLACK);
+
         labelNickNames.put(PlayerIndex.PLAYER1,labelNick2);
         labelNick.add(labelNick2);
         if(clientModel.isThreePlayersGame()){
             JLabel labelNick3 = new JLabel(clientModel.getNickname(PlayerIndex.PLAYER2));
             labelNick3.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(390,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
             labelNick3.setForeground(Color.BLACK);
+
             labelNickNames.put(PlayerIndex.PLAYER2,labelNick3);
             labelNick.add(labelNick3);
         }else{
