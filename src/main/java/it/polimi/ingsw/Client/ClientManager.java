@@ -252,11 +252,13 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         GameState currentState = message.getGameState();
         clientModel.setCurrentState(currentState);
 
-        if(message.getGameState() == clientModel.getPowerGodState()){
+        if(message.getGameState() == clientModel.getPowerGodState() && message.getClient().equals(clientModel.getPlayerIndex())){
             clientView.showPowerButton(true);
+        }else{
+            clientView.showPowerButton(false);
         }
 
-        if(message.getGameState() == GameState.ENDPHASE || message.getGameState() == GameState.BUILDPOWER){
+        if((message.getGameState() == GameState.ENDPHASE || message.getGameState() == GameState.BUILDPOWER) && message.getClient().equals(clientModel.getPlayerIndex())){
             clientView.showEndTurnButton(true);
         }
 
@@ -349,7 +351,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
             this.clientView.showGodToSelect(this.clientModel.getChosenGodsByGodLike());
         }
         else{
-            this.clientView.showMessage(this.clientModel.getNickname(this.clientModel.getPlayerIndex()) + "is choosing his god card");
+            this.clientView.showMessage(this.clientModel.getNickname(this.clientModel.getPlayerIndex()) + " is choosing his god card");
         }
     }
 

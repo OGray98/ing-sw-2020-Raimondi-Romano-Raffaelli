@@ -7,14 +7,14 @@ import java.awt.geom.Ellipse2D;
 
 public class ButtonCircle extends JButton {
     Shape shape = null;
-    private boolean fieldFocusable = false;
     private final Color colorButton;
 
     private boolean clicked;
 
-    public ButtonCircle(Icon icon, Color colorButton, ActionListener listener) {
+    public ButtonCircle(Icon icon, Color colorButton, boolean illuminated,ActionListener listener) {
         super(icon);
         this.colorButton = colorButton;
+        this.setEnabled(illuminated);
         this.clicked = false;
         this.addActionListener(listener);
         resize();
@@ -27,9 +27,6 @@ public class ButtonCircle extends JButton {
         return shape.contains(x,y);
     }
 
-    public boolean getFocusable() {
-        return fieldFocusable;
-    }
 
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -63,10 +60,6 @@ public class ButtonCircle extends JButton {
         setContentAreaFilled(false);
         setBorderPainted(false);
 
-    }
-
-    public void setFocusable(boolean focusable) {
-        fieldFocusable = focusable;
     }
 
     public boolean isClicked() {

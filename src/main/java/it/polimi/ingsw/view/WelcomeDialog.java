@@ -61,7 +61,7 @@ public class WelcomeDialog extends GameDialog{
 
         ButtonCircle buttonSend = new ButtonCircle(
                 new ImageIcon(imagePlay),
-                Color.WHITE,
+                Color.WHITE,true,
                 e -> {
                     clientView.handleMessage(new NicknameMessage(clientView.getPlayer(), text.getText()));
                     if (box2Player.isSelected())

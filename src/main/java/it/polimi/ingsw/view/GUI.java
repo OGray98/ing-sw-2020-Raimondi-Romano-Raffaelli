@@ -42,6 +42,8 @@ public class GUI extends ClientView {
     private static LabelCircle labelApMin ;
     private static LabelCircle firstLabelApMin;
     private static Map<PlayerIndex,String> nicksName = new HashMap<>();
+    private static Map<PlayerIndex, JLabel> labelNickNames = new HashMap<>();
+
 
 
     private ButtonCircle buttonPower;
@@ -124,7 +126,7 @@ public class GUI extends ClientView {
                 panel1.add(buttonCells[i][j]);
                 buttonCells[i][j].setOpaque(false);
                 buttonCells[i][j].setContentAreaFilled(false);
-                //buttonCells[i][j].setBorderPainted(false);
+
             }
         }
 
@@ -198,7 +200,7 @@ public class GUI extends ClientView {
 
 
         //Creating button
-        buttonPower = new ButtonCircle(new ImageIcon(imagePower), Color.WHITE,
+        buttonPower = new ButtonCircle(new ImageIcon(imagePower), Color.WHITE,false,
                 e -> {
                     if(clientModel.getCurrentState() != GameState.NULL && clientModel.getCurrentState() == clientModel.getPowerGodState()){
                         try{
@@ -232,23 +234,26 @@ public class GUI extends ClientView {
                     }
                 }
         );
-        buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn), Color.WHITE,
+        buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn), Color.WHITE,false,
                 e -> {
+
                     if(clientModel.getCurrentState() == GameState.ENDPHASE || clientModel.getCurrentState() == GameState.BUILDPOWER){
                         showEndTurnButton(false);
                         handleMessage(new EndTurnMessage(clientModel.getPlayerIndex()));
                     }
-                    else
+                    else{
                         showMessage("You can't end the turn now");
+                    }
                 }
         );
-        buttonTutorial = new ButtonCircle(new ImageIcon(imageTutorial), Color.WHITE,
+        buttonTutorial = new ButtonCircle(new ImageIcon(imageTutorial), Color.WHITE,true,
                 e -> {
                     new DialogTutorial(frame,"TUTORIAL");
                 }
         );
-        buttonMenu = new ButtonCircle(new ImageIcon(imageMenu), Color.WHITE,
+        buttonMenu = new ButtonCircle(new ImageIcon(imageMenu), Color.WHITE,true,
                 e -> {
+                    frame.setVisible(false);
                     frame.dispose();
                 }
         );
@@ -269,21 +274,16 @@ public class GUI extends ClientView {
         label.add(labelGod,BorderLayout.EAST);
         label.add(labelTerminal,BorderLayout.WEST);
         label.add(panel1,BorderLayout.CENTER);
-        //frame.getContentPane().add(label);
+
+
 
         frame = new WelcomeFrame(label1);
 
-
-
-
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        //frame.pack();
-        //frame.setVisible(true);
     }
 
     @Override
     public void deactivatePower(){
-        showPowerButton(false);
+
         if(buttonPower.isClicked())
             this.buttonPower.click();
     }
@@ -316,11 +316,7 @@ public class GUI extends ClientView {
 
     @Override
     public void showGodLikeChoice(List<String> gods) {
-        /*List<JLabel> godLabels = new ArrayList<>();
-        gods.forEach(
-                god -> godLabels.add(getIconGodProfile(imageContainer.getGodimage(god), god))
-        );*/
-        godChoiceDialog = new GodChoiceDialog( gods /*godLabels*/, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
+        godChoiceDialog = new GodChoiceDialog( gods , clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
                 e -> {
                     handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godChoiceDialog.getChosenGod()));
                     frame.dispose();
@@ -386,7 +382,32 @@ public class GUI extends ClientView {
 
     @Override
     public void showCurrentPlayer(PlayerIndex currentPlayer) {
-        //TODO: da implementare
+
+                if(currentPlayer.equals(PlayerIndex.PLAYER0)){
+                    labelNickNames.get(PlayerIndex.PLAYER0).setForeground(Color.RED);
+                    labelNickNames.get(PlayerIndex.PLAYER1).setForeground(Color.BLACK);
+                    if(clientModel.isThreePlayersGame()){
+                        labelNickNames.get(PlayerIndex.PLAYER2).setForeground(Color.BLACK);
+                    }
+                    labelNick.revalidate();
+                    labelNick.repaint();
+                }else if(currentPlayer.equals(PlayerIndex.PLAYER1)){
+                    labelNickNames.get(PlayerIndex.PLAYER0).setForeground(Color.BLACK);
+                    labelNickNames.get(PlayerIndex.PLAYER1).setForeground(Color.BLUE);
+                    if(clientModel.isThreePlayersGame()){
+                        labelNickNames.get(PlayerIndex.PLAYER2).setForeground(Color.BLACK);
+                    }
+                    labelNick.revalidate();
+                    labelNick.repaint();
+                }else{
+                    labelNickNames.get(PlayerIndex.PLAYER0).setForeground(Color.BLACK);
+                    labelNickNames.get(PlayerIndex.PLAYER1).setForeground(Color.BLACK);
+                    labelNickNames.get(PlayerIndex.PLAYER2).setForeground(Color.DARK_GRAY);
+                    labelNick.revalidate();
+                    labelNick.repaint();
+                }
+
+
     }
 
     @Override
@@ -473,11 +494,6 @@ public class GUI extends ClientView {
         Position newPos = message.getMovePosition();
 
 
-        //LabelCircle labelWorker = listLabelPosition.get(oldPos);
-        //listLabelPosition.remove(oldPos);
-        //listLabelPosition.put(newPos, labelWorker);
-
-
         SwingUtilities.invokeLater(
                 () -> {
                     if(caseApMin){
@@ -560,10 +576,10 @@ public class GUI extends ClientView {
                     case 3:
                         LevelPane buildTower2 = listLayerPosition.get(buildPos);
                         JLabel buildLabel3 = new JLabel("");
-                        Image imageTowerLevel3 = imageContainer.getTowerLevel(2).getScaledInstance(getProportionWidth(11,17,buildTower2.getWidth()),getProportionHeight(12,16,buildTower2.getHeight()),Image.SCALE_DEFAULT);
+                        Image imageTowerLevel3 = imageContainer.getTowerLevel(2).getScaledInstance(getProportionWidth(17,26,buildTower2.getWidth()),getProportionHeight(12,16,buildTower2.getHeight()),Image.SCALE_DEFAULT);
                         buildLabel3.setIcon(new ImageIcon(imageTowerLevel3));
                         buildLabel3.setOpaque(false);
-                        buildLabel3.setBounds(getProportionWidth(4,21,buildTower2.getWidth()),getProportionHeight(2,16,buildTower2.getHeight()),getProportionWidth(11,17,buildTower2.getWidth()),getProportionHeight(12,16,buildTower2.getHeight()));
+                        buildLabel3.setBounds(getProportionWidth(4,21,buildTower2.getWidth()),getProportionHeight(2,16,buildTower2.getHeight()),getProportionWidth(17,26,buildTower2.getWidth()),getProportionHeight(12,16,buildTower2.getHeight()));
                         buildTower2.add(buildLabel3, 3);
                         removeActionsFromView();
                         break;
@@ -623,13 +639,19 @@ public class GUI extends ClientView {
         listPlayerGod.put(message.getClient(),message.getGodName());
         JLabel labelNick1 = new JLabel(clientModel.getNickname(PlayerIndex.PLAYER0));
         labelNick1.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(80,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
+        labelNick1.setForeground(Color.BLACK);
+        labelNickNames.put(PlayerIndex.PLAYER0,labelNick1);
         labelNick.add(labelNick1);
         JLabel labelNick2 = new JLabel(clientModel.getNickname(PlayerIndex.PLAYER1));
         labelNick2.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(240,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
+        labelNick2.setForeground(Color.BLACK);
+        labelNickNames.put(PlayerIndex.PLAYER1,labelNick2);
         labelNick.add(labelNick2);
         if(clientModel.isThreePlayersGame()){
             JLabel labelNick3 = new JLabel(clientModel.getNickname(PlayerIndex.PLAYER2));
             labelNick3.setBounds(getProportionWidth(10,350,labelNick.getWidth()),getProportionHeight(390,800,labelNick.getHeight()),getProportionWidth(200,350,labelNick.getWidth()),getProportionHeight(250,800,labelNick.getHeight()));
+            labelNick3.setForeground(Color.BLACK);
+            labelNickNames.put(PlayerIndex.PLAYER2,labelNick3);
             labelNick.add(labelNick3);
         }else{
             labelNick.remove(buttonPlayerGray);
@@ -687,9 +709,28 @@ public class GUI extends ClientView {
     @Override
     public void showWinner(InformationMessage message) {
         OkMessage okMsg = (OkMessage) message;
-        //TODO: miss label win and close button
         Image imageWinner = imageContainer.getImageWinner().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
         PrincipalLabel labelWinner = new PrincipalLabel(imageWinner);
+        Image trophy = new ImageIcon("src/main/resources/trophy_large.png").getImage().getScaledInstance(320,200,Image.SCALE_DEFAULT);
+        PrincipalLabel labelTrophy = new PrincipalLabel(trophy);
+        labelTrophy.setBounds(390,290,320,200);
+        Font font = new Font("Impatto", Font.PLAIN, 17);
+        JLabel labelWriteWin = new JLabel(okMsg.getErrorMessage());
+        JButton buttonClosed = new JButton("CLOSE");
+        buttonClosed.setBounds(498,500,100,50);
+        buttonClosed.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false);
+                frame.dispose();
+            }
+        });
+        labelWriteWin.setFont(font);
+        labelWriteWin.setBounds(55,-60,200,200);
+        labelWriteWin.setForeground(Color.BLACK);
+        labelTrophy.add(labelWriteWin);
+        labelWinner.add(buttonClosed);
+        labelWinner.add(labelTrophy);
         frame.dispose();
         frame = new WelcomeFrame(labelWinner);
     }
@@ -702,14 +743,23 @@ public class GUI extends ClientView {
 
     @Override
     public void showPowerButton(boolean isOn) {
-        //TODO: da implementare
-        /*se isOn è true illuminare il bottone del potere se è false togliere l'illuminazione*/
+
+        if(isOn){
+            buttonPower.setEnabled(true);
+        }else{
+            buttonPower.setEnabled(false);
+        }
+
     }
 
     @Override
     public void showEndTurnButton(boolean isOn) {
-        //TODO: da implementare
-        /*se isOn è true illuminare il bottone endTurn se è false togliere l'illuminazione*/
+
+        if(isOn){
+            buttonEndTurn.setEnabled(true);
+        }else{
+            buttonEndTurn.setEnabled(false);
+        }
     }
 
     @Override
