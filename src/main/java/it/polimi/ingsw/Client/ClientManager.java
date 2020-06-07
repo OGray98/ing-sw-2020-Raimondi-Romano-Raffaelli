@@ -351,7 +351,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
             this.clientView.showGodToSelect(this.clientModel.getChosenGodsByGodLike());
         }
         else{
-            this.clientView.showMessage(this.clientModel.getNickname(this.clientModel.getPlayerIndex()) + " is choosing his god card");
+            this.clientView.showMessage(this.clientModel.getNickname(message.getClient()) + " is choosing his god card");
         }
     }
 
