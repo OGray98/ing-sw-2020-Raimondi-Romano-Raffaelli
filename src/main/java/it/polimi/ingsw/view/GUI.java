@@ -207,6 +207,11 @@ public class GUI extends ClientView {
                             buttonPower.click();
                             //if user clicks buttonPower power cells must be showed
                             if(buttonPower.isClicked()){
+                                if(!clientModel.isThereASelectedWorker()){
+                                    showMessage("You must select a worker before");
+                                    buttonPower.click();
+                                    return;
+                                }
                                 removeActionsFromView();
                                 showActionPositions(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER),true);
                             }
@@ -230,6 +235,7 @@ public class GUI extends ClientView {
         buttonEndTurn = new ButtonCircle(new ImageIcon(imageEndTurn), Color.WHITE,
                 e -> {
                     if(clientModel.getCurrentState() == GameState.ENDPHASE || clientModel.getCurrentState() == GameState.BUILDPOWER){
+                        showEndTurnButton(false);
                         handleMessage(new EndTurnMessage(clientModel.getPlayerIndex()));
                     }
                     else
@@ -277,6 +283,7 @@ public class GUI extends ClientView {
 
     @Override
     public void deactivatePower(){
+        showPowerButton(false);
         if(buttonPower.isClicked())
             this.buttonPower.click();
     }
@@ -678,7 +685,8 @@ public class GUI extends ClientView {
     }
 
     @Override
-    public void showWinner(OkMessage message) {
+    public void showWinner(InformationMessage message) {
+        OkMessage okMsg = (OkMessage) message;
         //TODO: miss label win and close button
         Image imageWinner = imageContainer.getImageWinner().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
         PrincipalLabel labelWinner = new PrincipalLabel(imageWinner);
@@ -687,10 +695,28 @@ public class GUI extends ClientView {
     }
 
     @Override
-    public void showLoser(OkMessage message) {
-        showMessage(message.getErrorMessage());
+    public void showLoser(InformationMessage message) {
+        OkMessage okMsg = (OkMessage) message;
+        showMessage(okMsg.getErrorMessage());
     }
 
+    @Override
+    public void showPowerButton(boolean isOn) {
+        //TODO: da implementare
+        /*se isOn è true illuminare il bottone del potere se è false togliere l'illuminazione*/
+    }
+
+    @Override
+    public void showEndTurnButton(boolean isOn) {
+        //TODO: da implementare
+        /*se isOn è true illuminare il bottone endTurn se è false togliere l'illuminazione*/
+    }
+
+    @Override
+    public void reinsertNickname() {
+        showMessage("Nickname already take, insert an other");
+        showGetNickname();
+    }
 
 
 }
