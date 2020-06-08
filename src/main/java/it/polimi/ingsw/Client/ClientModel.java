@@ -11,10 +11,7 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utils.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 //import it.polimi.ingsw.stub.StubView;
 
@@ -438,6 +435,10 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
 
     public List<String> getGods() {
         return new ArrayList<>(gods.keySet());
+    }
+
+    public List<String> getGodsDescription(){
+        return new ArrayList<>(gods.values());
     }
 
     /**
