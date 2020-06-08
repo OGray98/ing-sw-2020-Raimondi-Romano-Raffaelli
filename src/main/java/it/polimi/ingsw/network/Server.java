@@ -81,7 +81,7 @@ public class Server {
                 c.setClientIndex(PlayerIndex.PLAYER1);
             }
         }
-        else if (lobbyCount == 2 && controller.getPlayerNum() == 3) {
+        else if (lobbyCount == 2) {
             currentConnection.put(PlayerIndex.PLAYER2, c);
             if (currentConnection.size() == 3) {
                 ClientConnection c3 = currentConnection.get(PlayerIndex.PLAYER2);

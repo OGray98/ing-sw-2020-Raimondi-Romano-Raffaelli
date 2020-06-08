@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.deck.Deck;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
@@ -22,6 +23,7 @@ import java.util.Map;
 public class GameManager implements Observer<MessageToServer>, ControllableByClientMessage {
 
     private final GameLobby lobby;
+    private boolean isThreePlayersGameDecided = false;
 
     private final Game gameModel;
     private GodPhaseManager godPhaseManager;
@@ -63,10 +65,10 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         remoteViews.forEach((key, value) -> {
                 if (!key.equals(index))
                     remoteView.putMessage(
-                            new NicknameMessage(key, gameModel.getNickname(key))
+                            new NicknameMessage(key, lobby.getLobbyPlayers().get(key))
                     );
             });
-        System.out.println("finito");
+        System.out.println("finished");
     }
 
     /**
@@ -99,7 +101,7 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         PlayerIndex clientIndex = message.getClient();
         String name = message.getNickname();
 
-        if (lobby.isFull()) {//TODO: delete it?
+        if (lobby.isFull() && isThreePlayersGameDecided) {//TODO: delete it?
             respondErrorToRemoteView(
                     clientIndex,
                     "You can't join the lobby because is already full",
@@ -127,9 +129,11 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         }
 
         lobby.addPlayer(clientIndex, name);
-        gameModel.addPlayer(clientIndex, name);
 
-        if (lobby.isFull()) {
+        if ((isThreePlayersGameDecided || clientIndex==PlayerIndex.PLAYER0) && lobby.isFull()) {
+            for(Map.Entry<PlayerIndex, String> entry : lobby.getLobbyPlayers().entrySet()){
+                gameModel.addPlayer(entry.getKey(), entry.getValue());
+            }
             godPhaseManager = new GodPhaseManager(gameModel);
             gameModel.setCurrentState(GameState.GOD_PLAYER_CHOOSE_CARDS);
         }
@@ -166,7 +170,12 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         }
 
         lobby.setThreePlayersGame(isThreePlayerGame);
+        if(remoteViews.size() > 2 && lobby.getLobbyPlayers().size() == 3){
+            remoteViews.remove(PlayerIndex.PLAYER2);
+            lobby.removeFromLobby(PlayerIndex.PLAYER2);
+        }
 
+        this.isThreePlayersGameDecided = true;
         gameModel.setNumPlayer(isThreePlayerGame);
     }
 

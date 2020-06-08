@@ -96,7 +96,8 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
      */
     public void addNickname(PlayerIndex index, String nickname) throws NullPointerException {
         if (nickname == null) throw new NullPointerException("nickname");
-        nicknames.put(index, nickname);
+        if(!nicknames.containsKey(index))
+            nicknames.put(index, nickname);
     }
 
     public String getNickname(PlayerIndex index) {

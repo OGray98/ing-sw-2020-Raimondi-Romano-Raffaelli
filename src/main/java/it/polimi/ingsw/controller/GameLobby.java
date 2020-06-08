@@ -68,4 +68,8 @@ public class GameLobby {
         }
         return this.lobbyPlayers.size() == 2;
     }
+
+    public void removeFromLobby(PlayerIndex playerToRemove){
+        lobbyPlayers.remove(playerToRemove);
+    }
 }
