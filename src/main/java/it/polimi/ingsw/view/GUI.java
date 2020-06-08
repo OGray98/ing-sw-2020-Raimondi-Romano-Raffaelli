@@ -42,7 +42,6 @@ public class GUI extends ClientView {
     private static LabelCircle labelApMin ;
     private static LabelCircle firstLabelApMin;
     private static Map<PlayerIndex,String> nicksName = new HashMap<>();
-    private static Map<PlayerIndex, JLabel> labelNickNames = new HashMap<>();
     private static JLabel labelNick1;
     private static JLabel labelNick2;
     private static JLabel labelNick3;

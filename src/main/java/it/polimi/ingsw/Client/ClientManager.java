@@ -19,6 +19,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     private ClientView clientView;
 
     private List<Position> workersToPut = new ArrayList<>();
+    private boolean isFirst = true;
 
     public ClientManager(ServerConnection serverConnection, ClientModel clientModel) {
         this.serverConnection = serverConnection;
@@ -227,6 +228,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     @Override
     public void updateNickname(NicknameMessage message) {
         clientModel.addNickname(message.getClient(), message.getNickname());
+
     }
 
     @Override
@@ -234,6 +236,15 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         clientModel.setAmICurrentPlayer(message.getCurrentPlayerIndex() == clientModel.getPlayerIndex());
         //Show current player to the view
         clientView.showCurrentPlayer(message.getCurrentPlayerIndex());
+
+        if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() == message.getClient() && isFirst){
+            clientView.showMessage("Select two cells where put your workers");
+            isFirst = false;
+        }else if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() != message.getClient() && isFirst){
+            clientView.showMessage(clientModel.getNickname(message.getClient()) + " is putting workers");
+            isFirst = false;
+        }
+
 
         //TODO: brutto da fare meglio se si riesce!
         if(clientModel.getCurrentState() == GameState.SELECT_CARD && message.getClient()!=PlayerIndex.PLAYER0){
@@ -251,6 +262,25 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     public void updateState(UpdateStateMessage message) {
         GameState currentState = message.getGameState();
         clientModel.setCurrentState(currentState);
+
+        if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() == message.getClient()){
+            clientView.showMessage("Select two cells where put your workers");
+        }else if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() != message.getClient()){
+            clientView.showMessage(clientModel.getNickname(message.getClient()) + " is putting workers");
+        }
+
+        if(clientModel.getCurrentState() == GameState.MOVE && this.clientModel.getPlayerIndex() == message.getClient()){
+            clientView.showMessage("Select a worker and then move him");
+        }else if(clientModel.getCurrentState() == GameState.MOVE && this.clientModel.getPlayerIndex() != message.getClient()){
+            clientView.showMessage(clientModel.getNickname(message.getClient()) + " is moving worker");
+        }
+
+        if(clientModel.getCurrentState() == GameState.BUILD && this.clientModel.getPlayerIndex() == message.getClient()){
+            clientView.showMessage("Select where you want build");
+        }else if(clientModel.getCurrentState() == GameState.BUILD && this.clientModel.getPlayerIndex() != message.getClient()){
+            clientView.showMessage(clientModel.getNickname(message.getClient()) + " is building");
+        }
+
 
         if(message.getGameState() == clientModel.getPowerGodState() && message.getClient().equals(clientModel.getPlayerIndex())){
             clientView.showPowerButton(true);
@@ -275,6 +305,8 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
             case GOD_PLAYER_CHOOSE_FIRST_PLAYER:
                 if(this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER0)
                     this.clientView.showGodLikeChooseFirstPlayer();
+                else
+                    this.clientView.showMessage("Player God Like is choosing first player");
                 break;
             default:
                 break;

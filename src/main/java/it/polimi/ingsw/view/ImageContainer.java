@@ -24,6 +24,7 @@ public class ImageContainer {
     private Image[] imageColorPlayer = new Image[3];
     private Image imageLabelTerminalPlayerNick;
     private Image imageWinner;
+    private Image imageClose;
 
 
     public ImageContainer(){
@@ -62,6 +63,7 @@ public class ImageContainer {
         Image imageColorBlue = new ImageIcon("src/main/resources/cm_btn_blue.png").getImage();
         Image imageColorRed = new ImageIcon("src/main/resources/cm_btn_coral.png").getImage();
         Image imageColorGray = new ImageIcon("src/main/resources/cm_btn_gray.png").getImage();
+        imageClose = new ImageIcon("src/main/resources/Destroy.png").getImage();
 
         imageWinner =  new ImageIcon("src/main/resources/endgame_victorywin.png").getImage();
         imageLabelTerminalPlayerNick = new ImageIcon("src/main/resources/cl_bg.png").getImage();
@@ -133,4 +135,6 @@ public class ImageContainer {
     protected Image getPlayersTerminalNick () { return imageLabelTerminalPlayerNick;}
 
     protected Image getImageWinner () { return imageWinner;}
+
+    protected Image getCloseImage () { return imageClose;}
 }

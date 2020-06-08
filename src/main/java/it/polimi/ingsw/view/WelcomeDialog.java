@@ -20,23 +20,6 @@ public class WelcomeDialog extends GameDialog{
         labelGround.setIcon(new ImageIcon(imageGround));
         JTextField text = new JTextField("Insert name and press play", 20);
 
-        /*text.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                JTextField textField = (JTextField) e.getSource();
-                String name = textField.getText();
-                n = name;
-            }
-        });*/
-
         JRadioButton box2Player = new JRadioButton("2-PLAYERS");
         JRadioButton box3Player = new JRadioButton("3-PLAYERS");
         ButtonGroup g = new ButtonGroup();
@@ -64,10 +47,13 @@ public class WelcomeDialog extends GameDialog{
                 Color.WHITE,true,
                 e -> {
                     clientView.handleMessage(new NicknameMessage(clientView.getPlayer(), text.getText()));
-                    if (box2Player.isSelected())
+                    if (box2Player.isSelected()){
+                        clientView.showMessage("Waiting for others players");
                         clientView.handleMessage(new TypeMatchMessage(clientView.getPlayer(), false));
-                    else if (box3Player.isSelected())
-                        clientView.handleMessage(new TypeMatchMessage(clientView.getPlayer(), true));
+                    }
+                    else if (box3Player.isSelected()){
+                        clientView.showMessage("Waiting for others players");
+                        clientView.handleMessage(new TypeMatchMessage(clientView.getPlayer(), true));}
                     dispose();
                 }
 
@@ -76,23 +62,6 @@ public class WelcomeDialog extends GameDialog{
         buttonSend.setBounds(210, 120, 95, 88);
         g.add(box2Player);
         g.add(box3Player);
-        /*box2Player.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(box2Player.isSelected()){
-                    clientView.handleMessage(new TypeMatchMessage(clientView.getPlayer(),false));
-                }
-            }
-        });
-
-        box3Player.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(box3Player.isSelected()){
-                    clientView.handleMessage(new TypeMatchMessage(clientView.getPlayer(),true));
-                }
-            }
-        });*/
         labelGround.add(buttonSend);
         labelGround.add(box3Player);
         labelGround.add(box2Player);

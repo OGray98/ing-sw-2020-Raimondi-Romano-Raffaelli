@@ -41,10 +41,9 @@ public class GodIconDialog extends GameDialog implements ActionListener {
         labelSecond.setForeground(Color.WHITE);
         labelFirst.setForeground(Color.WHITE);
         labelFirst.setFont(font1);
-        JButton buttonClose = new JButton("CLOSE");
-        buttonClose.setBounds(240,200,100,50);
-        buttonClose.setForeground(Color.BLUE);
-        buttonClose.addActionListener(this);
+        Image imageClose = imageContainer.getCloseImage().getScaledInstance(70,70,Image.SCALE_DEFAULT);
+        ButtonCircle buttonClose = new ButtonCircle(new ImageIcon(imageClose),Color.RED,true,this);
+        buttonClose.setBounds(240,200,80,80);
         labelGround.add(buttonClose);
         labelGround.add(labelSecond);
         labelGround.add(labelFirst);
