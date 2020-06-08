@@ -95,7 +95,8 @@ public class SocketClientConnection extends Observable<MessageToServer> implemen
             new Thread(() -> {
                 try {
                     while (isConnected()) {
-                        notify(inputMessageQueue.take());
+                        MessageToServer input = inputMessageQueue.take();
+                        notify(input);
                     }
                 } catch (InterruptedException e) {
                     setIsActiveFalse();
