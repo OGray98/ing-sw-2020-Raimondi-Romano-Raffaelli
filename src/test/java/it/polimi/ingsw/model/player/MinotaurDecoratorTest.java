@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.exception.InvalidPositionException;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.Cell;
@@ -273,6 +274,20 @@ public class MinotaurDecoratorTest {
         assertTrue(playerMinotaur.hasWin());
     }
 
+    @Test
+    public void getSecondPowerPosition(){
+        playerMinotaur.setStartingWorkerSituation(board.getCell(new Position(1,1)),false);
+
+        assertEquals(playerMinotaur.getSecondPowerPosition(new Position(1,2)), new Position(1,3));
+
+        try{
+            playerMinotaur.getSecondPowerPosition(new Position(0,1));
+        }
+        catch (InvalidPositionException e){
+            assertEquals(e.getMessage(), "You cannot have a position in : [" + -1 + "][" + 1 + "]");
+        }
+
+    }
 
     @After
     public void afterAll(){

@@ -104,6 +104,11 @@ public abstract class PlayerDecorator implements PlayerInterface, CardInterface 
     }
 
     @Override
+    public Position getSecondPowerPosition(Position firstPowerPos){
+        throw new IllegalStateException("this god does not have a second power position");
+    }
+
+    @Override
     public boolean getCantGoUp(){
         return player.getCantGoUp();
     }

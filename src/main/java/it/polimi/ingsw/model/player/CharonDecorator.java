@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.controller.GameState;
+import it.polimi.ingsw.exception.InvalidPositionException;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.Cell;
@@ -29,7 +30,7 @@ public class CharonDecorator extends PlayerYourTurnDecorator{
 
         Position oldEnemyPosition = adjacentList.get(0).getPosition();
 
-        if(adjacentPlayerList.containsKey(oldEnemyPosition)){
+        if(adjacentPlayerList.containsKey(oldEnemyPosition) && adjacentPlayerList.get(oldEnemyPosition) != super.getPlayerNum()){
             if(!adjacentList.get(1).hasDome()){
                 this.enemyIndex = adjacentPlayerList.get(oldEnemyPosition);
                 newEnemyPosition = adjacentList.get(1).getPosition();
@@ -45,7 +46,18 @@ public class CharonDecorator extends PlayerYourTurnDecorator{
     }
     @Override
     public int getPowerListDimension(){
-        return 3;
+        return 2;
+    }
+
+    @Override
+    public Position getSecondPowerPosition(Position firstPowerPos){
+        int diffRow = firstPowerPos.row - getCellOccupied().getPosition().row;
+        int diffCol = firstPowerPos.col - getCellOccupied().getPosition().col;
+        int newRow = getCellOccupied().getPosition().row - (diffRow);
+        int newCol = getCellOccupied().getPosition().col - (diffCol);
+        if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))
+            return new Position(newRow, newCol);
+        throw new InvalidPositionException(newRow, newCol);
     }
 
     @Override

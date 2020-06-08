@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.exception.InvalidPositionException;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.Cell;
@@ -48,7 +49,7 @@ public class CharonDecoratorTest {
 
     @Test
     public void getPowerListDimensionTest(){
-        assertEquals(3,playerCharon.getPowerListDimension());
+        assertEquals(2,playerCharon.getPowerListDimension());
     }
 
     @Test
@@ -197,6 +198,21 @@ public class CharonDecoratorTest {
 
         assertEquals(board.getOccupiedPlayer(workerOnePos), PlayerIndex.PLAYER0);
         assertEquals(board.getOccupiedPlayer(new Position(1,0)), PlayerIndex.PLAYER1);
+    }
+
+    @Test
+    public void getSecondPowerPosition(){
+        playerCharon.setStartingWorkerSituation(board.getCell(new Position(0,1)),false);
+
+        assertEquals(playerCharon.getSecondPowerPosition(new Position(0,2)), new Position(0,0));
+
+        try{
+            playerCharon.getSecondPowerPosition(new Position(1,1));
+        }
+        catch (InvalidPositionException e){
+            assertEquals(e.getMessage(), "You cannot have a position in : [" + -1 + "][" + 1 + "]");
+        }
+
     }
 
     @After

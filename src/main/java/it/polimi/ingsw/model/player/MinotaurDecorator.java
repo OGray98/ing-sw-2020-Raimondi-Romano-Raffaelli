@@ -106,6 +106,17 @@ public class MinotaurDecorator extends PlayerMoveDecorator {
         return boardChange;
     }
 
+    @Override
+    public Position getSecondPowerPosition(Position firsPowerPosition){
+        int diffRow = firsPowerPosition.row - getCellOccupied().getPosition().row;
+        int diffCol = firsPowerPosition.col - getCellOccupied().getPosition().col;
+        int newRow = firsPowerPosition.row + diffRow;
+        int newCol = firsPowerPosition.col + diffCol;
+        if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))
+            return new Position(newRow, newCol);
+        throw new InvalidPositionException(newRow, newCol);
+    }
+
     public void setChosenGod(Boolean condition){
         super.setChosenGod(condition);
     }

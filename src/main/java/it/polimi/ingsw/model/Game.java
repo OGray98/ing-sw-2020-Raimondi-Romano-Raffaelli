@@ -660,20 +660,13 @@ public class Game extends Observable<MessageToClient> {
         List<Cell> cells = new ArrayList<>(sizeList);
         cells.add(board.getCell(powerPos));
         if (sizeList == 2) {
-            int diffRow = powerPos.row - currentPlayer.getCellOccupied().getPosition().row;
-            int diffCol = powerPos.col - currentPlayer.getCellOccupied().getPosition().col;
-            int newRow = powerPos.row + diffRow;
-            int newCol = powerPos.col + diffCol;
-            if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))
-                cells.add(board.getCell(new Position(newRow, newCol)));
-        }
-        if(sizeList == 3){
-            int diffRow = powerPos.row - currentPlayer.getCellOccupied().getPosition().row;
-            int diffCol = powerPos.col - currentPlayer.getCellOccupied().getPosition().col;
-            int newRow = currentPlayer.getCellOccupied().getPosition().row - (diffRow);
-            int newCol = currentPlayer.getCellOccupied().getPosition().col - (diffCol);
-            if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))
-                cells.add(board.getCell(new Position(newRow, newCol)));
+            try{
+                Position secondPos = currentPlayer.getSecondPowerPosition(powerPos);
+                cells.add(board.getCell(secondPos));
+            }
+            catch (InvalidPositionException e){
+                return cells;
+            }
         }
         return cells;
     }
@@ -690,20 +683,13 @@ public class Game extends Observable<MessageToClient> {
         List<Position> positions = new ArrayList<>();
         positions.add(powerPos);
         if (sizeMap == 2) {
-            int diffRow = powerPos.row - currentPlayer.getCellOccupied().getPosition().row;
-            int diffCol = powerPos.col - currentPlayer.getCellOccupied().getPosition().col;
-            int newRow = powerPos.row + diffRow;
-            int newCol = powerPos.col + diffCol;
-            if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))
-                positions.add(new Position(newRow, newCol));
-        }
-        if(sizeMap == 3){
-            int diffRow = powerPos.row - currentPlayer.getCellOccupied().getPosition().row;
-            int diffCol = powerPos.col - currentPlayer.getCellOccupied().getPosition().col;
-            int newRow = currentPlayer.getCellOccupied().getPosition().row - (diffRow);
-            int newCol = currentPlayer.getCellOccupied().getPosition().col - (diffCol);
-            if (!(newRow < 0 || newRow > 4 || newCol < 0 || newCol > 4))
-                positions.add(new Position(newRow, newCol));
+            try{
+                Position secondPos = currentPlayer.getSecondPowerPosition(powerPos);
+                positions.add(secondPos);
+            }
+            catch (InvalidPositionException e){
+                return board.getPlayersOccupations(positions);
+            }
         }
         return board.getPlayersOccupations(positions);
     }

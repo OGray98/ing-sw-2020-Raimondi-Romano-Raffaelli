@@ -144,6 +144,11 @@ public class Player implements PlayerInterface{
     }
 
     @Override
+    public Position getSecondPowerPosition(Position firstPowerPos) {
+        throw new IllegalStateException("this god does not have a second power position");
+    }
+
+    @Override
     public boolean getCantGoUp(){
         return this.cantGoUp;
     }

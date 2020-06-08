@@ -84,6 +84,14 @@ public interface PlayerInterface {
 
     Cell getCellOccupied() throws NullPointerException;
 
+    /**
+     * Method used only in gods that needs two positions to use the power
+     * It receives the first power position
+     * @param firstPowerPos
+     * and returns the second
+     * */
+    Position getSecondPowerPosition(Position firstPowerPos);
+
     boolean getCantGoUp();
 
     PlayerIndex getPlayerNum();
