@@ -123,9 +123,6 @@ public class CLI extends ClientView {
         }
 
         handleMessage(new PlayerSelectGodMessage(clientModel.getPlayerIndex(), chosenGod));
-
-        if(godLikeGods.size() == 2)
-            System.out.println("Godlike is choosing the first player");
     }
 
 
