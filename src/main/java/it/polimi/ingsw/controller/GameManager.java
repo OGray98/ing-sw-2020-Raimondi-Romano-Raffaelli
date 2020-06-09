@@ -142,15 +142,6 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         PlayerIndex clientIndex = message.getClient();
         boolean isThreePlayerGame = message.isThreePlayersMatch();
 
-        if (lobby.isFull()) { //TODO : delete it?
-            respondErrorToRemoteView(
-                    clientIndex,
-                    "You can't set now the number of players",
-                    TypeMessage.WRONG_GAME_STATE
-            );
-            return;
-        }
-
         if (!clientIndex.equals(PlayerIndex.PLAYER0)) {
             respondErrorToRemoteView(
                     clientIndex,
@@ -160,9 +151,10 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
             return;
         }
 
+        lobby.setThreePlayersGameDecided(true);
         lobby.setThreePlayersGame(isThreePlayerGame);
-        if(remoteViews.size() > 2 && lobby.getLobbyPlayers().size() == 3){
-            remoteViews.remove(PlayerIndex.PLAYER2);
+        if(!isThreePlayerGame && remoteViews.size() > 2 && lobby.getLobbyPlayers().size() == 2){
+            deleteRemoteView(PlayerIndex.PLAYER2);
             lobby.removeFromLobby(PlayerIndex.PLAYER2);
         }
 
