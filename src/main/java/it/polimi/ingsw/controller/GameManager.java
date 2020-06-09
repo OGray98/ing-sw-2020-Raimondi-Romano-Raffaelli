@@ -154,7 +154,7 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         lobby.setThreePlayersGameDecided(true);
         lobby.setThreePlayersGame(isThreePlayerGame);
         if(!isThreePlayerGame && remoteViews.size() > 2 && lobby.getLobbyPlayers().size() == 2){
-            remoteViews.remove(PlayerIndex.PLAYER2);
+            deleteRemoteView(PlayerIndex.PLAYER2);
             lobby.removeFromLobby(PlayerIndex.PLAYER2);
         }
 
