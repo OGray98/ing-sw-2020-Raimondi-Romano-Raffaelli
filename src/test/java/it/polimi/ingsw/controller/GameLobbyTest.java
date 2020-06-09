@@ -29,6 +29,7 @@ public class GameLobbyTest {
         assertFalse(lobby2p.isPlayerAlreadyInLobby(PlayerIndex.PLAYER0));
         lobby2p.addPlayer(PlayerIndex.PLAYER0, "Jack");
         assertTrue(lobby2p.isPlayerAlreadyInLobby(PlayerIndex.PLAYER0));
+        assertEquals("Jack",lobby2p.getNickname(PlayerIndex.PLAYER0));
     }
 
     @Test
@@ -52,6 +53,8 @@ public class GameLobbyTest {
         catch(MaxPlayersException e){
             assertEquals("Max number of players reached! Impossible to add other players!", e.getMessage());
         }
+        lobby2p.removeFromLobby(PlayerIndex.PLAYER1);
+
     }
 
     @Test

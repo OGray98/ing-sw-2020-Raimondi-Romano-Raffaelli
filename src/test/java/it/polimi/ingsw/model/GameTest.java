@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.MaxPlayersException;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Cell;
@@ -45,6 +46,11 @@ public class GameTest {
         players.add(new Player("Creed", PlayerIndex.PLAYER2));
         game = new Game();
         game.setNumPlayer(true);
+        try{
+            game.addPlayer(PlayerIndex.PLAYER0,null);
+        }catch (NullPointerException e){
+            assertEquals("nickname",e.getMessage());
+        }
         players.forEach(player -> game.addPlayer(player.getPlayerNum(), player.getNickname()));
         board = new Board();
     }
@@ -78,6 +84,7 @@ public class GameTest {
         assertEquals(2, gameInstance.getPlayersNames().size());
         assertEquals("Paolo", gameInstance.getPlayersNames().get(PlayerIndex.PLAYER0));
         assertEquals("Pietro", gameInstance.getPlayersNames().get(PlayerIndex.PLAYER1));
+        assertEquals(2,gameInstance.getNumGamingPlayer());
 
         try {
             gameInstance.addPlayer(PlayerIndex.PLAYER1, "Nicola");
@@ -146,6 +153,11 @@ public class GameTest {
     }
     @Test
     public void putWorkerTest() {
+        try{
+            game.canPutWorker(null);
+        }catch (NullPointerException e){
+            assertEquals("putPosition",e.getMessage());
+        }
         try {
             game.putWorker(null);
         } catch (NullPointerException e) {
@@ -153,6 +165,7 @@ public class GameTest {
         }
         game.putWorker(new Position(2, 2));
         assertEquals(PlayerIndex.PLAYER0, game.getBoard().getOccupiedPlayer(new Position(2, 2)));
+
     }
 
 
@@ -242,10 +255,13 @@ public class GameTest {
             if (game.getCurrentPlayerGodName().equals("Artemis")) {
 
                 assertTrue(game.canUsePowerWorker(powerPos));
+                assertEquals(game.getCurrentPlayerPowerState(), GameState.BUILD);
                 game.usePowerWorker(powerPos);
+                assertEquals(game.getCurrentPlayerNextState(), GameState.SECOND_MOVE);
                 assertEquals(game.getSortedIndexes().get(cont), game.getBoard().getOccupiedPlayer(powerPos));
             }
             game.canBuild(posMosse.get(cont * 2 + 1));
+            assertEquals(game.getCurrentState(),GameState.START_GAME);
             game.build(posMosse.get(cont * 2 + 1));
             assertEquals(1, game.getBoard().getCell(posMosse.get(cont * 2 + 1)).getLevel());
             if (game.getCurrentPlayerGodName().equals("Demeter")) {
