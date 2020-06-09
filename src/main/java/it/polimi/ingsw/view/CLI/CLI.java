@@ -436,13 +436,6 @@ public class CLI extends ClientView {
         int col = 0;
         boolean usingPower = false;
 
-        //handling power button
-        /*if(reader.nextLine().equals("p")){
-            System.out.println("Power active!");
-            printActionPositions(ActionType.POWER);
-            usingPower = true;
-        }*/
-
         while(cont == 0){
             while (contIndexes==0){
                 System.out.println("Row:");
@@ -492,6 +485,10 @@ public class CLI extends ClientView {
         return true;
     }
 
+    /**
+     * Method that prints the possible positions required
+     * @param type indicates the type of action to see, power or normal
+     * */
     private void printActionPositions(ActionType type){
         System.out.print("Valid positions: ");
         for(Position p : clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), type)){

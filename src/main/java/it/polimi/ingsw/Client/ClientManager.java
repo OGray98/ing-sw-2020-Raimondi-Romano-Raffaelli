@@ -238,12 +238,12 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         //Show current player to the view
         clientView.showCurrentPlayer(message.getCurrentPlayerIndex());
 
-        if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() == message.getClient() && isFirst){
-            clientView.showMessage("Select two cells where put your workers");
+        if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() == message.getClient()){
+            if(isFirst)
+                clientView.showMessage("Select two cells where put your workers");
+            clientView.changeState("");
         }
 
-
-        //TODO: brutto da fare meglio se si riesce!
         if(clientModel.getCurrentState() == GameState.SELECT_CARD && message.getClient()!=PlayerIndex.PLAYER0){
             showGodSelect(message);
         }
@@ -262,6 +262,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
         if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() == message.getClient() && isFirst){
             clientView.showMessage("Select two cells where put your workers");
+            clientView.changeState("");
             isFirst = false;
         }
 
