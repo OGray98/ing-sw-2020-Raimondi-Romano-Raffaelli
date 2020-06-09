@@ -46,7 +46,6 @@ public class WelcomeDialog extends GameDialog{
                 new ImageIcon(imagePlay),
                 Color.WHITE,true,
                 e -> {
-                    clientView.handleMessage(new NicknameMessage(clientView.getPlayer(), text.getText()));
                     if (box2Player.isSelected()){
                         clientView.showMessage("Waiting for others players");
                         clientView.handleMessage(new TypeMatchMessage(clientView.getPlayer(), false));
@@ -54,6 +53,7 @@ public class WelcomeDialog extends GameDialog{
                     else if (box3Player.isSelected()){
                         clientView.showMessage("Waiting for others players");
                         clientView.handleMessage(new TypeMatchMessage(clientView.getPlayer(), true));}
+                    clientView.handleMessage(new NicknameMessage(clientView.getPlayer(), text.getText()));
                     dispose();
                 }
 

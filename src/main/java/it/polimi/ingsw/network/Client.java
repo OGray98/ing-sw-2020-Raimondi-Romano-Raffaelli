@@ -113,9 +113,11 @@ public class Client implements ServerConnection {
             try {
                 while (isActive()) {
                     socketOut.reset();
-                    socketOut.writeObject(outputMessageQueue.take());
-                    //System.out.println("Send message");
+                    MessageToServer msg = outputMessageQueue.take();
+                    socketOut.writeObject(msg);
                     socketOut.flush();
+                    if (msg.getType() != TypeMessage.PING && msg.getType() != TypeMessage.PONG)
+                        System.out.println("Send message :" + msg.getType());
                 }
             } catch (IOException | InterruptedException e) {
                 setActive(false);

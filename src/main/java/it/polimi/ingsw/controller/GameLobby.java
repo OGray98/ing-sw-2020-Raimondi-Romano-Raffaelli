@@ -18,23 +18,28 @@ public class GameLobby {
        return 3;
     }
 
-    public GameLobby(){
+    public GameLobby() {
         this.lobbyPlayers = new HashMap<>();
     }
 
-    public void setThreePlayersGame(boolean threePlayersGame){
+    public void setThreePlayersGame(boolean threePlayersGame) {
         this.threePlayersGame = threePlayersGame;
+    }
+
+    public String getNickname(PlayerIndex index) {
+        return this.lobbyPlayers.get(index);
     }
 
     /**
      * Add a player in the lobby
+     *
      * @param playerIndex index of the player to add
-     * @param playerNick nickName of the player to add
-     * @throws MaxPlayersException if lobby is already full
+     * @param playerNick  nickName of the player to add
+     * @throws MaxPlayersException       if lobby is already full
      * @throws NameAlreadyTakenException if the nickname chosen is not available
-     * @throws IllegalArgumentException if the player is already in the lobby
-     * */
-    public void addPlayer(PlayerIndex playerIndex, String playerNick){
+     * @throws IllegalArgumentException  if the player is already in the lobby
+     */
+    public void addPlayer(PlayerIndex playerIndex, String playerNick) {
         if(isFull()) throw new MaxPlayersException();
         if(isNameAlreadyTaken(playerNick)) throw new NameAlreadyTakenException();
         if(isPlayerAlreadyInLobby(playerIndex)) throw new IllegalArgumentException("Player " + playerIndex + " is already in the lobby");

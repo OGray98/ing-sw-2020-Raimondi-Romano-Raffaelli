@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.deck.Deck;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
@@ -61,14 +60,6 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         remoteViews.put(index, remoteView);
         remoteView.putMessage(new ConnectionPlayerIndex(index));
         gameModel.addObserver(remoteViews.get(index));
-
-        remoteViews.forEach((key, value) -> {
-                if (!key.equals(index))
-                    remoteView.putMessage(
-                            new NicknameMessage(key, lobby.getLobbyPlayers().get(key))
-                    );
-            });
-        System.out.println("finished");
     }
 
     /**
