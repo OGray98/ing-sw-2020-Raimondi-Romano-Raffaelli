@@ -7,13 +7,13 @@ import java.io.IOException;
 
 public class ServerTest {
 
-    public static void main(String args[])  {
+    public static void main(String[] args) {
         Server server;
-        try{
+        try {
             server = new Server();
             server.run();
 
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
