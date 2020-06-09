@@ -154,6 +154,11 @@ public class GodPhaseManagerTest {
 
         Position samePos = new Position(1,1);
         try{
+            godManager.canPutWorker(null);
+        }catch (NullPointerException e){
+            assertEquals("workerPos",e.getMessage());
+        }
+        try{
             godManager.puttingWorkerInBoard(samePos,samePos);
         } catch (NotPutTwoWorkerInSamePositionException e){
             assertEquals("You can't put the workers in same position : [" + samePos.row + "][" + samePos.col + "]",e.getMessage());
@@ -166,6 +171,21 @@ public class GodPhaseManagerTest {
         assertEquals(PlayerIndex.PLAYER1,game.getBoard().getOccupiedPlayer(pos1));
         assertEquals(PlayerIndex.PLAYER1,game.getBoard().getOccupiedPlayer(pos2));
 
+        Position pos11 = new Position(2,2);
+        Position pos22 = new Position(3,3);
+        Position pos33 = new Position(1,1);
+
+        try{
+            godManager.puttingWorkerInBoard(pos11,pos33);
+        }catch (IllegalArgumentException e){
+            assertEquals("position [" + pos11.row + "][" + pos11.col + "] is not free",e.getMessage());
+        }
+
+        try{
+            godManager.puttingWorkerInBoard(pos33,pos11);
+        }catch (IllegalArgumentException e){
+            assertEquals("position [" + pos11.row + "][" + pos11.col + "] is not free",e.getMessage());
+        }
 
         Position pos3 = new Position(1,1);
         Position pos4 = new Position(1,2);

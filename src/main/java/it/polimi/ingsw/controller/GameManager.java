@@ -92,14 +92,14 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         PlayerIndex clientIndex = message.getClient();
         String name = message.getNickname();
 
-        if (lobby.isFull() && isThreePlayersGameDecided) {//TODO: delete it?
+        /*if (lobby.isFull() && isThreePlayersGameDecided) {      //TODO: delete it?
             respondErrorToRemoteView(
                     clientIndex,
                     "You can't join the lobby because is already full",
                     TypeMessage.WRONG_GAME_STATE
             );
             return;
-        }
+        }*/
 
         if (lobby.isNameAlreadyTaken(name)) {
             respondErrorToRemoteView(
@@ -175,14 +175,14 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         PlayerIndex clientIndex = message.getClient();
         List<String> godNames = message.getGodNames();
 
-        if (godNames.stream().filter(Deck::isCorrectedName).count() != godNames.size()) {//TODO: exception exist already
+       /* if (godNames.stream().filter(Deck::isCorrectedName).count() != godNames.size()) {//TODO: exception exist already
             respondErrorToRemoteView(
                     clientIndex,
                     "You insert wrong names",
                     TypeMessage.WRONG_GOD_NAME
             );
             return;
-        }
+        }*/
 
         if (isNotCurrentGameState(GameState.GOD_PLAYER_CHOOSE_CARDS)) {
             respondErrorToRemoteView(
@@ -245,14 +245,14 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
             return;
         }
         //Godlike can't choose the card
-        if (clientIndex.equals(godPhaseManager.getGodLikePlayerIndex())) {//TODO: non serve
+        /*if (clientIndex.equals(godPhaseManager.getGodLikePlayerIndex())) {//TODO: non serve
             respondErrorToRemoteView(
                     clientIndex,
                     "Godlike player can not choose a card",
                     TypeMessage.ERROR
             );
             return;
-        }
+        }*/
 
         godPhaseManager.playerChooseGod(message.getGodName());
         //possibile problema: quando ultimo giocatore sceglie poi non sarà il turno del godlike. RISOLTO?
@@ -505,14 +505,14 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
             return;
         }
         //Send an error if the position given is not a worker of current player
-        if(!gameModel.getBoard().workerPositions(clientIndex).contains(workerPos)){//TODO: not used
+       /* if(!gameModel.getBoard().workerPositions(clientIndex).contains(workerPos)){//TODO: not used
             respondErrorToRemoteView(
                     clientIndex,
                     "You select a wrong position",
                     TypeMessage.ERROR
             );
             return;
-        }
+        }*/
 
         this.turnManager.usePowerWorker(workerPos, powerPos);
 
@@ -666,7 +666,7 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
      * @param text         message text
      * @param specificType specific type of this okMessage
      */
-    private void respondOkToRemoteView(PlayerIndex clientIndex, String text, TypeMessage specificType) {
+    /*private void respondOkToRemoteView(PlayerIndex clientIndex, String text, TypeMessage specificType) {
         for(PlayerIndex client : remoteViews.keySet()) {
             if(client.equals(clientIndex)) {
                 remoteViews.get(client).putMessage(
@@ -678,7 +678,7 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
                 );
             }
         }
-    }
+    }*/
 
     /**
      * Send a message to all the players connected

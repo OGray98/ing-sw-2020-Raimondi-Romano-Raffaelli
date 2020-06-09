@@ -19,7 +19,7 @@ public class WelcomeDialog extends GameDialog {
         JLabel labelConnected = new JLabel("YOU ARE CONNECTED!!");
         labelConnected.setFont(font);
         labelConnected.setForeground(Color.BLUE);
-        labelConnected.setBounds(170,30,300,20);
+        labelConnected.setBounds(165,30,300,20);
         Image imageGround = new ImageIcon("src/main/resources/title_water.png").getImage().getScaledInstance(520, 315, Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         JTextField text = new JTextField("Insert name and press play", 20);

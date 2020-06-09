@@ -43,6 +43,8 @@ public class ControllerTest2Player {
         List<String> names = new ArrayList<>(List.of("Creed", "Jack"));
         obs1.setMsg(new TypeMatchMessage(PlayerIndex.PLAYER0,false));
         obs1.setMsg(new NicknameMessage(PlayerIndex.PLAYER0,names.get(0)));
+        gameManager.getBoard();
+        gameManager.getPlayerNum();
         //NicknameMessage namePlayer0 = (NicknameMessage) obs1.getMesRemoteToView().get(0);
         //assertEquals("Creed",namePlayer0.getNickname());
 
@@ -51,6 +53,9 @@ public class ControllerTest2Player {
         ErrorMessage notGodLike = (ErrorMessage) obs2.getMesRemoteToView().get(0);
         assertEquals("You can't choose the number of players",notGodLike.getErrorMessage());
         assertEquals(notGodLike.getSpecificErrorType(),TypeMessage.CANT_CHOOSE_PLAYERS_NUMBER);
+        obs2.setMsg(new NicknameMessage(PlayerIndex.PLAYER1, names.get(0)));
+        ErrorMessage sameName = (ErrorMessage) obs2.getMesRemoteToView().get(0);
+        assertEquals("There already is a player named "  + names.get(0),sameName.getErrorMessage());
         obs2.setMsg(new NicknameMessage(PlayerIndex.PLAYER1, names.get(1)));
         NicknameMessage namePlayer1 = (NicknameMessage) obs2.getMesRemoteToView().get(0);
         //assertEquals("Jack",namePlayer1.getNickname());
@@ -74,6 +79,9 @@ public class ControllerTest2Player {
         //obs1.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER0,new Position(0,0)));
         obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0,new Position(0,0),new Position(1,0)));
         obs1.setMsg(new BuildMessage(PlayerIndex.PLAYER0,new Position(0,1)));
+        obs1.setMsg(new MoveMessage(PlayerIndex.PLAYER0,new Position(1,0),new Position(1,1)));
+        ErrorMessage notStateMOve = (ErrorMessage) obs1.getMesRemoteToView().get(0);
+        assertEquals("You can't move a worker now!",notStateMOve.getErrorMessage());
         obs1.setMsg(new EndTurnMessage(PlayerIndex.PLAYER0));
 
         //obs2.setMsg(new SelectWorkerMessage(PlayerIndex.PLAYER1,new Position(0,3)));
@@ -105,6 +113,8 @@ public class ControllerTest2Player {
 
         OkMessage end1 = (OkMessage) obs2.getMesRemoteToView().get(12);
         assertEquals(end1.getErrorMessage(),"Jack has won the game!");
+
+        gameManager.deleteRemoteView(PlayerIndex.PLAYER1);
 
         obs1 = null;
         obs2 = null;
