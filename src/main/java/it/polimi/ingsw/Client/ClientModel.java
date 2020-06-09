@@ -452,6 +452,10 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         throw new IllegalStateException("not valid number of players!");
     }
 
+    public boolean isOccupiedPosition(Position pos){
+        return this.playersPositions.containsValue(pos);
+    }
+
     public boolean isGodLikeChoosingCards() {
         return this.currentState == GameState.GOD_PLAYER_CHOOSE_CARDS;
     }

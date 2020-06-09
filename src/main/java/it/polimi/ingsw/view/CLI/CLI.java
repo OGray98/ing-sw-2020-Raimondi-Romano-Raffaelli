@@ -14,6 +14,7 @@ import java.util.Scanner;
 public class CLI extends ClientView {
 
     private Scanner reader = new Scanner(System.in);
+    private String[][] boardRep = new String[5][5];
 
     public CLI(ViewModelInterface clientModel) {
         super(clientModel);
@@ -26,6 +27,12 @@ public class CLI extends ClientView {
 
     @Override
     public void init() {
+        //creating initial board
+        for(int i=0;i<5;i++){
+            for(int j=0;j<5;j++){
+                boardRep[i][j] = new String("   0");
+            }
+        }
         System.out.println("\n\n*********   Welcome to Santorini!   *********\n\n");
     }
 
@@ -54,8 +61,8 @@ public class CLI extends ClientView {
 
             try{
                 int godNum = Integer.parseInt(reader.nextLine()) - 1;
-                if(godNum < 0 || godNum > 12){
-                    System.out.println("You can only insert a number between 1 and 13");
+                if(godNum < 0 || godNum > 13){
+                    System.out.println("You can only insert a number between 1 and 14");
                 }
                 else{
                     if(!godsChosen.contains(gods.get(godNum))){
@@ -70,7 +77,7 @@ public class CLI extends ClientView {
                 }
             }
             catch (NumberFormatException e){
-                System.out.println("You can only insert a number between 1 and 13");
+                System.out.println("You can only insert a number between 1 and 14");
             }
         }
 
@@ -180,7 +187,16 @@ public class CLI extends ClientView {
 
     @Override
     public void updatePutWorker(PutWorkerMessage message) {
+        int rowWorker1 = message.getPositionOne().row;
+        int colWorker1 = message.getPositionOne().col;
+        int rowWorker2 = message.getPositionTwo().row;
+        int colWorker2 = message.getPositionTwo().col;
 
+        boardRep[rowWorker1][colWorker1] = boardRep[rowWorker1][colWorker1] + getWorker(message.getClient());
+        boardRep[rowWorker2][colWorker2] = boardRep[rowWorker2][colWorker2] + getWorker(message.getClient());
+
+        System.out.println("\n\n");
+        printBoardRep();
     }
 
     @Override
@@ -220,7 +236,8 @@ public class CLI extends ClientView {
 
     @Override
     public void showPowerButton(boolean isOn) {
-
+        if(isOn)
+            System.out.println("You can use power during this turn phase! Press 'p' to see where you can use your power");
     }
 
     @Override
@@ -290,16 +307,210 @@ public class CLI extends ClientView {
 
     @Override
     public void showCurrentPlayer(PlayerIndex currentPlayer) {
-
+        System.out.println("It's "+ clientModel.getNickname(currentPlayer) + " turn now");
     }
 
     @Override
     public void changeState(String state){
-
+        if(!clientModel.isAmICurrentPlayer()){
+            System.out.println(state);
+            return;
+        }
+        if(state.equals("")){
+            try {
+                clientModel.getPlayerIndexPosition(clientModel.getPlayerIndex());
+            }
+            catch (NullPointerException e){
+                return;
+            }
+            printBoardRep();
+            putWorkerInput();
+            return;
+        }
+        else {
+            System.out.println("\n");
+            System.out.println(state);
+            printBoardRep();
+            positionInput();
+        }
     }
 
     @Override
     public void deactivatePower(){
 
+    }
+
+    /**
+     * Method used to print the current state of the board
+     */
+    private void printBoardRep(){
+        for(int i=0;i<5;i++){
+            if(i==0){
+                System.out.println("       0    1    2    3    4");
+                System.out.println("____________________________");
+            }
+            else {
+                System.out.print("\n\n");
+            }
+            for(int j=0;j<5;j++){
+                if(j==0){
+                    System.out.print( (i) + " |");
+                }
+                if (boardRep.length != 2) {
+                    System.out.print(" ");
+                }
+                System.out.print(boardRep[i][j]);
+            }
+        }
+        System.out.print("\n\n");
+    }
+
+    /**
+     * Method that handle the input to put the two worker on the board
+     * */
+    private void putWorkerInput(){
+        System.out.println("To select a cell insert the row and then the column");
+        List<Position> putPos = new ArrayList<>();
+        int contIndexes = 0;
+        int cont = 0;
+        int row = 0;
+        int col = 0;
+
+        while(cont < 2){
+            while (contIndexes==0){
+                if(putPos.size() == 1){
+                    System.out.println("First cell selected: " + "[" + putPos.get(0).row + "][" + putPos.get(0).col + "]");
+                    System.out.println("Now Select the second one!");
+                }
+                System.out.println("Row:");
+                try {
+                    row = Integer.parseInt(reader.nextLine());
+                    if(!isValidPositionIndex(row)){
+                        System.out.println("You must insert a number between 0 and 4!");
+                    }
+                    else contIndexes++;
+                }
+                catch (NumberFormatException e){
+                    System.out.println("You must insert a number between 0 and 4!");
+                }
+            }
+
+            while(contIndexes==1){
+                System.out.println("Column:");
+                try {
+                    col = Integer.parseInt(reader.nextLine());
+                    if(!isValidPositionIndex(col)){
+                        System.out.println("You must insert a number between 0 and 4!");
+                        contIndexes = 0;
+                        break;
+                    }
+                    else contIndexes++;
+                }
+                catch (NumberFormatException e){
+                    System.out.println("You must insert a number between 0 and 4!");
+                }
+                if(clientModel.isOccupiedPosition(new Position(row, col)) || putPos.contains(new Position(row,col))){
+                    System.out.println("This cell is already occupied, select an other!");
+                    contIndexes = 0;
+                }
+                else {
+                    putPos.add(new Position(row, col));
+                    contIndexes = 0;
+                    cont++;
+                }
+            }
+        }
+
+        handleMessage(new PositionMessage(clientModel.getPlayerIndex(), putPos.get(0), false));
+        handleMessage(new PositionMessage(clientModel.getPlayerIndex(), putPos.get(1), false));
+    }
+
+    /**
+     * Method that handle the input from user in every phase of the game after PUTWORKER state
+     * */
+    private void positionInput(){
+        System.out.println("To select a cell insert the row and then the column");
+        int contIndexes = 0;
+        int cont = 0;
+        int row = 0;
+        int col = 0;
+        boolean usingPower = false;
+
+        //handling power button
+        /*if(reader.nextLine().equals("p")){
+            System.out.println("Power active!");
+            printActionPositions(ActionType.POWER);
+            usingPower = true;
+        }*/
+
+        while(cont == 0){
+            while (contIndexes==0){
+                System.out.println("Row:");
+                try {
+                    row = Integer.parseInt(reader.nextLine());
+                    if(!isValidPositionIndex(row)){
+                        System.out.println("You must insert a number between 0 and 4!");
+                    }
+                    else contIndexes++;
+                }
+                catch (NumberFormatException e){
+                    System.out.println("You must insert a number between 0 and 4!");
+                }
+            }
+
+            while(contIndexes==1){
+                System.out.println("Column:");
+                try {
+                    col = Integer.parseInt(reader.nextLine());
+                    if(!isValidPositionIndex(col)){
+                        System.out.println("You must insert a number between 0 and 4!");
+                        contIndexes = 0;
+                        break;
+                    }
+                    else contIndexes++;
+                }
+                catch (NumberFormatException e){
+                    System.out.println("You must insert a number between 0 and 4!");
+                }
+                if(!usingPower && clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE).contains(new Position(row, col))){
+                    System.out.println("This cell is not valid, please insert an other!");
+                    contIndexes = 0;
+                    cont = 0;
+                }
+                else {
+                    cont++;
+                }
+            }
+        }
+
+        handleMessage(new PositionMessage(clientModel.getPlayerIndex(), new Position(row, col), false));
+    }
+
+    private boolean isValidPositionIndex(int index){
+        if(index < 0 || index > 4)
+            return false;
+        return true;
+    }
+
+    private void printActionPositions(ActionType type){
+        System.out.print("Valid positions: ");
+        for(Position p : clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), type)){
+            System.out.println("[" + p.row + "][" + p.col + "] ");
+        }
+    }
+
+    /**
+     * Given a PlayerIndex returns the representation of the tile for the related player
+     * */
+    private String getWorker(PlayerIndex index){
+        if(index == PlayerIndex.PLAYER0){
+            return "A";
+        }
+        else if(index == PlayerIndex.PLAYER1){
+            return "B";
+        }
+        else {
+            return "C";
+        }
     }
 }
