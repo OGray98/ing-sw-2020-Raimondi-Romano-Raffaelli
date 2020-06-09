@@ -19,7 +19,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     private ClientView clientView;
 
     private List<Position> workersToPut = new ArrayList<>();
-    private boolean isFirst = true;
+
 
     public ClientManager(ServerConnection serverConnection, ClientModel clientModel) {
         this.serverConnection = serverConnection;
@@ -237,13 +237,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         //Show current player to the view
         clientView.showCurrentPlayer(message.getCurrentPlayerIndex());
 
-        if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() == message.getClient() && isFirst){
-            clientView.showMessage("Select two cells where put your workers");
-            isFirst = false;
-        }else if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() != message.getClient() && isFirst){
-            clientView.showMessage(clientModel.getNickname(message.getClient()) + " is putting workers");
-            isFirst = false;
-        }
+
 
 
         //TODO: brutto da fare meglio se si riesce!
@@ -265,20 +259,18 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
         if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() == message.getClient()){
             clientView.showMessage("Select two cells where put your workers");
-        }else if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() != message.getClient()){
-            clientView.showMessage(clientModel.getNickname(message.getClient()) + " is putting workers");
         }
 
-        if(clientModel.getCurrentState() == GameState.MOVE && this.clientModel.getPlayerIndex() == message.getClient()){
-            clientView.showMessage("Select a worker and then move him");
-        }else if(clientModel.getCurrentState() == GameState.MOVE && this.clientModel.getPlayerIndex() != message.getClient()){
-            clientView.showMessage(clientModel.getNickname(message.getClient()) + " is moving worker");
+        if(clientModel.getCurrentState() == GameState.MOVE) {
+            clientView.changeState("MOVE STATE");
         }
 
-        if(clientModel.getCurrentState() == GameState.BUILD && this.clientModel.getPlayerIndex() == message.getClient()){
-            clientView.showMessage("Select where you want build");
-        }else if(clientModel.getCurrentState() == GameState.BUILD && this.clientModel.getPlayerIndex() != message.getClient()){
-            clientView.showMessage(clientModel.getNickname(message.getClient()) + " is building");
+        if(clientModel.getCurrentState() == GameState.BUILD) {
+            clientView.changeState("BUILD STATE");
+        }
+
+        if(clientModel.getCurrentState() == GameState.ENDPHASE) {
+            clientView.changeState("END STATE");
         }
 
 

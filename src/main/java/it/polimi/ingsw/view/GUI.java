@@ -46,6 +46,7 @@ public class GUI extends ClientView {
     private static JLabel labelNick2;
     private static JLabel labelNick3;
     private static boolean firstEntry = true;
+    private static JLabel labelRound;
 
 
 
@@ -273,7 +274,11 @@ public class GUI extends ClientView {
         labelTerminal.add(buttonMenu);
         labelTerminal.add(labelNick);
 
-
+        labelRound = new JLabel("PUT STATE");
+        Font font = new Font("Interstate", Font.PLAIN, 45);
+        labelRound.setFont(font);
+        labelRound.setBounds(getProportionWidth(530,1400,internalFrameWidth),getProportionHeight(-50,820,internalFrameEight),getProportionWidth(1000,1400,internalFrameWidth),getProportionHeight(200,820,internalFrameEight));
+        label.add(labelRound);
 
         label.add(labelGod,BorderLayout.EAST);
         label.add(labelTerminal,BorderLayout.WEST);
@@ -392,18 +397,21 @@ public class GUI extends ClientView {
             @Override
             public void run() {
                 if(currentPlayer.equals(PlayerIndex.PLAYER0)){
+                    labelRound.setForeground(Color.RED);
                     labelNick1.setForeground(Color.RED);
                     labelNick2.setForeground(Color.BLACK);
                     if(clientModel.isThreePlayersGame()){
                         labelNick3.setForeground(Color.BLACK);
                     }
                 }else if(currentPlayer.equals(PlayerIndex.PLAYER1)){
+                    labelRound.setForeground(Color.BLUE);
                     labelNick1.setForeground(Color.BLACK);
                     labelNick2.setForeground(Color.BLUE);
                     if(clientModel.isThreePlayersGame()){
                         labelNick3.setForeground(Color.BLACK);
                     }
                 }else{
+                    labelRound.setForeground(Color.orange);
                     labelNick1.setForeground(Color.BLACK);
                     labelNick2.setForeground(Color.BLACK);
                     labelNick3.setForeground(Color.orange);
@@ -783,6 +791,11 @@ public class GUI extends ClientView {
     public void reinsertNickname() {
         showMessage("Nickname already take, insert an other");
         showGetNickname();
+    }
+
+    @Override
+    public void changeState(String state){
+        labelRound.setText(state);
     }
 
 

@@ -16,6 +16,10 @@ public class WelcomeDialog extends GameDialog{
         super(frame, "Welcome");
         Font font = new Font("Impatto", Font.PLAIN, 18);
         JLabel labelGround = new JLabel("");
+        JLabel labelConnected = new JLabel("YOU ARE CONNECTED!!");
+        labelConnected.setFont(font);
+        labelConnected.setForeground(Color.BLUE);
+        labelConnected.setBounds(170,30,300,20);
         Image imageGround = new ImageIcon("src/main/resources/title_water.png").getImage().getScaledInstance(520, 315, Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         JTextField text = new JTextField("Insert name and press play", 20);
@@ -34,12 +38,12 @@ public class WelcomeDialog extends GameDialog{
         box3Player.setFont(font);
         box2Player.setFont(font);
         box2Player.setForeground(Color.BLACK);
-        box3Player.setBounds(200, 80, 200, 20);
-        box2Player.setBounds(200, 60, 200, 20);
+        box3Player.setBounds(200, 110, 200, 20);
+        box2Player.setBounds(200, 90, 200, 20);
         box2Player.setOpaque(false);
         box3Player.setOpaque(false);
         text.setVisible(true);
-        text.setBounds(150, 30, 240, 20);
+        text.setBounds(150, 60, 240, 20);
         Image imagePlay = new ImageIcon("src/main/resources/button-play-down.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
 
         ButtonCircle buttonSend = new ButtonCircle(
@@ -59,9 +63,10 @@ public class WelcomeDialog extends GameDialog{
 
         );
 
-        buttonSend.setBounds(210, 120, 95, 88);
+        buttonSend.setBounds(210, 150, 95, 88);
         g.add(box2Player);
         g.add(box3Player);
+        labelGround.add(labelConnected);
         labelGround.add(buttonSend);
         labelGround.add(box3Player);
         labelGround.add(box2Player);

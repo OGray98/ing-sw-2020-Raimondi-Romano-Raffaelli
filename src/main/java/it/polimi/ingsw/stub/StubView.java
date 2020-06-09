@@ -128,6 +128,11 @@ public class StubView extends ClientView {
     }
 
     @Override
+    public void changeState(String state){
+
+    }
+
+    @Override
     public void deactivatePower(){
 
     }

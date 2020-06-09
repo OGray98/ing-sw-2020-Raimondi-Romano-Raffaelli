@@ -36,6 +36,8 @@ public abstract class ClientView extends View implements Observer<MessageToView>
      * */
     public abstract void showCurrentPlayer(PlayerIndex currentPlayer);
 
+    public abstract void changeState(String state);
+
     //method from Observer
     @Override
     public void update(MessageToView message) {
@@ -63,6 +65,8 @@ public abstract class ClientView extends View implements Observer<MessageToView>
     public abstract void removeActionsFromView();
 
     public abstract void showActionPositions(List<Position> possiblePosition, boolean isPowerCells);
+
+
 
 
 

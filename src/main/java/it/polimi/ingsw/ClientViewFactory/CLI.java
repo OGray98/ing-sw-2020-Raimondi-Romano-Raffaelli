@@ -294,6 +294,11 @@ public class CLI extends ClientView {
     }
 
     @Override
+    public void changeState(String state){
+
+    }
+
+    @Override
     public void deactivatePower(){
 
     }
