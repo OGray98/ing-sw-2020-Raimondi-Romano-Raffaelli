@@ -19,7 +19,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     private ClientView clientView;
 
     private List<Position> workersToPut = new ArrayList<>();
-    private boolean isFirst = true;
+    private static boolean isFirst = true;
 
 
     public ClientManager(ServerConnection serverConnection, ClientModel clientModel) {
@@ -240,7 +240,6 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
         if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() == message.getClient()){
             clientView.showMessage("Select two cells where put your workers");
-
         }
 
 
@@ -261,9 +260,8 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         GameState currentState = message.getGameState();
         clientModel.setCurrentState(currentState);
 
-        if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() == message.getClient() && isFirst){
+        if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() == message.getClient()){
             clientView.showMessage("Select two cells where put your workers");
-            isFirst = false;
         }
 
         if(clientModel.getCurrentState() == GameState.MOVE && this.clientModel.getPlayerIndex() == message.getClient()) {

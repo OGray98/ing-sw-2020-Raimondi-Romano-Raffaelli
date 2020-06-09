@@ -154,7 +154,6 @@ public class Client implements ServerConnection {
             this.ip = this.clientView.showSelectIP(
                     "There isn't any available server on this IP, try with another IP:");
         }
-        this.clientView.showMessage("Connected!");
 
         socketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new ObjectOutputStream(socket.getOutputStream());
