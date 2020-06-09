@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.GUI;
 import it.polimi.ingsw.model.board.Position;
 import javax.swing.*;
 import java.awt.*;

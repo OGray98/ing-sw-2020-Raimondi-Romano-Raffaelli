@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.deck.Deck;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
-import it.polimi.ingsw.view.RemoteView;
+import it.polimi.ingsw.view.GUI.RemoteView;
 
 import java.util.HashMap;
 import java.util.List;

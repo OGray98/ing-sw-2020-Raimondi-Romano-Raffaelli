@@ -1,4 +1,4 @@
-package it.polimi.ingsw.ClientViewFactory;
+package it.polimi.ingsw.view.CLI;
 
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;

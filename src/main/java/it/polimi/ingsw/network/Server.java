@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.utils.CloseConnectionMessage;
-import it.polimi.ingsw.view.RemoteView;
+import it.polimi.ingsw.view.GUI.RemoteView;
 
 import java.io.IOException;
 import java.net.ServerSocket;

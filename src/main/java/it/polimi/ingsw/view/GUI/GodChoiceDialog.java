@@ -1,11 +1,9 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.GUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -169,7 +167,7 @@ public class GodChoiceDialog extends JLabel {
         labelFirst.setForeground(Color.WHITE);
         labelFirst.setFont(font1);
         Image imageDone = imageContainer.getDoneImage().getScaledInstance(50,50,Image.SCALE_DEFAULT);
-        buttonDone = new ButtonCircle(new ImageIcon(imageDone),Color.GREEN,true,e ->{
+        buttonDone = new ButtonCircle(new ImageIcon(imageDone),Color.GREEN,true, e ->{
             if(chosenGod.contains(godName)){
                 dialog.dispose();
                 return;
@@ -188,7 +186,7 @@ public class GodChoiceDialog extends JLabel {
         });
         buttonDone.setBounds(200,200,60,60);
         Image imageDelete = imageContainer.getCloseImage().getScaledInstance(50,50,Image.SCALE_DEFAULT);
-        buttonDelete = new ButtonCircle(new ImageIcon(imageDelete),Color.RED,true,e ->{
+        buttonDelete = new ButtonCircle(new ImageIcon(imageDelete),Color.RED,true, e ->{
             clicked = false;
             if(isGodLike){
                 selectMultipleGod(godName,buttonGod);

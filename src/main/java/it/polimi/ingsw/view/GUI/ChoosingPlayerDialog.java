@@ -1,13 +1,14 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.GUI;
 
 
 import it.polimi.ingsw.model.player.PlayerIndex;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
-public class ChoosingPlayerDialog extends GameDialog{
+public class ChoosingPlayerDialog extends GameDialog {
 
     private JRadioButton player0;
     private JRadioButton player1;

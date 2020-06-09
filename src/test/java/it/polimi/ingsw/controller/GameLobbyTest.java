@@ -84,8 +84,8 @@ public class GameLobbyTest {
         try{
             lobby3p.addPlayer(PlayerIndex.PLAYER2, "Bob");
         }
-        catch(MaxPlayersException e){
-            assertEquals("Max number of players reached! Impossible to add other players!", e.getMessage());
+        catch(IllegalArgumentException e){
+            assertEquals("Player PLAYER2 is already in the lobby", e.getMessage());
         }
     }
 

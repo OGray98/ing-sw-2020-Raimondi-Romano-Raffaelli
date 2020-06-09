@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.stub.StubObservableClientConnection;
 import it.polimi.ingsw.utils.*;
-import it.polimi.ingsw.view.RemoteView;
+import it.polimi.ingsw.view.GUI.RemoteView;
 import org.junit.Test;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.model.player.PlayerIndex;
@@ -8,7 +8,7 @@ import it.polimi.ingsw.utils.TypeMatchMessage;
 import javax.swing.*;
 import java.awt.*;
 
-public class WelcomeDialog extends GameDialog{
+public class WelcomeDialog extends GameDialog {
 
     private String n;
 

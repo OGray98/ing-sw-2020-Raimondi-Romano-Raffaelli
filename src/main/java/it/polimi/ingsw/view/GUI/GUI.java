@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;
@@ -34,9 +34,9 @@ public class GUI extends ClientView {
     private final ButtonCell[][] buttonCells = new ButtonCell[ROW_NUM][ROW_NUM];
     private static WelcomeFrame frame;
     private static PrincipalLabel label;
-    private static Map<Position,LabelCircle> listLabelPosition = new HashMap<>();
-    private static Map<Position,LevelPane> listLayerPosition = new HashMap<>();
-    private static Map<Position,LabelLux> listLuxPosition = new HashMap<>();
+    private static Map<Position, LabelCircle> listLabelPosition = new HashMap<>();
+    private static Map<Position, LevelPane> listLayerPosition = new HashMap<>();
+    private static Map<Position, LabelLux> listLuxPosition = new HashMap<>();
     private static Map<PlayerIndex,String> listPlayerGod = new HashMap<>();
     private static boolean caseApMin = false;
     private static LabelCircle labelApMin ;
@@ -392,7 +392,7 @@ public class GUI extends ClientView {
             public void run() {
                 labelNick.revalidate();
                 labelNick.repaint();
-                choosePlayerDialog = new ChoosingPlayerDialog(frame,clientModel.isThreePlayersGame(),nicksName,e ->{
+                choosePlayerDialog = new ChoosingPlayerDialog(frame,clientModel.isThreePlayersGame(),nicksName, e ->{
                     handleMessage(new GodLikeChooseFirstPlayerMessage(clientModel.getPlayerIndex(),choosePlayerDialog.getSelectedPlayer()));
                     choosePlayerDialog.dispose();
                 });
