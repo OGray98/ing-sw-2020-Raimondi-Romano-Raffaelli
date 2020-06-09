@@ -237,7 +237,9 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         //Show current player to the view
         clientView.showCurrentPlayer(message.getCurrentPlayerIndex());
 
-
+        if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() == message.getClient()){
+            clientView.showMessage("Select two cells where put your workers");
+        }
 
 
         //TODO: brutto da fare meglio se si riesce!
@@ -261,16 +263,22 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
             clientView.showMessage("Select two cells where put your workers");
         }
 
-        if(clientModel.getCurrentState() == GameState.MOVE) {
-            clientView.changeState("MOVE STATE");
+        if(clientModel.getCurrentState() == GameState.MOVE && this.clientModel.getPlayerIndex() == message.getClient()) {
+            clientView.changeState("SELECT AND MOVE!!");
+        }else if(clientModel.getCurrentState() == GameState.MOVE && this.clientModel.getPlayerIndex() != message.getClient()){
+            clientView.changeState(clientModel.getNickname(message.getClient()) + " IS MOVING");
         }
 
-        if(clientModel.getCurrentState() == GameState.BUILD) {
-            clientView.changeState("BUILD STATE");
+        if(clientModel.getCurrentState() == GameState.BUILD && this.clientModel.getPlayerIndex() == message.getClient()) {
+            clientView.changeState("BUILD ON CELL");
+        }else if(clientModel.getCurrentState() == GameState.BUILD && this.clientModel.getPlayerIndex() != message.getClient()){
+            clientView.changeState(clientModel.getNickname(message.getClient()) + " IS BUILDING");
         }
 
-        if(clientModel.getCurrentState() == GameState.ENDPHASE) {
-            clientView.changeState("END STATE");
+        if(clientModel.getCurrentState() == GameState.ENDPHASE && this.clientModel.getPlayerIndex() == message.getClient()) {
+            clientView.changeState("END YOUR TURN");
+        }else if(clientModel.getCurrentState() == GameState.ENDPHASE && this.clientModel.getPlayerIndex() != message.getClient()){
+            clientView.changeState(clientModel.getNickname(message.getClient()) + " IS ENDING");
         }
 
 
