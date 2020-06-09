@@ -730,7 +730,7 @@ public class GUI extends ClientView {
         Image trophy = new ImageIcon("src/main/resources/trophy_large.png").getImage().getScaledInstance(320,200,Image.SCALE_DEFAULT);
         PrincipalLabel labelTrophy = new PrincipalLabel(trophy);
         labelTrophy.setBounds(390,290,320,200);
-        Font font = new Font("Impatto", Font.PLAIN, 17);
+        Font font = new Font("Impatto", Font.PLAIN, 13);
         JLabel labelWriteWin = new JLabel(okMsg.getErrorMessage());
         JButton buttonClosed = new JButton("CLOSE");
         buttonClosed.setBounds(498,500,100,50);
@@ -739,10 +739,11 @@ public class GUI extends ClientView {
             public void actionPerformed(ActionEvent e) {
                 frame.setVisible(false);
                 frame.dispose();
+                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             }
         });
         labelWriteWin.setFont(font);
-        labelWriteWin.setBounds(55,-60,200,200);
+        labelWriteWin.setBounds(55,-60,400,200);
         labelWriteWin.setForeground(Color.BLACK);
         labelTrophy.add(labelWriteWin);
         labelWinner.add(buttonClosed);

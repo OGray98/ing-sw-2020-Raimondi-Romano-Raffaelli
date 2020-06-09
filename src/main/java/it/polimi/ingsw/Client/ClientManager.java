@@ -34,7 +34,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     public void updateClient(MessageToClient message) {
         if (message == null)
             throw new NullPointerException("message");
-        System.out.println("Receive message: " + message.getType());
+        //System.out.println("Receive message: " + message.getType());
         message.execute(this);
 
     }
@@ -222,7 +222,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         if (message == null)
             throw new NullPointerException("message");
         serverConnection.sendToServer(message);
-        System.out.println("Message sent: " + message.getType());
+        //System.out.println("Message sent: " + message.getType());
     }
 
     @Override
@@ -294,6 +294,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
         switch (currentState) {
             case GOD_PLAYER_CHOOSE_CARDS:
+
                 if (this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER0)
                     this.clientView.showGodLikeChoice(this.clientModel.getGods());
                 else

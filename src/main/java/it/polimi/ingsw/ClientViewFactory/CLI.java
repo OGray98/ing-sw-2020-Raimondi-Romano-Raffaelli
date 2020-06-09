@@ -3,12 +3,17 @@ package it.polimi.ingsw.ClientViewFactory;
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;
 import it.polimi.ingsw.model.board.Position;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.utils.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class CLI extends ClientView {
+
+    private Scanner reader = new Scanner(System.in);
 
     public CLI(ViewModelInterface clientModel) {
         super(clientModel);
@@ -21,33 +26,144 @@ public class CLI extends ClientView {
 
     @Override
     public void init() {
-
+        System.out.println("\n\n*********   Welcome to Santorini!   *********\n\n");
     }
 
     @Override
     public void showGodLikeChoice(List<String> gods) {
 
+        System.out.println("Select the gods for all players that will be played in the game:\n");
+
+        for(String god : gods){
+            System.out.println(" - " + (gods.indexOf(god) + 1) + " - " + god +
+                    ": " + clientModel.getGodsDescription().get(gods.indexOf(god)));
+        }
+
+        System.out.println("\n");
+
+        int godsToChoose;
+        if(!clientModel.isThreePlayersGame())
+            godsToChoose = 2;
+        else
+            godsToChoose = 3;
+
+        List<String> godsChosen = new ArrayList<>();
+
+        while(godsChosen.size() < godsToChoose){
+            System.out.println("Select the number for god " + (godsChosen.size() + 1) + ":");
+
+            try{
+                int godNum = Integer.parseInt(reader.nextLine()) - 1;
+                if(godNum < 0 || godNum > 12){
+                    System.out.println("You can only insert a number between 1 and 13");
+                }
+                else{
+                    if(!godsChosen.contains(gods.get(godNum))){
+                        godsChosen.add(gods.get(godNum));
+                        if(godsChosen.size() < godNum)
+                            System.out.println("You add " + gods.get(godNum) + " to remove it reinsert the same number");
+                    }
+                    else{
+                        godsChosen.remove(gods.get(godNum));
+                        System.out.println("You removed " + gods.get(godNum) + " from chosen gods");
+                    }
+                }
+            }
+            catch (NumberFormatException e){
+                System.out.println("You can only insert a number between 1 and 13");
+            }
+        }
+
+        System.out.println("\n");
+        handleMessage(new GodLikeChoseMessage(clientModel.getPlayerIndex(), godsChosen));
     }
 
     @Override
     public void showGodToSelect(List<String> godLikeGods) {
-        
+        System.out.println("Select the god you want to play:\n");
+
+        for(String god : godLikeGods){
+            System.out.println(" - " + godLikeGods.indexOf(god) + " - " + god +
+                    ": " + clientModel.getGodsDescription().get(godLikeGods.indexOf(god)));
+        }
+
+        System.out.println("\n");
+
+        System.out.println("Insert the number of the god you want: ");
+
+        String chosenGod = new String();
+
+        while(chosenGod.equals("")){
+            if(godLikeGods.size() == 2){
+                try{
+                    int selectedGod = Integer.parseInt(reader.nextLine());
+                    if(selectedGod < 0 || selectedGod > 1){
+                        System.out.println("You can only insert a number between 0 and 1");
+                    }
+                    else
+                        chosenGod = godLikeGods.get(selectedGod);
+                }
+                catch (NumberFormatException e){
+                    System.out.println("You can only insert a number between 0 and 1");
+                }
+            }
+            else {
+                try{
+                    int selectedGod = Integer.parseInt(reader.nextLine());
+                    if(selectedGod < 0 || selectedGod > 2){
+                        System.out.println("You can only insert a number between 0 and 2");
+                    }
+                    else
+                        chosenGod = godLikeGods.get(selectedGod);
+                }
+                catch (NumberFormatException e){
+                    System.out.println("You can only insert a number between 0 and 2");
+                }
+            }
+        }
+
+        handleMessage(new PlayerSelectGodMessage(clientModel.getPlayerIndex(), chosenGod));
     }
 
 
     @Override
     public String showSelectIP(String message) {
-        return null;
+        System.out.println(message + '\n');
+        return reader.nextLine();
     }
 
     @Override
     public void showMessage(String message) {
-
+        System.out.println(message);
     }
 
     @Override
     public void showGetNickname() {
 
+        if(clientModel.getPlayerIndex() == PlayerIndex.PLAYER0){
+            System.out.println("Do you want a game with 2 or 3 players?");
+            System.out.println("Insert '2' or '3':");
+
+            String isThreePlayersGame  = reader.nextLine();
+
+            while (!isThreePlayersGame.equals("2") && !isThreePlayersGame.equals("3")){
+                System.out.println("Insert '2' or '3':");
+                isThreePlayersGame = reader.nextLine();
+            }
+
+            if(isThreePlayersGame.equals("2")){
+                handleMessage(new TypeMatchMessage(clientModel.getPlayerIndex(), false));
+            }
+            else if(isThreePlayersGame.equals("3")){
+                handleMessage(new TypeMatchMessage(clientModel.getPlayerIndex(), true));
+            }
+        }
+
+        System.out.println("Insert your nickname: ");
+        String nickname = reader.nextLine();
+        handleMessage(new NicknameMessage(clientModel.getPlayerIndex(), nickname));
+
+        System.out.println("Waiting for players...\n");
     }
 
     @Override
@@ -114,12 +230,62 @@ public class CLI extends ClientView {
 
     @Override
     public void reinsertNickname() {
-
+        System.out.println("Nickname already taken, try an other:");
+        String newNick = reader.nextLine();
+        handleMessage(new NicknameMessage(clientModel.getPlayerIndex(), newNick));
     }
 
     @Override
     public void showGodLikeChooseFirstPlayer() {
+        System.out.println("Who will start the game?\n");
 
+        for(String nick : clientModel.getNicknames()){
+            System.out.println(" - " + clientModel.getNicknames().indexOf(nick) + " - " + nick);
+        }
+
+        System.out.println("");
+
+        List<String> players = clientModel.getNicknames();
+        int chosenPlayer = -1;
+
+        while(chosenPlayer == -1){
+            if(players.size() == 2){
+                try{
+                    int selectedPlayer = Integer.parseInt(reader.nextLine());
+                    if(selectedPlayer < 0 || selectedPlayer > 1){
+                        System.out.println("You can only insert a number between 0 and 1");
+                    }
+                    else
+                        chosenPlayer = selectedPlayer;
+                }
+                catch (NumberFormatException e){
+                    System.out.println("You can only insert a number between 0 and 1");
+                }
+            }
+            else {
+                try{
+                    int selectedPlayer = Integer.parseInt(reader.nextLine());
+                    if(selectedPlayer < 0 || selectedPlayer > 2){
+                        System.out.println("You can only insert a number between 0 and 2");
+                    }
+                    else
+                        chosenPlayer = selectedPlayer;
+                }
+                catch (NumberFormatException e){
+                    System.out.println("You can only insert a number between 0 and 2");
+                }
+            }
+        }
+
+        if(chosenPlayer == 0){
+            handleMessage(new GodLikeChooseFirstPlayerMessage(clientModel.getPlayerIndex(), PlayerIndex.PLAYER0));
+        }
+        else if(chosenPlayer == 1){
+            handleMessage(new GodLikeChooseFirstPlayerMessage(clientModel.getPlayerIndex(), PlayerIndex.PLAYER1));
+        }
+        else{
+            handleMessage(new GodLikeChooseFirstPlayerMessage(clientModel.getPlayerIndex(), PlayerIndex.PLAYER2));
+        }
     }
 
     @Override

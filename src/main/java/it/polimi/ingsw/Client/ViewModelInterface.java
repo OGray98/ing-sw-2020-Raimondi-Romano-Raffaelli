@@ -14,6 +14,8 @@ public interface ViewModelInterface {
 
     List<String> getGods();
 
+    List<String> getGodsDescription();
+
     List<Position> getActionPositions(Position workerPos, ActionType type);
 
     Position getSelectedWorkerPos();
@@ -31,6 +33,8 @@ public interface ViewModelInterface {
     boolean isGodLikeChoosingCards();
 
     String getNickname(PlayerIndex index);
+
+    List<String> getNicknames();
 
     List<Position> getPlayerIndexPosition(PlayerIndex playerIndex);
 

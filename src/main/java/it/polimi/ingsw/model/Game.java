@@ -89,7 +89,6 @@ public class Game extends Observable<MessageToClient> {
             this.cantGoUp = false;
             this.contEffect = 0;
             this.contCurrentWorker = 0;
-            setCurrentState(GameState.GOD_PLAYER_CHOOSE_CARDS);
         }
 
     }
