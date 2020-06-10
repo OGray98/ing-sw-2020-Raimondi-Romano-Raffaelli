@@ -333,6 +333,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     public void updateAction(ActionMessage message){
         if (clientModel.isAmICurrentPlayer()){
             clientModel.setActionPositions(message);
+            //TODO: chiamare receiveInput solo quando si riceve l'ultimo ActionMessage, se no la cli chiede piu volte celle in input
             clientView.receiveInputCli();
         }
     }
