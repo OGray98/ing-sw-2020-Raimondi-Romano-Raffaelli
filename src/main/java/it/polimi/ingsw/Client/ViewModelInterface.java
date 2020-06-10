@@ -43,4 +43,6 @@ public interface ViewModelInterface {
     boolean isThereASelectedWorker();
 
     boolean isOccupiedPosition(Position pos);
+
+    void setSelectedWorkerPos(Position position);
 }

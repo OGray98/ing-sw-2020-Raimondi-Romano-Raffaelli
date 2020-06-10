@@ -36,7 +36,15 @@ public abstract class ClientView extends View implements Observer<MessageToView>
      * */
     public abstract void showCurrentPlayer(PlayerIndex currentPlayer);
 
+    /**
+     * Method that notify with a message the view the state of the turn
+     * */
     public abstract void changeState(String state);
+
+    /**
+     * Method used in cli to receive cell in input
+     * */
+    public abstract void receiveInputCli();
 
     //method from Observer
     @Override

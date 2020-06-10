@@ -804,5 +804,10 @@ public class GUI extends ClientView {
         labelRound.setText(state);
     }
 
+    @Override
+    public void receiveInputCli() {
+
+    }
+
 
 }

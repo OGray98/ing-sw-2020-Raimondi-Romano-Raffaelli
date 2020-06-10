@@ -239,9 +239,10 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
         clientView.showCurrentPlayer(message.getCurrentPlayerIndex());
 
         if(clientModel.getCurrentState() == GameState.PUT_WORKER && this.clientModel.getPlayerIndex() == message.getClient()){
-            if(isFirst)
+            if(isFirst){
                 clientView.showMessage("Select two cells where put your workers");
-            clientView.changeState("");
+                clientView.changeState("");
+            }
         }
 
         if(clientModel.getCurrentState() == GameState.SELECT_CARD && message.getClient()!=PlayerIndex.PLAYER0){
@@ -284,6 +285,17 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
             clientView.changeState(clientModel.getNickname(message.getClient()) + " IS ENDING");
         }
 
+        if(clientModel.getCurrentState() == GameState.INITPOWER && this.clientModel.getPlayerIndex() == message.getClient()) {
+            clientView.changeState("MOVE YOUR WORKER");
+        }
+
+        if(clientModel.getCurrentState() == GameState.SECOND_MOVE && this.clientModel.getPlayerIndex() == message.getClient()) {
+            clientView.changeState("BUILD ON CELL");
+        }
+
+        if(clientModel.getCurrentState() == GameState.BUILDPOWER && this.clientModel.getPlayerIndex() == message.getClient()) {
+            clientView.changeState("END YOUR TURN");
+        }
 
         if(message.getGameState() == clientModel.getPowerGodState() && message.getClient().equals(clientModel.getPlayerIndex())){
             clientView.showPowerButton(true);
@@ -319,13 +331,9 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     @Override
     public void updateAction(ActionMessage message){
-        if (clientModel.isAmICurrentPlayer())
+        if (clientModel.isAmICurrentPlayer()){
             clientModel.setActionPositions(message);
-        else{
-            //TODO: vanno rimosse le celle vecchie, ma non sempre
-            /*clientView.removeActionsFromView();
-            //show new action cells
-            clientView.showActionPositions(message.getPossiblePosition(),false);*/
+            clientView.receiveInputCli();
         }
     }
 

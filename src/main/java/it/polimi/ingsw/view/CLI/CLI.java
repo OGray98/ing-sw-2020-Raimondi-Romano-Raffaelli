@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.CLI;
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;
 import it.polimi.ingsw.model.board.Position;
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.utils.*;
 
@@ -14,7 +13,8 @@ import java.util.Scanner;
 public class CLI extends ClientView {
 
     private Scanner reader = new Scanner(System.in);
-    private String[][] boardRep = new String[5][5];
+    private int[][] cellLevelRep = new int[5][5];
+    private String[][] playersRep = new String[5][5];
 
     public CLI(ViewModelInterface clientModel) {
         super(clientModel);
@@ -30,7 +30,12 @@ public class CLI extends ClientView {
         //creating initial board
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
-                boardRep[i][j] = new String("   0");
+                playersRep[i][j] = new String(" ");
+            }
+        }
+        for(int i=0;i<5;i++){
+            for(int j=0;j<5;j++){
+                cellLevelRep[i][j] = 0;
             }
         }
         System.out.println("\n\n*********   Welcome to Santorini!   *********\n\n");
@@ -192,8 +197,8 @@ public class CLI extends ClientView {
         int rowWorker2 = message.getPositionTwo().row;
         int colWorker2 = message.getPositionTwo().col;
 
-        boardRep[rowWorker1][colWorker1] = boardRep[rowWorker1][colWorker1] + getWorker(message.getClient());
-        boardRep[rowWorker2][colWorker2] = boardRep[rowWorker2][colWorker2] + getWorker(message.getClient());
+        playersRep[rowWorker1][colWorker1] = getWorker(message.getClient());
+        playersRep[rowWorker2][colWorker2] = getWorker(message.getClient());
 
         System.out.println("\n\n");
         printBoardRep();
@@ -201,7 +206,7 @@ public class CLI extends ClientView {
 
     @Override
     public void updateMoveWorker(MoveMessage message) {
-
+        System.out.println("banana");
     }
 
     @Override
@@ -260,7 +265,7 @@ public class CLI extends ClientView {
             System.out.println(" - " + clientModel.getNicknames().indexOf(nick) + " - " + nick);
         }
 
-        System.out.println("");
+        System.out.println("\n");
 
         List<String> players = clientModel.getNicknames();
         int chosenPlayer = -1;
@@ -316,6 +321,7 @@ public class CLI extends ClientView {
             System.out.println(state);
             return;
         }
+        //start put worker
         if(state.equals("")){
             try {
                 clientModel.getPlayerIndexPosition(clientModel.getPlayerIndex());
@@ -327,12 +333,16 @@ public class CLI extends ClientView {
             putWorkerInput();
             return;
         }
-        else {
-            System.out.println("\n");
-            System.out.println(state);
-            printBoardRep();
-            positionInput();
+    }
+
+    @Override
+    public void receiveInputCli() {
+        if(!clientModel.isAmICurrentPlayer()){
+            return;
         }
+        System.out.println("\n");
+        printBoardRep();
+        positionInput();
     }
 
     @Override
@@ -346,20 +356,17 @@ public class CLI extends ClientView {
     private void printBoardRep(){
         for(int i=0;i<5;i++){
             if(i==0){
-                System.out.println("       0    1    2    3    4");
-                System.out.println("____________________________");
+                System.out.println("        0     1     2     3     4");
+                System.out.println("_________________________________");
             }
             else {
                 System.out.print("\n\n");
             }
             for(int j=0;j<5;j++){
                 if(j==0){
-                    System.out.print( (i) + " |");
+                    System.out.print( (i) + " |     ");
                 }
-                if (boardRep.length != 2) {
-                    System.out.print(" ");
-                }
-                System.out.print(boardRep[i][j]);
+                System.out.print(cellLevelRep[i][j] + playersRep[i][j] + "    ");
             }
         }
         System.out.print("\n\n");
@@ -437,6 +444,13 @@ public class CLI extends ClientView {
         boolean usingPower = false;
 
         while(cont == 0){
+            if(!clientModel.isThereASelectedWorker()){
+                System.out.println("Select one of your worker (you have tiles with letter " + getWorker(clientModel.getPlayerIndex()) + ")");
+            }
+            else {
+                printActionPositions(ActionType.MOVE);
+                System.out.println("Select a cell for your action");
+            }
             while (contIndexes==0){
                 System.out.println("Row:");
                 try {
@@ -465,7 +479,20 @@ public class CLI extends ClientView {
                 catch (NumberFormatException e){
                     System.out.println("You must insert a number between 0 and 4!");
                 }
-                if(!usingPower && clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE).contains(new Position(row, col))){
+                if(clientModel.getPlayerIndexPosition(clientModel.getPlayerIndex()).contains(new Position(row,col))){
+                    System.out.println("You selected worker in position: ["+row+"]["+col+"]");
+                    clientModel.setSelectedWorkerPos(new Position(row, col));
+                    contIndexes = 0;
+                    cont = 0;
+                    break;
+                }
+                else {
+                    if(!clientModel.isThereASelectedWorker()){
+                        contIndexes = 0;
+                        break;
+                    }
+                }
+                if(!usingPower && !clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE).contains(new Position(row, col))){
                     System.out.println("This cell is not valid, please insert an other!");
                     contIndexes = 0;
                     cont = 0;
@@ -490,10 +517,11 @@ public class CLI extends ClientView {
      * @param type indicates the type of action to see, power or normal
      * */
     private void printActionPositions(ActionType type){
-        System.out.print("Valid positions: ");
+        System.out.print("Valid action positions: ");
         for(Position p : clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), type)){
-            System.out.println("[" + p.row + "][" + p.col + "] ");
+            System.out.print(" [" + p.row + "][" + p.col + "] ");
         }
+        System.out.println("\n");
     }
 
     /**

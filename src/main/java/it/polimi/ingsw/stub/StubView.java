@@ -133,6 +133,11 @@ public class StubView extends ClientView {
     }
 
     @Override
+    public void receiveInputCli() {
+
+    }
+
+    @Override
     public void deactivatePower(){
 
     }
