@@ -71,6 +71,11 @@ public class GUI extends ClientView {
         super(clientModel);
     }
 
+    /**
+     * @param godImage image of god
+     * @param godName name of god
+     * @return a button with image of god sorrounded by a gold border and the click on button show the description og god
+     */
     private static JLabel getIconGodProfile(Image godImage, String godName) {
 
         JLabel labelBorderGod = new JLabel(godName);
@@ -299,6 +304,9 @@ public class GUI extends ClientView {
 
     }
 
+    /**
+     * Active and deactive of button used during the game
+     */
     @Override
     public void deactivatePower(){
 
@@ -306,6 +314,12 @@ public class GUI extends ClientView {
             this.buttonPower.click();
     }
 
+    /**
+     * @param dimensionWidth initial dimension
+     * @param oldContainerDimensionWidth oldContainer dimension
+     * @param newContainerWidth new Container dimension
+     * @return a number that is used to scaled the image width on GUI with different screen size
+     */
     private static int getProportionWidth(int dimensionWidth, int oldContainerDimensionWidth, int newContainerWidth){
         int result;
         result = dimensionWidth * (newContainerWidth);
@@ -314,6 +328,12 @@ public class GUI extends ClientView {
 
     }
 
+    /**
+     * @param dimensionHeight initial dimension
+     * @param oldContainerDimensionHeight oldContainer dimension
+     * @param newContainerHeight new Container dimension
+     * @return a number that is used to scaled the image height on GUI with different screen size
+     */
     private static int getProportionHeight(int dimensionHeight, int oldContainerDimensionHeight, int newContainerHeight) {
         int res;
         res = dimensionHeight * (newContainerHeight);
@@ -332,6 +352,10 @@ public class GUI extends ClientView {
         SwingUtilities.invokeLater(this::initGUI);
     }
 
+    /**
+     * @param gods list of gods
+     *             method used to show the cards of gods that playerGodLike can choose for game
+     */
     @Override
     public void showGodLikeChoice(List<String> gods) {
         godChoiceDialog = new GodChoiceDialog( gods , clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
@@ -351,6 +375,10 @@ public class GUI extends ClientView {
         });
     }
 
+    /**
+     * @param godLikeGods List of gods choose by godLike
+     *                    the notGodLike player choose the god he want from list of gods choose by godLike
+     */
     @Override
     public void showGodToSelect(List<String> godLikeGods) {
         godChoiceDialog = new GodChoiceDialog(godLikeGods, clientModel.isThreePlayersGame(), clientModel.isGodLikeChoosingCards(),
@@ -380,6 +408,9 @@ public class GUI extends ClientView {
         );
     }
 
+    /**
+     * God like choose first Player of match
+     */
     @Override
     public void showGodLikeChooseFirstPlayer() {
         nicksName.put(PlayerIndex.PLAYER0,clientModel.getNickname(PlayerIndex.PLAYER0));
@@ -400,6 +431,10 @@ public class GUI extends ClientView {
         });
     }
 
+    /**
+     * @param currentPlayer playerIndex of player
+     *                      during each turn each name player is colored by is team color
+     */
     @Override
     public void showCurrentPlayer(PlayerIndex currentPlayer) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -437,7 +472,10 @@ public class GUI extends ClientView {
         );
     }
 
-    //TODO: serve per rimuovere le celle illuminate
+
+    /**
+     * Used to remove the illumination on cells
+     */
     @Override
     public void removeActionsFromView() {
         SwingUtilities.invokeLater(new Runnable() {
@@ -455,6 +493,10 @@ public class GUI extends ClientView {
         });
     }
 
+    /**
+     * @param playerIndex Player index
+     * @return a icon used by player during the game with the color of his team
+     */
     private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {
         LabelCircle buttonPlayer = null;
         if (playerIndex.equals(PlayerIndex.PLAYER0)) {
@@ -475,6 +517,9 @@ public class GUI extends ClientView {
 
     }
 
+    /**
+     * @param message message arrived with the position on which player want put his workers
+     */
     @Override
     public void updatePutWorker(PutWorkerMessage message) {
         Position pos1 = message.getPositionOne();
@@ -508,6 +553,9 @@ public class GUI extends ClientView {
     }
 
 
+    /**
+     * @param message message with old and new pos on which player want move
+     */
     @Override
     public void updateMoveWorker(MoveMessage message) {
         Position oldPos = message.getWorkerPosition();
@@ -559,6 +607,9 @@ public class GUI extends ClientView {
 
     }
 
+    /**
+     * @param message position on which player want build
+     */
     @Override
     public void updateBuild(BuildViewMessage message){
         Position buildPos = message.getBuildPosition();
@@ -613,7 +664,7 @@ public class GUI extends ClientView {
                         dome.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                new ErrorDialog(frame,"DOME LEVEL 4: you can't move on it!");
+                                showMessage("DOME LEVEL you can't select it!");
                             }
                         });
                         build1.add(dome, 4);
@@ -626,6 +677,11 @@ public class GUI extends ClientView {
         });
     }
 
+    /**
+     * @param actionPos positions on which player can do something
+     * @param isPowerCells power positions on which player can use power
+     *              used to illuminate the cells
+     */
     @Override
     public void showActionPositions(List<Position> actionPos, boolean isPowerCells){
 
@@ -654,6 +710,11 @@ public class GUI extends ClientView {
 
     }
 
+    /**
+     * @param message god select by player
+     *  draw the icon god profile for each player and draw the list of nick with button that if clicked show the god of player
+     *
+     */
     @Override
     public void updateSelectedCardView(PlayerSelectGodMessage message) {
         listPlayerGod.put(message.getClient(),message.getGodName());
@@ -719,6 +780,9 @@ public class GUI extends ClientView {
         });
     }
 
+    /**
+     * @param message message with name of player to remove
+     */
     @Override
     public void updateRemovePlayer(RemovePlayerMessage message) {
 
@@ -736,6 +800,10 @@ public class GUI extends ClientView {
         });
     }
 
+    /**
+     * @param message message with name of winner
+     *  the frame is changed and show an image with name of winner player
+     */
     @Override
     public void showWinner(InformationMessage message) {
         OkMessage okMsg = (OkMessage) message;
@@ -751,9 +819,7 @@ public class GUI extends ClientView {
         buttonClosed.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.setVisible(false);
-                frame.dispose();
-                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                System.exit(2);
             }
         });
         labelWriteWin.setFont(font);
@@ -766,6 +832,10 @@ public class GUI extends ClientView {
         frame = new WelcomeFrame(labelWinner);
     }
 
+    /**
+     * @param message message with name of loser
+     *
+     */
     @Override
     public void showLoser(InformationMessage message) {
         OkMessage okMsg = (OkMessage) message;
