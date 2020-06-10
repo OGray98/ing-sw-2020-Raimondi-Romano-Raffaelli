@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.GUI;
+package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.exception.WrongAssociationViewPlayerException;
 import it.polimi.ingsw.model.player.PlayerIndex;
