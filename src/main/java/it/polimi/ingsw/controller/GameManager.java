@@ -4,11 +4,10 @@ import it.polimi.ingsw.exception.AlreadyPresentRemoteViewOfPlayerException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Position;
-import it.polimi.ingsw.model.deck.Deck;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
-import it.polimi.ingsw.view.GUI.RemoteView;
+import it.polimi.ingsw.view.RemoteView;
 
 import java.util.HashMap;
 import java.util.List;
