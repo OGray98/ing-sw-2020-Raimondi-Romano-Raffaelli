@@ -68,8 +68,11 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
      * @param index PlayerIndex of RemoteView which is being deleted
      */
     public void deleteRemoteView(PlayerIndex index) {
-        gameModel.removeObserver(remoteViews.get(index));
-        remoteViews.remove(index);
+        if (remoteViews.containsKey(index)) {
+            gameModel.removeObserver(remoteViews.get(index));
+            remoteViews.get(index).disconnect();
+            remoteViews.remove(index);
+        }
     }
 
     @Override

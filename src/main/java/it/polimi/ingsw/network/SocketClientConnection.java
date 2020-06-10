@@ -75,6 +75,9 @@ public class SocketClientConnection extends Observable<MessageToServer> implemen
         new Thread(() -> {
             try {
                 send(message);
+                if (message.getType().equals(TypeMessage.CLOSE_CONNECTION)
+                        && message.getClient().equals(this.clientIndex))
+                    this.closeConnection();
             } catch (IOException e) {
                 closeConnection();
             }

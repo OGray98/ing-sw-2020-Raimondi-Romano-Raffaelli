@@ -188,6 +188,7 @@ public class Client implements ServerConnection {
     public void disconnect() {
         try {
             close();
+            clientView.showMessage("Server is offline!!");
         } catch (IOException e) {
             System.err.println("Error during disconnection of client");
             Logger.getAnonymousLogger().severe(e.getMessage());
