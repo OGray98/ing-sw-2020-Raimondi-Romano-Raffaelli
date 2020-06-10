@@ -381,8 +381,13 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     @Override
     public void updateCloseConnectionMessage(CloseConnectionMessage message) {
-        this.clientView.showMessage("Player " + this.clientModel.getNickname(message.getClient()) + "has closed connection!"
-                + "\nGame is finished!");
+        if (!message.getClient().equals(this.clientModel.getPlayerIndex())
+                && this.clientModel.getCurrentState() != GameState.START_GAME) {
+            this.clientView.showMessage(
+                    "Player " + message.getClient() + "has closed connection!" + "\nGame is finished!"
+            );
+        } else
+            this.clientView.showMessage("Maximum number of players exceeded, you cannot participate!");
         //TODO chiedere al client se vuole fare un'altra partita
     }
 

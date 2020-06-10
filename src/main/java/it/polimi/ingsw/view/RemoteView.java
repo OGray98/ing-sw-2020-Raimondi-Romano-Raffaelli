@@ -4,9 +4,9 @@ import it.polimi.ingsw.exception.WrongAssociationViewPlayerException;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ClientConnection;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.utils.CloseConnectionMessage;
 import it.polimi.ingsw.utils.MessageToClient;
 import it.polimi.ingsw.utils.MessageToServer;
-import it.polimi.ingsw.view.View;
 
 /**
  * RemoteView is an abstract class which represents an abstraction of RemoteView
@@ -20,6 +20,10 @@ public class RemoteView extends View implements Observer<MessageToClient> {
         super.setPlayer(player);
         this.clientConnection = connection;
         connection.addObserver(new MessageReceiver());
+    }
+
+    public void disconnect() {
+        putMessage(new CloseConnectionMessage(super.getPlayer()));
     }
 
     /**
