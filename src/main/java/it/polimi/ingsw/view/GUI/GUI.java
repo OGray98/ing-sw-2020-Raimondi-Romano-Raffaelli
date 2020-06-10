@@ -344,7 +344,7 @@ public class GUI extends ClientView {
 
     @Override
     public void receiveErrorMessage(String error) {
-
+        showMessage(error);
     }
 
     @Override

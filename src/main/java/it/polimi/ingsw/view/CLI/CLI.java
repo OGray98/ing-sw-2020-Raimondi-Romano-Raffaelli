@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.CLI;
 
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.utils.*;
@@ -15,6 +16,8 @@ public class CLI extends ClientView {
     private Scanner reader = new Scanner(System.in);
     private int[][] cellLevelRep = new int[5][5];
     private String[][] playersRep = new String[5][5];
+    private boolean canUsePower = false;
+    private String workerToMove = new String(" ");
 
     public CLI(ViewModelInterface clientModel) {
         super(clientModel);
@@ -22,7 +25,7 @@ public class CLI extends ClientView {
 
     @Override
     public void receiveErrorMessage(String error) {
-
+        System.out.println(error);
     }
 
     @Override
@@ -206,17 +209,44 @@ public class CLI extends ClientView {
 
     @Override
     public void updateMoveWorker(MoveMessage message) {
-        System.out.println("banana");
+        int newRow = message.getMovePosition().row;
+        int newCol = message.getMovePosition().col;
+        int oldRow = message.getWorkerPosition().row;
+        int oldCol = message.getWorkerPosition().col;
+
+        if(clientModel.isOccupiedPosition(new Position(newRow, newCol))){
+            workerToMove = playersRep[oldRow][oldCol];
+        }
+        if(!workerToMove.equals(" ")){
+            playersRep[newRow][newCol] = workerToMove;
+            workerToMove = " ";
+            return;
+        }
+        playersRep[newRow][newCol] = getWorker(message.getClient());
+        playersRep[oldRow][oldCol] = " ";
+
+        System.out.println("\n\n");
+        printBoardRep();
     }
 
     @Override
     public void updateBuild(BuildViewMessage message) {
+        int buildRow = message.getBuildPosition().row;
+        int buildCol = message.getBuildPosition().col;
 
+        cellLevelRep[buildRow][buildCol]++;
+
+        System.out.println("\n\n");
+        printBoardRep();
     }
 
     @Override
     public void updateSelectedCardView(PlayerSelectGodMessage message) {
-
+        if(!(message.getClient() == clientModel.getPlayerIndex()))
+            return;
+        System.out.println("\n");
+        System.out.println("Your god is " + message.getGodName() + ": " /*TODO: mettere descrizione*/);
+        System.out.println("\n");
     }
 
     @Override
@@ -226,28 +256,37 @@ public class CLI extends ClientView {
 
     @Override
     public void updateRemovePlayer(RemovePlayerMessage message) {
-
+        for(Position removePosition : message.getRemovePositions()){
+            playersRep[removePosition.row][removePosition.col] = " ";
+        }
     }
 
     @Override
     public void showWinner(InformationMessage message) {
-
+        OkMessage winnerMsg = (OkMessage) message;
+        System.out.println("******************************");
+        System.out.println(winnerMsg.getErrorMessage() + "game is finished!");
+        System.out.println("******************************");
     }
 
     @Override
     public void showLoser(InformationMessage message) {
-
+        OkMessage winnerMsg = (OkMessage) message;
+        System.out.println(winnerMsg.getErrorMessage());
     }
 
     @Override
     public void showPowerButton(boolean isOn) {
-        if(isOn)
-            System.out.println("You can use power during this turn phase! Press 'p' to see where you can use your power");
+        if(isOn){
+            this.canUsePower = true;
+        }
     }
 
     @Override
     public void showEndTurnButton(boolean isOn) {
-
+        if(clientModel.getPowerGodState() != GameState.BUILDPOWER){
+            handleMessage(new EndTurnMessage(clientModel.getPlayerIndex()));
+        }
     }
 
     @Override
@@ -317,10 +356,6 @@ public class CLI extends ClientView {
 
     @Override
     public void changeState(String state){
-        if(!clientModel.isAmICurrentPlayer()){
-            System.out.println(state);
-            return;
-        }
         //start put worker
         if(state.equals("")){
             try {
@@ -333,6 +368,7 @@ public class CLI extends ClientView {
             putWorkerInput();
             return;
         }
+        System.out.println(state);
     }
 
     @Override
@@ -347,7 +383,7 @@ public class CLI extends ClientView {
 
     @Override
     public void deactivatePower(){
-
+        this.canUsePower = false;
     }
 
     /**
@@ -366,7 +402,12 @@ public class CLI extends ClientView {
                 if(j==0){
                     System.out.print( (i) + " |     ");
                 }
-                System.out.print(cellLevelRep[i][j] + playersRep[i][j] + "    ");
+                if(cellLevelRep[i][j] == 4){
+                    System.out.print("X" + playersRep[i][j] + "    ");
+                }
+                else {
+                    System.out.print(cellLevelRep[i][j] + playersRep[i][j] + "    ");
+                }
             }
         }
         System.out.print("\n\n");
@@ -441,13 +482,30 @@ public class CLI extends ClientView {
         int cont = 0;
         int row = 0;
         int col = 0;
+        int selectedWorkerRow = 0;
+        int selectedWorkerCol = 0;
         boolean usingPower = false;
 
         while(cont == 0){
             if(!clientModel.isThereASelectedWorker()){
                 System.out.println("Select one of your worker (you have tiles with letter " + getWorker(clientModel.getPlayerIndex()) + ")");
             }
+            else if (canUsePower && !usingPower){
+                if(clientModel.getActionPositions(new Position(selectedWorkerRow, selectedWorkerCol), ActionType.POWER).size() != 0){
+                    System.out.println("Your power is: "  /*TODO: mettere descrizione*/);
+                    System.out.println("You can use power during this turn phase! Power can be used in the following cells:");
+                    printActionPositions(ActionType.POWER);
+                    System.out.println("Press 'p' if you want to use the power! Press anything else to go on without power");
+                    if(reader.nextLine().equals("p")){
+                        usingPower = true;
+                    }
+                }
+            }
             else {
+                if(clientModel.getCurrentState() == GameState.ENDPHASE){
+                    handleMessage(new EndTurnMessage(clientModel.getPlayerIndex()));
+                    return;
+                }
                 printActionPositions(ActionType.MOVE);
                 System.out.println("Select a cell for your action");
             }
@@ -482,6 +540,8 @@ public class CLI extends ClientView {
                 if(clientModel.getPlayerIndexPosition(clientModel.getPlayerIndex()).contains(new Position(row,col))){
                     System.out.println("You selected worker in position: ["+row+"]["+col+"]");
                     clientModel.setSelectedWorkerPos(new Position(row, col));
+                    selectedWorkerRow = row;
+                    selectedWorkerCol = col;
                     contIndexes = 0;
                     cont = 0;
                     break;
@@ -497,13 +557,23 @@ public class CLI extends ClientView {
                     contIndexes = 0;
                     cont = 0;
                 }
+                if(usingPower && !clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).contains(new Position(row, col))){
+                    usingPower = false;
+                    System.out.println("This cell is not valid, please insert an other!");
+                    contIndexes = 0;
+                    cont = 0;
+                }
                 else {
                     cont++;
                 }
             }
         }
 
-        handleMessage(new PositionMessage(clientModel.getPlayerIndex(), new Position(row, col), false));
+        if(!usingPower){
+            handleMessage(new PositionMessage(clientModel.getPlayerIndex(), new Position(row, col), false));
+            return;
+        }
+        else handleMessage(new PositionMessage(clientModel.getPlayerIndex(), new Position(row,col), true));
     }
 
     private boolean isValidPositionIndex(int index){
@@ -517,6 +587,10 @@ public class CLI extends ClientView {
      * @param type indicates the type of action to see, power or normal
      * */
     private void printActionPositions(ActionType type){
+        if(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), type).size() == 0){
+            System.out.println("No possible moves...");
+            return;
+        }
         System.out.print("Valid action positions: ");
         for(Position p : clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), type)){
             System.out.print(" [" + p.row + ", " + p.col + "] ");

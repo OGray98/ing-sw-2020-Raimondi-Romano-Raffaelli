@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ServerConnection;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.utils.*;
+import it.polimi.ingsw.view.CLI.ActionMessageIndex;
+import it.polimi.ingsw.view.CLI.CLI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,8 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     private final ServerConnection serverConnection;
     private final ClientModel clientModel;
+    private ActionMessageIndex actionMessageIndex;
+    private int actionCont = 0;
 
     private ClientView clientView;
 
@@ -333,8 +337,13 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     public void updateAction(ActionMessage message){
         if (clientModel.isAmICurrentPlayer()){
             clientModel.setActionPositions(message);
-            //TODO: chiamare receiveInput solo quando si riceve l'ultimo ActionMessage, se no la cli chiede piu volte celle in input
-            clientView.receiveInputCli();
+            if(clientView instanceof CLI && message.getClient() == clientModel.getPlayerIndex()){
+                actionCont++;
+                if(actionCont == actionMessageIndex.getActionNum(clientModel.getCurrentState())){
+                    actionCont = 0;
+                    clientView.receiveInputCli();
+                }
+            }
         }
     }
 
@@ -348,6 +357,9 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     @Override
     public void updateSelectedCard(PlayerSelectGodMessage message) {
         clientModel.setGodChosenByPlayer(message);
+        if(message.getClient() == clientModel.getPlayerIndex()){
+            this.actionMessageIndex = new ActionMessageIndex(clientModel.getPowerGodState());
+        }
     }
 
     @Override
