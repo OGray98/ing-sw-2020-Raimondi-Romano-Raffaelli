@@ -519,7 +519,7 @@ public class CLI extends ClientView {
     private void printActionPositions(ActionType type){
         System.out.print("Valid action positions: ");
         for(Position p : clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), type)){
-            System.out.print(" [" + p.row + "][" + p.col + "] ");
+            System.out.print(" [" + p.row + ", " + p.col + "] ");
         }
         System.out.println("\n");
     }
