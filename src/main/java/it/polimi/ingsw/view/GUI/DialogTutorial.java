@@ -14,7 +14,7 @@ public class DialogTutorial extends GameDialog implements ActionListener {
         Font font = new Font("Impatto", Font.PLAIN, 12);
         Font font1 = new Font("Impatto", Font.PLAIN, 11);
         JLabel labelGround = new JLabel("");
-        Image imageGround = new ImageIcon("src/main/resources/bg_modeselect.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
+        Image imageGround = new ImageIcon(this.getClass().getResource("/bg_modeselect.png")).getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         setResizable(false);
         Image imageEndTur = imageContainer.getButtonImage("buttonEndTurn").getScaledInstance(70,70,Image.SCALE_DEFAULT);

@@ -29,20 +29,20 @@ public class ImageContainer {
         gods = new HashMap<>();
         buttons = new HashMap<>();
 
-        Image apollo = new ImageIcon("src/main/resources/god_cards/Apollo.png").getImage();
-        Image artemis = new ImageIcon("src/main/resources/god_cards/Artemis.png").getImage();
-        Image athena = new ImageIcon("src/main/resources/god_cards/Athena.png").getImage();
-        Image atlas = new ImageIcon("src/main/resources/god_cards/Atlas.png").getImage();
-        Image demeter = new ImageIcon("src/main/resources/god_cards/Demeter.png").getImage();
-        Image hephaestus = new ImageIcon("src/main/resources/god_cards/Hephaestus.png").getImage();
-        Image minotaur = new ImageIcon("src/main/resources/god_cards/Minotaur.png").getImage();
-        Image pan = new ImageIcon("src/main/resources/god_cards/Pan.png").getImage();
-        Image prometheus = new ImageIcon("src/main/resources/god_cards/Prometheus.png").getImage();
-        Image zeus = new ImageIcon("src/main/resources/god_cards/Zeus.png").getImage();
-        Image hestia = new ImageIcon("src/main/resources/god_cards/Hestia.png").getImage();
-        Image triton = new ImageIcon("src/main/resources/god_cards/Triton.png").getImage();
-        Image charon = new ImageIcon("src/main/resources/god_cards/Charon.png").getImage();
-        Image hera = new ImageIcon("src/main/resources/god_cards/Hera.png").getImage();
+        Image apollo = new ImageIcon(this.getClass().getResource("/god_cards/Apollo.png")).getImage();
+        Image artemis = new ImageIcon(this.getClass().getResource("/god_cards/Artemis.png")).getImage();
+        Image athena = new ImageIcon(this.getClass().getResource("/god_cards/Athena.png")).getImage();
+        Image atlas = new ImageIcon(this.getClass().getResource("/god_cards/Atlas.png")).getImage();
+        Image demeter = new ImageIcon(this.getClass().getResource("/god_cards/Demeter.png")).getImage();
+        Image hephaestus = new ImageIcon(this.getClass().getResource("/god_cards/Hephaestus.png")).getImage();
+        Image minotaur = new ImageIcon(this.getClass().getResource("/god_cards/Minotaur.png")).getImage();
+        Image pan = new ImageIcon(this.getClass().getResource("/god_cards/Pan.png")).getImage();
+        Image prometheus = new ImageIcon(this.getClass().getResource("/god_cards/Prometheus.png")).getImage();
+        Image zeus = new ImageIcon(this.getClass().getResource("/god_cards/Zeus.png")).getImage();
+        Image hestia = new ImageIcon(this.getClass().getResource("/god_cards/Hestia.png")).getImage();
+        Image triton = new ImageIcon(this.getClass().getResource("/god_cards/Triton.png")).getImage();
+        Image charon = new ImageIcon(this.getClass().getResource("/god_cards/Charon.png")).getImage();
+        Image hera = new ImageIcon(this.getClass().getResource("/god_cards/Hera.png")).getImage();
 
         //Buttons image
 
@@ -52,19 +52,19 @@ public class ImageContainer {
         Image menuButton = new ImageIcon(this.getClass().getResource("/menu_button.png")).getImage();
 
 
-        Image tower1 = new ImageIcon("src/main/resources/frame_blue.png").getImage();
-        Image tower2 = new ImageIcon("src/main/resources/frame_coral.png").getImage();
-        Image tower3 = new ImageIcon("src/main/resources/frame_yellow.png").getImage();
-        Image tower4 = new ImageIcon("src/main/resources/cm_bg.png").getImage();
+        Image tower1 = new ImageIcon(this.getClass().getResource("/frame_blue.png")).getImage();
+        Image tower2 = new ImageIcon(this.getClass().getResource("/frame_coral.png")).getImage();
+        Image tower3 = new ImageIcon(this.getClass().getResource("/frame_yellow.png")).getImage();
+        Image tower4 = new ImageIcon(this.getClass().getResource("/cm_bg.png")).getImage();
 
-        Image imageColorBlue = new ImageIcon("src/main/resources/cm_btn_blue.png").getImage();
-        Image imageColorRed = new ImageIcon("src/main/resources/cm_btn_coral.png").getImage();
-        Image imageColorGray = new ImageIcon("src/main/resources/cm_btn_gray.png").getImage();
-        imageClose = new ImageIcon("src/main/resources/Destroy.png").getImage();
-        imageDone = new ImageIcon("src/main/resources/Done.png").getImage();
+        Image imageColorBlue = new ImageIcon(this.getClass().getResource("/cm_btn_blue.png")).getImage();
+        Image imageColorRed = new ImageIcon(this.getClass().getResource("/cm_btn_coral.png")).getImage();
+        Image imageColorGray = new ImageIcon(this.getClass().getResource("/cm_btn_gray.png")).getImage();
+        imageClose = new ImageIcon(this.getClass().getResource("/Destroy.png")).getImage();
+        imageDone = new ImageIcon(this.getClass().getResource("/Done.png")).getImage();
 
-        imageWinner =  new ImageIcon("src/main/resources/endgame_victorywin.png").getImage();
-        imageLabelTerminalPlayerNick = new ImageIcon("src/main/resources/cl_bg.png").getImage();
+        imageWinner =  new ImageIcon(this.getClass().getResource("/endgame_victorywin.png")).getImage();
+        imageLabelTerminalPlayerNick = new ImageIcon(this.getClass().getResource("/cl_bg.png")).getImage();
 
         imageColorPlayer[0] = imageColorBlue;
         imageColorPlayer[1] = imageColorRed;
@@ -96,9 +96,9 @@ public class ImageContainer {
         buttons.put("buttonMenu",menuButton);
 
 
-        blueLight = new ImageIcon("src/main/resources/playermoveindicator_blue.png").getImage();
-        borderGod = new ImageIcon("src/main/resources/clp_frame_gold.png").getImage();
-        purpleLight = new ImageIcon("src/main/resources/playermoveindicator_purple.png").getImage();
+        blueLight = new ImageIcon(this.getClass().getResource("/playermoveindicator_blue.png")).getImage();
+        borderGod = new ImageIcon(this.getClass().getResource("/clp_frame_gold.png")).getImage();
+        purpleLight = new ImageIcon(this.getClass().getResource("/playermoveindicator_purple.png")).getImage();
 
 
 

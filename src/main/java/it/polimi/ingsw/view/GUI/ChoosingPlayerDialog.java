@@ -18,7 +18,7 @@ public class ChoosingPlayerDialog extends GameDialog {
         super(frame,"Choosing first player");
         Font font = new Font("Impatto", Font.PLAIN, 18);
         JLabel labelGround = new JLabel("");
-        Image imageGround = new ImageIcon("src/main/resources/Odyssey-Olympus.png").getImage().getScaledInstance(520,312,Image.SCALE_DEFAULT);
+        Image imageGround = new ImageIcon(this.getClass().getResource("/Odyssey-Olympus.png")).getImage().getScaledInstance(520,312,Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         JLabel labelSel = new JLabel("SELECT FIRST PLAYER: ");
         labelSel.setFont(font);

@@ -20,7 +20,7 @@ public class WelcomeDialog extends GameDialog {
         labelConnected.setFont(font);
         labelConnected.setForeground(Color.BLUE);
         labelConnected.setBounds(165,30,300,20);
-        Image imageGround = new ImageIcon("src/main/resources/title_water.png").getImage().getScaledInstance(520, 315, Image.SCALE_DEFAULT);
+        Image imageGround = new ImageIcon(this.getClass().getResource("/title_water.png")).getImage().getScaledInstance(520, 315, Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         JTextField text = new JTextField("Insert name and press play", 20);
 
@@ -44,7 +44,7 @@ public class WelcomeDialog extends GameDialog {
         box3Player.setOpaque(false);
         text.setVisible(true);
         text.setBounds(150, 60, 240, 20);
-        Image imagePlay = new ImageIcon("src/main/resources/button-play-down.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
+        Image imagePlay = new ImageIcon(this.getClass().getResource("/button-play-down.png")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
 
         ButtonCircle buttonSend = new ButtonCircle(
                 new ImageIcon(imagePlay),

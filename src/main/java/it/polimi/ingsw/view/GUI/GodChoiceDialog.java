@@ -142,7 +142,7 @@ public class GodChoiceDialog extends JLabel {
         Font font = new Font("Impatto", Font.PLAIN, 33);
         Font font1 = new Font("Impatto", Font.PLAIN, 10);
         JLabel labelGround = new JLabel("");
-        Image imageGround = new ImageIcon("src/main/resources/Odyssey_UI_Backdrop.png").getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
+        Image imageGround = new ImageIcon(this.getClass().getResource("/Odyssey_UI_Backdrop.png")).getImage().getScaledInstance(520,315,Image.SCALE_DEFAULT);
         labelGround.setIcon(new ImageIcon(imageGround));
         JLabel labelGod = new JLabel("");
         Image imageGod = imageContainer.getGodimage(godName).getScaledInstance(150,250,Image.SCALE_DEFAULT);

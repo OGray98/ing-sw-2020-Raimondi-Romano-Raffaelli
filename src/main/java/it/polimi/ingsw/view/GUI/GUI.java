@@ -500,15 +500,15 @@ public class GUI extends ClientView {
     private LabelCircle getPlayerIcon(PlayerIndex playerIndex) {
         LabelCircle buttonPlayer = null;
         if (playerIndex.equals(PlayerIndex.PLAYER0)) {
-            Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(getProportionWidth(50, 18, labelEmptyWidth), getProportionHeight(50, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
+            Image imagePlayer = new ImageIcon((this.getClass().getResource("/TalusToken.png"))).getImage().getScaledInstance(getProportionWidth(50, 18, labelEmptyWidth), getProportionHeight(50, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
             buttonPlayer = new LabelCircle(new ImageIcon(imagePlayer), Color.RED);
             buttonPlayer.setBounds(getProportionWidth(37, 18, labelEmptyWidth), getProportionHeight(34, 19, labelEmptyHeight), getProportionWidth(56, 18, labelEmptyWidth), getProportionHeight(56, 19, labelEmptyHeight));
         } else if (playerIndex.equals(PlayerIndex.PLAYER1)) {
-            Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(getProportionWidth(50, 18, labelEmptyWidth), getProportionHeight(50, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
+            Image imagePlayer = new ImageIcon((this.getClass().getResource("/TalusToken.png"))).getImage().getScaledInstance(getProportionWidth(50, 18, labelEmptyWidth), getProportionHeight(50, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
             buttonPlayer = new LabelCircle(new ImageIcon(imagePlayer), Color.BLUE);
             buttonPlayer.setBounds(getProportionWidth(37, 18, labelEmptyWidth), getProportionHeight(34, 19, labelEmptyHeight), getProportionWidth(56, 18, labelEmptyWidth), getProportionHeight(56, 19, labelEmptyHeight));
         }else if(playerIndex.equals(PlayerIndex.PLAYER2)) {
-            Image imagePlayer = new ImageIcon(("src/main/resources/TalusToken.png")).getImage().getScaledInstance(getProportionWidth(50, 18, labelEmptyWidth), getProportionHeight(50, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
+            Image imagePlayer = new ImageIcon((this.getClass().getResource("/TalusToken.png"))).getImage().getScaledInstance(getProportionWidth(50, 18, labelEmptyWidth), getProportionHeight(50, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
             buttonPlayer = new LabelCircle(new ImageIcon(imagePlayer), Color.orange);
             buttonPlayer.setBounds(getProportionWidth(37, 18, labelEmptyWidth), getProportionHeight(34, 19, labelEmptyHeight), getProportionWidth(56, 18, labelEmptyWidth), getProportionHeight(56, 19, labelEmptyHeight));
         }
@@ -809,7 +809,7 @@ public class GUI extends ClientView {
         OkMessage okMsg = (OkMessage) message;
         Image imageWinner = imageContainer.getImageWinner().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
         PrincipalLabel labelWinner = new PrincipalLabel(imageWinner);
-        Image trophy = new ImageIcon("src/main/resources/trophy_large.png").getImage().getScaledInstance(320,200,Image.SCALE_DEFAULT);
+        Image trophy = new ImageIcon(this.getClass().getResource("/trophy_large.png")).getImage().getScaledInstance(320,200,Image.SCALE_DEFAULT);
         PrincipalLabel labelTrophy = new PrincipalLabel(trophy);
         labelTrophy.setBounds(390,290,320,200);
         Font font = new Font("Impatto", Font.PLAIN, 13);
