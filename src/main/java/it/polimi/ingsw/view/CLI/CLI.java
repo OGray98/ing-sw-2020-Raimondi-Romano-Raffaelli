@@ -543,7 +543,7 @@ public class CLI extends ClientView {
                 catch (NumberFormatException e){
                     System.out.println("You must insert a number between 0 and 4!");
                 }
-                if(clientModel.getPlayerIndexPosition(clientModel.getPlayerIndex()).contains(new Position(row,col))){
+                if(clientModel.getPlayerIndexPosition(clientModel.getPlayerIndex()).contains(new Position(row,col)) && clientModel.getCurrentState() == GameState.MOVE){
                     System.out.println("You selected worker in position: ["+row+"]["+col+"]");
                     clientModel.setSelectedWorkerPos(new Position(row, col));
                     contIndexes = 0;
