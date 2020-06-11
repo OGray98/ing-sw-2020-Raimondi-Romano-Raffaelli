@@ -257,7 +257,6 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         }*/
 
         godPhaseManager.playerChooseGod(message.getGodName());
-        //possibile problema: quando ultimo giocatore sceglie poi non sarà il turno del godlike. RISOLTO?
 
         if (godPhaseManager.isFinishSelectCardPhase())
             gameModel.setCurrentState(GameState.GOD_PLAYER_CHOOSE_FIRST_PLAYER);

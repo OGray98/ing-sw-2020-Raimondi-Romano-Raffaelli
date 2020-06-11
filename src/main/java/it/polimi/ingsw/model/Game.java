@@ -174,11 +174,12 @@ public class Game extends Observable<MessageToClient> {
                                 );
                             }
                     );
-        } else {    //Prometeo
+        } else {
             if (board.getAdjacentCells(currentPosition).stream()
                     .noneMatch(cell -> canMoveWorker(cell.getPosition()))) {
                 this.removeCurrentPlayer();
                 if(players.size() == 1){
+                    notify(new OkMessage(currentPlayer.getPlayerNum(), TypeMessage.WINNER, currentPlayer.getNickname() + " has won the game!"));
                     setCurrentState(GameState.MATCH_ENDED);
                 }
             } else {
