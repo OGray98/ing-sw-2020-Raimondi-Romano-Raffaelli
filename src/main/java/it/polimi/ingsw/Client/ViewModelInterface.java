@@ -45,4 +45,6 @@ public interface ViewModelInterface {
     boolean isOccupiedPosition(Position pos);
 
     void setSelectedWorkerPos(Position position);
+
+    String getGodChosenByPlayer(PlayerIndex index);
 }
