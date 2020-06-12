@@ -237,6 +237,11 @@ public class CLI extends ClientView {
         int buildRow = message.getBuildPosition().row;
         int buildCol = message.getBuildPosition().col;
 
+        if(message.getLevel() == 4){
+            cellLevelRep[buildRow][buildCol] = 4;
+            printBoardRep();
+            return;
+        }
         cellLevelRep[buildRow][buildCol]++;
 
         System.out.println("\n\n");
@@ -380,7 +385,7 @@ public class CLI extends ClientView {
             return;
         }
         System.out.println("\n");
-        printBoardRep();
+        //printBoardRep();
         positionInput();
     }
 
@@ -504,6 +509,9 @@ public class CLI extends ClientView {
                         if(clientModel.getCurrentState() == GameState.ENDPHASE){
                             handleMessage(new EndTurnMessage(clientModel.getPlayerIndex()));
                             return;
+                        }
+                        else {
+                            printActionPositions(ActionType.MOVE);
                         }
                     }
                 }
