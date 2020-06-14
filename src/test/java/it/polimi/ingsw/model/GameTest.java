@@ -25,13 +25,8 @@ public class GameTest {
     private static Game game;
     private static List<PlayerInterface> players;
     private static Board board;
-    private static Board premadeBoard;
     private static Position firstPlayerFirstWorkerPos;
     private static Position firstPlayerSecondWorkerPos;
-    private static Map<PlayerIndex, CardInterface> playersCards;
-    private static PlayerInterface currentPlayer;
-    private static Position secondPos;
-
     private static Position secondPlayerFirstWorker;
     private static Position secondPlayerSecondWorker;
     private static Position lastPlayerFirstWorker;
@@ -187,8 +182,6 @@ public class GameTest {
         game.build(pos);
         assertTrue(game.getBoard().getCell(pos).hasDome());
     }
-
-
 
     // Test game, gods: Pan, Artemis, Demeter
     @Test

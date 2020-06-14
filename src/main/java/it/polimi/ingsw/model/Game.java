@@ -510,7 +510,6 @@ public class Game extends Observable<MessageToClient> {
     public boolean canBuild(Position buildPos) throws NullPointerException {
         if (buildPos == null)
             throw new NullPointerException("buildPos");
-        //currentPosition = currentPlayer.getCellOccupied().getPosition(); //TODO guarda la modifica
         return currentPlayer.canBuild(
                 board.getPlayersOccupations(new ArrayList<>(List.of(buildPos))),
                 board.getCell(buildPos)
@@ -637,7 +636,7 @@ public class Game extends Observable<MessageToClient> {
     }
 
     public Board getBoard() {
-        return new Board(this.board); //TODO non funziona costruttore copia board
+        return new Board(this.board);
     }
 
     public PlayerIndex getCurrentPlayerIndex() {

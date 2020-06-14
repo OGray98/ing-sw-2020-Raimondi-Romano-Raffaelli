@@ -69,7 +69,6 @@ public abstract class ClientView extends View implements Observer<MessageToView>
         super.setPlayer(message.getPlayerIndex());
     }
 
-    //TODO: serve per rimuovere le celle illuminate
     public abstract void removeActionsFromView();
 
     public abstract void showActionPositions(List<Position> possiblePosition, boolean isPowerCells);

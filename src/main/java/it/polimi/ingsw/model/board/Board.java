@@ -171,7 +171,6 @@ public class Board {
      * @throws  NotPresentWorkerException if in oldPosition there is not any worker
      * @throws  NullPointerException if oldPosition or newPosition is null
      * */
-    //TODO: controllare qui se la newposition non è vuota? direi di no
     public void changeWorkerPosition(Position oldPosition, Position newPosition) throws NotPresentWorkerException, NullPointerException {
         if (oldPosition == null)
             throw new NullPointerException("oldPosition");
@@ -214,7 +213,6 @@ public class Board {
      * @throws  NullPointerException if putPosition is null
      * @throws  InvalidPutWorkerException if there are already two workers of the given player on the board
      * */
-    //TODO: controllare qui se la putPosition non è vuota? direi di no
     public void putWorker(Position putPosition, PlayerIndex playerIndex) throws NullPointerException, InvalidPutWorkerException {
         if (putPosition == null)
             throw new NullPointerException("putPosition");
@@ -274,11 +272,6 @@ public class Board {
         return playerWorkersPositions;
     }
 
-    public int getWorkerNum(PlayerIndex index) {
-        if (this.playerPosition.get(index) == null)
-            return 0;
-        return this.playerPosition.get(index).size();
-    }
 
     /**
      *  Method used after PlayerInterface.usePower() to update the board with the new changes.
@@ -307,7 +300,6 @@ public class Board {
             throw new NullPointerException("changes");
         boolean isFound = false;
 
-        //TODO: correct this
         for (Map.Entry<PositionContainer, PlayerIndex> entryChange : changes.entrySet()) {
             for (Map.Entry<PlayerIndex, List<Position>> entry : this.playerPosition.entrySet()) {
                 if (entry.getValue().contains(entryChange.getKey().getOldPosition()) &&

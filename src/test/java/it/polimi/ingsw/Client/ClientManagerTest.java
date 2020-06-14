@@ -31,7 +31,6 @@ public class ClientManagerTest {
 
     @Test
     public void updateClientTest(){
-        // TODO : da rifare
 
         clientManager.setClientView(new StubView(PlayerIndex.PLAYER0, clientModel));
         //Testing updateIndex()

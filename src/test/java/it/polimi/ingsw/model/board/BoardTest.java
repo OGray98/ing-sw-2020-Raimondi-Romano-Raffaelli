@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -223,12 +224,18 @@ public class BoardTest {
             assertEquals("centralPosition",e.getMessage());
         }
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                //TODO: sistemare
-                // assertTrue(isStandardCaseCorrectedAdjAndCentral(board.getAdjacentAndCentralCells(new Position(i, j)), i, j));
-            }
-        }
+        List<Cell> cellAdjTopos11 = new ArrayList<>();
+        cellAdjTopos11.add(new Cell(0,0));
+        cellAdjTopos11.add(new Cell(0,1));
+        cellAdjTopos11.add(new Cell(0,2));
+        cellAdjTopos11.add(new Cell(1,0));
+        cellAdjTopos11.add(new Cell(1,1));
+        cellAdjTopos11.add(new Cell(1,2));
+        cellAdjTopos11.add(new Cell(2,0));
+        cellAdjTopos11.add(new Cell(2,1));
+        cellAdjTopos11.add(new Cell(2,2));
+
+        assertEquals(board.getAdjacentAndCentralCells(new Position(1,1)), cellAdjTopos11);
     }
 
     @Test
@@ -433,19 +440,11 @@ public class BoardTest {
                 && board.getCell(new Position(r+1,c-1)).equals(cells.get(5)) && board.getCell(new Position(r+1,c)).equals(cells.get(6)) && board.getCell(new Position(r+1,c+1)).equals(cells.get(7));
     }
 
-    private boolean isStandardCaseCorrectedAdjAndCentral(List<Cell> cells, int r, int c) {
-        if(r == 0)
-            return isBoundaryUpCorrected(cells, c);
-        else if(r == 4)
-            return isBoundaryDownCorrected(cells, c);
-        if(c == 0)
-            return isBoundaryLeftCorrected(cells, r);
-        else if(c == 4)
-            return isBoundaryRightCorrected(cells, r);
+    @Test
+    public void boardEqualsTest(){
+        Board board2 = new Board();
 
-        return cells.size() == 9 && board.getCell(new Position(r-1,c-1)).equals(cells.get(0)) && board.getCell(new Position(r-1,c)).equals(cells.get(1)) && board.getCell(new Position(r-1,c+1)).equals(cells.get(2))
-                && board.getCell(new Position(r,c-1)).equals(cells.get(3)) && board.getCell(new Position(r,c)).equals(cells.get(4)) && board.getCell(new Position(r,c+1)).equals(cells.get(5))
-                && board.getCell(new Position(r+1,c-1)).equals(cells.get(6)) && board.getCell(new Position(r+1,c)).equals(cells.get(7)) && board.getCell(new Position(r+1,c+1)).equals(cells.get(8));
+        assertTrue(board2.equals(board));
     }
 
     @After

@@ -388,7 +388,6 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     @Override
     public void updateLoserMessage(LoserMessage message) {
         clientModel.playerLose(message.getLoserPlayer());
-        //TODO notificare la view della sconfitta
     }
 
     @Override
@@ -400,7 +399,6 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
             );
         } else
             this.clientView.showMessage("Maximum number of players exceeded, you cannot participate!");
-        //TODO chiedere al client se vuole fare un'altra partita
     }
 
     public void setClientView(ClientView clientView) {

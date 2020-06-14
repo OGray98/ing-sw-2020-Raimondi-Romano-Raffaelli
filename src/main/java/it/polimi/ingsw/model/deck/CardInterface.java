@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.player.PlayerInterface;
 
 public interface CardInterface {
 
-    //TODO: si può migliorare con metodo void
     PlayerInterface setPlayer(PlayerInterface player);
 
     void setChosenGod(Boolean condition);

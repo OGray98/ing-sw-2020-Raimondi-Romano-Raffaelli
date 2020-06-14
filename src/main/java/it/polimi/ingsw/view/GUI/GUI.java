@@ -244,12 +244,10 @@ public class GUI extends ClientView {
                             }
                         }
                         catch(NullPointerException npe){
-                            //TODO: non bellissimo magari bloccare il bottone è meglio
                             showMessage("You must select a worker before");
                         }
                     }
                     else{
-                        //TODO: AVVERTI UTENTE caso non puo usare il potere
                         showMessage("You can't use a God Power now");
                     }
                 }
@@ -619,11 +617,10 @@ public class GUI extends ClientView {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //TODO: nei vari casi inserire le immagini dei diversi livelli! cambiare l'immagine nel caso 1
 
                 JLabel buildLabel;
 
-                switch (level){  //TODO: è giusto il level?
+                switch (level){
                     case 1:
                         Image imageTower = imageContainer.getTowerLevel(0).getScaledInstance(getProportionWidth(129,18,labelEmptyWidth),getProportionHeight(126,19,labelEmptyHeight),Image.SCALE_DEFAULT);
                         buildLabel = new JLabel("");
@@ -763,7 +760,7 @@ public class GUI extends ClientView {
                 }
                 //case when this is not the client god
                 else{
-                    //TODO: mettere immagine del god scelto da nemici nel pannello a sinistra
+
                 }
             }
         });

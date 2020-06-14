@@ -20,10 +20,6 @@ import java.util.*;
  */
 public class ClientModel extends Observable<MessageToView> implements ViewModelInterface{
 
-    //TODO MANCANO TUTTE LE NOTIFY ALLA VIEW
-    //TODO RAPPRESENTAZIONE DEI GOD UN PO' SCHIFOSA, FARE UN' INTERFACCIA/CLASSE COMUNE CON CARDINTERFACE?
-    //TODO FARE INTERFACCE/CLASSI COMUNI CON I VARI ELEMENTI DEL MODEL? ESEMPIO BOARD IMPLEMENT BOARDINTERFACE E CLIENTBOARD IMPLEMENT BOARDINTERFACE?
-
     private final Map<Position, Integer> levelsPositions = new HashMap<>(Board.NUM_COLUMNS * Board.NUM_ROW);
     private final List<Position> domesPositions = new ArrayList<>(0);
     private final Map<PlayerIndex, List<Position>> playersPositions = new HashMap<>(2);
@@ -357,7 +353,6 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         this.powerActionPositionsWorker1.clear();
         this.powerActionPositionsWorker2.clear();
         this.isSelectedWorker = false;
-        //TODO selectedWorker? serve una Position da distinguere per capire che non ci sono pedine selezionate
     }
 
     public boolean isThereASelectedWorker(){
@@ -393,8 +388,6 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
      * Set power state of this client
      */
     private void setClientPowerState() {
-
-        //TODO DA CAMBIARE FA SCHIFO STO SWITCH
 
         switch (this.chosenGods.get(playerIndex)) {
             case "Apollo":
