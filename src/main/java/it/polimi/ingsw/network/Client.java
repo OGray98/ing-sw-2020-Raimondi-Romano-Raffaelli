@@ -3,7 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.Client.ClientManager;
 import it.polimi.ingsw.Client.ClientModel;
 import it.polimi.ingsw.Client.ClientView;
-import it.polimi.ingsw.ClientMain;
+import it.polimi.ingsw.ClientApp;
 import it.polimi.ingsw.ClientViewFactory.CLICreator;
 import it.polimi.ingsw.ClientViewFactory.ClientViewCreator;
 import it.polimi.ingsw.ClientViewFactory.GUICreator;
@@ -47,7 +47,7 @@ public class Client implements ServerConnection {
         this.clientManager = new ClientManager(this, this.clientModel);
 
         ClientViewCreator clientViewCreator;
-        if (typeView.equals(ClientMain.GUI)) {
+        if (typeView.equals(ClientApp.GUI)) {
             clientViewCreator = new GUICreator();
         } else {
             clientViewCreator = new CLICreator();

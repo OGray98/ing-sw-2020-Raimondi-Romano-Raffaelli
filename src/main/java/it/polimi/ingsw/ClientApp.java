@@ -5,7 +5,7 @@ import it.polimi.ingsw.network.Client;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class ClientMain {
+public class ClientApp {
 
     public final static String GUI = "g";
     public final static String CLI = "c";

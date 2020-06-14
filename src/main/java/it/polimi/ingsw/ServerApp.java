@@ -5,7 +5,7 @@ import it.polimi.ingsw.network.Server;
 
 import java.io.IOException;
 
-public class ServerMain {
+public class ServerApp {
 
     public static void main(String[] args) {
         Server server;

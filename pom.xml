@@ -54,7 +54,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>it.polimi.ingsw.ClientMain</mainClass>
+              <mainClass>it.polimi.ingsw.ClientApp</mainClass>
               </manifest>
           </archive>
           </configuration>
