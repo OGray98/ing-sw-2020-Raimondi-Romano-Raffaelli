@@ -9,6 +9,11 @@ public class DialogTutorial extends GameDialog implements ActionListener {
 
     private ImageContainer imageContainer = new ImageContainer();
 
+    /**
+     * @param frame principal frame
+     * @param title title of frame
+     *  Dialog that show how to play the game
+     */
     public DialogTutorial(JFrame frame, String title){
         super(frame,title);
         Font font = new Font("Impatto", Font.PLAIN, 12);

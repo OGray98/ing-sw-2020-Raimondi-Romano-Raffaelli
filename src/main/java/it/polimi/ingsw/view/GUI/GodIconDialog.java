@@ -12,6 +12,11 @@ public class GodIconDialog extends GameDialog implements ActionListener {
     private final ImageContainer imageContainer = new ImageContainer();
     private Map<String,String> godProfile;
 
+    /**
+     * @param frame principal frame
+     * @param godName god name
+     * In each player frame there is a icon with the card of god and with a click on it, it show the god with description
+     */
     public GodIconDialog(JFrame frame,String godName){
         super(frame,"GOD PROFILE");
         Font font = new Font("Impatto", Font.PLAIN, 33);

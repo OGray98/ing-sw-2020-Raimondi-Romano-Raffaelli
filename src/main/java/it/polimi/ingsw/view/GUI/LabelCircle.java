@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
+/**
+ * Class used to write a circle around the icon player
+ */
 public class LabelCircle extends JLabel {
 
     Shape shape = null;

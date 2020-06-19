@@ -28,6 +28,10 @@ public class ButtonCircle extends JButton {
     }
 
 
+    /**
+     * @param g element use to paint the button
+     * this method draw a circle around the button
+     */
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         Color c1 = new Color(100,100,100);
@@ -53,6 +57,9 @@ public class ButtonCircle extends JButton {
         super.paintComponent(g);
     }
 
+    /**
+     * use to set the correct size of border
+     */
     private void resize() {
         Dimension d = getPreferredSize();
         d.width = d.height = Math.max(d.width, d.height);

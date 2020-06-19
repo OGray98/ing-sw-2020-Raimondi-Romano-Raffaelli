@@ -8,6 +8,10 @@ import it.polimi.ingsw.utils.TypeMatchMessage;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Dialog that appears when the jar start and the player write his nickname and if he is the first that join the lobby he choose
+ * how much players can join the game
+ */
 public class WelcomeDialog extends GameDialog {
 
     private String n;

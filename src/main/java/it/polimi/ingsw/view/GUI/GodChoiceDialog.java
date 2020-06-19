@@ -26,6 +26,13 @@ public class GodChoiceDialog extends JLabel {
     private boolean clicked = false;
 
 
+    /**
+     * @param listGodName list of gods
+     * @param isThreePlayerGame 2 or 3 players in game
+     * @param isGodLike godLike is choosing?
+     * @param okListener listener
+     * Frame in which each player choose the card of god to use in game
+     */
     public GodChoiceDialog(List<String> listGodName, boolean isThreePlayerGame, boolean isGodLike, ActionListener okListener) {
         super("");
         frame = (JFrame) super.getFocusCycleRootAncestor();
@@ -120,6 +127,10 @@ public class GodChoiceDialog extends JLabel {
         }
     }
 
+    /**
+     * @param gods list of gods
+     * @return a button list of god card
+     */
     private List<JButton> createListGods(List<String> gods){
         List<JButton> listGods = new ArrayList<>();
         for(String god: gods){
@@ -137,6 +148,12 @@ public class GodChoiceDialog extends JLabel {
         return listGods;
     }
 
+    /**
+     * @param godName name of god
+     * @param buttonGod button on which there is the card of god
+     * @param isGodLike is godLike choosing?
+     * when player click on card a dialog show the description of god and player can choose or not the god
+     */
     public void getIconDialog(String godName, JButton buttonGod,boolean isGodLike){
         dialog = new JDialog(frame,"GOD PROFILE");
         Font font = new Font("Impatto", Font.PLAIN, 33);

@@ -94,6 +94,10 @@ public class Server {
         }
     }
 
+    /**
+     * @return thread
+     * thread used to ping the different clients to se if they are alive
+     */
      public Thread pingRunThread(){
         Thread t = new Thread(() -> {
             while(getActive()) {

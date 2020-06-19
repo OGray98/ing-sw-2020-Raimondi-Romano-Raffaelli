@@ -2,6 +2,9 @@ package it.polimi.ingsw.view.GUI;
 
 import javax.swing.*;
 
+/**
+ * Class of JLayeredPane used to draw images on different levels
+ */
 public class LevelPane extends JLayeredPane {
 
     Integer[] layerValues = { JLayeredPane.DEFAULT_LAYER,

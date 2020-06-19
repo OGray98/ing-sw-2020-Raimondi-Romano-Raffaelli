@@ -14,6 +14,13 @@ public class ChoosingPlayerDialog extends GameDialog {
     private JRadioButton player1;
     private JRadioButton player2;
 
+    /**
+     * @param frame principal frame
+     * @param isThreePlayerGame 3 or 2 players in game
+     * @param nickNames list of nicknames with playerIndex
+     * @param listenerSelect listener
+     *   Dialog in which player god like choose the first player
+     */
     public ChoosingPlayerDialog(JFrame frame, boolean isThreePlayerGame, Map<PlayerIndex, String> nickNames, ActionListener listenerSelect){
         super(frame,"Choosing first player");
         Font font = new Font("Impatto", Font.PLAIN, 18);
