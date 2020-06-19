@@ -7,6 +7,9 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 
 import java.util.List;
 
+/**
+ * Message sent after player lose and need to remove his workers from the board
+ */
 public class RemovePlayerMessage extends Message implements MessageToView {
 
     private final List<Position> removePositions;

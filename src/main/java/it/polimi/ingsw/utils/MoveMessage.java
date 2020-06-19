@@ -6,6 +6,9 @@ import it.polimi.ingsw.controller.ControllableByClientMessage;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * Message sent when player move on other cell during Move-State
+ */
 public class MoveMessage extends TwoPositionMessage implements MessageToServer, MessageToClient, MessageToView {
 
     public MoveMessage(PlayerIndex client, Position workerPos, Position movePos) throws NullPointerException {

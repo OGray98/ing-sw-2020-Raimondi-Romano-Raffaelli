@@ -4,6 +4,9 @@ import it.polimi.ingsw.controller.ControllableByClientMessage;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * Message sent when player choose the worker he want to use
+ */
 public class SelectWorkerMessage extends Message {
 
     private Position workerPos;

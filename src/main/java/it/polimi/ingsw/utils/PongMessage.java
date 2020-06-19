@@ -2,6 +2,9 @@ package it.polimi.ingsw.utils;
 
 import it.polimi.ingsw.controller.ControllableByClientMessage;
 
+/**
+ * Message sent when client receive a Ping message
+ */
 public class PongMessage extends Message implements MessageToServer {
 
     public PongMessage() {

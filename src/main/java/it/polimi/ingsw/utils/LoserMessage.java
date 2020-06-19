@@ -4,6 +4,9 @@ import it.polimi.ingsw.Client.ControllableByServerMessage;
 import it.polimi.ingsw.Client.ControllableByViewMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * Message sent when a player lose the game
+ */
 public class LoserMessage extends Message implements MessageToClient{
 
     private final PlayerIndex loserPlayer;

@@ -4,6 +4,9 @@ import it.polimi.ingsw.Client.ControllableByServerMessage;
 import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * Message sent each time the state of game change
+ */
 public class UpdateStateMessage extends Message implements MessageToClient {
 
     private final GameState gameState;
