@@ -251,6 +251,70 @@ public class GameTest {
         assertTrue(game.getBoard().getCell(pos).hasDome());
     }
 
+    @Test
+    public void sendPossibleActionMoveINITPOWERTest(){
+        firstPlayerFirstWorkerPos = new Position(0, 0);
+        firstPlayerSecondWorkerPos = new Position(3, 1);
+
+        secondPlayerFirstWorker = new Position(1,1);
+        secondPlayerSecondWorker = new Position(4,4);
+
+        Position thirdPlayerFirstWorker = new Position(0,3);
+        Position thirdPlayerSecondWorker = new Position(0,2);
+
+        List<String> gods = new ArrayList<>();
+        gods.add("Minotaur");
+        gods.add("Athena");
+        gods.add("Pan");
+
+        game.setGodsChosenByGodLike(gods);
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        //Check some moves for Minotaur
+        game.setPlayerCard("Minotaur");
+
+        game.endTurn();
+        game.endTurn();
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
+
+        game.putWorker(firstPlayerFirstWorkerPos);
+        game.putWorker(firstPlayerSecondWorkerPos);
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER2);
+
+        game.putWorker(secondPlayerFirstWorker);
+        game.putWorker(secondPlayerSecondWorker);
+
+        assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER0);
+
+        game.putWorker(thirdPlayerFirstWorker);
+        game.putWorker(thirdPlayerSecondWorker);
+
+        game.chooseFirstPlayer(PlayerIndex.PLAYER1);
+        game.setStartingWorker(new Position(0,0));
+        game.setCurrentState(GameState.INITPOWER);
+
+        assertEquals(game.getCurrentState(), GameState.INITPOWER);
+
+        //case with blocked worker and only the winner remains
+        game.build(new Position(1,0));
+        game.build(new Position(1,1));
+        game.build(new Position(0,1));
+        game.build(new Position(1,0));
+        game.build(new Position(1,1));
+        game.build(new Position(0,1));
+
+        game.endTurn();
+        game.removeCurrentPlayer();
+        game.endTurn();
+
+        game.setCurrentState(GameState.INITPOWER);
+
+        assertEquals(game.getCurrentState(), GameState.MATCH_ENDED);
+
+    }
+
     // Test game, gods: Pan, Artemis, Demeter
     @Test
     public void gameTestPanArtemisDemeter() {
