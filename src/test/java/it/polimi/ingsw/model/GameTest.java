@@ -2,10 +2,10 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.MaxPlayersException;
+import it.polimi.ingsw.exception.NotSelectedGodException;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.Position;
-import it.polimi.ingsw.model.deck.CardInterface;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
@@ -134,6 +134,13 @@ public class GameTest {
         } catch (NullPointerException e) {
             assertEquals("godName", e.getMessage());
         }
+
+        try {
+            game.setPlayerCard("Pietro");
+        } catch (NotSelectedGodException e) {
+            assertEquals(new NotSelectedGodException("Pietro").getMessage(), e.getMessage());
+        }
+
         List<String> threeGods = new ArrayList<>(3);
         threeGods.add("Prometheus");
         threeGods.add("Pan");
@@ -146,6 +153,8 @@ public class GameTest {
         game.setPlayerCard("Atlas");
         assertEquals(PlayerIndex.PLAYER2, game.getSortedIndexes().get(2));
     }
+
+
     @Test
     public void putWorkerTest() {
         try{
@@ -165,14 +174,65 @@ public class GameTest {
 
 
     @Test
-    public void buildTest(){
-        //game.putWorker(firstPlayerFirstWorkerPos);
-        try{
-            game.build(null);
-        }catch (NullPointerException e){
-            assertEquals("buildPos",e.getMessage());
+    public void setStartingWorkerTestException() {
+
+
+        List<String> gods = new ArrayList<>(List.of("Pan", "Artemis", "Demeter"));
+        game.setGodsChosenByGodLike(gods);
+        assertTrue(game.getDeck().getGodCard("Demeter").getBoolChosenGod());
+        assertTrue(game.getDeck().getGodCard("Pan").getBoolChosenGod());
+        assertTrue(game.getDeck().getGodCard("Artemis").getBoolChosenGod());
+
+        Collections.rotate(gods, -1);
+        game.setGodsChosenByGodLike(gods);
+        for (String god : gods) game.setPlayerCard(god);
+
+        Collections.rotate(gods, 1);
+        game.getGodNames().forEach((index, name) -> assertEquals(gods.get(index.ordinal()), name));
+
+        game.chooseFirstPlayer(PlayerIndex.PLAYER0);
+
+        List<Position> pos = new ArrayList<>(List.of(
+                new Position(0, 0),
+                new Position(0, 3),
+                new Position(1, 1),
+                new Position(4, 2),
+                new Position(2, 0),
+                new Position(2, 4)
+        ));
+
+        for (Position p : pos) {
+            assertTrue(game.canPutWorker(p));
+            game.putWorker(p);
         }
-        Position pos = new Position(1,2);
+
+        game.startTurn();
+
+        try {
+            game.setStartingWorker(null);
+        } catch (NullPointerException e) {
+            assertEquals("startPos", e.getMessage());
+        }
+
+        //COPRIRE ULTIMA ECCEZIONE
+        /*try {
+            game.setStartingWorker(new Position(1,4));
+        } catch (NotPresentWorkerException e ){
+            assertEquals(new NotPresentWorkerException(1, 4, PlayerIndex.PLAYER0).getMessage(), e.getMessage());
+        }*/
+
+    }
+
+
+    @Test
+    public void buildTest() {
+        //game.putWorker(firstPlayerFirstWorkerPos);
+        try {
+            game.build(null);
+        } catch (NullPointerException e) {
+            assertEquals("buildPos", e.getMessage());
+        }
+        Position pos = new Position(1, 2);
         game.build(pos);
         assertEquals(1,game.getBoard().getCell(pos).getLevel());
         game.build(pos);
@@ -457,6 +517,7 @@ public class GameTest {
         game.endTurn();
         game.startTurn();
     }
+
 
     @Test
     public void canPlayerMoveAWorkerTest() {

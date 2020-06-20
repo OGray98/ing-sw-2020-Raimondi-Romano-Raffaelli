@@ -648,12 +648,11 @@ public class Game extends Observable<MessageToClient> {
     }
 
     /**
-     *  Private method that returns a List<Cell> which will be used in Player::canUsePower()
+     * Private method that returns a List<Cell> which will be used in Player::canUsePower()
+     *
      * @param powerPos is a not null powerPos
      */
     private List<Cell> getPowerCellList(Position powerPos) throws NullPointerException {
-        if (powerPos == null)
-            throw new NullPointerException("powerPos");
 
         int sizeList = currentPlayer.getPowerListDimension();
         List<Cell> cells = new ArrayList<>(sizeList);
@@ -671,12 +670,11 @@ public class Game extends Observable<MessageToClient> {
     }
 
     /**
-     *  Private method that returns a Map<Position, PlayerIndex> which will be used in Player::canUsePower()
+     * Private method that returns a Map<Position, PlayerIndex> which will be used in Player::canUsePower()
+     *
      * @param powerPos is a not null powerPos
      */
     private Map<Position, PlayerIndex> getPowerPlayerOccupations(Position powerPos) throws NullPointerException {
-        if (powerPos == null)
-            throw new NullPointerException("powerPos");
 
         int sizeMap = currentPlayer.getPowerListDimension();
         List<Position> positions = new ArrayList<>();
