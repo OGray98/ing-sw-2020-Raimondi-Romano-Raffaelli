@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.MaxPlayersException;
+import it.polimi.ingsw.exception.NotPresentWorkerException;
 import it.polimi.ingsw.exception.NotSelectedGodException;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Cell;
@@ -9,6 +10,9 @@ import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
+import it.polimi.ingsw.stub.StubObservableClientConnection;
+import it.polimi.ingsw.utils.BuildMessage;
+import it.polimi.ingsw.utils.TypeMessage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -214,13 +218,17 @@ public class GameTest {
             assertEquals("startPos", e.getMessage());
         }
 
-        //COPRIRE ULTIMA ECCEZIONE
-        /*try {
-            game.setStartingWorker(new Position(1,4));
-        } catch (NotPresentWorkerException e ){
+        try {
+            game.setStartingWorker(new Position(1, 4));
+        } catch (NotPresentWorkerException e) {
             assertEquals(new NotPresentWorkerException(1, 4, PlayerIndex.PLAYER0).getMessage(), e.getMessage());
-        }*/
+        }
 
+        try {
+            game.canMoveWorker(null);
+        } catch (NullPointerException e) {
+            assertEquals("movePos", e.getMessage());
+        }
     }
 
 
@@ -309,6 +317,11 @@ public class GameTest {
 
                 assertTrue(game.canUsePowerWorker(powerPos));
                 assertEquals(game.getCurrentPlayerPowerState(), GameState.BUILD);
+                try {
+                    game.usePowerWorker(null);
+                } catch (NullPointerException e) {
+                    assertEquals("powerPos", e.getMessage());
+                }
                 game.usePowerWorker(powerPos);
                 assertEquals(game.getCurrentPlayerNextState(), GameState.SECOND_MOVE);
                 assertEquals(game.getSortedIndexes().get(cont), game.getBoard().getOccupiedPlayer(powerPos));
@@ -482,6 +495,11 @@ public class GameTest {
             game.canMoveWorker(posMosse.get(cont * 2));
             //If Minotaur actives the power
             if (game.getCurrentPlayerGodName().equals("Minotaur")) {
+                try {
+                    game.moveWorker(null);
+                } catch (NullPointerException e) {
+                    assertEquals("movePos", e.getMessage());
+                }
                 assertFalse(game.canMoveWorker(powerPos2));
                 assertTrue(game.canUsePowerWorker(powerPos2));
                 game.usePowerWorker(powerPos2);
@@ -498,8 +516,18 @@ public class GameTest {
             }
             assertFalse(game.hasWonCurrentPlayer());
             if (game.getCurrentPlayerGodName().equals("Hephaestus")) {
+                try {
+                    game.canBuild(null);
+                } catch (NullPointerException e) {
+                    assertEquals("buildPos", e.getMessage());
+                }
                 assertTrue(game.canBuild(powerPos));
                 game.build(powerPos);
+                try {
+                    game.canUsePowerWorker(null);
+                } catch (NullPointerException e) {
+                    assertEquals("powerPos", e.getMessage());
+                }
                 assertTrue(game.canUsePowerWorker(powerPos));
                 game.usePowerWorker(powerPos);
                 assertEquals(game.getBoard().getCell(powerPos).getLevel(), 2);
@@ -795,6 +823,12 @@ public class GameTest {
         game.build(lvl3pos);
         game.build(lvl3pos);
 
+        try {
+            game.getMovePositions(null);
+        } catch (NullPointerException e) {
+            assertEquals("workerPos", e.getMessage());
+        }
+
         assertEquals(game.getMovePositions(firstPlayerFirstWorkerPos).size(), 4);
         assertFalse(game.getMovePositions(firstPlayerFirstWorkerPos).contains(lvl3pos));
     }
@@ -830,6 +864,12 @@ public class GameTest {
         assertEquals(game.getCurrentPlayerIndex(), PlayerIndex.PLAYER1);
 
         game.setStartingWorker(firstPlayerFirstWorkerPos);
+
+        try {
+            game.getBuildPositions(null);
+        } catch (NullPointerException e) {
+            assertEquals("workerPos", e.getMessage());
+        }
 
         assertEquals(game.getBuildPositions(firstPlayerFirstWorkerPos).size(), 6);
 
@@ -903,6 +943,12 @@ public class GameTest {
 
         game.setStartingWorker(firstPlayerFirstWorkerPos);
 
+        try {
+            game.getPowerPositions(null);
+        } catch (NullPointerException e) {
+            assertEquals("workerPos", e.getMessage());
+        }
+
         assertEquals(game.getPowerPositions(firstPlayerFirstWorkerPos).size(), 2);
         assertTrue(game.getPowerPositions(firstPlayerFirstWorkerPos).contains(secondPlayerFirstWorker));
         assertTrue(game.getPowerPositions(firstPlayerFirstWorkerPos).contains(lastPlayerFirstWorker));
@@ -950,6 +996,17 @@ public class GameTest {
         assertEquals(game.getPowerPositions(lastPlayerFirstWorker).size(), 2);
         assertTrue(game.getPowerPositions(lastPlayerFirstWorker).contains(lvlupPos1));
         assertTrue(game.getPowerPositions(lastPlayerFirstWorker).contains(lvlupPos2));
+    }
+
+    @Test
+    public void deleteTest() {
+        StubObservableClientConnection obs = new StubObservableClientConnection(
+                new BuildMessage(PlayerIndex.PLAYER0, new Position(0, 0))
+        );
+        game.addObserver(obs);
+        game.delete(PlayerIndex.PLAYER1);
+        assertEquals(TypeMessage.CLOSE_CONNECTION, obs.getLastMessage().getType());
+        assertEquals(PlayerIndex.PLAYER1, obs.getLastMessage().getClient());
     }
 
     @After

@@ -19,6 +19,10 @@ public class StubObservableClientConnection extends Observable<MessageToServer> 
         notify(m);
     }
 
+    public MessageToClient getLastMessage() {
+        return mesRemoteToView.get(mesRemoteToView.size() - 1);
+    }
+
     @Override
     public boolean isConnected() {
         return false;

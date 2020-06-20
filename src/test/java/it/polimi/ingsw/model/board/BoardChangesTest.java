@@ -1,10 +1,6 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.exception.SameMovementException;
-import it.polimi.ingsw.model.board.BoardChange;
-import it.polimi.ingsw.model.board.BuildType;
-import it.polimi.ingsw.model.board.Position;
-import it.polimi.ingsw.model.board.PositionContainer;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import org.junit.Test;
 
@@ -15,17 +11,13 @@ import static org.junit.Assert.*;
 public class BoardChangesTest {
     private static BoardChange boardChange;
     private static PlayerIndex playerIndex;
-    private static boolean cantGoUp;
-    private static Position buildPosition;
-    private static BuildType buildType;
     private static Position oldPos;
     private static Position newPos;
 
 
     @Test
     public void isConstructorWithCantGoUpCorrected() {
-        cantGoUp = false;
-        boardChange = new BoardChange(cantGoUp);
+        boardChange = new BoardChange(false);
 
         try {
             boardChange.getChanges();
@@ -48,8 +40,8 @@ public class BoardChangesTest {
 
     @Test
     public void isConstructorWithBuildPositionCorrected() {
-        buildPosition = new Position(1, 2);
-        buildType = BuildType.LEVEL;
+        Position buildPosition = new Position(1, 2);
+        BuildType buildType = BuildType.LEVEL;
         boardChange = new BoardChange(buildPosition, buildType);
 
         try {
@@ -92,6 +84,17 @@ public class BoardChangesTest {
 
         boardChange = new BoardChange(oldPos, newPos, playerIndex);
         Map<PositionContainer, PlayerIndex> changesPlayer = boardChange.getChanges();
+
+        try {
+            new BoardChange(null, newPos, playerIndex, true);
+        } catch (NullPointerException e) {
+            assertEquals("oldPosition", e.getMessage());
+        }
+        try {
+            new BoardChange(newPos, null, playerIndex, true);
+        } catch (NullPointerException e) {
+            assertEquals("newPosition", e.getMessage());
+        }
 
         PositionContainer posCont = new PositionContainer(oldPos);
         posCont.put(newPos);

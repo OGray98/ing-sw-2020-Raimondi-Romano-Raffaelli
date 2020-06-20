@@ -407,7 +407,7 @@ public class Game extends Observable<MessageToClient> {
     public void setStartingWorker(Position startPos) throws NullPointerException, NotPresentWorkerException {
         if (startPos == null)
             throw new NullPointerException("startPos");
-        if (board.getOccupiedPlayer(startPos).compareTo(currentPlayer.getPlayerNum()) != 0)
+        if (!board.workerPositions(this.currentPlayer.getPlayerNum()).contains(startPos))
             throw new NotPresentWorkerException(startPos.row, startPos.col, currentPlayer.getPlayerNum());
         currentPosition = startPos;
         currentPlayer.setStartingWorkerSituation( // setWorkerSituation

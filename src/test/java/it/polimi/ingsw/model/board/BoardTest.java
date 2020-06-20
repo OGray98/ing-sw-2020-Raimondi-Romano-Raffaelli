@@ -1,14 +1,11 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.exception.*;
-import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +34,8 @@ public class BoardTest {
 
     @Test
     public void boardInitNull(){
-        Board b1;
         try{
-            b1 = new Board(null);
+            new Board(null);
         }catch (NullPointerException e){
             assertEquals("that",e.getMessage());
         }
@@ -124,24 +120,29 @@ public class BoardTest {
     @Test
     public void isGetAdjacentPlayerCorrect() {
 
-        try{
+        try {
             board.getAdjacentPlayers(null);
-        }catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             assertEquals("centralPosition", e.getMessage());
         }
 
-        board.putWorker(workerPosition,PlayerIndex.PLAYER0);
-        board.putWorker(freePosition,PlayerIndex.PLAYER1);
-        board.putWorker(opponentAdjacentWorkerPosition,PlayerIndex.PLAYER2);
+        board.putWorker(workerPosition, PlayerIndex.PLAYER0);
+        try {
+            board.removePlayerWorkers(PlayerIndex.PLAYER2);
+        } catch (IllegalArgumentException e) {
+            assertEquals("There isn't PLAYER2 on the board", e.getMessage());
+        }
+        board.putWorker(freePosition, PlayerIndex.PLAYER1);
+        board.putWorker(opponentAdjacentWorkerPosition, PlayerIndex.PLAYER2);
         Map<Position, PlayerIndex> adjacentPlayer;
         adjacentPlayer = board.getAdjacentPlayers(workerPosition);
-        assertEquals(adjacentPlayer.get(freePosition),PlayerIndex.PLAYER1);
-        assertEquals(adjacentPlayer.get(opponentAdjacentWorkerPosition),PlayerIndex.PLAYER2);
+        assertEquals(adjacentPlayer.get(freePosition), PlayerIndex.PLAYER1);
+        assertEquals(adjacentPlayer.get(opponentAdjacentWorkerPosition), PlayerIndex.PLAYER2);
 
-        board.putWorker(zeroPosition,PlayerIndex.PLAYER0);
+        board.putWorker(zeroPosition, PlayerIndex.PLAYER0);
         Map<Position, PlayerIndex> adjacentPlayerSecondWorker;
         adjacentPlayerSecondWorker = board.getAdjacentPlayers(zeroPosition);
-        assertEquals(0,adjacentPlayerSecondWorker.size());
+        assertEquals(0, adjacentPlayerSecondWorker.size());
     }
 
     @Test
@@ -441,10 +442,14 @@ public class BoardTest {
     }
 
     @Test
-    public void boardEqualsTest(){
+    public void boardEqualsTest() {
         Board board2 = new Board();
 
-        assertTrue(board2.equals(board));
+        assertEquals(board2, board);
+
+        board2.constructBlock(new Position(1, 2));
+
+        assertNotEquals(board2, board);
     }
 
     @After

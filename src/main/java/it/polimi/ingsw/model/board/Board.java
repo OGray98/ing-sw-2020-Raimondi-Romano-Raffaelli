@@ -296,8 +296,6 @@ public class Board {
      * @throws NotPresentWorkerException if a player of the Map is not found
      */
     private void updateAfterPowerMove(Map<PositionContainer, PlayerIndex> changes) throws NullPointerException, NotPresentWorkerException {
-        if (changes == null)
-            throw new NullPointerException("changes");
         boolean isFound = false;
 
         for (Map.Entry<PositionContainer, PlayerIndex> entryChange : changes.entrySet()) {
@@ -325,8 +323,6 @@ public class Board {
      * @throws InvalidBuildDomeException if the cell to build has a dome
      */
     private void updateAfterPowerBuild(Position positionBuild, BuildType buildType) throws NullPointerException, InvalidBuildDomeException {
-        if (positionBuild == null)
-            throw new NullPointerException("positionBuild");
         if (buildType == BuildType.LEVEL)
             constructBlock(positionBuild);
         else {
