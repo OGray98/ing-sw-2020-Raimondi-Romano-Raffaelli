@@ -9,8 +9,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 public class DeckTest {
@@ -132,19 +131,31 @@ public class DeckTest {
         } catch (WrongGodNameException e){
             assertEquals("There isn't a god named " + "Appollo" , e.getMessage());
         }
-        assertEquals("Apollo",deckThreePlayers.getGodCard("Apollo").getGodName());
-        assertEquals("Artemis",deckThreePlayers.getGodCard("Artemis").getGodName());
-        assertEquals("Athena",deckThreePlayers.getGodCard("Athena").getGodName());
-        assertEquals("Minotaur",deckThreePlayers.getGodCard("Minotaur").getGodName());
-        assertEquals("Demeter",deckThreePlayers.getGodCard("Demeter").getGodName());
-        assertEquals("Pan",deckThreePlayers.getGodCard("Pan").getGodName());
-        assertEquals("Prometheus",deckThreePlayers.getGodCard("Prometheus").getGodName());
-        assertEquals("Atlas",deckThreePlayers.getGodCard("Atlas").getGodName());
+        assertEquals("Apollo", deckThreePlayers.getGodCard("Apollo").getGodName());
+        assertEquals("Artemis", deckThreePlayers.getGodCard("Artemis").getGodName());
+        assertEquals("Athena", deckThreePlayers.getGodCard("Athena").getGodName());
+        assertEquals("Minotaur", deckThreePlayers.getGodCard("Minotaur").getGodName());
+        assertEquals("Demeter", deckThreePlayers.getGodCard("Demeter").getGodName());
+        assertEquals("Pan", deckThreePlayers.getGodCard("Pan").getGodName());
+        assertEquals("Prometheus", deckThreePlayers.getGodCard("Prometheus").getGodName());
+        assertEquals("Atlas", deckThreePlayers.getGodCard("Atlas").getGodName());
 
     }
 
+    @Test
+    public void isCorrectedNameTest() {
+        assertTrue(Deck.isCorrectedName("Apollo"));
+        assertFalse(Deck.isCorrectedName("Apo"));
+
+        try {
+            Deck.isCorrectedName(null);
+        } catch (NullPointerException e) {
+            assertEquals("name", e.getMessage());
+        }
+    }
+
     @After
-    public void afterAll(){
+    public void afterAll() {
         deckEmpty = null;
         deckTwoPlayers = null;
         deckThreePlayers = null;
