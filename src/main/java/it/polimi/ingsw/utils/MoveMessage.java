@@ -13,10 +13,6 @@ public class MoveMessage extends TwoPositionMessage implements MessageToServer, 
 
     public MoveMessage(PlayerIndex client, Position workerPos, Position movePos) throws NullPointerException {
         super(client, TypeMessage.MOVE, workerPos, movePos);
-        if (workerPos == null)
-            throw new NullPointerException("workerPos");
-        if (movePos == null)
-            throw new NullPointerException("movePos");
     }
 
     public Position getWorkerPosition() {

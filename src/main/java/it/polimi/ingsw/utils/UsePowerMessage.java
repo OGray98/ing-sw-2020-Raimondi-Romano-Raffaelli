@@ -11,10 +11,6 @@ public class UsePowerMessage extends TwoPositionMessage implements MessageToServ
 
     public UsePowerMessage(PlayerIndex client, Position workerPos, Position powerPos) {
         super(client, TypeMessage.USE_POWER, workerPos, powerPos);
-        if (workerPos == null)
-            throw new NullPointerException("workerPos");
-        if (powerPos == null)
-            throw new NullPointerException("powerPos");
     }
 
     public Position getWorkerPosition() {
