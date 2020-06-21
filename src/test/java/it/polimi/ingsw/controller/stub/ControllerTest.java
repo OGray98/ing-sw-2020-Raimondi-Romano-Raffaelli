@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class ControllerTestSOLOPERORA {
+public class ControllerTest {
     private StubObservableClientConnection obs1;
     private StubObservableClientConnection obs2;
     private StubObservableClientConnection obs3;
