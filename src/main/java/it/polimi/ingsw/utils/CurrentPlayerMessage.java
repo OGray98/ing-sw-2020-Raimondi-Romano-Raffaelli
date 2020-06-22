@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 
 public class CurrentPlayerMessage extends Message implements MessageToClient {
 
-    private PlayerIndex currentPlayerIndex;
+    private final PlayerIndex currentPlayerIndex;
 
     public CurrentPlayerMessage(PlayerIndex currentPlayerIndex) {
         super(currentPlayerIndex, TypeMessage.CURRENT_PLAYER);

@@ -87,6 +87,18 @@ public class MessageToServerTest {
         assertEquals(pos, msg.getWorkerPosition());
         assertEquals(pos2, msg.getMovePosition());
 
+        try {
+            new MoveMessage(PlayerIndex.PLAYER0, null, pos);
+        } catch (NullPointerException e) {
+            assertEquals("pos1", e.getMessage());
+        }
+
+        try {
+            new MoveMessage(PlayerIndex.PLAYER0, pos, null);
+        } catch (NullPointerException e) {
+            assertEquals("pos2", e.getMessage());
+        }
+
     }
 
     @Test

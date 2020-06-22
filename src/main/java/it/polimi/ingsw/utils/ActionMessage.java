@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 
 import java.util.List;
 
-public class ActionMessage extends Message implements MessageToClient/*, MessageToView*/ {
+public class ActionMessage extends Message implements MessageToClient {
 
     private final Position workerPos;
     private final List<Position> possiblePosition;
@@ -42,9 +42,4 @@ public class ActionMessage extends Message implements MessageToClient/*, Message
         controllable.updateAction(this);
     }
 
-    /*@Override
-    public void execute(ControllableByViewMessage controllable) throws NullPointerException {
-        if (controllable == null) throw new NullPointerException("controllable");
-        controllable.updateActionView(this);
-    }*/
 }
