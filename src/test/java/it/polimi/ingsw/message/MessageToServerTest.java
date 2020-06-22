@@ -90,7 +90,7 @@ public class MessageToServerTest {
     }
 
     @Test
-    public void NicknameMessageTest() {
+    public void nicknameMessageTest() {
         NicknameMessage msg = new NicknameMessage(PlayerIndex.PLAYER0, "W");
         msg.execute(stub);
         assertEquals(StubControllableByClientMessage.NICK, stub.n);
