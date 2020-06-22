@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.*;
+import it.polimi.ingsw.message.*;
 import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.deck.CardInterface;
 import it.polimi.ingsw.model.deck.Deck;
@@ -9,7 +10,6 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.utils.*;
 
 import java.util.*;
 import java.util.stream.Collectors;

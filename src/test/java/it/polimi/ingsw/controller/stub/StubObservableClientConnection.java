@@ -1,11 +1,11 @@
 package it.polimi.ingsw.controller.stub;
 
+import it.polimi.ingsw.message.MessageToClient;
+import it.polimi.ingsw.message.MessageToServer;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ClientConnection;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.utils.MessageToClient;
-import it.polimi.ingsw.utils.MessageToServer;
 
 import java.util.ArrayList;
 import java.util.List;

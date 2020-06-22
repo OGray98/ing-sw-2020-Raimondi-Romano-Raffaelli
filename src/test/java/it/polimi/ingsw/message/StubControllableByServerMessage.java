@@ -1,7 +1,6 @@
 package it.polimi.ingsw.message;
 
 import it.polimi.ingsw.Client.ControllableByServerMessage;
-import it.polimi.ingsw.utils.*;
 
 public class StubControllableByServerMessage implements ControllableByServerMessage {
 

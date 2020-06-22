@@ -3,7 +3,6 @@ package it.polimi.ingsw.message;
 import it.polimi.ingsw.exception.WrongGodNameException;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.utils.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

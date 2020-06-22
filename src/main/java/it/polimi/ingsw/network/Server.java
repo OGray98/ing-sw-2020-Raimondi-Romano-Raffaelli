@@ -1,9 +1,9 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.GameManager;
+import it.polimi.ingsw.message.CloseConnectionMessage;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.utils.CloseConnectionMessage;
 import it.polimi.ingsw.view.RemoteView;
 
 import java.io.IOException;

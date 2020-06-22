@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.message.MessageToServer;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.utils.MessageToServer;
 
 /**
  * View is an abstract class which represents an abstraction of View

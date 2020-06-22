@@ -1,12 +1,12 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.exception.WrongAssociationViewPlayerException;
+import it.polimi.ingsw.message.CloseConnectionMessage;
+import it.polimi.ingsw.message.MessageToClient;
+import it.polimi.ingsw.message.MessageToServer;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ClientConnection;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.utils.CloseConnectionMessage;
-import it.polimi.ingsw.utils.MessageToClient;
-import it.polimi.ingsw.utils.MessageToServer;
 
 /**
  * RemoteView is an abstract class which represents an abstraction of RemoteView

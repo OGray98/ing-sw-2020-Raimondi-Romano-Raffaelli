@@ -5,11 +5,11 @@ import it.polimi.ingsw.exception.InvalidPlayerIndexException;
 import it.polimi.ingsw.exception.InvalidPutWorkerException;
 import it.polimi.ingsw.exception.NotSelectedGodException;
 import it.polimi.ingsw.exception.WrongGodNameException;
+import it.polimi.ingsw.message.*;
 import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.utils.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

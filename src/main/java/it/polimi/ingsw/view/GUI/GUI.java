@@ -3,9 +3,9 @@ package it.polimi.ingsw.view.GUI;
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Client.ViewModelInterface;
 import it.polimi.ingsw.controller.GameState;
+import it.polimi.ingsw.message.*;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.utils.*;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.utils.*;
+import it.polimi.ingsw.message.*;
 
 public interface ControllableByClientMessage {
 

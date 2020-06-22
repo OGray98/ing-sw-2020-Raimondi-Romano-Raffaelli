@@ -7,10 +7,10 @@ import it.polimi.ingsw.ClientApp;
 import it.polimi.ingsw.ClientViewFactory.CLICreator;
 import it.polimi.ingsw.ClientViewFactory.ClientViewCreator;
 import it.polimi.ingsw.ClientViewFactory.GUICreator;
-import it.polimi.ingsw.utils.MessageToClient;
-import it.polimi.ingsw.utils.MessageToServer;
-import it.polimi.ingsw.utils.PongMessage;
-import it.polimi.ingsw.utils.TypeMessage;
+import it.polimi.ingsw.message.MessageToClient;
+import it.polimi.ingsw.message.MessageToServer;
+import it.polimi.ingsw.message.PongMessage;
+import it.polimi.ingsw.message.TypeMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

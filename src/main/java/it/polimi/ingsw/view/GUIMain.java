@@ -1,9 +1,12 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.Client.ClientModel;
+import it.polimi.ingsw.message.BuildViewMessage;
+import it.polimi.ingsw.message.MoveMessage;
+import it.polimi.ingsw.message.PlayerSelectGodMessage;
+import it.polimi.ingsw.message.PutWorkerMessage;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.view.GUI.GUI;
 
 import javax.swing.*;

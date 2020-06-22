@@ -1,11 +1,11 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.message.MessageToClient;
+import it.polimi.ingsw.message.MessageToServer;
+import it.polimi.ingsw.message.PingMessage;
+import it.polimi.ingsw.message.TypeMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.utils.MessageToClient;
-import it.polimi.ingsw.utils.MessageToServer;
-import it.polimi.ingsw.utils.PingMessage;
-import it.polimi.ingsw.utils.TypeMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

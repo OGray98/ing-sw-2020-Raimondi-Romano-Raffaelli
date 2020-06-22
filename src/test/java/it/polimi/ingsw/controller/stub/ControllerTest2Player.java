@@ -2,11 +2,11 @@ package it.polimi.ingsw.controller.stub;
 
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.controller.GameState;
+import it.polimi.ingsw.message.*;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.BuildType;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.view.RemoteView;
 import org.junit.Test;
 
