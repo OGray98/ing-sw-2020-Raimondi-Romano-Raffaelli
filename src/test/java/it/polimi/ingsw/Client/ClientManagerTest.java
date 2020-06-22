@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.board.BuildType;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.stub.StubView;
 import it.polimi.ingsw.utils.*;
 import org.junit.After;
 import org.junit.Before;

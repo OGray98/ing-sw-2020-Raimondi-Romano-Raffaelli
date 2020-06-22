@@ -1,4 +1,4 @@
-package it.polimi.ingsw.stub;
+package it.polimi.ingsw.controller.stub;
 
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.network.ClientConnection;

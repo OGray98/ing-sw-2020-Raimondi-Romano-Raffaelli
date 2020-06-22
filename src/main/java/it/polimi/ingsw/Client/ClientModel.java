@@ -11,9 +11,10 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.utils.*;
 
-import java.util.*;
-
-//import it.polimi.ingsw.stub.StubView;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class is the model which contains data used by clients

@@ -3,7 +3,6 @@ import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.exception.InvalidPutWorkerException;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.stub.StubView;
 import it.polimi.ingsw.utils.MoveMessage;
 import org.junit.After;
 import org.junit.Before;

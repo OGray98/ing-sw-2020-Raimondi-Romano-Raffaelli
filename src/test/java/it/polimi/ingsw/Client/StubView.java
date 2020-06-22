@@ -1,7 +1,5 @@
-package it.polimi.ingsw.stub;
+package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Client.ClientView;
-import it.polimi.ingsw.Client.ViewModelInterface;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.utils.*;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.GameState;
+import it.polimi.ingsw.controller.stub.StubObservableClientConnection;
 import it.polimi.ingsw.exception.MaxPlayersException;
 import it.polimi.ingsw.exception.NotPresentWorkerException;
 import it.polimi.ingsw.exception.NotSelectedGodException;
@@ -10,7 +11,6 @@ import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerIndex;
 import it.polimi.ingsw.model.player.PlayerInterface;
-import it.polimi.ingsw.stub.StubObservableClientConnection;
 import it.polimi.ingsw.utils.BuildMessage;
 import it.polimi.ingsw.utils.TypeMessage;
 import org.junit.After;

@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.board.BuildType;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
-import it.polimi.ingsw.stub.StubObservableClientConnection;
 import it.polimi.ingsw.utils.*;
 import it.polimi.ingsw.view.RemoteView;
 import org.junit.Test;
