@@ -654,16 +654,18 @@ public class GUI extends ClientView {
                     case 4:
 
                         LevelPane build1 = listLayerPosition.get(buildPos);
-                        Image imageDome = imageContainer.getTowerLevel(3).getScaledInstance(getProportionWidth(50,18,build1.getWidth()),getProportionHeight(50,16,build1.getHeight()),Image.SCALE_DEFAULT);
-                        JButton dome = new JButton();
-                        dome.setIcon(new ImageIcon(imageDome));
-                        dome.setBounds(getProportionWidth(-2,18,build1.getWidth()),getProportionHeight(-1,16,build1.getHeight()),getProportionWidth(50,18,build1.getWidth()),getProportionHeight(50,16,build1.getHeight()));
-                        dome.addActionListener(new ActionListener() {
+                        Image imageDome = imageContainer.getTowerLevel(3).getScaledInstance(getProportionWidth(65, 18, labelEmptyWidth), getProportionHeight(64, 19, labelEmptyHeight), Image.SCALE_DEFAULT);
+                        ButtonCircle dome = new ButtonCircle(new ImageIcon(imageDome),Color.BLACK,true,e -> {
+                            showMessage("DOME LEVEL you can't select it!");
+                        });
+                        //dome.setIcon(new ImageIcon(imageDome));
+                        dome.setBounds(getProportionWidth(37, 18, labelEmptyWidth), getProportionHeight(34, 19, labelEmptyHeight), getProportionWidth(56, 18, labelEmptyWidth), getProportionHeight(56, 19, labelEmptyHeight));
+                        /*dome.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 showMessage("DOME LEVEL you can't select it!");
                             }
-                        });
+                        });*/
                         build1.add(dome, 4);
                         removeActionsFromView();
                         break;
