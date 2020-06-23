@@ -148,7 +148,12 @@ public class MessageToServerTest {
         assertEquals(StubControllableByClientMessage.USE_PO, stub.n);
         assertEquals(pos, msg.getWorkerPosition());
         assertEquals(pos2, msg.getPowerPosition());
+    }
 
+    @Test
+    public void positionMessageTest() {
+        PositionMessage msg = new PositionMessage(PlayerIndex.PLAYER0, pos, false);
+        msg.execute(stub);
     }
 
     @After

@@ -6,7 +6,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class MessageToViewTest {
 
@@ -61,6 +65,56 @@ public class MessageToViewTest {
         assertEquals(StubControllableByViewMessage.MOVE, stub.n);
         assertEquals(pos2, msg.getMovePosition());
         assertEquals(pos, msg.getWorkerPosition());
+    }
+
+    @Test
+    public void okMessageTest() {
+        OkMessage msg = new OkMessage(PlayerIndex.PLAYER0, TypeMessage.WINNER, "D");
+        msg.execute(stub);
+        assertEquals(StubControllableByViewMessage.INF, stub.n);
+        assertEquals("D", msg.getErrorMessage());
+        msg = new OkMessage(PlayerIndex.PLAYER0, TypeMessage.LOSER, "D");
+        msg.execute(stub);
+        assertEquals(StubControllableByViewMessage.UP_L, stub.n);
+    }
+
+    @Test
+    public void playerSelectGodMessageMessageTest() {
+        PlayerSelectGodMessage msg = new PlayerSelectGodMessage(PlayerIndex.PLAYER0, "Apollo");
+        msg.execute(stub);
+        assertEquals(StubControllableByViewMessage.UP_C, stub.n);
+    }
+
+    @Test
+    public void positionMessageMessageTest() {
+        PositionMessage msg = new PositionMessage(PlayerIndex.PLAYER0, pos, false);
+        msg.execute(stub);
+        assertEquals(StubControllableByViewMessage.UP_A, stub.n);
+        assertEquals(pos, msg.getPosition());
+        assertFalse(msg.isUsingPower());
+    }
+
+    @Test
+    public void putWorkerMessageTest() {
+        Position pos2 = new Position(2, 2);
+        PutWorkerMessage msg = new PutWorkerMessage(PlayerIndex.PLAYER0, pos, pos2);
+        msg.execute(stub);
+        assertEquals(StubControllableByViewMessage.PUT, stub.n);
+    }
+
+    @Test
+    public void removePlayerMessageTest() {
+        List<Position> positions = new ArrayList<>(List.of(pos));
+        RemovePlayerMessage msg = new RemovePlayerMessage(PlayerIndex.PLAYER0, positions);
+        msg.execute(stub);
+        assertEquals(StubControllableByViewMessage.REM_P, stub.n);
+        assertEquals(positions, msg.getRemovePositions());
+
+        try {
+            new RemovePlayerMessage(PlayerIndex.PLAYER0, null);
+        } catch (NullPointerException e) {
+            assertEquals("removePositions", e.getMessage());
+        }
     }
 
 

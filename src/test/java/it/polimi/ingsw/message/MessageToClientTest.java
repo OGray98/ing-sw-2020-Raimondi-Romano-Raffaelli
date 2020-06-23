@@ -164,6 +164,24 @@ public class MessageToClientTest {
         assertEquals(GameState.MOVE, msg.getGameState());
     }
 
+    @Test
+    public void errorMessageTest() {
+        ErrorMessage msg = new ErrorMessage(
+                PlayerIndex.PLAYER0, TypeMessage.NICKNAME, "W"
+        );
+        msg.execute(stub);
+        assertEquals(StubControllableByServerMessage.INF, stub.n);
+    }
+
+    @Test
+    public void okMessageTest() {
+        OkMessage msg = new OkMessage(
+                PlayerIndex.PLAYER0, TypeMessage.NICKNAME, "W"
+        );
+        msg.execute(stub);
+        assertEquals(StubControllableByServerMessage.INF, stub.n);
+    }
+
     @After
     public void delete() {
         stub = null;
