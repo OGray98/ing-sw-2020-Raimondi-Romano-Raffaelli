@@ -493,16 +493,15 @@ public class CLI extends ClientView {
         boolean usingPower = false;
 
         while(cont == 0){
-            if(!clientModel.isThereASelectedWorker()){
+            if (clientModel.isNotThereASelectedWorker()) {
                 System.out.println("Select one of your worker (you have tiles with letter " + getWorker(clientModel.getPlayerIndex()) + ")");
-            }
-            else if (canUsePower && !usingPower){
-                if(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).size() != 0){
+            } else if (canUsePower && !usingPower) {
+                if (clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).size() != 0) {
                     System.out.println("Your power is: " + clientModel.getGodsDescription().get(clientModel.getGods().indexOf(clientModel.getGodChosenByPlayer(clientModel.getPlayerIndex()))));
                     System.out.println("You can use power during this turn phase! Power can be used in the following cells:");
                     printActionPositions(ActionType.POWER);
                     System.out.println("Press 'p' if you want to use the power! Press anything else to go on without power");
-                    if(reader.nextLine().equals("p")){
+                    if (reader.nextLine().equals("p")) {
                         usingPower = true;
                     }
                     else{
@@ -559,7 +558,7 @@ public class CLI extends ClientView {
                     break;
                 }
                 else {
-                    if(!clientModel.isThereASelectedWorker()){
+                    if (clientModel.isNotThereASelectedWorker()) {
                         contIndexes = 0;
                         break;
                     }

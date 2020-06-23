@@ -40,7 +40,7 @@ public interface ViewModelInterface {
 
     boolean isAmICurrentPlayer();
 
-    boolean isThereASelectedWorker();
+    boolean isNotThereASelectedWorker();
 
     boolean isOccupiedPosition(Position pos);
 

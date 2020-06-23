@@ -22,7 +22,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
     private ClientView clientView;
 
-    private List<Position> workersToPut = new ArrayList<>();
+    private final List<Position> workersToPut = new ArrayList<>();
     private static boolean isFirst = true;
 
 
@@ -54,14 +54,8 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
 
         switch(clientModel.getCurrentState()){
             case START_GAME:
-                sendToServer(message);
-                break;
             case GOD_PLAYER_CHOOSE_CARDS:
-                sendToServer(message);
-                break;
             case SELECT_CARD:
-                sendToServer(message);
-                break;
             case GOD_PLAYER_CHOOSE_FIRST_PLAYER:
                 sendToServer(message);
                 break;
@@ -96,16 +90,15 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
                 }
 
                 //case when there isn't a selected worker
-                if(!clientModel.isThereASelectedWorker()){
+                if (clientModel.isNotThereASelectedWorker()) {
                     break;
                 }
                 //case when player want to move or use a power
-                else{
+                else {
 
-                    try{
+                    try {
                         clientModel.getSelectedWorkerPos();
-                    }
-                    catch(NullPointerException e){
+                    } catch (NullPointerException e) {
                         break;
                     }
 
@@ -301,11 +294,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
             clientView.changeState("END YOUR TURN");
         }
 
-        if(message.getGameState() == clientModel.getPowerGodState() && message.getClient().equals(clientModel.getPlayerIndex())){
-            clientView.showPowerButton(true);
-        }else{
-            clientView.showPowerButton(false);
-        }
+        clientView.showPowerButton(message.getGameState() == clientModel.getPowerGodState() && message.getClient().equals(clientModel.getPlayerIndex()));
 
         if((message.getGameState() == GameState.ENDPHASE || message.getGameState() == GameState.BUILDPOWER) && message.getClient().equals(clientModel.getPlayerIndex())){
             clientView.showEndTurnButton(true);

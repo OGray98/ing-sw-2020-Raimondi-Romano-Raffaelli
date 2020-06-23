@@ -324,23 +324,17 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                 this.powerActionPositionsWorker2 = message.getPossiblePosition();
         }
         else{
-            if(message.getWorkerPos().equals(playersPositions.get(playerIndex).get(0))){
+            if (message.getWorkerPos().equals(playersPositions.get(playerIndex).get(0))) {
                 this.normalActionPositionsWorker1 = message.getPossiblePosition();
                 //notify view the cells where is possible to build
-                if(message.getActionType() == ActionType.BUILD)
-                    notify(new PositionMessage(playerIndex, message.getWorkerPos(), false));
-                if(message.getActionType() == ActionType.MOVE && this.getCurrentState() == GameState.INITPOWER && message.getWorkerPos().equals(this.selectedWorkerPos)){
-                    notify(new PositionMessage(playerIndex, message.getWorkerPos(), false));
-                }
-            }
-            else{
+            } else {
                 this.normalActionPositionsWorker2 = message.getPossiblePosition();
                 //notify view the cells where is possible to build
-                if(message.getActionType() == ActionType.BUILD)
-                    notify(new PositionMessage(playerIndex, message.getWorkerPos(), false));
-                if(message.getActionType() == ActionType.MOVE && this.getCurrentState() == GameState.INITPOWER && message.getWorkerPos().equals(this.selectedWorkerPos)){
-                    notify(new PositionMessage(playerIndex, message.getWorkerPos(), false));
-                }
+            }
+            if (message.getActionType() == ActionType.BUILD)
+                notify(new PositionMessage(playerIndex, message.getWorkerPos(), false));
+            if (message.getActionType() == ActionType.MOVE && this.getCurrentState() == GameState.INITPOWER && message.getWorkerPos().equals(this.selectedWorkerPos)) {
+                notify(new PositionMessage(playerIndex, message.getWorkerPos(), false));
             }
         }
     }
@@ -348,7 +342,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     /**
      * When the turn is ended the lists of possible actions will be cleared
      * */
-    public void clearActionLists(){
+    public void clearActionLists() {
         this.normalActionPositionsWorker1.clear();
         this.normalActionPositionsWorker2.clear();
         this.powerActionPositionsWorker1.clear();
@@ -356,8 +350,8 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         this.isSelectedWorker = false;
     }
 
-    public boolean isThereASelectedWorker(){
-        return isSelectedWorker;
+    public boolean isNotThereASelectedWorker() {
+        return !isSelectedWorker;
     }
 
     /**

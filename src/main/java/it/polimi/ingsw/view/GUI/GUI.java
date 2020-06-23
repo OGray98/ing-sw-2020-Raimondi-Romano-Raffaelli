@@ -220,7 +220,7 @@ public class GUI extends ClientView {
                             //if user clicks buttonPower power cells must be showed
                             if(buttonPower.isClicked()){
                                 changeState("POWER ACTIVATED");
-                                if(!clientModel.isThereASelectedWorker()){
+                                if (clientModel.isNotThereASelectedWorker()) {
                                     showMessage("You must select a worker before");
                                     buttonPower.click();
                                     return;
