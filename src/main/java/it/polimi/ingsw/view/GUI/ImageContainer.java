@@ -55,7 +55,7 @@ public class ImageContainer {
         Image tower1 = new ImageIcon(this.getClass().getResource("/frame_blue.png")).getImage();
         Image tower2 = new ImageIcon(this.getClass().getResource("/frame_coral.png")).getImage();
         Image tower3 = new ImageIcon(this.getClass().getResource("/frame_yellow.png")).getImage();
-        Image tower4 = new ImageIcon(this.getClass().getResource("/cm_bg.png")).getImage();
+        Image tower4 = new ImageIcon(this.getClass().getResource("/Graeae_EyePupil.png")).getImage();
 
         Image imageColorBlue = new ImageIcon(this.getClass().getResource("/cm_btn_blue.png")).getImage();
         Image imageColorRed = new ImageIcon(this.getClass().getResource("/cm_btn_coral.png")).getImage();
