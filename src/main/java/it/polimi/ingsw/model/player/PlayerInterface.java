@@ -28,7 +28,7 @@ public interface PlayerInterface {
 
     /**
      * @return true iff user select a possible move action
-     * @param adjacentPlayerList is a Map<@Position, @PlayerIndex> that contains the players on the cell moveCell
+     * @param adjacentPlayerList is a Map (@Position, @PlayerIndex) that contains the players on the cell moveCell
      * @param  moveCell is a Position that is the position to check
      * @throws  InvalidPositionException if movePos is an illegal position
      * @throws  NullPointerException if adjacentCells or adjacentPlayerList is null
@@ -37,8 +37,8 @@ public interface PlayerInterface {
 
     /**
      * @return true iff it is possible for the current player to move on a cell in moveCell
-     * @param adjacentPlayerList is the Map<@Position, @PlayerIndex> that contains the players needed for the movement
-     * @param moveCell is a List<@Cell> that contains the cell where to move
+     * @param adjacentPlayerList is the Map (@Position, @PlayerIndex) that contains the players needed for the movement
+     * @param moveCell is a List (@Cell) that contains the cell where to move
      * @param occupiedCell is the cell occupied before the move
      * @param cantGoUp is the value cantGoUp in Game
      * */
@@ -46,7 +46,7 @@ public interface PlayerInterface {
 
     /**
      * @return true if user select a possible build action
-     * @param adjacentPlayerList is a Map<@Position, @PlayerIndex> that contains all the players adjacent to the selected worker
+     * @param adjacentPlayerList is a Map (@Position, @PlayerIndex) that contains all the players adjacent to the selected worker
      * @param buildCell a Position that is the position to check
      * @throws  InvalidPositionException if movePos is an illegal position
      * @throws  NullPointerException is adjacentCells or adjacentPlayerList is null
@@ -68,8 +68,8 @@ public interface PlayerInterface {
     /**
      * Method that will be specialized in the Decorator class, it refers to a specific God power
      * @return true if is possible to use the power
-     * @param adjacentList is a List<@Cell> that contains the cell needed for the specialized power
-     * @param adjacentPlayerList is a Map<@Position, @PlayerIndex> that contains the players on the cells in adjacentList
+     * @param adjacentList is a List (@Cell) that contains the cell needed for the specialized power
+     * @param adjacentPlayerList is a Map (@Position, @PlayerIndex) that contains the players on the cells in adjacentList
      * */
     boolean canUsePower(List<Cell> adjacentList, Map<Position, PlayerIndex> adjacentPlayerList);
 
@@ -86,8 +86,7 @@ public interface PlayerInterface {
 
     /**
      * Method used only in gods that needs two positions to use the power
-     * It receives the first power position
-     * @param firstPowerPos
+     * @param firstPowerPos is the first power position
      * @return the second
      * */
     Position getSecondPowerPosition(Position firstPowerPos);

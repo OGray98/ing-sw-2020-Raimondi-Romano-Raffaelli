@@ -276,8 +276,8 @@ public class Game extends Observable<MessageToClient> {
     /**
      * Method that set the chosen cards in deck.
      *
-     * @param godNames is required as a not null List<@String> which contains the name of the god chosen by player god like
-     * @throws IllegalArgumentException if List<@String> contains equal values.
+     * @param godNames is required as a not null List (@String) which contains the name of the god chosen by player god like
+     * @throws IllegalArgumentException if List (@String) contains equal values.
      */
     public void setGodsChosenByGodLike(List<String> godNames) throws NullPointerException, IllegalArgumentException {
         if (godNames == null)

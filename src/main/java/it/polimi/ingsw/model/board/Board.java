@@ -130,7 +130,7 @@ public class Board {
     }
 
     /**
-     * @return the Map<@Position, @PlayerIndex> that contains all the pairs (Position, PlayerIndex) adjacent to the Position centralPosition
+     * @return the Map (@Position, @PlayerIndex) that contains all the pairs (@Position, @PlayerIndex) adjacent to the Position centralPosition
      * @param centralPosition position of the cell of which the method returns the adjacent players
      * @throws  NullPointerException  if centralPosition is null
      * */
@@ -148,7 +148,7 @@ public class Board {
     }
 
     /**
-     * @return the Map <@Position, @PlayerIndex> that contains all the pairs <@Position, @PlayerIndex> for the occupied cell
+     * @return the Map (@Position, @PlayerIndex) that contains all the pairs (@Position, @PlayerIndex) for the occupied cell
      * which their position is in
      * @param positions contains the Positions to valuate
      * @throws  NullPointerException  if positions is null
