@@ -276,8 +276,8 @@ public class Game extends Observable<MessageToClient> {
     /**
      * Method that set the chosen cards in deck.
      *
-     * @param godNames is required as a not null List<String> which contains the name of the god chosen by player god like
-     * @throws IllegalArgumentException if List<String> contains equal values.
+     * @param godNames is required as a not null List<@String> which contains the name of the god chosen by player god like
+     * @throws IllegalArgumentException if List<@String> contains equal values.
      */
     public void setGodsChosenByGodLike(List<String> godNames) throws NullPointerException, IllegalArgumentException {
         if (godNames == null)
@@ -402,7 +402,8 @@ public class Game extends Observable<MessageToClient> {
     /**
      *  Method that do initial operation for player before call his method
      *  In particular it sets this.currentPosition
-     * @throws NotPresentWorkerException if in startPos there is not a worker
+     * @param startPos is the position selected
+     *  @throws NotPresentWorkerException if in startPos there is not a worker
      */
     public void setStartingWorker(Position startPos) throws NullPointerException, NotPresentWorkerException {
         if (startPos == null)
@@ -419,8 +420,9 @@ public class Game extends Observable<MessageToClient> {
 
     /**
      *  Method that check if a worker of this.currentPlayer can move in movePos
-     * @param movePos is a not null Position where move the worker
-     * Modifies currentPosition
+     *  @return true if the move is possible
+     *  @param movePos is a not null Position where move the worker
+     *  Modifies currentPosition
      */
     public boolean canMoveWorker(Position movePos) throws NullPointerException, NotPresentWorkerException {
         if (movePos == null)
@@ -505,6 +507,7 @@ public class Game extends Observable<MessageToClient> {
 
     /**
      *  Method that check if a worker of currentPlayer can build in buildPos
+     * @return true iff the build is possible
      * @param buildPos is a not null Position where the worker want build
      */
     public boolean canBuild(Position buildPos) throws NullPointerException {
@@ -530,6 +533,7 @@ public class Game extends Observable<MessageToClient> {
     /**
      * Method that check if the current player has won
      * It simply calls the method PlayerInterface.hasWin()
+     * @return true iff current player has won
      * */
     public boolean hasWonCurrentPlayer() {
         for(PlayerInterface p : players){
@@ -542,6 +546,7 @@ public class Game extends Observable<MessageToClient> {
 
     /**
      *  Method that return if current worker of currentPlayer can use power in powerPos
+     * @return true iff the usage of power is valid
      * @param powerPos is a not null Position where use the power
      * Modifies this.currentPosition
      */

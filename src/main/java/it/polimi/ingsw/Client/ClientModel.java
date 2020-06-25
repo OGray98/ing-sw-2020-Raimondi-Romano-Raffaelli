@@ -84,7 +84,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
 
     /**
      * Add nickname to list of players nicknames
-     *
+     * @param index is the index of new player
      * @param nickname nickname of new player
      * @throws NullPointerException if nickname is null
      */

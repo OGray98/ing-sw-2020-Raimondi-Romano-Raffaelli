@@ -111,7 +111,7 @@ public class Board {
     }
 
     /**
-     *  Returns the Cell in Position position on the board
+     * @return the Cell in Position position on the board
      * @param position position of the cell to get
      * @throws  NullPointerException if position is null
      * */
@@ -130,7 +130,7 @@ public class Board {
     }
 
     /**
-     * Returns the Map<Position, PlayerIndex> that contains all the pairs <Position, PlayerIndex> adjacent to the Position centralPosition
+     * @return the Map<@Position, @PlayerIndex> that contains all the pairs (Position, PlayerIndex) adjacent to the Position centralPosition
      * @param centralPosition position of the cell of which the method returns the adjacent players
      * @throws  NullPointerException  if centralPosition is null
      * */
@@ -148,9 +148,9 @@ public class Board {
     }
 
     /**
-     * Returns the Map<Position, PlayerIndex> that contains all the pairs<Position, PlayerIndex> for the occupied cell
+     * @return the Map <@Position, @PlayerIndex> that contains all the pairs <@Position, @PlayerIndex> for the occupied cell
      * which their position is in
-     * @param positions
+     * @param positions contains the Positions to valuate
      * @throws  NullPointerException  if positions is null
      * */
     public Map<Position, PlayerIndex> getPlayersOccupations(List<Position> positions) throws NullPointerException {
@@ -167,7 +167,10 @@ public class Board {
     }
 
     /**
-     * Given oldPosition and newPosition move the worker contained in Position oldPosition to the Position newPosition
+     * Given
+     * @param oldPosition and
+     * @param newPosition
+     * move the worker contained in Position oldPosition to the Position newPosition
      * @throws  NotPresentWorkerException if in oldPosition there is not any worker
      * @throws  NullPointerException if oldPosition or newPosition is null
      * */
@@ -195,7 +198,7 @@ public class Board {
 
     /**
      * Increment the level of the Cell in Position
-     * @param buildPosition
+     * @param buildPosition is Position where user wants to build
      * @throws  NullPointerException if buildPosition is null
      * @throws  InvalidIncrementLevelException if building is not allowed
      * */
@@ -209,7 +212,7 @@ public class Board {
     /**
      * Given the Position putPosition and the PlayerIndex playerIndex put a worker of
      * @param playerIndex on the board on the Cell in position
-     * @param putPosition
+     * @param putPosition is Position where player wants to put worker
      * @throws  NullPointerException if putPosition is null
      * @throws  InvalidPutWorkerException if there are already two workers of the given player on the board
      * */
@@ -236,8 +239,8 @@ public class Board {
     }
 
     /**
-     * Returns the PlayerIndex of the worker in Position
-     * @param position
+     * @return the PlayerIndex of the worker in Position
+     * @param position is the Position to valuate
      * @throws  NullPointerException if position is null
      * @throws  NotPresentWorkerException if there is no worker in the Position position
      * */
@@ -254,7 +257,7 @@ public class Board {
     }
 
     /**
-     * Method that returns the positions of the workers of player
+     * @return the positions of the workers of player
      * @param playerToCheck
      * It will be used by Game to check if all the workers of a player are blocked
      * @throws MissingWorkerException if the player has a number != 2 of workers
@@ -291,7 +294,7 @@ public class Board {
 
     /**
      *  Method called by this.updateAfterPower() to update the playerPosition.
-     * @param changes is a Map<PositionContainer, PlayerIndex> not null, with the changes to update
+     * @param changes is a Map<@PositionContainer, @PlayerIndex> not null, with the changes to update
      * @throws NullPointerException if changes is null
      * @throws NotPresentWorkerException if a player of the Map is not found
      */

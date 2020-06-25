@@ -41,7 +41,7 @@ public class Deck {
 
     /**
      * Check if the
-     *
+     * @return true if name is correct
      * @param name is a correct god name
      * @throws NullPointerException if name is null
      */
