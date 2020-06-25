@@ -9,10 +9,10 @@ import it.polimi.ingsw.model.board.Position;
 import java.util.List;
 import java.util.Map;
 
-public class Player implements PlayerInterface{
+public class Player implements PlayerInterface {
 
-    private String nickName;
-    private PlayerIndex playerNum;
+    private final String nickName;
+    private final PlayerIndex playerNum;
     private Cell oldCell;
     private Cell cellOccupied;
     private boolean cantGoUp;
@@ -96,7 +96,7 @@ public class Player implements PlayerInterface{
         }
 
         if (this.cellOccupied.getPosition().isAdjacent(buildCell.getPosition())) {
-            if (!buildCell.hasDome()) return true;
+            return !buildCell.hasDome();
         }
 
         return false;

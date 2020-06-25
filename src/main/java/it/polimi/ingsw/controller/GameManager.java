@@ -626,27 +626,6 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
     }
 
     /**
-     * Send an okMessage at the RemoteView of clientIndex
-     *
-     * @param clientIndex  receiver
-     * @param text         message text
-     * @param specificType specific type of this okMessage
-     */
-    /*private void respondOkToRemoteView(PlayerIndex clientIndex, String text, TypeMessage specificType) {
-        for(PlayerIndex client : remoteViews.keySet()) {
-            if(client.equals(clientIndex)) {
-                remoteViews.get(client).putMessage(
-                        new OkMessage(
-                                clientIndex,
-                                specificType,
-                                text
-                        )
-                );
-            }
-        }
-    }*/
-
-    /**
      * Send a message to all the players connected
      *
      * @param text          message text

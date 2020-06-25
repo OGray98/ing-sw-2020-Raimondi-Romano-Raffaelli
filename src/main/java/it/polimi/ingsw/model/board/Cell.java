@@ -47,8 +47,6 @@ public class Cell {
     public void incrementLevel() throws InvalidIncrementLevelException {
         if (hasDome) throw new InvalidIncrementLevelException(position.row, position.col);
 
-        int oldLevel = this.level;
-
         if (this.level < 3)
             this.level++;
 
@@ -65,7 +63,6 @@ public class Cell {
     }
 
     public void setHasDome(boolean hasDome) {
-        boolean oldHasDome = this.hasDome;
         this.hasDome = hasDome;
     }
 

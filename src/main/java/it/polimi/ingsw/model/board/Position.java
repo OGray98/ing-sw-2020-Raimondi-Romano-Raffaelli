@@ -43,9 +43,7 @@ public class Position implements Serializable {
     }
 
     public boolean isPerimeterPosition(){
-        if(row == 0 || row == 4 || col == 0 || col == 4)
-            return true;
-        return false;
+        return row == 0 || row == 4 || col == 0 || col == 4;
     }
 
 
@@ -68,6 +66,6 @@ public class Position implements Serializable {
 
     @Override
     public int hashCode() {
-        return (Integer.toString(row) + "," + Integer.toString(col)).hashCode();
+        return (row + "," + col).hashCode();
     }
 }

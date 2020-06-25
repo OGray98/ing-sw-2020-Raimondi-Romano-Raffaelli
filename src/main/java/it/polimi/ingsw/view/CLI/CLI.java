@@ -13,11 +13,11 @@ import java.util.Scanner;
 
 public class CLI extends ClientView {
 
-    private Scanner reader = new Scanner(System.in);
-    private int[][] cellLevelRep = new int[5][5];
-    private String[][] playersRep = new String[5][5];
+    private final Scanner reader = new Scanner(System.in);
+    private final int[][] cellLevelRep = new int[5][5];
+    private final String[][] playersRep = new String[5][5];
     private boolean canUsePower = false;
-    private String workerToMove = new String(" ");
+    private String workerToMove = " ";
 
     public CLI(ViewModelInterface clientModel) {
         super(clientModel);
@@ -33,7 +33,7 @@ public class CLI extends ClientView {
         //creating initial board
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
-                playersRep[i][j] = new String(" ");
+                playersRep[i][j] = " ";
             }
         }
         for(int i=0;i<5;i++){
@@ -106,7 +106,7 @@ public class CLI extends ClientView {
 
         System.out.println("Insert the number of the god you want: ");
 
-        String chosenGod = new String();
+        String chosenGod = "";
 
         while(chosenGod.equals("")){
             if(godLikeGods.size() == 2){
@@ -441,10 +441,9 @@ public class CLI extends ClientView {
                 System.out.println("Row:");
                 try {
                     row = Integer.parseInt(reader.nextLine());
-                    if(!isValidPositionIndex(row)){
+                    if (isInvalidPositionIndex(row)) {
                         System.out.println("You must insert a number between 0 and 4!");
-                    }
-                    else contIndexes++;
+                    } else contIndexes++;
                 }
                 catch (NumberFormatException e){
                     System.out.println("You must insert a number between 0 and 4!");
@@ -455,12 +454,11 @@ public class CLI extends ClientView {
                 System.out.println("Column:");
                 try {
                     col = Integer.parseInt(reader.nextLine());
-                    if(!isValidPositionIndex(col)){
+                    if (isInvalidPositionIndex(col)) {
                         System.out.println("You must insert a number between 0 and 4!");
                         contIndexes = 0;
                         break;
-                    }
-                    else contIndexes++;
+                    } else contIndexes++;
                 }
                 catch (NumberFormatException e){
                     System.out.println("You must insert a number between 0 and 4!");
@@ -526,10 +524,9 @@ public class CLI extends ClientView {
                 System.out.println("Row:");
                 try {
                     row = Integer.parseInt(reader.nextLine());
-                    if(!isValidPositionIndex(row)){
+                    if (isInvalidPositionIndex(row)) {
                         System.out.println("You must insert a number between 0 and 4!");
-                    }
-                    else contIndexes++;
+                    } else contIndexes++;
                 }
                 catch (NumberFormatException e){
                     System.out.println("You must insert a number between 0 and 4!");
@@ -540,12 +537,11 @@ public class CLI extends ClientView {
                 System.out.println("Column:");
                 try {
                     col = Integer.parseInt(reader.nextLine());
-                    if(!isValidPositionIndex(col)){
+                    if (isInvalidPositionIndex(col)) {
                         System.out.println("You must insert a number between 0 and 4!");
                         contIndexes = 0;
                         break;
-                    }
-                    else contIndexes++;
+                    } else contIndexes++;
                 }
                 catch (NumberFormatException e){
                     System.out.println("You must insert a number between 0 and 4!");
@@ -585,29 +581,25 @@ public class CLI extends ClientView {
             handleMessage(new PositionMessage(clientModel.getPlayerIndex(), new Position(row, col), false));
             if(canUsePower)
                 canUsePower = false;
-            return;
-        }
-        else {
-            handleMessage(new PositionMessage(clientModel.getPlayerIndex(), new Position(row,col), true));
-            if(clientModel.getCurrentState() == GameState.ENDPHASE){
+        } else {
+            handleMessage(new PositionMessage(clientModel.getPlayerIndex(), new Position(row, col), true));
+            if (clientModel.getCurrentState() == GameState.ENDPHASE) {
                 handleMessage(new EndTurnMessage(clientModel.getPlayerIndex()));
-                return;
             }
         }
     }
 
-    private boolean isValidPositionIndex(int index){
-        if(index < 0 || index > 4)
-            return false;
-        return true;
+    private boolean isInvalidPositionIndex(int index) {
+        return index < 0 || index > 4;
     }
 
     /**
      * Method that prints the possible positions required
+     *
      * @param type indicates the type of action to see, power or normal
-     * */
-    private void printActionPositions(ActionType type){
-        if(clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), type).size() == 0){
+     */
+    private void printActionPositions(ActionType type) {
+        if (clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), type).size() == 0) {
             System.out.println("No possible moves...");
             return;
         }

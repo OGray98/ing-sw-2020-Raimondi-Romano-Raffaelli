@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 public class PositionContainer {
-    private Position[] pos = new Position[2];
+    private final Position[] pos = new Position[2];
 
     public PositionContainer(Position newPosition) throws NullPointerException {
         if (newPosition == null)

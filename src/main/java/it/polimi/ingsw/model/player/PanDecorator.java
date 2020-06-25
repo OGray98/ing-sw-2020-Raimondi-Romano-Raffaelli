@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.board.BoardChange;
 import it.polimi.ingsw.model.board.Cell;
 import it.polimi.ingsw.model.board.Position;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

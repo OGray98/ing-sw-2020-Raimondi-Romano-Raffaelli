@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 public class Client implements ServerConnection {
 
     private final ClientManager clientManager;
-    private final ClientModel clientModel;
     private final ClientView clientView;
     private static final int DISCONNECTION_TIME = 10000;
     private static final int TCP_SERVER_PORT = 4444;
@@ -36,15 +35,14 @@ public class Client implements ServerConnection {
     private Socket socket;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
-    private Thread threadWrite;
     private boolean active = true;
     private String ip;
 
     public Client(String typeView) {
 
         this.pingTimer = new Timer();
-        this.clientModel = new ClientModel();
-        this.clientManager = new ClientManager(this, this.clientModel);
+        ClientModel clientModel = new ClientModel();
+        this.clientManager = new ClientManager(this, clientModel);
 
         ClientViewCreator clientViewCreator;
         if (typeView.equals(ClientApp.GUI)) {
@@ -52,12 +50,12 @@ public class Client implements ServerConnection {
         } else {
             clientViewCreator = new CLICreator();
         }
-        this.clientView = clientViewCreator.createView(this.clientModel);
+        this.clientView = clientViewCreator.createView(clientModel);
 
         this.clientManager.setClientView(this.clientView);
 
         this.clientView.addObserver(this.clientManager);
-        this.clientModel.addObserver(this.clientView);
+        clientModel.addObserver(this.clientView);
     }
 
     public synchronized boolean isActive(){
@@ -161,7 +159,7 @@ public class Client implements ServerConnection {
 
         try {
             Thread t0 = asyncReadFromSocket(socketIn);
-            threadWrite = asyncWriteToSocket(socketOut);
+            Thread threadWrite = asyncWriteToSocket(socketOut);
             Thread threadController = clientManageReadMessage();
             t0.join();
             threadWrite.join();

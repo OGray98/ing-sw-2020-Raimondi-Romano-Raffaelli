@@ -1,17 +1,16 @@
 package it.polimi.ingsw.view.CLI;
 
 import it.polimi.ingsw.controller.GameState;
-import it.polimi.ingsw.model.Game;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ActionMessageIndex {
 
-    private Map<GameState, Integer> actionNum;
-    private GameState godPowerState;
+    private final Map<GameState, Integer> actionNum;
+    private final GameState godPowerState;
 
-    public ActionMessageIndex(GameState godPowerState){
+    public ActionMessageIndex(GameState godPowerState) {
         this.godPowerState = godPowerState;
         actionNum = new HashMap<>(
                 Map.of(

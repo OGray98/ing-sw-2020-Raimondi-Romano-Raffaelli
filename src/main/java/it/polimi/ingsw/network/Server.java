@@ -48,15 +48,6 @@ public class Server {
     }
 
     /**
-     * @param c connection to eliminate from the list of client player in lobby
-     */
-    public synchronized void deleteClient(ClientConnection c) {
-        this.currentConnection.entrySet().stream().filter(entry -> entry.getValue().equals(c))
-                .forEach(entry -> this.currentConnection.remove(entry.getKey()));
-        lobbyCount--;
-    }
-
-    /**
      * @param c connection to insert in lobby for the game
      */
     public synchronized void lobby(ClientConnection c) {
