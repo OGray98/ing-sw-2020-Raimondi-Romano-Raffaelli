@@ -239,17 +239,6 @@ public class TurnManager {
             workerMovedPosition = workerPos;
     }
 
-    /**
-     * @return moved worker's Position
-     * @throws NullPointerException workerMovedPosition is null
-     */
-    /*public Position getWorkerMovedPosition() throws NullPointerException{
-        if(workerMovedPosition == null)
-            throw new NullPointerException("workerMovedPosition");
-        return workerMovedPosition;
-    }*/
-
-
     public void endTurn() {
         gameInstance.endTurn();
     }

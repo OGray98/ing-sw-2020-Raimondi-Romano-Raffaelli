@@ -20,6 +20,7 @@ public abstract class ClientView extends View implements Observer<MessageToView>
 
     /**
      * When the client receives an error it send it to the view
+     * @param error is the error message
      */
     public abstract void receiveErrorMessage(String error);
 
@@ -33,11 +34,13 @@ public abstract class ClientView extends View implements Observer<MessageToView>
 
     /**
      * Method that show the current player to the view
+     * @param currentPlayer is the index of current player
      * */
     public abstract void showCurrentPlayer(PlayerIndex currentPlayer);
 
     /**
      * Method that notify with a message the view the state of the turn
+     * @param state is the new state of the game
      * */
     public abstract void changeState(String state);
 

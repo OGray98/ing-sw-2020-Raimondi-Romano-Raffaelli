@@ -300,6 +300,9 @@ public class GUI extends ClientView {
 
         frame = new WelcomeFrame(label1);
 
+
+
+
     }
 
     /**
@@ -806,29 +809,40 @@ public class GUI extends ClientView {
     @Override
     public void showWinner(InformationMessage message) {
         OkMessage okMsg = (OkMessage) message;
-        Image imageWinner = imageContainer.getImageWinner().getScaledInstance(getProportionWidth(1400,1400,FRAME_WIDTH),getProportionHeight(800,820,FRAME_HEIGHT),Image.SCALE_DEFAULT);
+        Image imageWinner = imageContainer.getImageWinner().getScaledInstance(820,515,Image.SCALE_DEFAULT);
         PrincipalLabel labelWinner = new PrincipalLabel(imageWinner);
-        Image trophy = new ImageIcon(this.getClass().getResource("/trophy_large.png")).getImage().getScaledInstance(320,200,Image.SCALE_DEFAULT);
+        Image trophy = new ImageIcon(this.getClass().getResource("/trophy_large.png")).getImage().getScaledInstance(100,100,Image.SCALE_DEFAULT);
         PrincipalLabel labelTrophy = new PrincipalLabel(trophy);
-        labelTrophy.setBounds(390,290,320,200);
-        Font font = new Font("Impatto", Font.PLAIN, 13);
+        PrincipalLabel labelTrophy1 = new PrincipalLabel(trophy);
+        labelTrophy1.setBounds(570,275,100,100);
+        labelTrophy.setBounds(150,275,100,100);
+        Font font11 = new Font("Impatto", Font.PLAIN, 15);
         JLabel labelWriteWin = new JLabel(okMsg.getErrorMessage());
         JButton buttonClosed = new JButton("CLOSE");
-        buttonClosed.setBounds(498,500,100,50);
+        buttonClosed.setBounds(345,375,100,30);
         buttonClosed.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(2);
             }
         });
-        labelWriteWin.setFont(font);
-        labelWriteWin.setBounds(55,-60,400,200);
+        labelWriteWin.setFont(font11);
+        labelWriteWin.setBounds(315,190,400,200);
         labelWriteWin.setForeground(Color.BLACK);
-        labelTrophy.add(labelWriteWin);
+        labelWinner.add(labelWriteWin);
         labelWinner.add(buttonClosed);
         labelWinner.add(labelTrophy);
+        labelWinner.add(labelTrophy1);
         frame.dispose();
-        frame = new WelcomeFrame(labelWinner);
+        JFrame fra = new JFrame("Winner");
+        fra.setPreferredSize(new Dimension(820,515));
+        fra.setLocation(FRAME_DIMENSION.width/4,FRAME_DIMENSION.height/4);
+        fra.setVisible(true);
+        fra.pack();
+        fra.setResizable(false);
+        fra.add(labelWinner);
+
+
     }
 
     /**

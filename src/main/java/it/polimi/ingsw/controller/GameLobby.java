@@ -68,6 +68,7 @@ public class GameLobby {
 
     /**
      * Check if lobby is full
+     * @return the state of the lobby
      * */
     public boolean isFull(){
         if(this.threePlayersGame){
