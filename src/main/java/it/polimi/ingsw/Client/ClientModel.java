@@ -440,7 +440,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
     }
 
     public boolean isOccupiedPosition(Position pos){
-        return this.playersPositions.containsValue(pos);
+        return this.playersPositions.values().stream().anyMatch(list -> list.contains(pos));
     }
 
     public boolean isGodLikeChoosingCards() {
