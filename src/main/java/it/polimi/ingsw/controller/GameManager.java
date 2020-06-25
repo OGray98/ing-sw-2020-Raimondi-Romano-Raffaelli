@@ -543,7 +543,8 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
 
     @Override
     public void handleCloseConnectionMessage(CloseConnectionMessage message) {
-        gameModel.delete(message.getClient());
+        if (gameModel.getCurrentState() != GameState.START_GAME)
+            gameModel.delete(message.getClient());
     }
 
     /**
