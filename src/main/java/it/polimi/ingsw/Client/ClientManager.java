@@ -253,7 +253,7 @@ public class ClientManager implements ControllableByServerMessage, Observer<Mess
     }
 
     @Override
-    public void updateIndex(ConnectionPlayerIndex message) {
+    public void updateIndex(ConnectionPlayerIndexMessage message) {
         clientModel.setPlayerIndex(message.getPlayerIndex());
         clientView.showGetNickname();
     }

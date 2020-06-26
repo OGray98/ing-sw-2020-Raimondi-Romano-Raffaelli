@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.message.ConnectionPlayerIndex;
+import it.polimi.ingsw.message.ConnectionPlayerIndexMessage;
 import it.polimi.ingsw.message.MessageToView;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
@@ -91,7 +91,7 @@ public abstract class ClientView extends View implements Observer<MessageToView>
     public abstract void showGetNickname();
 
     @Override
-    public void updateClientIndex(ConnectionPlayerIndex message) {
+    public void updateClientIndex(ConnectionPlayerIndexMessage message) {
         super.setPlayer(message.getPlayerIndex());
     }
 

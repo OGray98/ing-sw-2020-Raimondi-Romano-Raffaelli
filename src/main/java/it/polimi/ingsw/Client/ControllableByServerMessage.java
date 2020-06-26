@@ -18,9 +18,10 @@ public interface ControllableByServerMessage {
 
     /**
      * Method that update the client model with a new player connected
+     *
      * @param message is the message that contains the new player index
-     * */
-    void updateIndex(ConnectionPlayerIndex message);
+     */
+    void updateIndex(ConnectionPlayerIndexMessage message);
 
     /**
      * Method that update the client model with the new current state

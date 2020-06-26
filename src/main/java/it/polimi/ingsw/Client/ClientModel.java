@@ -274,7 +274,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
 
     public void setPlayerIndex(PlayerIndex playerIndex) {
         this.playerIndex = playerIndex;
-        notify(new ConnectionPlayerIndex(playerIndex));
+        notify(new ConnectionPlayerIndexMessage(playerIndex));
     }
 
     /**

@@ -43,7 +43,7 @@ public class StubControllableByViewMessage implements ControllableByViewMessage 
     }
 
     @Override
-    public void updateClientIndex(ConnectionPlayerIndex message) {
+    public void updateClientIndex(ConnectionPlayerIndexMessage message) {
         n = UP_I;
     }
 

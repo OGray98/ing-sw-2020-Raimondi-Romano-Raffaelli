@@ -37,9 +37,10 @@ public interface ControllableByViewMessage {
 
     /**
      * Method that update the view when a player connects
+     *
      * @param message is the message received from the server
-     * */
-    void updateClientIndex(ConnectionPlayerIndex message);
+     */
+    void updateClientIndex(ConnectionPlayerIndexMessage message);
 
     /**
      * Method that remove a loser player from the board

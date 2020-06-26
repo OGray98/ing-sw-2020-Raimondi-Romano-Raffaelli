@@ -7,12 +7,12 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 /**
  * Message used to notify a player connected
  * It contains the index of the player connected
- * */
-public class ConnectionPlayerIndex extends Message implements MessageToClient, MessageToView {
+ */
+public class ConnectionPlayerIndexMessage extends Message implements MessageToClient, MessageToView {
 
     private final PlayerIndex playerIndex;
 
-    public ConnectionPlayerIndex(PlayerIndex client) {
+    public ConnectionPlayerIndexMessage(PlayerIndex client) {
         super(client, TypeMessage.PLAYERINDEX_CONNECTION);
         this.playerIndex = client;
     }

@@ -33,7 +33,7 @@ public class StubControllableByServerMessage implements ControllableByServerMess
     }
 
     @Override
-    public void updateIndex(ConnectionPlayerIndex message) {
+    public void updateIndex(ConnectionPlayerIndexMessage message) {
         n = UP_I;
     }
 

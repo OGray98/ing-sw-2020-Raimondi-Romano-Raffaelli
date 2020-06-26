@@ -71,7 +71,7 @@ public class MessageToClientTest {
 
     @Test
     public void connectionPlayerIndexMessageTest() {
-        ConnectionPlayerIndex msg = new ConnectionPlayerIndex(PlayerIndex.PLAYER0);
+        ConnectionPlayerIndexMessage msg = new ConnectionPlayerIndexMessage(PlayerIndex.PLAYER0);
         msg.execute(stub);
         assertEquals(StubControllableByServerMessage.UP_I, stub.n);
         assertEquals(PlayerIndex.PLAYER0, msg.getPlayerIndex());

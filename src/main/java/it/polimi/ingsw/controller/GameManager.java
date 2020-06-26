@@ -57,7 +57,7 @@ public class GameManager implements Observer<MessageToServer>, ControllableByCli
         if (remoteViews.containsKey(index))
             throw new AlreadyPresentRemoteViewOfPlayerException(index);
         remoteViews.put(index, remoteView);
-        remoteView.putMessage(new ConnectionPlayerIndex(index));
+        remoteView.putMessage(new ConnectionPlayerIndexMessage(index));
         gameModel.addObserver(remoteViews.get(index));
     }
 

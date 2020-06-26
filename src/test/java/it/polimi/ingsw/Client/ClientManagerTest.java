@@ -34,7 +34,7 @@ public class ClientManagerTest {
         clientManager.setClientView(new StubView(PlayerIndex.PLAYER0, clientModel));
         //Testing updateIndex()
         assertNull(clientModel.getPlayerIndex());
-        clientManager.updateClient(new ConnectionPlayerIndex(PlayerIndex.PLAYER0));
+        clientManager.updateClient(new ConnectionPlayerIndexMessage(PlayerIndex.PLAYER0));
         assertEquals(clientModel.getPlayerIndex(), PlayerIndex.PLAYER0);
 
         //Testing updateNickname()
