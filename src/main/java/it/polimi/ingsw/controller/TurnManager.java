@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * TurnManager is a class that manage turn of every Player and update the Board and the Players according to input from view
+ * It is used by GameManager to call blocks of methods of the model
  */
 public class TurnManager {
 

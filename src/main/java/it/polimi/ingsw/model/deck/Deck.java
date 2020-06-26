@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class that contains all the god cards
+ * Used during the selection of the gods phase
+ * Used also to decorate players with their gods
+ * */
 public class Deck {
 
     private static final List<CardInterface> godCards = new ArrayList<>(

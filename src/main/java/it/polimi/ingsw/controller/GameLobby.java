@@ -6,6 +6,11 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 
 import java.util.HashMap;
 
+/**
+ * Class that supports the initial phase of the game
+ * It is a lobby for the players that are connected
+ * It is used to access the model only when all players are connected and ready to play
+ * */
 public class GameLobby {
 
     private final HashMap<PlayerIndex, String> lobbyPlayers;
@@ -53,6 +58,10 @@ public class GameLobby {
         return this.lobbyPlayers;
     }
 
+    /**
+     * @return true iff the nick given is already chosen by other plaeyrs
+     * @param nickName is the nickname to check
+     * */
     public boolean isNameAlreadyTaken(String nickName){
         for(String s : this.lobbyPlayers.values()){
             if(nickName.equals(s)){
@@ -62,6 +71,10 @@ public class GameLobby {
         return false;
     }
 
+    /**
+     * @return true iff the player given is already in the lobby
+     * @param playerIndex is the index of the player to check
+     * */
     public boolean isPlayerAlreadyInLobby(PlayerIndex playerIndex){
         return this.lobbyPlayers.containsKey(playerIndex);
     }
@@ -77,10 +90,16 @@ public class GameLobby {
         return this.lobbyPlayers.size() == 2;
     }
 
+    /**
+     * Method that set the number of players for this game chosen by the godLike
+     * */
     public void setThreePlayersGameDecided(boolean threePlayersGameDecided) {
         this.threePlayersGameDecided = threePlayersGameDecided;
     }
 
+    /**
+     * Method that remove a player from the lobby
+     * */
     public void removeFromLobby(PlayerIndex playerToRemove){
         lobbyPlayers.remove(playerToRemove);
     }

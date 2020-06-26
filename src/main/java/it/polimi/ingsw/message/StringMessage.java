@@ -2,6 +2,9 @@ package it.polimi.ingsw.message;
 
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * General message used to communicate a string
+ * */
 public class StringMessage extends Message {
 
     private final String stringMessage;

@@ -3,6 +3,9 @@ package it.polimi.ingsw.message;
 import it.polimi.ingsw.controller.ControllableByClientMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * Message used to notify the end of the turn of the current player
+ * */
 public class EndTurnMessage extends Message implements MessageToServer {
 
     public EndTurnMessage(PlayerIndex client) {

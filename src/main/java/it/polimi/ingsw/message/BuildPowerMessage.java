@@ -5,6 +5,10 @@ import it.polimi.ingsw.model.board.BuildType;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * Message used to notify a building action by a god power
+ * It contains the position of the build
+ * */
 public class BuildPowerMessage extends Message implements MessageToClient {
 
     private final Position buildPos;

@@ -5,6 +5,9 @@ import it.polimi.ingsw.controller.ControllableByClientMessage;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * Message used to notify a building action
+ * */
 public class BuildMessage extends Message implements MessageToServer, MessageToClient {
 
     private final Position buildPos;

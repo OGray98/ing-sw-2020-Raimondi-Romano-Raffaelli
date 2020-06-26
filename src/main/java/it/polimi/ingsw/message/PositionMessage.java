@@ -5,6 +5,9 @@ import it.polimi.ingsw.controller.ControllableByClientMessage;
 import it.polimi.ingsw.model.board.Position;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * General message used by the view to communicate a position selected to ClientManager
+ * */
 public class PositionMessage extends Message implements MessageToServer, MessageToView {
 
     private final Position position;

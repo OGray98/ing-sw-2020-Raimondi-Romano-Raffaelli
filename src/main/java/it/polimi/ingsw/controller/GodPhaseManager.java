@@ -12,7 +12,9 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Class that allows the controller to set the gods chosen by players (decorate the player of the model)
+ * */
 public class GodPhaseManager {
 
 

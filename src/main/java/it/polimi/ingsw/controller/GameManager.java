@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Game manager is the controller's most important class. It manage
+ * Game manager is the controller's most important class. It manages
  * the message incoming from every RemoteView, and update the model
  * based on these message.
  */

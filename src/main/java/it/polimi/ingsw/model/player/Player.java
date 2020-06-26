@@ -9,6 +9,10 @@ import it.polimi.ingsw.model.board.Position;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * General class that implements the basic actions of a player
+ * it will be specialized after the choice of the God through the Decorator pattern
+ * */
 public class Player implements PlayerInterface{
 
     private String nickName;

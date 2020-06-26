@@ -4,6 +4,9 @@ import it.polimi.ingsw.Client.ControllableByServerMessage;
 import it.polimi.ingsw.Client.ControllableByViewMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * Message used to notify an error to the view
+ * */
 public class ErrorMessage extends InformationMessage implements MessageToView {
 
     public ErrorMessage(PlayerIndex client, TypeMessage specificErrorType, String errorMessage) {

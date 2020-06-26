@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 
 import java.util.List;
 
+/**
+ * Message used to notify the list of actions possible
+ * */
 public class ActionMessage extends Message implements MessageToClient {
 
     private final Position workerPos;
