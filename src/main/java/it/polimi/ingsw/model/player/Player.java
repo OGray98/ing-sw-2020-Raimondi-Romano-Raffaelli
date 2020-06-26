@@ -9,10 +9,14 @@ import it.polimi.ingsw.model.board.Position;
 import java.util.List;
 import java.util.Map;
 
-public class Player implements PlayerInterface {
+/**
+ * General class that implements the basic actions of a player
+ * it will be specialized after the choice of the God through the Decorator pattern
+ * */
+public class Player implements PlayerInterface{
 
-    private final String nickName;
-    private final PlayerIndex playerNum;
+    private String nickName;
+    private PlayerIndex playerNum;
     private Cell oldCell;
     private Cell cellOccupied;
     private boolean cantGoUp;
@@ -96,7 +100,7 @@ public class Player implements PlayerInterface {
         }
 
         if (this.cellOccupied.getPosition().isAdjacent(buildCell.getPosition())) {
-            return !buildCell.hasDome();
+            if (!buildCell.hasDome()) return true;
         }
 
         return false;

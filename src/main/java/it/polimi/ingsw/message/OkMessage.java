@@ -4,6 +4,10 @@ import it.polimi.ingsw.Client.ControllableByServerMessage;
 import it.polimi.ingsw.Client.ControllableByViewMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * Message used to communicate general messages to the view
+ * It also communicate the winner player
+ * */
 public class OkMessage extends InformationMessage implements MessageToView{
 
     public OkMessage(PlayerIndex client, TypeMessage specificOkType, String okMessage) {

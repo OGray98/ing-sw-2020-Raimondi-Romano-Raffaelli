@@ -1,5 +1,9 @@
 package it.polimi.ingsw.controller;
 
+/**
+ * Enum that contains all the possible state during a game
+ * It is used to separate differen turn phases
+ * */
 public enum GameState {
     START_GAME, GOD_PLAYER_CHOOSE_CARDS, SELECT_CARD, GOD_PLAYER_CHOOSE_FIRST_PLAYER, PUT_WORKER, MOVE, INITPOWER, BUILD, ENDPHASE, BUILDPOWER, SECOND_MOVE, MATCH_ENDED, NULL
 

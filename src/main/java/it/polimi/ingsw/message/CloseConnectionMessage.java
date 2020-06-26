@@ -4,6 +4,9 @@ import it.polimi.ingsw.Client.ControllableByServerMessage;
 import it.polimi.ingsw.controller.ControllableByClientMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * Message used to notify a player disconnected
+ * */
 public class CloseConnectionMessage extends Message implements MessageToServer, MessageToClient {
 
     public CloseConnectionMessage(PlayerIndex index) {

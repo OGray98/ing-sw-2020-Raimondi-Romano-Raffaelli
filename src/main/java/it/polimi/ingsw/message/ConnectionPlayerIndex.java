@@ -4,6 +4,10 @@ import it.polimi.ingsw.Client.ControllableByServerMessage;
 import it.polimi.ingsw.Client.ControllableByViewMessage;
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * Message used to notify a player connected
+ * It contains the index of the player connected
+ * */
 public class ConnectionPlayerIndex extends Message implements MessageToClient, MessageToView {
 
     private final PlayerIndex playerIndex;

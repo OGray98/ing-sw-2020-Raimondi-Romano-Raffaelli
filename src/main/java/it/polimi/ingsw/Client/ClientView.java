@@ -24,12 +24,27 @@ public abstract class ClientView extends View implements Observer<MessageToView>
      */
     public abstract void receiveErrorMessage(String error);
 
+    /**
+     * Method that initialize the view
+     * it prepares the representation of the game in the client side
+     * */
     public abstract void init();
 
+    /**
+     * Show to the view the list of gods that the godLike player has to choose
+     * @param gods is the list of gods available
+     * */
     public abstract void showGodLikeChoice(List<String> gods);
 
+    /**
+     * Show to the view the list of gods that a player (not the godLike) can choose
+     * @param godLikeGods is the list of gods available
+     * */
     public abstract void showGodToSelect(List<String> godLikeGods);
 
+    /**
+     * Show to the godLike the selection panel to choose who will be the first player of the game
+     * */
     public abstract void showGodLikeChooseFirstPlayer();
 
     /**
@@ -57,13 +72,21 @@ public abstract class ClientView extends View implements Observer<MessageToView>
         message.execute(this);
     }
 
+    /**
+     * Show to the view the input panel to insert the ip of the server
+     * @param message is the message shown to the view
+     * */
     public abstract String showSelectIP(String message);
 
+    /**
+     * Generic method to show a message to the view
+     * @param message is the message that has to be shown
+     * */
     public abstract void showMessage(String message);
 
     /**
-     * A seconda del playerIndex fa selezionare il nickname e se sei il
-     * player0 anche il numero di giocatori
+     * Show the input request for the nickname
+     * If player index is PLAYER0 it shows also the selection of the number of players of the game
      */
     public abstract void showGetNickname();
 
@@ -72,13 +95,17 @@ public abstract class ClientView extends View implements Observer<MessageToView>
         super.setPlayer(message.getPlayerIndex());
     }
 
+    /**
+     * Method used in gui to update and delete the old possible moves
+     * */
     public abstract void removeActionsFromView();
 
+    /**
+     * Method used to show to the view the cells where a player can make an action
+     * @param possiblePosition is the list of positions to show
+     * @param isPowerCells indicates if the cells are related to the normal moves or power moves
+     * */
     public abstract void showActionPositions(List<Position> possiblePosition, boolean isPowerCells);
-
-
-
-
 
     /**
      * Method used to deactivate the god power after using it

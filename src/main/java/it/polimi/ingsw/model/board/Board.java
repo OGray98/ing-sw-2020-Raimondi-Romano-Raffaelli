@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * Board is a group of Cell, which represent the game table.
+ * This class allows to change the state of the board (workers position, builds, ...)
  */
 public class Board {
 

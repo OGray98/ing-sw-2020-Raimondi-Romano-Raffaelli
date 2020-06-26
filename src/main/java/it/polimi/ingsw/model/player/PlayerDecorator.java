@@ -10,6 +10,10 @@ import it.polimi.ingsw.model.deck.CardInterface;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This abstract class is used to implements the Decorator pattern
+ * All decorators of Player will extends this class
+ * */
 public abstract class PlayerDecorator implements PlayerInterface, CardInterface {
 
     private PlayerInterface player;

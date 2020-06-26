@@ -6,6 +6,11 @@ import it.polimi.ingsw.model.player.PlayerIndex;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class used to use God powers and update the Board
+ * Every time a player uses his god power, the method usePower() returns an instance of this class
+ * It contains all the information about the changes on the board
+ * */
 public class BoardChange {
     private Map<PositionContainer, PlayerIndex> playerChanges;
     private final Position positionBuild;

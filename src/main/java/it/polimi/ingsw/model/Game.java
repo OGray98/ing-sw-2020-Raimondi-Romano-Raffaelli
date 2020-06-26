@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * Game contains every object of model
+ * Controller modify the model only through this class that allows to change the state of the game
  */
 public class Game extends Observable<MessageToClient> {
 
@@ -737,6 +738,10 @@ public class Game extends Observable<MessageToClient> {
 
     }
 
+    /**
+     * Method that sends to all clients connected a CloseConnectionMessage when a player disconnects
+     * @param client is the index of the disconnected player
+     * */
     public void delete(PlayerIndex client) {
         notify(new CloseConnectionMessage(client));
     }

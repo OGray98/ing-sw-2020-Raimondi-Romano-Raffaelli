@@ -1,5 +1,8 @@
 package it.polimi.ingsw.message;
 
+/**
+ * Enum that contains all the possible types of message present
+ * */
 public enum TypeMessage {
     //Used in lobby
     NICKNAME, IS_THREE_PLAYERS_GAME,

@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class is the model which contains data used by clients
+ * This class is the representation of the model used client side
+ * It is largely used by the view to show the game state
  */
 public class ClientModel extends Observable<MessageToView> implements ViewModelInterface{
 
@@ -68,6 +69,12 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
                 this.levelsPositions.put(new Position(i, j), 0);
     }
 
+    /**
+     * Method that select a worker of the current player
+     * Select a worker allows the player to see the possible moves
+     * Once a worker is moved the selected worker will remains the same until the end of the turn
+     * @param selectedWorkerPos contains the position of the worker to select
+     * */
     public void setSelectedWorkerPos(Position selectedWorkerPos) {
         if (!this.isSelectedWorker || !selectedWorkerPos.equals(this.selectedWorkerPos)) {
             this.isSelectedWorker = true;
@@ -77,6 +84,10 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         }
     }
 
+    /**
+     * Simple getter of the selected worker position
+     * @return the position of the selected worker
+     * */
     public Position getSelectedWorkerPos(){
         if(this.selectedWorkerPos == null) throw new NullPointerException("not selected any worker!");
         return this.selectedWorkerPos;
@@ -94,6 +105,10 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
             nicknames.put(index, nickname);
     }
 
+    /**
+     * @return the nickname of a player
+     * @param index is the index of the player
+     * */
     public String getNickname(PlayerIndex index) {
         if (!this.nicknames.containsKey(index))
             throw new InvalidPlayerIndexException(index);
@@ -210,19 +225,31 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         playersPositions.remove(indexLoser);
     }
 
-
+    /**
+     * @return the list of gods chosen by the godlike
+     * */
     public List<String> getChosenGodsByGodLike() {
         return this.godsChosenByGodLike;
     }
 
+    /**
+     * @return the current game state
+     * */
     public GameState getCurrentState() {
         return currentState;
     }
 
+    /**
+     * Setter of the current state
+     * @param currentState is the current state to set
+     * */
     public void setCurrentState(GameState currentState) {
         this.currentState = currentState;
     }
 
+    /**
+     * @return the nickname of the player related to the client
+     * */
     public String getPlayerNickname() {
         return nicknames.get(playerIndex);
     }
@@ -231,10 +258,16 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         nicknames.put(playerIndex, playerNickname);
     }
 
+    /**
+     * @return the list of the nicknames of all players
+     * */
     public List<String> getNicknames() {
         return new ArrayList<>(this.nicknames.values());
     }
 
+    /**
+     * @return the index of the player related to the client
+     * */
     public PlayerIndex getPlayerIndex() {
         return playerIndex;
     }
@@ -244,14 +277,24 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         notify(new ConnectionPlayerIndex(playerIndex));
     }
 
+    /**
+     * @return the list of all positions of cells that contain a dome
+     * */
     public List<Position> getDomesPositions(){
         return this.domesPositions;
     }
 
+    /**
+     * @return the game state where the player can use his god power
+     * */
     public GameState getPowerGodState() {
         return powerGodState;
     }
 
+    /**
+     * @return the level (int) of a position
+     * @param position is the position
+     * */
     public int getLevelPosition(Position position) {
         for (Position pos : levelsPositions.keySet()) {
             if (pos.equals(position)) {
@@ -261,6 +304,10 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         return -1;
     }
 
+    /**
+     * @return the list of the positions of all the workers of a player
+     * @param playerIndex is the index of the player
+     * */
     public List<Position> getPlayerIndexPosition(PlayerIndex playerIndex) {
         for (PlayerIndex player : playersPositions.keySet()) {
             if (player.equals(playerIndex)) {
@@ -270,11 +317,19 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         return null;
     }
 
+    /**
+     * @return true iff there is a player with the nickname given
+     * @param nickname is the nickname to search
+     * */
     public boolean nicknameIsPresent(String nickname) throws NullPointerException {
         if (nickname == null) throw new NullPointerException("nickname");
         return nicknames.containsValue(nickname);
     }
 
+    /**
+     * @return true iff the position given contains a dome
+     * @param position is the position
+     * */
     public boolean thePositionContainDome(Position position) {
         for (Position pos : domesPositions) {
             if (pos.equals(position)) {
@@ -350,6 +405,9 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         this.isSelectedWorker = false;
     }
 
+    /**
+     * @return true iff there is not a worker selected already
+     * */
     public boolean isNotThereASelectedWorker() {
         return !isSelectedWorker;
     }
@@ -381,6 +439,7 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
 
     /**
      * Set power state of this client
+     * It depends by the god
      */
     private void setClientPowerState() {
 
@@ -412,6 +471,9 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         }
     }
 
+    /**
+     * @return true iff the related client is the current player
+     * */
     public boolean isAmICurrentPlayer() {
         return amICurrentPlayer;
     }
@@ -420,10 +482,16 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         this.amICurrentPlayer = amICurrentPlayer;
     }
 
+    /**
+     * @return the list of the gods chosen for this game
+     * */
     public List<String> getGods() {
         return new ArrayList<>(gods.keySet());
     }
 
+    /**
+     * @return the list of descriptions of all rhe gods chosen for this game
+     * */
     public List<String> getGodsDescription(){
         return new ArrayList<>(gods.values());
     }
@@ -439,14 +507,25 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         throw new IllegalStateException("not valid number of players!");
     }
 
+    /**
+     * @return true iff the position given is occupied
+     * @param pos is the position to check
+     * */
     public boolean isOccupiedPosition(Position pos){
         return this.playersPositions.values().stream().anyMatch(list -> list.contains(pos));
     }
 
+    /**
+     * @return true iff godlike is choosing the god cards for the game
+     * */
     public boolean isGodLikeChoosingCards() {
         return this.currentState == GameState.GOD_PLAYER_CHOOSE_CARDS;
     }
 
+    /**
+     * Method that notify to the view an InformationMessage
+     * @param message is the message to notify
+     * */
     public void notifyInformationMessage(InformationMessage message){
         notify(message);
     }

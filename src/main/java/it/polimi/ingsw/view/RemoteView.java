@@ -38,6 +38,10 @@ public class RemoteView extends View implements Observer<MessageToClient> {
         }
     }
 
+    /**
+     * Method that sends a message given to the client
+     * @param message is the message to send
+     * */
     @Override
     public void update(MessageToClient message) throws NullPointerException {
         if (message == null)
