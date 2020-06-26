@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.board;
 
+/**
+ * Class used to create a set of two positions useful in some cases
+ * */
 public class PositionContainer {
     private Position[] pos = new Position[2];
 
