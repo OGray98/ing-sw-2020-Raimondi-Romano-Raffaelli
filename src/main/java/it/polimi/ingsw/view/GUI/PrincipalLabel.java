@@ -3,6 +3,9 @@ package it.polimi.ingsw.view.GUI;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Class used to create the principal gui label
+ * */
 public class PrincipalLabel extends JLabel {
 
 

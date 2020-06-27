@@ -15,6 +15,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Core class of the gui implementation
+ * There are the main frame of the gui
+ * It also implements the methods to update the gui after player moves
+ * */
 public class GUI extends ClientView {
 
     private JPanel panel1;

@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * Class used to create a JButton used to represents a cell in the board
+ * */
 public class ButtonCell extends JButton {
     private final Position position;
     public ButtonCell(int x, int y, int width, int height, ActionListener actionListener) {

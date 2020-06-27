@@ -3,6 +3,9 @@ package it.polimi.ingsw.view.GUI;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Class used to generates some different dialogs
+ * */
 public abstract class GameDialog extends JDialog {
 
 

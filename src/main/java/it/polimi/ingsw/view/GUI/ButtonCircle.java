@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 
+/**
+ * Class used to create a JButton with a certain form and measure
+ * */
 public class ButtonCircle extends JButton {
     Shape shape = null;
     private final Color colorButton;

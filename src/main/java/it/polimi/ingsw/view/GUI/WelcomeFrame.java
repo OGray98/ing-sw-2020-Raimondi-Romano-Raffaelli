@@ -3,6 +3,9 @@ package it.polimi.ingsw.view.GUI;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Class that creates the main frame
+ * */
 public class WelcomeFrame extends JFrame {
 
     private static final Dimension FRAME_DIMENSION = Toolkit.getDefaultToolkit().getScreenSize();

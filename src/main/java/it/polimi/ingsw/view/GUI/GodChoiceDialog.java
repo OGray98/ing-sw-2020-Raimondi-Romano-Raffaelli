@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class that shows to the player a dialog for the choice of gods
+ * */
 public class GodChoiceDialog extends JLabel {
 
     private List<String> chosenGod = new ArrayList<>();

@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class used to show the god card and the god description once clicked
+ * */
 public class GodIconDialog extends GameDialog implements ActionListener {
 
     private final ImageContainer imageContainer = new ImageContainer();

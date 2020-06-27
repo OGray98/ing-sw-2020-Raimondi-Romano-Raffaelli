@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+/**
+ * Class used to show a dialog where godLike player can choose the player that begins the game
+ * */
 public class ChoosingPlayerDialog extends GameDialog {
 
     private JRadioButton player0;

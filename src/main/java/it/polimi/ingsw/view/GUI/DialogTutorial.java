@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Class used to show a dialog when player clicks the tutorial button
+ * */
 public class DialogTutorial extends GameDialog implements ActionListener {
 
     private ImageContainer imageContainer = new ImageContainer();
