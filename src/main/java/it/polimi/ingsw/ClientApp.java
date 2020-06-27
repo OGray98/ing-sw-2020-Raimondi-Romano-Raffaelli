@@ -4,6 +4,9 @@ import it.polimi.ingsw.network.Client;
 
 import java.io.IOException;
 
+/**
+ * Main class that starts the client and allows users to play after the server is launched
+ * */
 public class ClientApp {
 
     public final static String GUI = "g";

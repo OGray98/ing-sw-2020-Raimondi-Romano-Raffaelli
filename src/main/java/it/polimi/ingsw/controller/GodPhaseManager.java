@@ -112,6 +112,11 @@ public class GodPhaseManager {
     }
 
 
+    /**
+     * @return true iff is possible to put a worker in the position given
+     * @param workerPos is the position given
+     * @throws NullPointerException if the position given is null
+     * */
     public boolean canPutWorker(Position workerPos) throws NullPointerException {
         if (workerPos == null)
             throw new NullPointerException("workerPos");
@@ -141,10 +146,16 @@ public class GodPhaseManager {
 
     }
 
+    /**
+     * @return true iff the selection of the cards is finished
+     * */
     public boolean isFinishSelectCardPhase() {
         return isFinishSelectCardPhase;
     }
 
+    /**
+     * @return the number of players that have put their workers
+     * */
     public int getPlayersWithWorkerPut() {
         return playersWithWorkerPut;
     }

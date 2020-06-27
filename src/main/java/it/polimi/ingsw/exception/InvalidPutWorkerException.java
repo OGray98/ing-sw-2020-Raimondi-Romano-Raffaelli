@@ -2,6 +2,9 @@ package it.polimi.ingsw.exception;
 
 import it.polimi.ingsw.model.player.PlayerIndex;
 
+/**
+ * Exception thrown when user try to put workers in occupied cells
+ * */
 public class InvalidPutWorkerException extends RuntimeException {
     //Runtime exception which is thrown when someone want to put more that two worker
     public InvalidPutWorkerException(int r, int c, PlayerIndex index) {

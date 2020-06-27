@@ -240,6 +240,9 @@ public class TurnManager {
             workerMovedPosition = workerPos;
     }
 
+    /**
+     * Method that calls Game::endTurn()
+     * */
     public void endTurn() {
         gameInstance.endTurn();
     }

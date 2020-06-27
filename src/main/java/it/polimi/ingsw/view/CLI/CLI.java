@@ -480,7 +480,7 @@ public class CLI extends ClientView {
     }
 
     /**
-     * Method that handle the input from user in every phase of the game after PUTWORKER state
+     * Method that handle the input from user in every phase of the game after  the PUTWORKER state
      * */
     private void positionInput(){
         System.out.println("To select a cell insert the row and then the column");
