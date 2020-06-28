@@ -1,0 +1,521 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ClientManager</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.Client</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ClientManager (it.polimi.ingsw.Client)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClientManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    71,4%
+  </span>
+  <span class="absValue">
+    (15/ 21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    29,6%
+  </span>
+  <span class="absValue">
+    (60/ 203)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ClientManager$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    72,7%
+  </span>
+  <span class="absValue">
+    (16/ 22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    29,9%
+  </span>
+  <span class="absValue">
+    (61/ 204)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.Client;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.GameState;
+<i>4</i>&nbsp;import it.polimi.ingsw.message.*;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.board.BuildType;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.board.Position;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.player.PlayerIndex;
+<i>8</i>&nbsp;import it.polimi.ingsw.network.ServerConnection;
+<i>9</i>&nbsp;import it.polimi.ingsw.observer.Observer;
+<i>10</i>&nbsp;import it.polimi.ingsw.view.CLI.ActionMessageIndex;
+<i>11</i>&nbsp;import it.polimi.ingsw.view.CLI.CLI;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import java.util.ArrayList;
+<i>14</i>&nbsp;import java.util.List;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;public class ClientManager implements ControllableByServerMessage, Observer&lt;MessageToServer&gt; {
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    private final ServerConnection serverConnection;
+<i>19</i>&nbsp;    private final ClientModel clientModel;
+<i>20</i>&nbsp;    private ActionMessageIndex actionMessageIndex;
+<b class="fc"><i>21</i>&nbsp;    private int actionCont = 0;</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    private ClientView clientView;
+<i>24</i>&nbsp;
+<b class="fc"><i>25</i>&nbsp;    private final List&lt;Position&gt; workersToPut = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>26</i>&nbsp;    private static boolean isFirst = true;</b>
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;    public ClientManager(ServerConnection serverConnection, ClientModel clientModel) {</b>
+<b class="fc"><i>30</i>&nbsp;        this.serverConnection = serverConnection;</b>
+<b class="fc"><i>31</i>&nbsp;        this.clientModel = clientModel;</b>
+<b class="fc"><i>32</i>&nbsp;    }</b>
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    /**
+<i>35</i>&nbsp;     * Method that receives notifies from the model and modifies the client representation of the model
+<i>36</i>&nbsp;     *
+<i>37</i>&nbsp;     * @param message used to take the value to use to modify the model client
+<i>38</i>&nbsp;     */
+<i>39</i>&nbsp;    public void updateClient(MessageToClient message) {
+<b class="fc"><i>40</i>&nbsp;        if (message == null)</b>
+<b class="nc"><i>41</i>&nbsp;            throw new NullPointerException(&quot;message&quot;);</b>
+<i>42</i>&nbsp;        //System.out.println(&quot;Receive message: &quot; + message.getType());
+<b class="fc"><i>43</i>&nbsp;        message.execute(this);</b>
+<i>44</i>&nbsp;
+<b class="fc"><i>45</i>&nbsp;    }</b>
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    /**
+<i>48</i>&nbsp;     * Method that receives a message from the client view and send it to the server
+<i>49</i>&nbsp;     * @param message is the message received from View
+<i>50</i>&nbsp;     * the message sent will be related to the GameState of the turn
+<i>51</i>&nbsp;     * */
+<i>52</i>&nbsp;    @Override
+<i>53</i>&nbsp;    public void update(MessageToServer message) {
+<i>54</i>&nbsp;
+<b class="pc"><i>55</i>&nbsp;        switch(clientModel.getCurrentState()){</b>
+<i>56</i>&nbsp;            case START_GAME:
+<i>57</i>&nbsp;            case GOD_PLAYER_CHOOSE_CARDS:
+<i>58</i>&nbsp;            case SELECT_CARD:
+<i>59</i>&nbsp;            case GOD_PLAYER_CHOOSE_FIRST_PLAYER:
+<b class="nc"><i>60</i>&nbsp;                sendToServer(message);</b>
+<b class="nc"><i>61</i>&nbsp;                break;</b>
+<i>62</i>&nbsp;            case PUT_WORKER:
+<b class="nc"><i>63</i>&nbsp;                PositionMessage putMsg = (PositionMessage) message;</b>
+<i>64</i>&nbsp;
+<b class="nc"><i>65</i>&nbsp;                if(this.workersToPut.size() == 2){</b>
+<b class="nc"><i>66</i>&nbsp;                    this.workersToPut.clear();</b>
+<b class="nc"><i>67</i>&nbsp;                    this.workersToPut.add(putMsg.getPosition());</b>
+<b class="nc"><i>68</i>&nbsp;                    break;</b>
+<i>69</i>&nbsp;                }
+<i>70</i>&nbsp;
+<b class="nc"><i>71</i>&nbsp;                if(this.workersToPut.size() == 0)</b>
+<b class="nc"><i>72</i>&nbsp;                    this.workersToPut.add(putMsg.getPosition());</b>
+<b class="nc"><i>73</i>&nbsp;                else if(this.workersToPut.size() == 1){</b>
+<b class="nc"><i>74</i>&nbsp;                    if(this.workersToPut.get(0).equals(putMsg.getPosition())){</b>
+<b class="nc"><i>75</i>&nbsp;                        clientView.showMessage(&quot;You can&#39;t put two workers on the same cell&quot;);</b>
+<b class="nc"><i>76</i>&nbsp;                        this.workersToPut.clear();</b>
+<b class="nc"><i>77</i>&nbsp;                        break;</b>
+<i>78</i>&nbsp;                    }
+<b class="nc"><i>79</i>&nbsp;                    this.workersToPut.add(putMsg.getPosition());</b>
+<b class="nc"><i>80</i>&nbsp;                    sendToServer(new PutWorkerMessage(putMsg.getClient(), this.workersToPut.get(0), putMsg.getPosition()));</b>
+<i>81</i>&nbsp;                }
+<i>82</i>&nbsp;                break;
+<i>83</i>&nbsp;            case MOVE:
+<b class="nc"><i>84</i>&nbsp;                PositionMessage moveMsg = (PositionMessage) message;</b>
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;                //case when player selects a worker
+<b class="nc"><i>87</i>&nbsp;                if(clientModel.getPlayerIndexPosition(moveMsg.getClient()).contains(moveMsg.getPosition())){</b>
+<b class="nc"><i>88</i>&nbsp;                    clientModel.setSelectedWorkerPos(moveMsg.getPosition());</b>
+<b class="nc"><i>89</i>&nbsp;                    break;</b>
+<i>90</i>&nbsp;                }
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;                //case when there isn&#39;t a selected worker
+<b class="nc"><i>93</i>&nbsp;                if (clientModel.isNotThereASelectedWorker()) {</b>
+<b class="nc"><i>94</i>&nbsp;                    break;</b>
+<i>95</i>&nbsp;                }
+<i>96</i>&nbsp;                //case when player want to move or use a power
+<i>97</i>&nbsp;                else {
+<i>98</i>&nbsp;
+<i>99</i>&nbsp;                    try {
+<b class="nc"><i>100</i>&nbsp;                        clientModel.getSelectedWorkerPos();</b>
+<b class="nc"><i>101</i>&nbsp;                    } catch (NullPointerException e) {</b>
+<b class="nc"><i>102</i>&nbsp;                        break;</b>
+<b class="nc"><i>103</i>&nbsp;                    }</b>
+<i>104</i>&nbsp;
+<b class="nc"><i>105</i>&nbsp;                    if(!moveMsg.isUsingPower()){</b>
+<i>106</i>&nbsp;                        //check if it is a correct position
+<b class="nc"><i>107</i>&nbsp;                        if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE).contains(moveMsg.getPosition()))</b>
+<b class="nc"><i>108</i>&nbsp;                            break;</b>
+<b class="nc"><i>109</i>&nbsp;                        clientView.removeActionsFromView();</b>
+<b class="nc"><i>110</i>&nbsp;                        sendToServer(new MoveMessage(moveMsg.getClient(), clientModel.getSelectedWorkerPos(), moveMsg.getPosition()));</b>
+<i>111</i>&nbsp;                    }
+<i>112</i>&nbsp;                    else{
+<i>113</i>&nbsp;                        //check if it is a correct position
+<b class="nc"><i>114</i>&nbsp;                        if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).contains(moveMsg.getPosition()))</b>
+<b class="nc"><i>115</i>&nbsp;                            break;</b>
+<b class="nc"><i>116</i>&nbsp;                        clientView.removeActionsFromView();</b>
+<b class="nc"><i>117</i>&nbsp;                        clientView.deactivatePower();</b>
+<b class="nc"><i>118</i>&nbsp;                        sendToServer(new UsePowerMessage(moveMsg.getClient(), clientModel.getSelectedWorkerPos(), moveMsg.getPosition()));</b>
+<i>119</i>&nbsp;                    }
+<i>120</i>&nbsp;                }
+<b class="nc"><i>121</i>&nbsp;                break;</b>
+<i>122</i>&nbsp;            case INITPOWER:
+<b class="nc"><i>123</i>&nbsp;                PositionMessage initPowMoveMsg = (PositionMessage) message;</b>
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;                try{
+<b class="nc"><i>126</i>&nbsp;                    clientModel.getSelectedWorkerPos();</b>
+<i>127</i>&nbsp;                }
+<b class="nc"><i>128</i>&nbsp;                catch(NullPointerException e){</b>
+<b class="nc"><i>129</i>&nbsp;                    break;</b>
+<b class="nc"><i>130</i>&nbsp;                }</b>
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;                //check if it is a correct position
+<b class="nc"><i>133</i>&nbsp;                if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE).contains(initPowMoveMsg.getPosition()))</b>
+<b class="nc"><i>134</i>&nbsp;                    break;</b>
+<b class="nc"><i>135</i>&nbsp;                clientView.removeActionsFromView();</b>
+<b class="nc"><i>136</i>&nbsp;                sendToServer(new MoveMessage(initPowMoveMsg.getClient(), clientModel.getSelectedWorkerPos(), initPowMoveMsg.getPosition()));</b>
+<b class="nc"><i>137</i>&nbsp;                break;</b>
+<i>138</i>&nbsp;            case BUILD:
+<b class="nc"><i>139</i>&nbsp;                PositionMessage buildMsg = (PositionMessage) message;</b>
+<i>140</i>&nbsp;
+<i>141</i>&nbsp;                try{
+<b class="nc"><i>142</i>&nbsp;                    clientModel.getSelectedWorkerPos();</b>
+<i>143</i>&nbsp;                }
+<b class="nc"><i>144</i>&nbsp;                catch(NullPointerException e){</b>
+<b class="nc"><i>145</i>&nbsp;                    break;</b>
+<b class="nc"><i>146</i>&nbsp;                }</b>
+<i>147</i>&nbsp;
+<b class="nc"><i>148</i>&nbsp;                if(!buildMsg.isUsingPower()){</b>
+<b class="nc"><i>149</i>&nbsp;                    if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.BUILD).contains(buildMsg.getPosition()))</b>
+<b class="nc"><i>150</i>&nbsp;                        break;</b>
+<b class="nc"><i>151</i>&nbsp;                    clientView.removeActionsFromView();</b>
+<b class="nc"><i>152</i>&nbsp;                    sendToServer(new BuildMessage(buildMsg.getClient(), buildMsg.getPosition()));</b>
+<i>153</i>&nbsp;                }
+<i>154</i>&nbsp;                else{
+<b class="nc"><i>155</i>&nbsp;                    if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).contains(buildMsg.getPosition()))</b>
+<b class="nc"><i>156</i>&nbsp;                        break;</b>
+<b class="nc"><i>157</i>&nbsp;                    clientView.removeActionsFromView();</b>
+<b class="nc"><i>158</i>&nbsp;                    clientView.deactivatePower();</b>
+<b class="nc"><i>159</i>&nbsp;                    sendToServer(new UsePowerMessage(buildMsg.getClient(), clientModel.getSelectedWorkerPos(), buildMsg.getPosition()));</b>
+<i>160</i>&nbsp;                }
+<b class="nc"><i>161</i>&nbsp;                break;</b>
+<i>162</i>&nbsp;            case ENDPHASE:
+<i>163</i>&nbsp;                //case where player wants to end turn
+<b class="nc"><i>164</i>&nbsp;                if(message.getType() == TypeMessage.END_TURN){</b>
+<b class="nc"><i>165</i>&nbsp;                    clientModel.clearActionLists();</b>
+<b class="nc"><i>166</i>&nbsp;                    sendToServer(message);</b>
+<b class="nc"><i>167</i>&nbsp;                    break;</b>
+<i>168</i>&nbsp;                }
+<b class="nc"><i>169</i>&nbsp;                PositionMessage buildPowerMsg = (PositionMessage) message;</b>
+<i>170</i>&nbsp;
+<i>171</i>&nbsp;                try{
+<b class="nc"><i>172</i>&nbsp;                    clientModel.getSelectedWorkerPos();</b>
+<i>173</i>&nbsp;                }
+<b class="nc"><i>174</i>&nbsp;                catch(NullPointerException e){</b>
+<b class="nc"><i>175</i>&nbsp;                    break;</b>
+<b class="nc"><i>176</i>&nbsp;                }</b>
+<i>177</i>&nbsp;
+<b class="nc"><i>178</i>&nbsp;                if(buildPowerMsg.isUsingPower()){</b>
+<i>179</i>&nbsp;                    //check if it is a correct position
+<b class="nc"><i>180</i>&nbsp;                    if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.POWER).contains(buildPowerMsg.getPosition()))</b>
+<b class="nc"><i>181</i>&nbsp;                        break;</b>
+<b class="nc"><i>182</i>&nbsp;                    clientView.removeActionsFromView();</b>
+<b class="nc"><i>183</i>&nbsp;                    clientView.deactivatePower();</b>
+<b class="nc"><i>184</i>&nbsp;                    sendToServer(new UsePowerMessage(buildPowerMsg.getClient(), clientModel.getSelectedWorkerPos(), buildPowerMsg.getPosition()));</b>
+<i>185</i>&nbsp;                }
+<i>186</i>&nbsp;                break;
+<i>187</i>&nbsp;            case BUILDPOWER:
+<i>188</i>&nbsp;                //Here will arrive the endTurn message
+<b class="nc"><i>189</i>&nbsp;                sendToServer(message);</b>
+<b class="nc"><i>190</i>&nbsp;                clientModel.clearActionLists();</b>
+<b class="nc"><i>191</i>&nbsp;                break;</b>
+<i>192</i>&nbsp;            case SECOND_MOVE:
+<b class="nc"><i>193</i>&nbsp;                PositionMessage secondMoveMsg = (PositionMessage) message;</b>
+<i>194</i>&nbsp;
+<i>195</i>&nbsp;                try{
+<b class="nc"><i>196</i>&nbsp;                    clientModel.getSelectedWorkerPos();</b>
+<i>197</i>&nbsp;                }
+<b class="nc"><i>198</i>&nbsp;                catch(NullPointerException e){</b>
+<b class="nc"><i>199</i>&nbsp;                    break;</b>
+<b class="nc"><i>200</i>&nbsp;                }</b>
+<i>201</i>&nbsp;
+<b class="nc"><i>202</i>&nbsp;                if(!secondMoveMsg.isUsingPower()){</b>
+<b class="nc"><i>203</i>&nbsp;                    if(!clientModel.getActionPositions(clientModel.getSelectedWorkerPos(), ActionType.MOVE).contains(secondMoveMsg.getPosition()))</b>
+<b class="nc"><i>204</i>&nbsp;                        break;</b>
+<b class="nc"><i>205</i>&nbsp;                    clientView.removeActionsFromView();</b>
+<b class="nc"><i>206</i>&nbsp;                    sendToServer(new BuildMessage(secondMoveMsg.getClient(), secondMoveMsg.getPosition()));</b>
+<i>207</i>&nbsp;                }
+<i>208</i>&nbsp;                break;
+<i>209</i>&nbsp;            case MATCH_ENDED:
+<i>210</i>&nbsp;                break;
+<i>211</i>&nbsp;        }
+<b class="nc"><i>212</i>&nbsp;    }</b>
+<i>213</i>&nbsp;
+<i>214</i>&nbsp;    /**
+<i>215</i>&nbsp;     * Method that receives input from user and send the message to the server
+<i>216</i>&nbsp;     *
+<i>217</i>&nbsp;     * @param message is the message to send
+<i>218</i>&nbsp;     */
+<i>219</i>&nbsp;    public void sendToServer(MessageToServer message) {
+<b class="nc"><i>220</i>&nbsp;        if (message == null)</b>
+<b class="nc"><i>221</i>&nbsp;            throw new NullPointerException(&quot;message&quot;);</b>
+<b class="nc"><i>222</i>&nbsp;        serverConnection.sendToServer(message);</b>
+<i>223</i>&nbsp;        //System.out.println(&quot;Message sent: &quot; + message.getType());
+<b class="nc"><i>224</i>&nbsp;    }</b>
+<i>225</i>&nbsp;
+<i>226</i>&nbsp;    @Override
+<i>227</i>&nbsp;    public void updateNickname(NicknameMessage message) {
+<b class="fc"><i>228</i>&nbsp;        clientModel.addNickname(message.getClient(), message.getNickname());</b>
+<i>229</i>&nbsp;
+<b class="fc"><i>230</i>&nbsp;    }</b>
+<i>231</i>&nbsp;
+<i>232</i>&nbsp;    @Override
+<i>233</i>&nbsp;    public void updateCurrentPlayer(CurrentPlayerMessage message) {
+<b class="fc"><i>234</i>&nbsp;        clientModel.setAmICurrentPlayer(message.getCurrentPlayerIndex() == clientModel.getPlayerIndex());</b>
+<i>235</i>&nbsp;        //Show current player to the view
+<b class="fc"><i>236</i>&nbsp;        clientView.showCurrentPlayer(message.getCurrentPlayerIndex());</b>
+<i>237</i>&nbsp;
+<b class="fc"><i>238</i>&nbsp;        if(clientModel.getCurrentState() == GameState.PUT_WORKER &amp;&amp; this.clientModel.getPlayerIndex() == message.getClient()){</b>
+<b class="nc"><i>239</i>&nbsp;            if(isFirst){</b>
+<b class="nc"><i>240</i>&nbsp;                clientView.showMessage(&quot;Select two cells where put your workers&quot;);</b>
+<b class="nc"><i>241</i>&nbsp;                clientView.changeState(&quot;&quot;);</b>
+<i>242</i>&nbsp;            }
+<i>243</i>&nbsp;        }
+<i>244</i>&nbsp;
+<b class="fc"><i>245</i>&nbsp;        if(clientModel.getCurrentState() == GameState.SELECT_CARD &amp;&amp; message.getClient()!=PlayerIndex.PLAYER0){</b>
+<b class="nc"><i>246</i>&nbsp;            showGodSelect(message);</b>
+<i>247</i>&nbsp;        }
+<b class="fc"><i>248</i>&nbsp;    }</b>
+<i>249</i>&nbsp;
+<i>250</i>&nbsp;    @Override
+<i>251</i>&nbsp;    public void updateIndex(ConnectionPlayerIndex message) {
+<b class="fc"><i>252</i>&nbsp;        clientModel.setPlayerIndex(message.getPlayerIndex());</b>
+<b class="fc"><i>253</i>&nbsp;        clientView.showGetNickname();</b>
+<b class="fc"><i>254</i>&nbsp;    }</b>
+<i>255</i>&nbsp;
+<i>256</i>&nbsp;    @Override
+<i>257</i>&nbsp;    public void updateState(UpdateStateMessage message) {
+<b class="fc"><i>258</i>&nbsp;        GameState currentState = message.getGameState();</b>
+<b class="fc"><i>259</i>&nbsp;        clientModel.setCurrentState(currentState);</b>
+<i>260</i>&nbsp;
+<b class="fc"><i>261</i>&nbsp;        if(clientModel.getCurrentState() == GameState.PUT_WORKER &amp;&amp; this.clientModel.getPlayerIndex() == message.getClient() &amp;&amp; isFirst){</b>
+<b class="nc"><i>262</i>&nbsp;            clientView.showMessage(&quot;Select two cells where put your workers&quot;);</b>
+<b class="nc"><i>263</i>&nbsp;            clientView.changeState(&quot;&quot;);</b>
+<b class="nc"><i>264</i>&nbsp;            isFirst = false;</b>
+<i>265</i>&nbsp;        }
+<i>266</i>&nbsp;
+<b class="fc"><i>267</i>&nbsp;        if(clientModel.getCurrentState() == GameState.MOVE &amp;&amp; this.clientModel.getPlayerIndex() == message.getClient()) {</b>
+<b class="fc"><i>268</i>&nbsp;            clientView.changeState(&quot;SELECT AND MOVE!!&quot;);</b>
+<b class="nc"><i>269</i>&nbsp;        }else if(clientModel.getCurrentState() == GameState.MOVE &amp;&amp; this.clientModel.getPlayerIndex() != message.getClient()){</b>
+<b class="nc"><i>270</i>&nbsp;            clientView.changeState(clientModel.getNickname(message.getClient()) + &quot; IS MOVING&quot;);</b>
+<i>271</i>&nbsp;        }
+<i>272</i>&nbsp;
+<b class="fc"><i>273</i>&nbsp;        if(clientModel.getCurrentState() == GameState.BUILD &amp;&amp; this.clientModel.getPlayerIndex() == message.getClient()) {</b>
+<b class="nc"><i>274</i>&nbsp;            clientView.changeState(&quot;BUILD ON CELL&quot;);</b>
+<b class="fc"><i>275</i>&nbsp;        }else if(clientModel.getCurrentState() == GameState.BUILD &amp;&amp; this.clientModel.getPlayerIndex() != message.getClient()){</b>
+<b class="nc"><i>276</i>&nbsp;            clientView.changeState(clientModel.getNickname(message.getClient()) + &quot; IS BUILDING&quot;);</b>
+<i>277</i>&nbsp;        }
+<i>278</i>&nbsp;
+<b class="fc"><i>279</i>&nbsp;        if(clientModel.getCurrentState() == GameState.ENDPHASE &amp;&amp; this.clientModel.getPlayerIndex() == message.getClient()) {</b>
+<b class="nc"><i>280</i>&nbsp;            clientView.changeState(&quot;END YOUR TURN&quot;);</b>
+<b class="fc"><i>281</i>&nbsp;        }else if(clientModel.getCurrentState() == GameState.ENDPHASE &amp;&amp; this.clientModel.getPlayerIndex() != message.getClient()){</b>
+<b class="nc"><i>282</i>&nbsp;            clientView.changeState(clientModel.getNickname(message.getClient()) + &quot; IS ENDING&quot;);</b>
+<i>283</i>&nbsp;        }
+<i>284</i>&nbsp;
+<b class="fc"><i>285</i>&nbsp;        if(clientModel.getCurrentState() == GameState.INITPOWER &amp;&amp; this.clientModel.getPlayerIndex() == message.getClient()) {</b>
+<b class="nc"><i>286</i>&nbsp;            clientView.changeState(&quot;MOVE YOUR WORKER&quot;);</b>
+<i>287</i>&nbsp;        }
+<i>288</i>&nbsp;
+<b class="fc"><i>289</i>&nbsp;        if(clientModel.getCurrentState() == GameState.SECOND_MOVE &amp;&amp; this.clientModel.getPlayerIndex() == message.getClient()) {</b>
+<b class="nc"><i>290</i>&nbsp;            clientView.changeState(&quot;BUILD ON CELL&quot;);</b>
+<i>291</i>&nbsp;        }
+<i>292</i>&nbsp;
+<b class="fc"><i>293</i>&nbsp;        if(clientModel.getCurrentState() == GameState.BUILDPOWER &amp;&amp; this.clientModel.getPlayerIndex() == message.getClient()) {</b>
+<b class="nc"><i>294</i>&nbsp;            clientView.changeState(&quot;END YOUR TURN&quot;);</b>
+<i>295</i>&nbsp;        }
+<i>296</i>&nbsp;
+<b class="fc"><i>297</i>&nbsp;        clientView.showPowerButton(message.getGameState() == clientModel.getPowerGodState() &amp;&amp; message.getClient().equals(clientModel.getPlayerIndex()));</b>
+<i>298</i>&nbsp;
+<b class="fc"><i>299</i>&nbsp;        if((message.getGameState() == GameState.ENDPHASE || message.getGameState() == GameState.BUILDPOWER) &amp;&amp; message.getClient().equals(clientModel.getPlayerIndex())){</b>
+<b class="nc"><i>300</i>&nbsp;            clientView.showEndTurnButton(true);</b>
+<i>301</i>&nbsp;        }
+<i>302</i>&nbsp;
+<b class="fc"><i>303</i>&nbsp;        switch (currentState) {</b>
+<i>304</i>&nbsp;            case GOD_PLAYER_CHOOSE_CARDS:
+<i>305</i>&nbsp;
+<b class="nc"><i>306</i>&nbsp;                if (this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER0)</b>
+<b class="nc"><i>307</i>&nbsp;                    this.clientView.showGodLikeChoice(this.clientModel.getGods());</b>
+<i>308</i>&nbsp;                else
+<b class="nc"><i>309</i>&nbsp;                    this.clientView.showMessage(&quot;Player God like is choosing cards&quot;);</b>
+<b class="nc"><i>310</i>&nbsp;                break;</b>
+<i>311</i>&nbsp;            case SELECT_CARD:
+<b class="nc"><i>312</i>&nbsp;                showGodSelect(message);</b>
+<b class="nc"><i>313</i>&nbsp;                break;</b>
+<i>314</i>&nbsp;            case GOD_PLAYER_CHOOSE_FIRST_PLAYER:
+<b class="nc"><i>315</i>&nbsp;                if(this.clientModel.getPlayerIndex() == PlayerIndex.PLAYER0)</b>
+<b class="nc"><i>316</i>&nbsp;                    this.clientView.showGodLikeChooseFirstPlayer();</b>
+<i>317</i>&nbsp;                else
+<b class="nc"><i>318</i>&nbsp;                    this.clientView.showMessage(&quot;Player God Like is choosing first player&quot;);</b>
+<b class="nc"><i>319</i>&nbsp;                break;</b>
+<i>320</i>&nbsp;            default:
+<i>321</i>&nbsp;                break;
+<i>322</i>&nbsp;        }
+<b class="fc"><i>323</i>&nbsp;    }</b>
+<i>324</i>&nbsp;
+<i>325</i>&nbsp;    @Override
+<i>326</i>&nbsp;    public void updateAction(ActionMessage message){
+<b class="fc"><i>327</i>&nbsp;        if (clientModel.isAmICurrentPlayer()){</b>
+<b class="fc"><i>328</i>&nbsp;            clientModel.setActionPositions(message);</b>
+<b class="fc"><i>329</i>&nbsp;            if(clientView instanceof CLI &amp;&amp; message.getClient() == clientModel.getPlayerIndex()){</b>
+<b class="nc"><i>330</i>&nbsp;                actionCont++;</b>
+<b class="nc"><i>331</i>&nbsp;                if(actionCont == actionMessageIndex.getActionNum(clientModel.getCurrentState())){</b>
+<b class="nc"><i>332</i>&nbsp;                    actionCont = 0;</b>
+<b class="nc"><i>333</i>&nbsp;                    clientView.receiveInputCli();</b>
+<i>334</i>&nbsp;                }
+<i>335</i>&nbsp;            }
+<i>336</i>&nbsp;        }
+<b class="fc"><i>337</i>&nbsp;    }</b>
+<i>338</i>&nbsp;
+<i>339</i>&nbsp;    @Override
+<i>340</i>&nbsp;    public void updateGodCards(GodLikeChoseMessage message){
+<b class="fc"><i>341</i>&nbsp;        for (String god : message.getGodNames()) {</b>
+<b class="fc"><i>342</i>&nbsp;            clientModel.addGodChosenByGodLike(god);</b>
+<b class="fc"><i>343</i>&nbsp;        }</b>
+<b class="fc"><i>344</i>&nbsp;    }</b>
+<i>345</i>&nbsp;
+<i>346</i>&nbsp;    @Override
+<i>347</i>&nbsp;    public void updateSelectedCard(PlayerSelectGodMessage message) {
+<b class="fc"><i>348</i>&nbsp;        clientModel.setGodChosenByPlayer(message);</b>
+<b class="fc"><i>349</i>&nbsp;        if(message.getClient() == clientModel.getPlayerIndex()){</b>
+<b class="fc"><i>350</i>&nbsp;            this.actionMessageIndex = new ActionMessageIndex(clientModel.getPowerGodState());</b>
+<i>351</i>&nbsp;        }
+<b class="fc"><i>352</i>&nbsp;    }</b>
+<i>353</i>&nbsp;
+<i>354</i>&nbsp;    @Override
+<i>355</i>&nbsp;    public void updatePutWorkerMessage(PutWorkerMessage message) {
+<b class="fc"><i>356</i>&nbsp;        clientModel.putWorker(message.getClient(), message.getPositionOne(), message.getPositionTwo());</b>
+<b class="fc"><i>357</i>&nbsp;    }</b>
+<i>358</i>&nbsp;
+<i>359</i>&nbsp;    @Override
+<i>360</i>&nbsp;    public void updateMoveMessage(MoveMessage message) {
+<b class="fc"><i>361</i>&nbsp;        this.clientModel.movePlayer(message);</b>
+<b class="fc"><i>362</i>&nbsp;    }</b>
+<i>363</i>&nbsp;
+<i>364</i>&nbsp;    @Override
+<i>365</i>&nbsp;    public void updateBuildMessage(BuildMessage message) {
+<b class="fc"><i>366</i>&nbsp;        clientModel.incrementLevel(message.getBuildPosition());</b>
+<b class="fc"><i>367</i>&nbsp;    }</b>
+<i>368</i>&nbsp;
+<i>369</i>&nbsp;    @Override
+<i>370</i>&nbsp;    public void updateBuildPowerMessage(BuildPowerMessage message) {
+<b class="fc"><i>371</i>&nbsp;        if (message.getBuildType() == BuildType.DOME) {</b>
+<b class="fc"><i>372</i>&nbsp;            clientModel.addDome(message.getBuildPosition());</b>
+<i>373</i>&nbsp;        } else
+<b class="fc"><i>374</i>&nbsp;            clientModel.incrementLevel(message.getBuildPosition());</b>
+<b class="fc"><i>375</i>&nbsp;    }</b>
+<i>376</i>&nbsp;
+<i>377</i>&nbsp;    @Override
+<i>378</i>&nbsp;    public void updateLoserMessage(LoserMessage message) {
+<b class="nc"><i>379</i>&nbsp;        clientModel.playerLose(message.getLoserPlayer());</b>
+<b class="nc"><i>380</i>&nbsp;    }</b>
+<i>381</i>&nbsp;
+<i>382</i>&nbsp;    @Override
+<i>383</i>&nbsp;    public void updateCloseConnectionMessage(CloseConnectionMessage message) {
+<b class="nc"><i>384</i>&nbsp;        if (!message.getClient().equals(this.clientModel.getPlayerIndex())</b>
+<b class="nc"><i>385</i>&nbsp;                &amp;&amp; this.clientModel.getCurrentState() != GameState.START_GAME) {</b>
+<b class="nc"><i>386</i>&nbsp;            this.clientView.showMessage(</b>
+<b class="nc"><i>387</i>&nbsp;                    &quot;Player &quot; + message.getClient() + &quot;has closed connection!&quot; + &quot;\nGame is finished!&quot;</b>
+<i>388</i>&nbsp;            );
+<i>389</i>&nbsp;        } else
+<b class="nc"><i>390</i>&nbsp;            this.clientView.showMessage(&quot;Maximum number of players exceeded, you cannot participate!&quot;);</b>
+<b class="nc"><i>391</i>&nbsp;    }</b>
+<i>392</i>&nbsp;
+<i>393</i>&nbsp;    public void setClientView(ClientView clientView) {
+<b class="fc"><i>394</i>&nbsp;        this.clientView = clientView;</b>
+<b class="fc"><i>395</i>&nbsp;    }</b>
+<i>396</i>&nbsp;
+<i>397</i>&nbsp;
+<i>398</i>&nbsp;    public void showGodSelect(Message message) {
+<b class="nc"><i>399</i>&nbsp;        if (this.clientModel.getPlayerIndex().equals(message.getClient())) {</b>
+<b class="nc"><i>400</i>&nbsp;            this.clientView.showGodToSelect(this.clientModel.getChosenGodsByGodLike());</b>
+<i>401</i>&nbsp;        }
+<i>402</i>&nbsp;        else{
+<b class="nc"><i>403</i>&nbsp;            this.clientView.showMessage(this.clientModel.getNickname(message.getClient()) + &quot; is choosing his god card&quot;);</b>
+<i>404</i>&nbsp;        }
+<b class="nc"><i>405</i>&nbsp;    }</b>
+<i>406</i>&nbsp;
+<i>407</i>&nbsp;    @Override
+<i>408</i>&nbsp;    public void showInformationMessage(InformationMessage message){
+<b class="nc"><i>409</i>&nbsp;        clientModel.notifyInformationMessage(message);</b>
+<b class="nc"><i>410</i>&nbsp;    }</b>
+<i>411</i>&nbsp;
+<i>412</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 15:42</div>
+</div>
+</body>
+</html>

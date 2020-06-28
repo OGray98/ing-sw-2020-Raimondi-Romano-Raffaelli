@@ -1,0 +1,72 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ClientConnection</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.network</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ClientConnection (it.polimi.ingsw.network)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ClientConnection</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.network;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.message.MessageToClient;
+<i>4</i>&nbsp;import it.polimi.ingsw.message.MessageToServer;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.player.PlayerIndex;
+<i>6</i>&nbsp;import it.polimi.ingsw.observer.Observer;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.io.IOException;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public interface ClientConnection {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    void closeConnection();
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    void addObserver(Observer&lt;MessageToServer&gt; observer);
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    void asyncSend(MessageToClient message);
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    void setClientIndex(PlayerIndex clientIndex);
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    boolean isConnected();
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    void ping(PlayerIndex player) throws IOException;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    void forceDisconnection();
+<i>25</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 15:42</div>
+</div>
+</body>
+</html>

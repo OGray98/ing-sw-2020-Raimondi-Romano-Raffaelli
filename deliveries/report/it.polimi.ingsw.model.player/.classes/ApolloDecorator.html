@@ -1,0 +1,154 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ApolloDecorator</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.player</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ApolloDecorator (it.polimi.ingsw.model.player)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ApolloDecorator</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (21/ 21)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.player;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.GameState;
+<i>4</i>&nbsp;import it.polimi.ingsw.exception.InvalidPositionException;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.board.BoardChange;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.board.Cell;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.board.Position;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import java.util.ArrayList;
+<i>10</i>&nbsp;import java.util.List;
+<i>11</i>&nbsp;import java.util.Map;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;public class ApolloDecorator extends PlayerMoveDecorator {
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    private PlayerIndex playerOpponent;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    public ApolloDecorator() {
+<i>20</i>&nbsp;
+<b class="fc"><i>21</i>&nbsp;       super(&quot;Apollo&quot;, &quot;Your Worker may move into an opponent Worker’s space by forcing their Worker to the space yours just vacated.&quot;, GameState.MOVE, GameState.BUILD);</b>
+<i>22</i>&nbsp;
+<b class="fc"><i>23</i>&nbsp;    }</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    public void setChosenGod(Boolean condition) {
+<b class="fc"><i>27</i>&nbsp;        super.setChosenGod(condition);</b>
+<b class="fc"><i>28</i>&nbsp;    }</b>
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    @Override
+<i>31</i>&nbsp;    public int getPowerListDimension() {
+<b class="fc"><i>32</i>&nbsp;        return 1;</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    @Override
+<i>36</i>&nbsp;    public boolean canMoveWithPowers(Map&lt;Position, PlayerIndex&gt; adjacentPlayerList, List&lt;Cell&gt; moveCell, Cell occupiedCell, boolean cantGoUp){
+<b class="fc"><i>37</i>&nbsp;        this.setStartingWorkerSituation(occupiedCell, cantGoUp);</b>
+<i>38</i>&nbsp;        //if(moveCell.size() &gt; 1) throw new IllegalArgumentException(&quot;Wrong moveCell list for this God&quot;);
+<b class="fc"><i>39</i>&nbsp;        return canMove(adjacentPlayerList, moveCell.get(0)) || this.canUsePower(moveCell, adjacentPlayerList);</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    @Override
+<i>43</i>&nbsp;    public boolean canUsePower(List&lt;Cell&gt; adjacentList, Map&lt;Position, PlayerIndex&gt; adjacentPlayerList) {
+<b class="fc"><i>44</i>&nbsp;        if(!super.canMove(adjacentPlayerList,adjacentList.get(0))) {</b>
+<b class="fc"><i>45</i>&nbsp;            for (Position p : adjacentPlayerList.keySet()) {</b>
+<b class="fc"><i>46</i>&nbsp;                if((p.equals(adjacentList.get(0).getPosition())) &amp;&amp; ((adjacentList.get(0).getLevel() - super.getCellOccupied().getLevel()) &lt;= 1)){</b>
+<b class="fc"><i>47</i>&nbsp;                    if(!(adjacentPlayerList.get(p).equals(super.getPlayerNum()))){</b>
+<b class="fc"><i>48</i>&nbsp;                        if (adjacentList.get(0).getPosition().equals(p)) {</b>
+<b class="fc"><i>49</i>&nbsp;                            this.playerOpponent = adjacentPlayerList.get(p);</b>
+<b class="fc"><i>50</i>&nbsp;                                return true;}</b>
+<i>51</i>&nbsp;                    }
+<i>52</i>&nbsp;                }
+<b class="fc"><i>53</i>&nbsp;            }</b>
+<i>54</i>&nbsp;        }
+<b class="fc"><i>55</i>&nbsp;        return false;</b>
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    /**
+<i>59</i>&nbsp;     * Implementation of Apollo power
+<i>60</i>&nbsp;     * The BoardChange returned contains infos to update Apollo worker and enemy worker
+<i>61</i>&nbsp;     * */
+<i>62</i>&nbsp;    @Override
+<i>63</i>&nbsp;    public BoardChange usePower(Cell powerCell) {
+<b class="fc"><i>64</i>&nbsp;        Position startPosition = super.getCellOccupied().getPosition();</b>
+<b class="fc"><i>65</i>&nbsp;        BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(),powerCell.getPosition(),super.getPlayerNum());</b>
+<b class="fc"><i>66</i>&nbsp;        boardChange.addPlayerChanges(powerCell.getPosition(),startPosition,this.playerOpponent);</b>
+<b class="fc"><i>67</i>&nbsp;        super.move(powerCell);</b>
+<b class="fc"><i>68</i>&nbsp;        return boardChange;</b>
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    }
+<i>71</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 15:42</div>
+</div>
+</body>
+</html>

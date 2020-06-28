@@ -1,0 +1,112 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: UsePowerMessage</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.message</a> ]
+</div>
+
+<h1>Coverage Summary for Class: UsePowerMessage (it.polimi.ingsw.message)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UsePowerMessage</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.message;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.ControllableByClientMessage;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.board.Position;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.player.PlayerIndex;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * Message sent from player when he want to use a power (not power build)
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;public class UsePowerMessage extends TwoPositionMessage implements MessageToServer {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    public UsePowerMessage(PlayerIndex client, Position workerPos, Position powerPos) {
+<b class="fc"><i>13</i>&nbsp;        super(client, TypeMessage.USE_POWER, workerPos, powerPos);</b>
+<b class="fc"><i>14</i>&nbsp;    }</b>
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    public Position getWorkerPosition() {
+<b class="fc"><i>17</i>&nbsp;        return super.getPositions().get(0);</b>
+<i>18</i>&nbsp;    }
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    public Position getPowerPosition() {
+<b class="fc"><i>21</i>&nbsp;        return super.getPositions().get(1);</b>
+<i>22</i>&nbsp;    }
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    @Override
+<i>25</i>&nbsp;    public void execute(ControllableByClientMessage controllable) throws NullPointerException {
+<b class="fc"><i>26</i>&nbsp;        if (controllable == null) throw new NullPointerException(&quot;controllable&quot;);</b>
+<b class="fc"><i>27</i>&nbsp;        controllable.handleUsePowerMessage(this);</b>
+<b class="fc"><i>28</i>&nbsp;    }</b>
+<i>29</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 15:42</div>
+</div>
+</body>
+</html>

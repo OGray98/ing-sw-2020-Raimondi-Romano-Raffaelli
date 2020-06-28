@@ -1,0 +1,826 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Game</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Game (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Game</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98,3%
+  </span>
+  <span class="absValue">
+    (58/ 59)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98,7%
+  </span>
+  <span class="absValue">
+    (294/ 298)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.GameState;
+<i>4</i>&nbsp;import it.polimi.ingsw.exception.*;
+<i>5</i>&nbsp;import it.polimi.ingsw.message.*;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.board.*;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.deck.CardInterface;
+<i>8</i>&nbsp;import it.polimi.ingsw.model.deck.Deck;
+<i>9</i>&nbsp;import it.polimi.ingsw.model.player.Player;
+<i>10</i>&nbsp;import it.polimi.ingsw.model.player.PlayerIndex;
+<i>11</i>&nbsp;import it.polimi.ingsw.model.player.PlayerInterface;
+<i>12</i>&nbsp;import it.polimi.ingsw.observer.Observable;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;import java.util.*;
+<i>15</i>&nbsp;import java.util.stream.Collectors;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;/**
+<i>18</i>&nbsp; * Game contains every object of model
+<i>19</i>&nbsp; */
+<i>20</i>&nbsp;public class Game extends Observable&lt;MessageToClient&gt; {
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    private final List&lt;PlayerInterface&gt; players;
+<i>23</i>&nbsp;    private final Board board;
+<i>24</i>&nbsp;    private final Deck deck;
+<i>25</i>&nbsp;    private int numPlayer;
+<i>26</i>&nbsp;    private PlayerInterface currentPlayer;
+<i>27</i>&nbsp;    private Position currentPosition;
+<i>28</i>&nbsp;    private int contCurrentPlayer;
+<i>29</i>&nbsp;    private boolean cantGoUp;
+<i>30</i>&nbsp;    private int contEffect;
+<i>31</i>&nbsp;    private int contCurrentWorker;
+<i>32</i>&nbsp;    private GameState currentState;
+<i>33</i>&nbsp;
+<b class="fc"><i>34</i>&nbsp;    public Game() throws IllegalArgumentException {</b>
+<i>35</i>&nbsp;
+<b class="fc"><i>36</i>&nbsp;        this.players = new ArrayList&lt;&gt;(2);</b>
+<b class="fc"><i>37</i>&nbsp;        this.board = new Board();</b>
+<b class="fc"><i>38</i>&nbsp;        this.deck = new Deck();</b>
+<b class="fc"><i>39</i>&nbsp;        this.numPlayer = 3;</b>
+<b class="fc"><i>40</i>&nbsp;        this.cantGoUp = false;</b>
+<b class="fc"><i>41</i>&nbsp;        this.contEffect = 0;</b>
+<b class="fc"><i>42</i>&nbsp;        this.contCurrentWorker = 0;</b>
+<b class="fc"><i>43</i>&nbsp;        this.contCurrentPlayer = 0;</b>
+<b class="fc"><i>44</i>&nbsp;        this.currentState = GameState.START_GAME;</b>
+<b class="fc"><i>45</i>&nbsp;    }</b>
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    /**
+<i>48</i>&nbsp;     * @return number of players
+<i>49</i>&nbsp;     */
+<i>50</i>&nbsp;    public int getNumPlayer() {
+<b class="fc"><i>51</i>&nbsp;        return numPlayer;</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    public void setNumPlayer(boolean threePlayer) {
+<b class="fc"><i>57</i>&nbsp;        this.numPlayer = threePlayer ? 3 : 2;</b>
+<b class="fc"><i>58</i>&nbsp;        this.deck.setPlayersNumber(threePlayer);</b>
+<b class="fc"><i>59</i>&nbsp;    }</b>
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    public int getNumGamingPlayer(){
+<b class="fc"><i>62</i>&nbsp;        return this.players.size();</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    /**
+<i>67</i>&nbsp;     * Add a Player in players
+<i>68</i>&nbsp;     *
+<i>69</i>&nbsp;     * @param index    PlayerIndex of new Player
+<i>70</i>&nbsp;     * @param nickname nickname of new Player
+<i>71</i>&nbsp;     * @throws NullPointerException if nickname is null
+<i>72</i>&nbsp;     * @throws MaxPlayersException  if there already is max number of Player
+<i>73</i>&nbsp;     */
+<i>74</i>&nbsp;    public void addPlayer(PlayerIndex index, String nickname) throws NullPointerException, MaxPlayersException {
+<b class="fc"><i>75</i>&nbsp;        if (nickname == null)</b>
+<b class="fc"><i>76</i>&nbsp;            throw new NullPointerException(&quot;nickname&quot;);</b>
+<b class="fc"><i>77</i>&nbsp;        if (this.players.size() == this.numPlayer)</b>
+<b class="fc"><i>78</i>&nbsp;            throw new MaxPlayersException();</b>
+<b class="fc"><i>79</i>&nbsp;        if (this.numPlayer == 2 &amp;&amp; index == PlayerIndex.PLAYER2)</b>
+<b class="fc"><i>80</i>&nbsp;            throw new IllegalArgumentException(&quot;You can&#39;t have PLAYER2 in two players game&quot;);</b>
+<i>81</i>&nbsp;
+<b class="fc"><i>82</i>&nbsp;        this.players.add(new Player(nickname, index));</b>
+<b class="fc"><i>83</i>&nbsp;        notify(new NicknameMessage(index, nickname));</b>
+<i>84</i>&nbsp;
+<b class="fc"><i>85</i>&nbsp;        if (this.players.size() == this.numPlayer) {</b>
+<b class="fc"><i>86</i>&nbsp;            this.players.sort(Comparator.comparing(PlayerInterface::getPlayerNum));</b>
+<b class="fc"><i>87</i>&nbsp;            this.contCurrentPlayer = 0;</b>
+<b class="fc"><i>88</i>&nbsp;            this.currentPlayer = players.get(0);</b>
+<b class="fc"><i>89</i>&nbsp;            this.cantGoUp = false;</b>
+<b class="fc"><i>90</i>&nbsp;            this.contEffect = 0;</b>
+<b class="fc"><i>91</i>&nbsp;            this.contCurrentWorker = 0;</b>
+<i>92</i>&nbsp;        }
+<i>93</i>&nbsp;
+<b class="fc"><i>94</i>&nbsp;    }</b>
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    /* Method that return a map with of all cards in deck
+<i>98</i>&nbsp;     */
+<i>99</i>&nbsp;    public Map&lt;String, String&gt; getCards() {
+<b class="fc"><i>100</i>&nbsp;        return deck.getGodCards().stream()</b>
+<b class="fc"><i>101</i>&nbsp;                .collect(Collectors.toMap(</b>
+<i>102</i>&nbsp;                        CardInterface::getGodName,
+<i>103</i>&nbsp;                        CardInterface::getGodDescription,
+<b class="nc"><i>104</i>&nbsp;                        (a, b) -&gt; b,</b>
+<i>105</i>&nbsp;                        HashMap::new
+<i>106</i>&nbsp;                ));
+<i>107</i>&nbsp;    }
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    /*Method that returns the powerState of the current player, to check if he is in a state where usePower is allowed*/
+<i>110</i>&nbsp;    public GameState getCurrentPlayerPowerState() {
+<b class="fc"><i>111</i>&nbsp;        return currentPlayer.getPowerState();</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;    /*Method that returns the nextState of the current player after he has used a power*/
+<i>115</i>&nbsp;    public GameState getCurrentPlayerNextState() {
+<b class="fc"><i>116</i>&nbsp;        return currentPlayer.getNextState();</b>
+<i>117</i>&nbsp;    }
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;    /*Method that returns the name of the god chosen by the player*/
+<i>120</i>&nbsp;    public String getCurrentPlayerGodName() {
+<b class="fc"><i>121</i>&nbsp;        return currentPlayer.getGodName();</b>
+<i>122</i>&nbsp;    }
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;    public GameState getCurrentState() {
+<b class="fc"><i>125</i>&nbsp;        return this.currentState;</b>
+<i>126</i>&nbsp;    }
+<i>127</i>&nbsp;
+<i>128</i>&nbsp;
+<i>129</i>&nbsp;    /**
+<i>130</i>&nbsp;     * Set the current state of Game. Send notify to remote view if
+<i>131</i>&nbsp;     * needed.
+<i>132</i>&nbsp;     *
+<i>133</i>&nbsp;     * @param nextState state to set.
+<i>134</i>&nbsp;     */
+<i>135</i>&nbsp;    public void setCurrentState(GameState nextState) {
+<b class="fc"><i>136</i>&nbsp;        this.currentState = nextState;</b>
+<b class="fc"><i>137</i>&nbsp;        notify(new UpdateStateMessage(currentPlayer.getPlayerNum(), nextState));</b>
+<b class="fc"><i>138</i>&nbsp;        if (this.currentState == GameState.MOVE || this.currentState == GameState.INITPOWER)</b>
+<b class="fc"><i>139</i>&nbsp;            sendPossibleActionMoveState();</b>
+<b class="fc"><i>140</i>&nbsp;        else if (this.currentState == GameState.BUILD || this.currentState == GameState.SECOND_MOVE)</b>
+<b class="fc"><i>141</i>&nbsp;            sendPossibleActionBuildState();</b>
+<b class="fc"><i>142</i>&nbsp;        if (this.currentPlayer.getPowerState() == this.currentState)</b>
+<b class="fc"><i>143</i>&nbsp;            sendPossibleActionPowerState();</b>
+<b class="fc"><i>144</i>&nbsp;    }</b>
+<i>145</i>&nbsp;
+<i>146</i>&nbsp;
+<i>147</i>&nbsp;    /**
+<i>148</i>&nbsp;     * Notify to remoteView of currentPlayer every possible action that currentPlayer
+<i>149</i>&nbsp;     * can do when currentState is GameState.MOVE
+<i>150</i>&nbsp;     *
+<i>151</i>&nbsp;     * @throws InvalidStateException if currentState isn&#39;t GameState.MOVE
+<i>152</i>&nbsp;     */
+<i>153</i>&nbsp;    public void sendPossibleActionMoveState() throws InvalidStateException {
+<b class="fc"><i>154</i>&nbsp;        if (this.currentState != GameState.MOVE &amp;&amp; this.currentState != GameState.INITPOWER)</b>
+<b class="nc"><i>155</i>&nbsp;            throw new InvalidStateException(GameState.MOVE, this.currentState);</b>
+<i>156</i>&nbsp;
+<i>157</i>&nbsp;        //Send position where you can move
+<b class="fc"><i>158</i>&nbsp;        if (this.currentState == GameState.MOVE) {</b>
+<i>159</i>&nbsp;
+<b class="fc"><i>160</i>&nbsp;            this.board.workerPositions(currentPlayer.getPlayerNum())</b>
+<b class="fc"><i>161</i>&nbsp;                    .forEach(</b>
+<i>162</i>&nbsp;                            pos -&gt; {
+<b class="fc"><i>163</i>&nbsp;                                currentPlayer.setStartingWorkerSituation(board.getCell(pos), currentPlayer.getCantGoUp());</b>
+<b class="fc"><i>164</i>&nbsp;                                notify(</b>
+<i>165</i>&nbsp;                                        new ActionMessage(
+<b class="fc"><i>166</i>&nbsp;                                                currentPlayer.getPlayerNum(),</b>
+<i>167</i>&nbsp;                                                pos,
+<b class="fc"><i>168</i>&nbsp;                                                board.getAdjacentCells(pos).stream()</b>
+<b class="fc"><i>169</i>&nbsp;                                                        .filter(cell -&gt; canMoveWorker(cell.getPosition()))</b>
+<b class="fc"><i>170</i>&nbsp;                                                        .map(Cell::getPosition)</b>
+<b class="fc"><i>171</i>&nbsp;                                                        .collect(Collectors.toList()),</b>
+<i>172</i>&nbsp;                                                ActionType.MOVE
+<i>173</i>&nbsp;                                        )
+<i>174</i>&nbsp;                                );
+<b class="fc"><i>175</i>&nbsp;                            }</b>
+<i>176</i>&nbsp;                    );
+<i>177</i>&nbsp;        } else {
+<b class="fc"><i>178</i>&nbsp;            if (board.getAdjacentCells(currentPosition).stream()</b>
+<b class="fc"><i>179</i>&nbsp;                    .noneMatch(cell -&gt; canMoveWorker(cell.getPosition()))) {</b>
+<b class="fc"><i>180</i>&nbsp;                this.removeCurrentPlayer();</b>
+<b class="fc"><i>181</i>&nbsp;                if(players.size() == 1){</b>
+<b class="fc"><i>182</i>&nbsp;                    notify(new OkMessage(currentPlayer.getPlayerNum(), TypeMessage.WINNER, currentPlayer.getNickname() + &quot; has won the game!&quot;));</b>
+<b class="fc"><i>183</i>&nbsp;                    setCurrentState(GameState.MATCH_ENDED);</b>
+<i>184</i>&nbsp;                }
+<i>185</i>&nbsp;            } else {
+<b class="fc"><i>186</i>&nbsp;                notify(</b>
+<i>187</i>&nbsp;                        new ActionMessage(
+<b class="fc"><i>188</i>&nbsp;                                currentPlayer.getPlayerNum(),</b>
+<i>189</i>&nbsp;                                currentPosition,
+<b class="fc"><i>190</i>&nbsp;                                board.getAdjacentCells(currentPosition).stream()</b>
+<b class="fc"><i>191</i>&nbsp;                                        .filter(cell -&gt; canMoveWorker(cell.getPosition()))</b>
+<b class="fc"><i>192</i>&nbsp;                                        .map(Cell::getPosition)</b>
+<b class="fc"><i>193</i>&nbsp;                                        .collect(Collectors.toList()),</b>
+<i>194</i>&nbsp;                                ActionType.MOVE
+<i>195</i>&nbsp;                        )
+<i>196</i>&nbsp;                );
+<i>197</i>&nbsp;            }
+<i>198</i>&nbsp;        }
+<i>199</i>&nbsp;
+<b class="fc"><i>200</i>&nbsp;    }</b>
+<i>201</i>&nbsp;
+<i>202</i>&nbsp;    /**
+<i>203</i>&nbsp;     * Notify to remoteView of currentPlayer every possible action that currentPlayer
+<i>204</i>&nbsp;     * can do when currentState is GameState.BUILD
+<i>205</i>&nbsp;     *
+<i>206</i>&nbsp;     * @throws InvalidStateException if currentState isn&#39;t GameState.BUILD
+<i>207</i>&nbsp;     */
+<i>208</i>&nbsp;    public void sendPossibleActionBuildState() throws InvalidStateException {
+<b class="fc"><i>209</i>&nbsp;        if (this.currentState != GameState.BUILD &amp;&amp; this.currentState != GameState.SECOND_MOVE)</b>
+<b class="nc"><i>210</i>&nbsp;            throw new InvalidStateException(GameState.MOVE, this.currentState);</b>
+<i>211</i>&nbsp;
+<i>212</i>&nbsp;        //Send position where you can move
+<b class="fc"><i>213</i>&nbsp;        notify(</b>
+<i>214</i>&nbsp;                new ActionMessage(
+<b class="fc"><i>215</i>&nbsp;                        currentPlayer.getPlayerNum(),</b>
+<i>216</i>&nbsp;                        currentPosition,
+<b class="fc"><i>217</i>&nbsp;                        board.getAdjacentCells(currentPosition).stream()</b>
+<b class="fc"><i>218</i>&nbsp;                                .filter(cell -&gt; canBuild(cell.getPosition()))</b>
+<b class="fc"><i>219</i>&nbsp;                                .map(Cell::getPosition)</b>
+<b class="fc"><i>220</i>&nbsp;                                .collect(Collectors.toList()),</b>
+<i>221</i>&nbsp;                        ActionType.BUILD
+<i>222</i>&nbsp;                )
+<i>223</i>&nbsp;        );
+<b class="fc"><i>224</i>&nbsp;    }</b>
+<i>225</i>&nbsp;
+<i>226</i>&nbsp;    /**
+<i>227</i>&nbsp;     * Notify to remoteView of currentPlayer every possible Position where currentPlayer
+<i>228</i>&nbsp;     * can use his power
+<i>229</i>&nbsp;     *
+<i>230</i>&nbsp;     * @throws InvalidStateException if currentState isn&#39;t GameState.MOVE
+<i>231</i>&nbsp;     */
+<i>232</i>&nbsp;    public void sendPossibleActionPowerState() throws InvalidStateException {
+<i>233</i>&nbsp;
+<b class="fc"><i>234</i>&nbsp;        if (this.currentState == GameState.MOVE) {</b>
+<b class="fc"><i>235</i>&nbsp;            this.board.workerPositions(currentPlayer.getPlayerNum())</b>
+<b class="fc"><i>236</i>&nbsp;                    .forEach(</b>
+<i>237</i>&nbsp;                            pos -&gt; {
+<b class="fc"><i>238</i>&nbsp;                                currentPlayer.setStartingWorkerSituation(board.getCell(pos), cantGoUp);</b>
+<b class="fc"><i>239</i>&nbsp;                                notify(</b>
+<i>240</i>&nbsp;                                        new ActionMessage(
+<b class="fc"><i>241</i>&nbsp;                                                currentPlayer.getPlayerNum(),</b>
+<i>242</i>&nbsp;                                                pos,
+<b class="fc"><i>243</i>&nbsp;                                                board.getAdjacentCells(pos).stream()</b>
+<b class="fc"><i>244</i>&nbsp;                                                        .filter(cell -&gt; canUsePowerWorker(cell.getPosition()))</b>
+<b class="fc"><i>245</i>&nbsp;                                                        .map(Cell::getPosition)</b>
+<b class="fc"><i>246</i>&nbsp;                                                        .collect(Collectors.toList()),</b>
+<i>247</i>&nbsp;                                                ActionType.POWER
+<i>248</i>&nbsp;                                        )
+<i>249</i>&nbsp;                                );
+<b class="fc"><i>250</i>&nbsp;                            }</b>
+<i>251</i>&nbsp;                    );
+<i>252</i>&nbsp;        } else {
+<b class="fc"><i>253</i>&nbsp;            notify(</b>
+<i>254</i>&nbsp;                    new ActionMessage(
+<b class="fc"><i>255</i>&nbsp;                            currentPlayer.getPlayerNum(),</b>
+<i>256</i>&nbsp;                            currentPosition,
+<b class="fc"><i>257</i>&nbsp;                            board.getAdjacentAndCentralCells(currentPosition).stream()</b>
+<b class="fc"><i>258</i>&nbsp;                                    .filter(cell -&gt; canUsePowerWorker(cell.getPosition()))</b>
+<b class="fc"><i>259</i>&nbsp;                                    .map(Cell::getPosition)</b>
+<b class="fc"><i>260</i>&nbsp;                                    .collect(Collectors.toList()),</b>
+<i>261</i>&nbsp;                            ActionType.POWER
+<i>262</i>&nbsp;                    )
+<i>263</i>&nbsp;            );
+<i>264</i>&nbsp;        }
+<b class="fc"><i>265</i>&nbsp;    }</b>
+<i>266</i>&nbsp;
+<i>267</i>&nbsp;    public String getNickname(PlayerIndex index) {
+<b class="fc"><i>268</i>&nbsp;        List&lt;PlayerInterface&gt; nickname = players.stream()</b>
+<b class="fc"><i>269</i>&nbsp;                .filter(</b>
+<b class="fc"><i>270</i>&nbsp;                        player -&gt; player.getPlayerNum().equals(index)</b>
+<i>271</i>&nbsp;                )
+<b class="fc"><i>272</i>&nbsp;                .collect(Collectors.toList());</b>
+<b class="fc"><i>273</i>&nbsp;        return nickname.get(0).getNickname();</b>
+<i>274</i>&nbsp;    }
+<i>275</i>&nbsp;
+<i>276</i>&nbsp;    /**
+<i>277</i>&nbsp;     * Method that set the chosen cards in deck.
+<i>278</i>&nbsp;     *
+<i>279</i>&nbsp;     * @param godNames is required as a not null List (@String) which contains the name of the god chosen by player god like
+<i>280</i>&nbsp;     * @throws IllegalArgumentException if List (@String) contains equal values.
+<i>281</i>&nbsp;     */
+<i>282</i>&nbsp;    public void setGodsChosenByGodLike(List&lt;String&gt; godNames) throws NullPointerException, IllegalArgumentException {
+<b class="fc"><i>283</i>&nbsp;        if (godNames == null)</b>
+<b class="fc"><i>284</i>&nbsp;            throw new NullPointerException(&quot;godNames&quot;);</b>
+<b class="fc"><i>285</i>&nbsp;        for (int i = 0; i &lt; godNames.size(); i++) {</b>
+<b class="fc"><i>286</i>&nbsp;            for (int j = 0; j &lt; godNames.size(); j++) {</b>
+<b class="fc"><i>287</i>&nbsp;                if (j != i &amp;&amp; godNames.get(i).equals(godNames.get(j)))</b>
+<b class="fc"><i>288</i>&nbsp;                    throw new IllegalArgumentException(&quot;There are two element with name &quot; + godNames.get(i));</b>
+<i>289</i>&nbsp;            }
+<i>290</i>&nbsp;        }
+<b class="fc"><i>291</i>&nbsp;        deck.setChosenGodCards(godNames);</b>
+<b class="fc"><i>292</i>&nbsp;        notify(new GodLikeChoseMessage(currentPlayer.getPlayerNum(), godNames));</b>
+<i>293</i>&nbsp;
+<i>294</i>&nbsp;        //The player who start to chose the card is the first after godLike
+<b class="fc"><i>295</i>&nbsp;        contCurrentPlayer = 1;</b>
+<b class="fc"><i>296</i>&nbsp;        currentPlayer = players.get(contCurrentPlayer);</b>
+<b class="fc"><i>297</i>&nbsp;    }</b>
+<i>298</i>&nbsp;
+<i>299</i>&nbsp;    /**
+<i>300</i>&nbsp;     *  Method that decorate this.currentPlayer with his divinity.
+<i>301</i>&nbsp;     * Modifies currentPlayer and contCurrentPlayer
+<i>302</i>&nbsp;     * @param godName is required as a not null String which contains the god&#39;s name
+<i>303</i>&nbsp;     */
+<i>304</i>&nbsp;    public void setPlayerCard(String godName) throws NullPointerException, WrongGodNameException {
+<b class="fc"><i>305</i>&nbsp;        if (godName == null)</b>
+<b class="fc"><i>306</i>&nbsp;            throw new NullPointerException(&quot;godName&quot;);</b>
+<i>307</i>&nbsp;
+<b class="fc"><i>308</i>&nbsp;        if (deck.getChosenGodCards().stream().noneMatch(card -&gt; card.getGodName().equals(godName)))</b>
+<b class="fc"><i>309</i>&nbsp;            throw new NotSelectedGodException(godName);</b>
+<i>310</i>&nbsp;
+<b class="fc"><i>311</i>&nbsp;        CardInterface card = deck.getGodCard(godName);</b>
+<b class="fc"><i>312</i>&nbsp;        currentPlayer = card.setPlayer(currentPlayer);</b>
+<b class="fc"><i>313</i>&nbsp;        players.set(contCurrentPlayer, currentPlayer);</b>
+<b class="fc"><i>314</i>&nbsp;        notify(new PlayerSelectGodMessage(currentPlayer.getPlayerNum(), godName));</b>
+<i>315</i>&nbsp;
+<b class="fc"><i>316</i>&nbsp;        if (!currentPlayer.getPlayerNum().equals(players.get(0).getPlayerNum()))</b>
+<b class="fc"><i>317</i>&nbsp;            updateCurrentPlayer();</b>
+<b class="fc"><i>318</i>&nbsp;    }</b>
+<i>319</i>&nbsp;
+<i>320</i>&nbsp;    /**
+<i>321</i>&nbsp;     * Method which set first player and ordinate the list this.players
+<i>322</i>&nbsp;     *
+<i>323</i>&nbsp;     * @param playerIndex is the PlayerIndex of the first player
+<i>324</i>&nbsp;     */
+<i>325</i>&nbsp;    public void chooseFirstPlayer(PlayerIndex playerIndex) {
+<b class="fc"><i>326</i>&nbsp;        for(int i = playerIndex.ordinal();i&gt;0;i--){</b>
+<b class="fc"><i>327</i>&nbsp;            updateCurrentPlayer();</b>
+<i>328</i>&nbsp;        }
+<b class="fc"><i>329</i>&nbsp;        Collections.rotate(players, -playerIndex.ordinal());</b>
+<b class="fc"><i>330</i>&nbsp;        contCurrentPlayer = 0;</b>
+<b class="fc"><i>331</i>&nbsp;        currentPlayer = players.get(contCurrentPlayer);</b>
+<i>332</i>&nbsp;        //notify(new GodLikeChooseFirstPlayerMessage(currentPlayer.getPlayerNum(), playerIndex));
+<b class="fc"><i>333</i>&nbsp;    }</b>
+<i>334</i>&nbsp;
+<i>335</i>&nbsp;    public boolean canPutWorker(Position putPosition) throws NullPointerException {
+<b class="fc"><i>336</i>&nbsp;        if (putPosition == null)</b>
+<b class="fc"><i>337</i>&nbsp;            throw new NullPointerException(&quot;putPosition&quot;);</b>
+<b class="fc"><i>338</i>&nbsp;        return board.isFreeCell(putPosition);</b>
+<i>339</i>&nbsp;    }
+<i>340</i>&nbsp;
+<i>341</i>&nbsp;
+<i>342</i>&nbsp;    /**
+<i>343</i>&nbsp;     * Method that put a worker of this.currentPlayer in board
+<i>344</i>&nbsp;     *
+<i>345</i>&nbsp;     * @param putPosition is a not null Position where put the worker
+<i>346</i>&nbsp;     */
+<i>347</i>&nbsp;    public void putWorker(Position putPosition) throws NullPointerException {
+<b class="fc"><i>348</i>&nbsp;        if (putPosition == null)</b>
+<b class="fc"><i>349</i>&nbsp;            throw new NullPointerException(&quot;putPosition&quot;);</b>
+<b class="fc"><i>350</i>&nbsp;        board.putWorker(putPosition, currentPlayer.getPlayerNum());</b>
+<b class="fc"><i>351</i>&nbsp;        currentPlayer.setStartingWorkerSituation(board.getCell(putPosition), false);</b>
+<b class="fc"><i>352</i>&nbsp;        contCurrentWorker++;</b>
+<b class="fc"><i>353</i>&nbsp;        if (contCurrentWorker == 2) {</b>
+<b class="fc"><i>354</i>&nbsp;            List&lt;Position&gt; workersPos = board.workerPositions(currentPlayer.getPlayerNum());</b>
+<b class="fc"><i>355</i>&nbsp;            notify(new PutWorkerMessage(currentPlayer.getPlayerNum(), workersPos.get(0), workersPos.get(1)));</b>
+<b class="fc"><i>356</i>&nbsp;            contCurrentWorker = 0;</b>
+<b class="fc"><i>357</i>&nbsp;            updateCurrentPlayer();</b>
+<i>358</i>&nbsp;        }
+<i>359</i>&nbsp;
+<b class="fc"><i>360</i>&nbsp;    }</b>
+<i>361</i>&nbsp;
+<i>362</i>&nbsp;
+<i>363</i>&nbsp;    /**
+<i>364</i>&nbsp;     *  Method calls a turn start and do the setup of turn.
+<i>365</i>&nbsp;     * Modify contCurrentPlayer, currentPlayer, contEffect and currentPosition.
+<i>366</i>&nbsp;     */
+<i>367</i>&nbsp;    public void startTurn() {
+<b class="fc"><i>368</i>&nbsp;        if (contEffect &gt; 0) {</b>
+<b class="fc"><i>369</i>&nbsp;            contEffect--;</b>
+<b class="fc"><i>370</i>&nbsp;            if (contEffect == 0)</b>
+<b class="fc"><i>371</i>&nbsp;                cantGoUp = false;</b>
+<i>372</i>&nbsp;        }
+<b class="fc"><i>373</i>&nbsp;    }</b>
+<i>374</i>&nbsp;
+<i>375</i>&nbsp;    public List&lt;Position&gt; getCurrentPlayerWorkersPosition() {
+<b class="fc"><i>376</i>&nbsp;        return this.board.workerPositions(currentPlayer.getPlayerNum());</b>
+<i>377</i>&nbsp;    }
+<i>378</i>&nbsp;
+<i>379</i>&nbsp;
+<i>380</i>&nbsp;    /**
+<i>381</i>&nbsp;     * @return List which contains position of currentPlayer&#39;s worker able to move
+<i>382</i>&nbsp;     */
+<i>383</i>&nbsp;    public List&lt;Position&gt; canPlayerMoveAWorker() {
+<b class="fc"><i>384</i>&nbsp;        List&lt;Position&gt; workersPos = board.workerPositions(currentPlayer.getPlayerNum());</b>
+<i>385</i>&nbsp;
+<b class="fc"><i>386</i>&nbsp;        return workersPos.stream()</b>
+<b class="fc"><i>387</i>&nbsp;                .filter(workerPos -&gt; {</b>
+<b class="fc"><i>388</i>&nbsp;                            List&lt;Cell&gt; adjacentCells = board.getAdjacentCells(workerPos);</b>
+<b class="fc"><i>389</i>&nbsp;                            return adjacentCells.stream()</b>
+<b class="fc"><i>390</i>&nbsp;                                    .anyMatch(cell -&gt; currentPlayer.canMoveWithPowers(</b>
+<i>391</i>&nbsp;                                            //board.getPlayersOccupations(new ArrayList&lt;&gt;(List.of(cell.getPosition()))),
+<b class="fc"><i>392</i>&nbsp;                                            this.getPowerPlayerOccupations(cell.getPosition()),</b>
+<b class="fc"><i>393</i>&nbsp;                                            this.getPowerCellList(cell.getPosition()),</b>
+<b class="fc"><i>394</i>&nbsp;                                            board.getCell(workerPos),</b>
+<i>395</i>&nbsp;                                            this.cantGoUp
+<i>396</i>&nbsp;                                    ));
+<i>397</i>&nbsp;                        }
+<i>398</i>&nbsp;                )
+<b class="fc"><i>399</i>&nbsp;                .collect(Collectors.toList());</b>
+<i>400</i>&nbsp;    }
+<i>401</i>&nbsp;
+<i>402</i>&nbsp;    /**
+<i>403</i>&nbsp;     *  Method that do initial operation for player before call his method
+<i>404</i>&nbsp;     *  In particular it sets this.currentPosition
+<i>405</i>&nbsp;     * @param startPos is the position selected
+<i>406</i>&nbsp;     *  @throws NotPresentWorkerException if in startPos there is not a worker
+<i>407</i>&nbsp;     */
+<i>408</i>&nbsp;    public void setStartingWorker(Position startPos) throws NullPointerException, NotPresentWorkerException {
+<b class="fc"><i>409</i>&nbsp;        if (startPos == null)</b>
+<b class="fc"><i>410</i>&nbsp;            throw new NullPointerException(&quot;startPos&quot;);</b>
+<b class="fc"><i>411</i>&nbsp;        if (!board.workerPositions(this.currentPlayer.getPlayerNum()).contains(startPos))</b>
+<b class="fc"><i>412</i>&nbsp;            throw new NotPresentWorkerException(startPos.row, startPos.col, currentPlayer.getPlayerNum());</b>
+<b class="fc"><i>413</i>&nbsp;        currentPosition = startPos;</b>
+<b class="fc"><i>414</i>&nbsp;        currentPlayer.setStartingWorkerSituation( // setWorkerSituation</b>
+<b class="fc"><i>415</i>&nbsp;                board.getCell(currentPosition),</b>
+<i>416</i>&nbsp;                cantGoUp
+<i>417</i>&nbsp;        );
+<b class="fc"><i>418</i>&nbsp;    }</b>
+<i>419</i>&nbsp;
+<i>420</i>&nbsp;
+<i>421</i>&nbsp;    /**
+<i>422</i>&nbsp;     *  Method that check if a worker of this.currentPlayer can move in movePos
+<i>423</i>&nbsp;     *  @return true if the move is possible
+<i>424</i>&nbsp;     *  @param movePos is a not null Position where move the worker
+<i>425</i>&nbsp;     *  Modifies currentPosition
+<i>426</i>&nbsp;     */
+<i>427</i>&nbsp;    public boolean canMoveWorker(Position movePos) throws NullPointerException, NotPresentWorkerException {
+<b class="fc"><i>428</i>&nbsp;        if (movePos == null)</b>
+<b class="fc"><i>429</i>&nbsp;            throw new NullPointerException(&quot;movePos&quot;);</b>
+<i>430</i>&nbsp;
+<b class="fc"><i>431</i>&nbsp;        return currentPlayer.canMove(</b>
+<b class="fc"><i>432</i>&nbsp;                board.getPlayersOccupations(new ArrayList&lt;&gt;(List.of(movePos))),</b>
+<b class="fc"><i>433</i>&nbsp;                board.getCell(movePos)</b>
+<i>434</i>&nbsp;        );
+<i>435</i>&nbsp;    }
+<i>436</i>&nbsp;
+<i>437</i>&nbsp;
+<i>438</i>&nbsp;    /**
+<i>439</i>&nbsp;     * Method that return a list of Position where the player can move
+<i>440</i>&nbsp;     * @param workerPos Position occupied by worker that player want to move
+<i>441</i>&nbsp;     * @return List of Position that contains Position where the player can move
+<i>442</i>&nbsp;     * @throws NullPointerException if workerPos is null
+<i>443</i>&nbsp;     */
+<i>444</i>&nbsp;    public List&lt;Position&gt; getMovePositions(Position workerPos) throws NullPointerException {
+<b class="fc"><i>445</i>&nbsp;        if (workerPos == null)</b>
+<b class="fc"><i>446</i>&nbsp;            throw new NullPointerException(&quot;workerPos&quot;);</b>
+<b class="fc"><i>447</i>&nbsp;        return this.board.getAdjacentCells(workerPos).stream()</b>
+<b class="fc"><i>448</i>&nbsp;                .filter(cell -&gt; currentPlayer.canMoveWithPowers(</b>
+<i>449</i>&nbsp;                        //board.getPlayersOccupations(new ArrayList&lt;&gt;(List.of(cell.getPosition()))),
+<b class="fc"><i>450</i>&nbsp;                        this.getPowerPlayerOccupations(cell.getPosition()),</b>
+<b class="fc"><i>451</i>&nbsp;                        this.getPowerCellList(cell.getPosition()),</b>
+<b class="fc"><i>452</i>&nbsp;                        board.getCell(workerPos),</b>
+<i>453</i>&nbsp;                        this.cantGoUp
+<i>454</i>&nbsp;                        )
+<i>455</i>&nbsp;                )
+<b class="fc"><i>456</i>&nbsp;                .map(Cell::getPosition)</b>
+<b class="fc"><i>457</i>&nbsp;                .collect(Collectors.toList());</b>
+<i>458</i>&nbsp;    }
+<i>459</i>&nbsp;
+<i>460</i>&nbsp;
+<i>461</i>&nbsp;    /**
+<i>462</i>&nbsp;     *  Method that move worker of currentPlayer in movePos. Before change the worker position in board, then the cell in
+<i>463</i>&nbsp;     * currentPlayer
+<i>464</i>&nbsp;     * @param movePos is a not null Position where move the worker
+<i>465</i>&nbsp;     * Modifies this.currentPosition
+<i>466</i>&nbsp;     */
+<i>467</i>&nbsp;    public void moveWorker(Position movePos) throws NullPointerException {
+<b class="fc"><i>468</i>&nbsp;        if (movePos == null)</b>
+<b class="fc"><i>469</i>&nbsp;            throw new NullPointerException(&quot;movePos&quot;);</b>
+<b class="fc"><i>470</i>&nbsp;        board.changeWorkerPosition(currentPosition, movePos);</b>
+<b class="fc"><i>471</i>&nbsp;        currentPlayer.move(board.getCell(movePos));</b>
+<b class="fc"><i>472</i>&nbsp;        notify(new MoveMessage(currentPlayer.getPlayerNum(), currentPosition, movePos));</b>
+<b class="fc"><i>473</i>&nbsp;        currentPosition = movePos;</b>
+<b class="fc"><i>474</i>&nbsp;    }</b>
+<i>475</i>&nbsp;
+<i>476</i>&nbsp;
+<i>477</i>&nbsp;    /**
+<i>478</i>&nbsp;     * @return true iff currentPlayer can build with his selected worker in an adjacent cell.
+<i>479</i>&nbsp;     */
+<i>480</i>&nbsp;    public boolean canPlayerBuildWithSelectedWorker() {
+<b class="fc"><i>481</i>&nbsp;        return board.getAdjacentCells(currentPlayer.getCellOccupied().getPosition()).stream()</b>
+<b class="fc"><i>482</i>&nbsp;                .anyMatch(cell -&gt; currentPlayer.canBuild(</b>
+<b class="fc"><i>483</i>&nbsp;                        board.getPlayersOccupations(new ArrayList&lt;&gt;(List.of(cell.getPosition()))),</b>
+<i>484</i>&nbsp;                        cell));
+<i>485</i>&nbsp;    }
+<i>486</i>&nbsp;
+<i>487</i>&nbsp;    /**
+<i>488</i>&nbsp;     * Method that return a list of Position where the player can build
+<i>489</i>&nbsp;     *
+<i>490</i>&nbsp;     * @param workerPos Position occupied by worker that player want to build
+<i>491</i>&nbsp;     * @return List of Position that contains Position where the player can build
+<i>492</i>&nbsp;     * @throws NullPointerException if workerPos is null
+<i>493</i>&nbsp;     */
+<i>494</i>&nbsp;    public List&lt;Position&gt; getBuildPositions(Position workerPos) throws NullPointerException {
+<b class="fc"><i>495</i>&nbsp;        if (workerPos == null)</b>
+<b class="fc"><i>496</i>&nbsp;            throw new NullPointerException(&quot;workerPos&quot;);</b>
+<b class="fc"><i>497</i>&nbsp;        return this.board.getAdjacentCells(workerPos).stream()</b>
+<b class="fc"><i>498</i>&nbsp;                .filter(cell -&gt; currentPlayer.canBuild(</b>
+<b class="fc"><i>499</i>&nbsp;                        board.getPlayersOccupations(new ArrayList&lt;&gt;(List.of(cell.getPosition()))),</b>
+<i>500</i>&nbsp;                        cell
+<i>501</i>&nbsp;                        )
+<i>502</i>&nbsp;                )
+<b class="fc"><i>503</i>&nbsp;                .map(Cell::getPosition)</b>
+<b class="fc"><i>504</i>&nbsp;                .collect(Collectors.toList());</b>
+<i>505</i>&nbsp;    }
+<i>506</i>&nbsp;
+<i>507</i>&nbsp;
+<i>508</i>&nbsp;    /**
+<i>509</i>&nbsp;     *  Method that check if a worker of currentPlayer can build in buildPos
+<i>510</i>&nbsp;     * @return true iff the build is possible
+<i>511</i>&nbsp;     * @param buildPos is a not null Position where the worker want build
+<i>512</i>&nbsp;     */
+<i>513</i>&nbsp;    public boolean canBuild(Position buildPos) throws NullPointerException {
+<b class="fc"><i>514</i>&nbsp;        if (buildPos == null)</b>
+<b class="fc"><i>515</i>&nbsp;            throw new NullPointerException(&quot;buildPos&quot;);</b>
+<b class="fc"><i>516</i>&nbsp;        return currentPlayer.canBuild(</b>
+<b class="fc"><i>517</i>&nbsp;                board.getPlayersOccupations(new ArrayList&lt;&gt;(List.of(buildPos))),</b>
+<b class="fc"><i>518</i>&nbsp;                board.getCell(buildPos)</b>
+<i>519</i>&nbsp;        );
+<i>520</i>&nbsp;    }
+<i>521</i>&nbsp;
+<i>522</i>&nbsp;    /**
+<i>523</i>&nbsp;     *  Method that build a block in buildPos and check if the player can activate his power after build
+<i>524</i>&nbsp;     * @param buildPos is a not null Position where build
+<i>525</i>&nbsp;     */
+<i>526</i>&nbsp;    public void build(Position buildPos) throws NullPointerException {
+<b class="fc"><i>527</i>&nbsp;        if (buildPos == null)</b>
+<b class="fc"><i>528</i>&nbsp;            throw new NullPointerException(&quot;buildPos&quot;);</b>
+<b class="fc"><i>529</i>&nbsp;        board.constructBlock(buildPos);</b>
+<b class="fc"><i>530</i>&nbsp;        notify(new BuildMessage(currentPlayer.getPlayerNum(), buildPos));</b>
+<b class="fc"><i>531</i>&nbsp;    }</b>
+<i>532</i>&nbsp;
+<i>533</i>&nbsp;    /**
+<i>534</i>&nbsp;     * Method that check if the current player has won
+<i>535</i>&nbsp;     * It simply calls the method PlayerInterface.hasWin()
+<i>536</i>&nbsp;     * @return true iff current player has won
+<i>537</i>&nbsp;     * */
+<i>538</i>&nbsp;    public boolean hasWonCurrentPlayer() {
+<b class="fc"><i>539</i>&nbsp;        for(PlayerInterface p : players){</b>
+<b class="fc"><i>540</i>&nbsp;            if(p.getGodName().equals(&quot;Hera&quot;) &amp;&amp; p != currentPlayer){</b>
+<b class="nc"><i>541</i>&nbsp;                return !currentPlayer.getCellOccupied().getPosition().isPerimeterPosition() &amp;&amp; currentPlayer.hasWin();</b>
+<i>542</i>&nbsp;            }
+<b class="fc"><i>543</i>&nbsp;        }</b>
+<b class="fc"><i>544</i>&nbsp;        return currentPlayer.hasWin();</b>
+<i>545</i>&nbsp;    }
+<i>546</i>&nbsp;
+<i>547</i>&nbsp;    /**
+<i>548</i>&nbsp;     *  Method that return if current worker of currentPlayer can use power in powerPos
+<i>549</i>&nbsp;     * @return true iff the usage of power is valid
+<i>550</i>&nbsp;     * @param powerPos is a not null Position where use the power
+<i>551</i>&nbsp;     * Modifies this.currentPosition
+<i>552</i>&nbsp;     */
+<i>553</i>&nbsp;    public boolean canUsePowerWorker(Position powerPos) throws NullPointerException {
+<b class="fc"><i>554</i>&nbsp;        if (powerPos == null)</b>
+<b class="fc"><i>555</i>&nbsp;            throw new NullPointerException(&quot;powerPos&quot;);</b>
+<i>556</i>&nbsp;
+<b class="fc"><i>557</i>&nbsp;        return currentPlayer.canUsePower(</b>
+<b class="fc"><i>558</i>&nbsp;                getPowerCellList(powerPos),</b>
+<b class="fc"><i>559</i>&nbsp;                getPowerPlayerOccupations(powerPos)</b>
+<i>560</i>&nbsp;        );
+<i>561</i>&nbsp;    }
+<i>562</i>&nbsp;
+<i>563</i>&nbsp;    /**
+<i>564</i>&nbsp;     * Method that return a list of Position where the player can use his power
+<i>565</i>&nbsp;     *
+<i>566</i>&nbsp;     * @param workerPos Position occupied by worker that player want to use his power
+<i>567</i>&nbsp;     * @return List of Position that contains Position where the player can use his power
+<i>568</i>&nbsp;     * @throws NullPointerException if workerPos is null
+<i>569</i>&nbsp;     */
+<i>570</i>&nbsp;    public List&lt;Position&gt; getPowerPositions(Position workerPos) throws NullPointerException {
+<b class="fc"><i>571</i>&nbsp;        if (workerPos == null)</b>
+<b class="fc"><i>572</i>&nbsp;            throw new NullPointerException(&quot;workerPos&quot;);</b>
+<b class="fc"><i>573</i>&nbsp;        return this.board.getAdjacentCells(workerPos).stream()</b>
+<b class="fc"><i>574</i>&nbsp;                .filter(cell -&gt; currentPlayer.canUsePower(</b>
+<b class="fc"><i>575</i>&nbsp;                        getPowerCellList(cell.getPosition()),</b>
+<b class="fc"><i>576</i>&nbsp;                        getPowerPlayerOccupations(cell.getPosition())</b>
+<i>577</i>&nbsp;                        )
+<i>578</i>&nbsp;                )
+<b class="fc"><i>579</i>&nbsp;                .map(Cell::getPosition)</b>
+<b class="fc"><i>580</i>&nbsp;                .collect(Collectors.toList());</b>
+<i>581</i>&nbsp;    }
+<i>582</i>&nbsp;
+<i>583</i>&nbsp;    /**
+<i>584</i>&nbsp;     *  Method that use currentPlayer power and update the board.
+<i>585</i>&nbsp;     * @param powerPos is a not null Position where use the power.
+<i>586</i>&nbsp;     * Modifies this.currentPosition
+<i>587</i>&nbsp;     */
+<i>588</i>&nbsp;    public void usePowerWorker(Position powerPos) throws NullPointerException {
+<b class="fc"><i>589</i>&nbsp;        if (powerPos == null)</b>
+<b class="fc"><i>590</i>&nbsp;            throw new NullPointerException(&quot;powerPos&quot;);</b>
+<i>591</i>&nbsp;
+<b class="fc"><i>592</i>&nbsp;        BoardChange changes = currentPlayer.usePower(board.getCell(powerPos));</b>
+<b class="fc"><i>593</i>&nbsp;        board.updateAfterPower(changes);</b>
+<i>594</i>&nbsp;        //notify to view:
+<i>595</i>&nbsp;        //notify for build power
+<b class="fc"><i>596</i>&nbsp;        if(!changes.isPositionBuildNull()){</b>
+<b class="fc"><i>597</i>&nbsp;            notify(new BuildPowerMessage(currentPlayer.getPlayerNum(), powerPos, changes.getBuildType()));</b>
+<i>598</i>&nbsp;        }
+<b class="fc"><i>599</i>&nbsp;        if (!changes.isPlayerChangesNull()) {</b>
+<b class="fc"><i>600</i>&nbsp;            Map&lt;PositionContainer, PlayerIndex&gt; positionsUpdated = changes.getChanges();</b>
+<b class="fc"><i>601</i>&nbsp;            for (Map.Entry&lt;PositionContainer, PlayerIndex&gt; entry : positionsUpdated.entrySet()) {</b>
+<b class="fc"><i>602</i>&nbsp;                if (entry.getValue().compareTo(currentPlayer.getPlayerNum()) == 0){</b>
+<b class="fc"><i>603</i>&nbsp;                    currentPosition = entry.getKey().getOccupiedPosition();</b>
+<i>604</i>&nbsp;                    //notify for move power
+<b class="fc"><i>605</i>&nbsp;                    notify(new MoveMessage(currentPlayer.getPlayerNum(), entry.getKey().getOldPosition(), entry.getKey().getOccupiedPosition()));</b>
+<i>606</i>&nbsp;                }
+<i>607</i>&nbsp;                else{
+<i>608</i>&nbsp;                    //notify view to move the enemy player
+<b class="fc"><i>609</i>&nbsp;                    notify(new MoveMessage(entry.getValue(), entry.getKey().getOldPosition(), entry.getKey().getOccupiedPosition()));</b>
+<i>610</i>&nbsp;                }
+<b class="fc"><i>611</i>&nbsp;            }</b>
+<i>612</i>&nbsp;        }
+<b class="fc"><i>613</i>&nbsp;        if (!changes.isCantGoUpNull()) {</b>
+<b class="fc"><i>614</i>&nbsp;            cantGoUp = changes.getCantGoUp();</b>
+<b class="fc"><i>615</i>&nbsp;            contEffect = numPlayer;</b>
+<i>616</i>&nbsp;        }
+<i>617</i>&nbsp;
+<b class="fc"><i>618</i>&nbsp;    }</b>
+<i>619</i>&nbsp;
+<i>620</i>&nbsp;    /**
+<i>621</i>&nbsp;     * Method called when finished turn to change the currentPlayer
+<i>622</i>&nbsp;     */
+<i>623</i>&nbsp;    public void endTurn() {
+<b class="fc"><i>624</i>&nbsp;        updateCurrentPlayer();</b>
+<b class="fc"><i>625</i>&nbsp;    }</b>
+<i>626</i>&nbsp;
+<i>627</i>&nbsp;    public int getCurrentNumberOfPlayers() {
+<b class="fc"><i>628</i>&nbsp;        return this.players.size();</b>
+<i>629</i>&nbsp;    }
+<i>630</i>&nbsp;
+<i>631</i>&nbsp;    public Map&lt;PlayerIndex, String&gt; getPlayersNames() {
+<b class="fc"><i>632</i>&nbsp;        Map&lt;PlayerIndex, String&gt; nicknames = new HashMap&lt;&gt;();</b>
+<b class="fc"><i>633</i>&nbsp;        this.players.forEach(player -&gt; nicknames.put(player.getPlayerNum(), player.getNickname()));</b>
+<b class="fc"><i>634</i>&nbsp;        return nicknames;</b>
+<i>635</i>&nbsp;    }
+<i>636</i>&nbsp;
+<i>637</i>&nbsp;    public Map&lt;PlayerIndex, String&gt; getGodNames() {
+<b class="fc"><i>638</i>&nbsp;        Map&lt;PlayerIndex, String&gt; godNames = new HashMap&lt;&gt;();</b>
+<b class="fc"><i>639</i>&nbsp;        this.players.forEach(player -&gt; godNames.put(player.getPlayerNum(), player.getGodName()));</b>
+<b class="fc"><i>640</i>&nbsp;        return godNames;</b>
+<i>641</i>&nbsp;    }
+<i>642</i>&nbsp;
+<i>643</i>&nbsp;    public Board getBoard() {
+<b class="fc"><i>644</i>&nbsp;        return new Board(this.board);</b>
+<i>645</i>&nbsp;    }
+<i>646</i>&nbsp;
+<i>647</i>&nbsp;    public PlayerIndex getCurrentPlayerIndex() {
+<b class="fc"><i>648</i>&nbsp;        return currentPlayer.getPlayerNum();</b>
+<i>649</i>&nbsp;    }
+<i>650</i>&nbsp;
+<i>651</i>&nbsp;    public String getCurrentPlayerNick() {
+<b class="fc"><i>652</i>&nbsp;        return currentPlayer.getNickname();</b>
+<i>653</i>&nbsp;    }
+<i>654</i>&nbsp;
+<i>655</i>&nbsp;    /**
+<i>656</i>&nbsp;     * Private method that returns a List&lt;Cell&gt; which will be used in Player::canUsePower()
+<i>657</i>&nbsp;     *
+<i>658</i>&nbsp;     * @param powerPos is a not null powerPos
+<i>659</i>&nbsp;     */
+<i>660</i>&nbsp;    private List&lt;Cell&gt; getPowerCellList(Position powerPos) throws NullPointerException {
+<i>661</i>&nbsp;
+<b class="fc"><i>662</i>&nbsp;        int sizeList = currentPlayer.getPowerListDimension();</b>
+<b class="fc"><i>663</i>&nbsp;        List&lt;Cell&gt; cells = new ArrayList&lt;&gt;(sizeList);</b>
+<b class="fc"><i>664</i>&nbsp;        cells.add(board.getCell(powerPos));</b>
+<b class="fc"><i>665</i>&nbsp;        if (sizeList == 2) {</b>
+<i>666</i>&nbsp;            try{
+<b class="fc"><i>667</i>&nbsp;                Position secondPos = currentPlayer.getSecondPowerPosition(powerPos);</b>
+<b class="fc"><i>668</i>&nbsp;                cells.add(board.getCell(secondPos));</b>
+<i>669</i>&nbsp;            }
+<b class="fc"><i>670</i>&nbsp;            catch (InvalidPositionException e){</b>
+<b class="fc"><i>671</i>&nbsp;                return cells;</b>
+<b class="fc"><i>672</i>&nbsp;            }</b>
+<i>673</i>&nbsp;        }
+<b class="fc"><i>674</i>&nbsp;        return cells;</b>
+<i>675</i>&nbsp;    }
+<i>676</i>&nbsp;
+<i>677</i>&nbsp;    /**
+<i>678</i>&nbsp;     * Private method that returns a Map&lt;Position, PlayerIndex&gt; which will be used in Player::canUsePower()
+<i>679</i>&nbsp;     *
+<i>680</i>&nbsp;     * @param powerPos is a not null powerPos
+<i>681</i>&nbsp;     */
+<i>682</i>&nbsp;    private Map&lt;Position, PlayerIndex&gt; getPowerPlayerOccupations(Position powerPos) throws NullPointerException {
+<i>683</i>&nbsp;
+<b class="fc"><i>684</i>&nbsp;        int sizeMap = currentPlayer.getPowerListDimension();</b>
+<b class="fc"><i>685</i>&nbsp;        List&lt;Position&gt; positions = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>686</i>&nbsp;        positions.add(powerPos);</b>
+<b class="fc"><i>687</i>&nbsp;        if (sizeMap == 2) {</b>
+<i>688</i>&nbsp;            try{
+<b class="fc"><i>689</i>&nbsp;                Position secondPos = currentPlayer.getSecondPowerPosition(powerPos);</b>
+<b class="fc"><i>690</i>&nbsp;                positions.add(secondPos);</b>
+<i>691</i>&nbsp;            }
+<b class="fc"><i>692</i>&nbsp;            catch (InvalidPositionException e){</b>
+<b class="fc"><i>693</i>&nbsp;                return board.getPlayersOccupations(positions);</b>
+<b class="fc"><i>694</i>&nbsp;            }</b>
+<i>695</i>&nbsp;        }
+<b class="fc"><i>696</i>&nbsp;        return board.getPlayersOccupations(positions);</b>
+<i>697</i>&nbsp;    }
+<i>698</i>&nbsp;
+<i>699</i>&nbsp;    /**
+<i>700</i>&nbsp;     * @return list of PlayerIndex in the correct orded chosen by God Like player
+<i>701</i>&nbsp;     */
+<i>702</i>&nbsp;    public List&lt;PlayerIndex&gt; getSortedIndexes() {
+<b class="fc"><i>703</i>&nbsp;        return players.stream().map(PlayerInterface::getPlayerNum).collect(Collectors.toList());</b>
+<i>704</i>&nbsp;    }
+<i>705</i>&nbsp;
+<i>706</i>&nbsp;    /**
+<i>707</i>&nbsp;     * Private method called when change current player.
+<i>708</i>&nbsp;     * Modifies contCurrentPlayer and currentPlayer
+<i>709</i>&nbsp;     */
+<i>710</i>&nbsp;    private void updateCurrentPlayer() {
+<b class="fc"><i>711</i>&nbsp;        contCurrentPlayer = (contCurrentPlayer + 1) % players.size();</b>
+<b class="fc"><i>712</i>&nbsp;        currentPlayer = players.get(contCurrentPlayer);</b>
+<b class="fc"><i>713</i>&nbsp;        notify(new CurrentPlayerMessage(this.currentPlayer.getPlayerNum()));</b>
+<b class="fc"><i>714</i>&nbsp;    }</b>
+<i>715</i>&nbsp;
+<i>716</i>&nbsp;    public Deck getDeck() {
+<b class="fc"><i>717</i>&nbsp;        return this.deck;</b>
+<i>718</i>&nbsp;    }
+<i>719</i>&nbsp;
+<i>720</i>&nbsp;    
+<i>721</i>&nbsp;    /**
+<i>722</i>&nbsp;     * Remove current player and delete his workers from the board.
+<i>723</i>&nbsp;     * Update the current player and set the state to start the new turn
+<i>724</i>&nbsp;     * Notify this change to remoteView
+<i>725</i>&nbsp;     */
+<i>726</i>&nbsp;    public void removeCurrentPlayer() {
+<b class="fc"><i>727</i>&nbsp;        this.board.removePlayerWorkers(currentPlayer.getPlayerNum());</b>
+<i>728</i>&nbsp;
+<b class="fc"><i>729</i>&nbsp;        PlayerInterface lostPlayer = currentPlayer;</b>
+<b class="fc"><i>730</i>&nbsp;        PlayerIndex playerIndex = currentPlayer.getPlayerNum();</b>
+<i>731</i>&nbsp;
+<b class="fc"><i>732</i>&nbsp;        this.players.remove(lostPlayer);</b>
+<b class="fc"><i>733</i>&nbsp;        updateCurrentPlayer();</b>
+<b class="fc"><i>734</i>&nbsp;        updateCurrentPlayer();</b>
+<b class="fc"><i>735</i>&nbsp;        notify(new LoserMessage(playerIndex, playerIndex));</b>
+<b class="fc"><i>736</i>&nbsp;        setCurrentState(GameState.MOVE);</b>
+<i>737</i>&nbsp;
+<b class="fc"><i>738</i>&nbsp;    }</b>
+<i>739</i>&nbsp;
+<i>740</i>&nbsp;    public void delete(PlayerIndex client) {
+<b class="fc"><i>741</i>&nbsp;        notify(new CloseConnectionMessage(client));</b>
+<b class="fc"><i>742</i>&nbsp;    }</b>
+<i>743</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 15:42</div>
+</div>
+</body>
+</html>

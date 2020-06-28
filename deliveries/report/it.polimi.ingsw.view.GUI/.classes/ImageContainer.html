@@ -1,0 +1,221 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ImageContainer</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view.GUI</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ImageContainer (it.polimi.ingsw.view.GUI)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ImageContainer</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    8,3%
+  </span>
+  <span class="absValue">
+    (1/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,1%
+  </span>
+  <span class="absValue">
+    (63/ 74)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view.GUI;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javax.swing.*;
+<i>4</i>&nbsp;import java.awt.*;
+<i>5</i>&nbsp;import java.awt.image.ImageObserver;
+<i>6</i>&nbsp;import java.awt.image.ImageProducer;
+<i>7</i>&nbsp;import java.util.HashMap;
+<i>8</i>&nbsp;import java.util.Map;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;/**
+<i>11</i>&nbsp; * Class wich contains the more images of the app, they will be used by GUI
+<i>12</i>&nbsp; * */
+<i>13</i>&nbsp;public class ImageContainer {
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    private Map&lt;String, Image&gt; gods;
+<i>16</i>&nbsp;    private Map&lt;String, Image&gt; buttons;
+<i>17</i>&nbsp;    private Image blueLight;
+<i>18</i>&nbsp;    private Image borderGod;
+<i>19</i>&nbsp;    private Image purpleLight;
+<b class="fc"><i>20</i>&nbsp;    private Image[] towerImage = new Image[4];</b>
+<b class="fc"><i>21</i>&nbsp;    private Image[] imageColorPlayer = new Image[3];</b>
+<i>22</i>&nbsp;    private Image imageLabelTerminalPlayerNick;
+<i>23</i>&nbsp;    private Image imageWinner;
+<i>24</i>&nbsp;    private Image imageClose;
+<i>25</i>&nbsp;    private Image imageDone;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;
+<b class="fc"><i>28</i>&nbsp;    public ImageContainer(){</b>
+<b class="fc"><i>29</i>&nbsp;        gods = new HashMap&lt;&gt;();</b>
+<b class="fc"><i>30</i>&nbsp;        buttons = new HashMap&lt;&gt;();</b>
+<i>31</i>&nbsp;
+<b class="fc"><i>32</i>&nbsp;        Image apollo = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Apollo.png&quot;)).getImage();</b>
+<b class="fc"><i>33</i>&nbsp;        Image artemis = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Artemis.png&quot;)).getImage();</b>
+<b class="fc"><i>34</i>&nbsp;        Image athena = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Athena.png&quot;)).getImage();</b>
+<b class="fc"><i>35</i>&nbsp;        Image atlas = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Atlas.png&quot;)).getImage();</b>
+<b class="fc"><i>36</i>&nbsp;        Image demeter = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Demeter.png&quot;)).getImage();</b>
+<b class="fc"><i>37</i>&nbsp;        Image hephaestus = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Hephaestus.png&quot;)).getImage();</b>
+<b class="fc"><i>38</i>&nbsp;        Image minotaur = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Minotaur.png&quot;)).getImage();</b>
+<b class="fc"><i>39</i>&nbsp;        Image pan = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Pan.png&quot;)).getImage();</b>
+<b class="fc"><i>40</i>&nbsp;        Image prometheus = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Prometheus.png&quot;)).getImage();</b>
+<b class="fc"><i>41</i>&nbsp;        Image zeus = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Zeus.png&quot;)).getImage();</b>
+<b class="fc"><i>42</i>&nbsp;        Image hestia = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Hestia.png&quot;)).getImage();</b>
+<b class="fc"><i>43</i>&nbsp;        Image triton = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Triton.png&quot;)).getImage();</b>
+<b class="fc"><i>44</i>&nbsp;        Image charon = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Charon.png&quot;)).getImage();</b>
+<b class="fc"><i>45</i>&nbsp;        Image hera = new ImageIcon(this.getClass().getResource(&quot;/god_cards/Hera.png&quot;)).getImage();</b>
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;        //Buttons image
+<i>48</i>&nbsp;
+<b class="fc"><i>49</i>&nbsp;        Image powerButton = new ImageIcon(this.getClass().getResource(&quot;/heropower_active_small.png&quot;)).getImage();</b>
+<b class="fc"><i>50</i>&nbsp;        Image endTurnButton = new ImageIcon(this.getClass().getResource(&quot;/Chronus_ClockFace.png&quot;)).getImage();</b>
+<b class="fc"><i>51</i>&nbsp;        Image tutorialButton = new ImageIcon(this.getClass().getResource(&quot;/TutorialOn.png&quot;)).getImage();</b>
+<b class="fc"><i>52</i>&nbsp;        Image menuButton = new ImageIcon(this.getClass().getResource(&quot;/menu_button.png&quot;)).getImage();</b>
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;
+<b class="fc"><i>55</i>&nbsp;        Image tower1 = new ImageIcon(this.getClass().getResource(&quot;/frame_blue.png&quot;)).getImage();</b>
+<b class="fc"><i>56</i>&nbsp;        Image tower2 = new ImageIcon(this.getClass().getResource(&quot;/frame_coral.png&quot;)).getImage();</b>
+<b class="fc"><i>57</i>&nbsp;        Image tower3 = new ImageIcon(this.getClass().getResource(&quot;/frame_yellow.png&quot;)).getImage();</b>
+<b class="fc"><i>58</i>&nbsp;        Image tower4 = new ImageIcon(this.getClass().getResource(&quot;/Graeae_EyePupil.png&quot;)).getImage();</b>
+<i>59</i>&nbsp;
+<b class="fc"><i>60</i>&nbsp;        Image imageColorBlue = new ImageIcon(this.getClass().getResource(&quot;/cm_btn_blue.png&quot;)).getImage();</b>
+<b class="fc"><i>61</i>&nbsp;        Image imageColorRed = new ImageIcon(this.getClass().getResource(&quot;/cm_btn_coral.png&quot;)).getImage();</b>
+<b class="fc"><i>62</i>&nbsp;        Image imageColorGray = new ImageIcon(this.getClass().getResource(&quot;/cm_btn_gray.png&quot;)).getImage();</b>
+<b class="fc"><i>63</i>&nbsp;        imageClose = new ImageIcon(this.getClass().getResource(&quot;/Destroy.png&quot;)).getImage();</b>
+<b class="fc"><i>64</i>&nbsp;        imageDone = new ImageIcon(this.getClass().getResource(&quot;/Done.png&quot;)).getImage();</b>
+<i>65</i>&nbsp;
+<b class="fc"><i>66</i>&nbsp;        imageWinner =  new ImageIcon(this.getClass().getResource(&quot;/endgame_victorywin.png&quot;)).getImage();</b>
+<b class="fc"><i>67</i>&nbsp;        imageLabelTerminalPlayerNick = new ImageIcon(this.getClass().getResource(&quot;/cl_bg.png&quot;)).getImage();</b>
+<i>68</i>&nbsp;
+<b class="fc"><i>69</i>&nbsp;        imageColorPlayer[0] = imageColorBlue;</b>
+<b class="fc"><i>70</i>&nbsp;        imageColorPlayer[1] = imageColorRed;</b>
+<b class="fc"><i>71</i>&nbsp;        imageColorPlayer[2] = imageColorGray;</b>
+<i>72</i>&nbsp;
+<b class="fc"><i>73</i>&nbsp;        towerImage[0] = tower1;</b>
+<b class="fc"><i>74</i>&nbsp;        towerImage[1] = tower2;</b>
+<b class="fc"><i>75</i>&nbsp;        towerImage[2] = tower3;</b>
+<b class="fc"><i>76</i>&nbsp;        towerImage[3] = tower4;</b>
+<i>77</i>&nbsp;
+<b class="fc"><i>78</i>&nbsp;        gods.put(&quot;Apollo&quot;, apollo);</b>
+<b class="fc"><i>79</i>&nbsp;        gods.put(&quot;Artemis&quot;, artemis);</b>
+<b class="fc"><i>80</i>&nbsp;        gods.put(&quot;Athena&quot;, athena);</b>
+<b class="fc"><i>81</i>&nbsp;        gods.put(&quot;Atlas&quot;, atlas);</b>
+<b class="fc"><i>82</i>&nbsp;        gods.put(&quot;Demeter&quot;, demeter);</b>
+<b class="fc"><i>83</i>&nbsp;        gods.put(&quot;Hephaestus&quot;, hephaestus);</b>
+<b class="fc"><i>84</i>&nbsp;        gods.put(&quot;Minotaur&quot;, minotaur);</b>
+<b class="fc"><i>85</i>&nbsp;        gods.put(&quot;Pan&quot;, pan);</b>
+<b class="fc"><i>86</i>&nbsp;        gods.put(&quot;Prometheus&quot;, prometheus);</b>
+<b class="fc"><i>87</i>&nbsp;        gods.put(&quot;Zeus&quot;, zeus);</b>
+<b class="fc"><i>88</i>&nbsp;        gods.put(&quot;Hestia&quot;, hestia);</b>
+<b class="fc"><i>89</i>&nbsp;        gods.put(&quot;Triton&quot;, triton);</b>
+<b class="fc"><i>90</i>&nbsp;        gods.put(&quot;Charon&quot;, charon);</b>
+<b class="fc"><i>91</i>&nbsp;        gods.put(&quot;Hera&quot;, hera);</b>
+<i>92</i>&nbsp;
+<b class="fc"><i>93</i>&nbsp;        buttons.put(&quot;buttonPower&quot;,powerButton);</b>
+<b class="fc"><i>94</i>&nbsp;        buttons.put(&quot;buttonEndTurn&quot;,endTurnButton);</b>
+<b class="fc"><i>95</i>&nbsp;        buttons.put(&quot;buttonTutorial&quot;,tutorialButton);</b>
+<b class="fc"><i>96</i>&nbsp;        buttons.put(&quot;buttonMenu&quot;,menuButton);</b>
+<i>97</i>&nbsp;
+<i>98</i>&nbsp;
+<b class="fc"><i>99</i>&nbsp;        blueLight = new ImageIcon(this.getClass().getResource(&quot;/playermoveindicator_blue.png&quot;)).getImage();</b>
+<b class="fc"><i>100</i>&nbsp;        borderGod = new ImageIcon(this.getClass().getResource(&quot;/clp_frame_gold.png&quot;)).getImage();</b>
+<b class="fc"><i>101</i>&nbsp;        purpleLight = new ImageIcon(this.getClass().getResource(&quot;/playermoveindicator_purple.png&quot;)).getImage();</b>
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;
+<b class="fc"><i>107</i>&nbsp;    }</b>
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    protected Image getGodimage(String godName){
+<b class="nc"><i>110</i>&nbsp;        return gods.get(godName);</b>
+<i>111</i>&nbsp;    }
+<i>112</i>&nbsp;
+<b class="nc"><i>113</i>&nbsp;    protected Image getButtonImage(String typeButton){ return buttons.get(typeButton);}</b>
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;    protected Image getBlueLight(){
+<b class="nc"><i>116</i>&nbsp;        return blueLight;</b>
+<i>117</i>&nbsp;    }
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;    protected Image getBorderGod(){
+<b class="nc"><i>120</i>&nbsp;        return borderGod;</b>
+<i>121</i>&nbsp;    }
+<i>122</i>&nbsp;
+<b class="nc"><i>123</i>&nbsp;    protected Image getPurpleLight(){ return purpleLight;}</b>
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;    protected Image getTowerLevel(int level){
+<b class="nc"><i>126</i>&nbsp;        return towerImage[level];</b>
+<i>127</i>&nbsp;    }
+<i>128</i>&nbsp;
+<b class="nc"><i>129</i>&nbsp;    protected Image getButtonColorPlayer(int numPlayerIndex) { return imageColorPlayer[numPlayerIndex];}</b>
+<i>130</i>&nbsp;
+<b class="nc"><i>131</i>&nbsp;    protected Image getPlayersTerminalNick () { return imageLabelTerminalPlayerNick;}</b>
+<i>132</i>&nbsp;
+<b class="nc"><i>133</i>&nbsp;    protected Image getImageWinner () { return imageWinner;}</b>
+<i>134</i>&nbsp;
+<b class="nc"><i>135</i>&nbsp;    protected Image getCloseImage () { return imageClose;}</b>
+<i>136</i>&nbsp;
+<b class="nc"><i>137</i>&nbsp;    protected Image getDoneImage () { return imageDone;}</b>
+<i>138</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 15:42</div>
+</div>
+</body>
+</html>

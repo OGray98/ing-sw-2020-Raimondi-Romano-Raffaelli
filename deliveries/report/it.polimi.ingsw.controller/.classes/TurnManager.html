@@ -1,0 +1,330 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TurnManager</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TurnManager (it.polimi.ingsw.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TurnManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (15/ 15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    89,9%
+  </span>
+  <span class="absValue">
+    (80/ 89)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.exception.NotAdjacentBuildingException;
+<i>4</i>&nbsp;import it.polimi.ingsw.exception.NotAdjacentMovementException;
+<i>5</i>&nbsp;import it.polimi.ingsw.exception.NotPresentWorkerException;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.Game;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.board.Position;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import java.util.ArrayList;
+<i>10</i>&nbsp;import java.util.List;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;/**
+<i>14</i>&nbsp; * TurnManager is a class that manage turn of every Player and update the Board and the Players according to input from view
+<i>15</i>&nbsp; */
+<i>16</i>&nbsp;public class TurnManager {
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    private final Game gameInstance;
+<i>19</i>&nbsp;    private List&lt;Position&gt; currentPlayerWorkersPosition;
+<i>20</i>&nbsp;    private List&lt;Position&gt; movableWorkersPosition;
+<i>21</i>&nbsp;    private Position workerMovedPosition;
+<i>22</i>&nbsp;
+<b class="fc"><i>23</i>&nbsp;    public TurnManager(Game gameInstance) throws NullPointerException {</b>
+<b class="fc"><i>24</i>&nbsp;        if (gameInstance == null)</b>
+<b class="fc"><i>25</i>&nbsp;            throw new NullPointerException(&quot;gameInstance&quot;);</b>
+<b class="fc"><i>26</i>&nbsp;        this.gameInstance = gameInstance;</b>
+<b class="fc"><i>27</i>&nbsp;        currentPlayerWorkersPosition = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>28</i>&nbsp;        movableWorkersPosition = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>29</i>&nbsp;    }</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    /**
+<i>32</i>&nbsp;     * Start turn in gameInstance and set currentPlayerWorkersPosition
+<i>33</i>&nbsp;     */
+<i>34</i>&nbsp;    public void startTurn() {
+<b class="fc"><i>35</i>&nbsp;        gameInstance.startTurn();</b>
+<b class="fc"><i>36</i>&nbsp;        currentPlayerWorkersPosition = gameInstance.getCurrentPlayerWorkersPosition();</b>
+<b class="fc"><i>37</i>&nbsp;        workerMovedPosition = null;</b>
+<b class="fc"><i>38</i>&nbsp;        movableWorkersPosition = gameInstance.canPlayerMoveAWorker();</b>
+<b class="fc"><i>39</i>&nbsp;    }</b>
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    /**
+<i>42</i>&nbsp;     * @return true if the current Player can move at least one worker
+<i>43</i>&nbsp;     */
+<i>44</i>&nbsp;    public boolean canCurrentPlayerMoveAWorker() {
+<b class="fc"><i>45</i>&nbsp;        return gameInstance.canPlayerMoveAWorker().size() &gt; 0;</b>
+<i>46</i>&nbsp;    }
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    /**
+<i>49</i>&nbsp;     * Return a list which contains Position where the worker can move
+<i>50</i>&nbsp;     *
+<i>51</i>&nbsp;     * @param workerPos Position where is located the worker that player want to move
+<i>52</i>&nbsp;     * @return List of Position that contains Position where the worker can move
+<i>53</i>&nbsp;     * @throws NullPointerException      if workerPos is null
+<i>54</i>&nbsp;     * @throws NotPresentWorkerException if in workerPos there isn&#39;t any worker of current Player
+<i>55</i>&nbsp;     */
+<i>56</i>&nbsp;    public List&lt;Position&gt; movementPositions(Position workerPos) throws NullPointerException, NotPresentWorkerException {
+<b class="fc"><i>57</i>&nbsp;        if (workerPos == null)</b>
+<b class="fc"><i>58</i>&nbsp;            throw new NullPointerException(&quot;workerPos&quot;);</b>
+<b class="fc"><i>59</i>&nbsp;        if (!currentPlayerWorkersPosition.contains(workerPos))</b>
+<b class="fc"><i>60</i>&nbsp;            throw new NotPresentWorkerException(workerPos.row, workerPos.col, gameInstance.getCurrentPlayerIndex());</b>
+<b class="fc"><i>61</i>&nbsp;        if (!movableWorkersPosition.contains(workerPos))</b>
+<b class="fc"><i>62</i>&nbsp;            return new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>63</i>&nbsp;        return gameInstance.getMovePositions(workerPos);</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    /**
+<i>67</i>&nbsp;     * Method that check if a move from workerPos to movePos is valid
+<i>68</i>&nbsp;     *
+<i>69</i>&nbsp;     * @param workerPos Worker&#39;s Position before movement
+<i>70</i>&nbsp;     * @param movePos   Worker&#39;s Position after movement
+<i>71</i>&nbsp;     * @return true iff the movement is valid
+<i>72</i>&nbsp;     * @throws NullPointerException if workerPos or movePos are null
+<i>73</i>&nbsp;     */
+<i>74</i>&nbsp;    public boolean isValidMovement(Position workerPos, Position movePos) throws NullPointerException {
+<b class="fc"><i>75</i>&nbsp;        if (workerPos == null)</b>
+<b class="fc"><i>76</i>&nbsp;            throw new NullPointerException(&quot;workerPos&quot;);</b>
+<b class="fc"><i>77</i>&nbsp;        if (movePos == null)</b>
+<b class="fc"><i>78</i>&nbsp;            throw new NullPointerException(&quot;movePos&quot;);</b>
+<i>79</i>&nbsp;
+<b class="fc"><i>80</i>&nbsp;        gameInstance.setStartingWorker(workerPos);</b>
+<b class="fc"><i>81</i>&nbsp;        return gameInstance.canMoveWorker(movePos);</b>
+<i>82</i>&nbsp;    }
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;    /**
+<i>86</i>&nbsp;     * Update model with worker&#39;s movement from workerPos to movePos.
+<i>87</i>&nbsp;     *
+<i>88</i>&nbsp;     * @param workerPos Worker&#39;s Position before movement. The worker must be able to move in movePos
+<i>89</i>&nbsp;     * @param movePos   Worker&#39;s Position after movement. The worker must be able to move in movePos
+<i>90</i>&nbsp;     * @throws NullPointerException         if workerPos or movePos are null
+<i>91</i>&nbsp;     * @throws NotPresentWorkerException    if in workerPos there isn&#39;t any worker of current Player
+<i>92</i>&nbsp;     * @throws NotAdjacentMovementException workerPos isn&#39;t adjacent to movePos
+<i>93</i>&nbsp;     */
+<i>94</i>&nbsp;    public void moveWorker(Position workerPos, Position movePos) throws NullPointerException, NotPresentWorkerException, NotAdjacentMovementException {
+<b class="fc"><i>95</i>&nbsp;        if (workerPos == null)</b>
+<b class="fc"><i>96</i>&nbsp;            throw new NullPointerException(&quot;workerPos&quot;);</b>
+<b class="fc"><i>97</i>&nbsp;        if (movePos == null)</b>
+<b class="fc"><i>98</i>&nbsp;            throw new NullPointerException(&quot;movePos&quot;);</b>
+<b class="fc"><i>99</i>&nbsp;        if (!gameInstance.getCurrentPlayerWorkersPosition().contains(workerPos))</b>
+<b class="fc"><i>100</i>&nbsp;            throw new NotPresentWorkerException(workerPos.row, workerPos.col, gameInstance.getCurrentPlayerIndex());</b>
+<b class="fc"><i>101</i>&nbsp;        if (!movePos.isAdjacent(workerPos))</b>
+<b class="fc"><i>102</i>&nbsp;            throw new NotAdjacentMovementException(workerPos.row, workerPos.col, movePos.row, movePos.col);</b>
+<i>103</i>&nbsp;
+<b class="fc"><i>104</i>&nbsp;        gameInstance.setStartingWorker(workerPos);</b>
+<b class="fc"><i>105</i>&nbsp;        gameInstance.moveWorker(movePos);</b>
+<b class="fc"><i>106</i>&nbsp;        currentPlayerWorkersPosition = gameInstance.getCurrentPlayerWorkersPosition();</b>
+<b class="fc"><i>107</i>&nbsp;        movableWorkersPosition = gameInstance.canPlayerMoveAWorker();</b>
+<b class="fc"><i>108</i>&nbsp;        workerMovedPosition = movePos;</b>
+<i>109</i>&nbsp;
+<b class="fc"><i>110</i>&nbsp;    }</b>
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    /**
+<i>113</i>&nbsp;     * Check if player has won with the last movement of his worker
+<i>114</i>&nbsp;     *
+<i>115</i>&nbsp;     * @return true iff player has won with the last movement of his worker
+<i>116</i>&nbsp;     */
+<i>117</i>&nbsp;    public boolean hasWonWithMovement() {
+<i>118</i>&nbsp;
+<b class="fc"><i>119</i>&nbsp;        return gameInstance.hasWonCurrentPlayer();</b>
+<i>120</i>&nbsp;    }
+<i>121</i>&nbsp;
+<i>122</i>&nbsp;    /**
+<i>123</i>&nbsp;     * @return true iff the worker moved can build in at least one adjacent Position
+<i>124</i>&nbsp;     */
+<i>125</i>&nbsp;    public boolean canMovedWorkerBuildInAPosition() {
+<b class="fc"><i>126</i>&nbsp;        return gameInstance.canPlayerBuildWithSelectedWorker();</b>
+<i>127</i>&nbsp;    }
+<i>128</i>&nbsp;
+<i>129</i>&nbsp;    /**
+<i>130</i>&nbsp;     * Return a list which contains Position where the worker moved can build
+<i>131</i>&nbsp;     *
+<i>132</i>&nbsp;     * @return List of Position that contains Position where the moved worker can build
+<i>133</i>&nbsp;     */
+<i>134</i>&nbsp;    public List&lt;Position&gt; buildPositions() throws NullPointerException {
+<b class="fc"><i>135</i>&nbsp;        if (workerMovedPosition == null)</b>
+<b class="fc"><i>136</i>&nbsp;            throw new NullPointerException(&quot;workerMovedPosition&quot;);</b>
+<b class="fc"><i>137</i>&nbsp;        return gameInstance.getBuildPositions(workerMovedPosition);</b>
+<i>138</i>&nbsp;    }
+<i>139</i>&nbsp;
+<i>140</i>&nbsp;    /**
+<i>141</i>&nbsp;     * Method that check if moved worker can build in buildPosition
+<i>142</i>&nbsp;     *
+<i>143</i>&nbsp;     * @param buildPosition Position where Player want to build
+<i>144</i>&nbsp;     * @return true iff the building is valid
+<i>145</i>&nbsp;     * @throws NullPointerException if workerMovedPosition or buildPosition are null
+<i>146</i>&nbsp;     */
+<i>147</i>&nbsp;    public boolean isValidBuilding(Position buildPosition) throws NullPointerException {
+<b class="fc"><i>148</i>&nbsp;        if (buildPosition == null)</b>
+<b class="fc"><i>149</i>&nbsp;            throw new NullPointerException(&quot;buildPosition&quot;);</b>
+<b class="fc"><i>150</i>&nbsp;        if (workerMovedPosition == null)</b>
+<b class="fc"><i>151</i>&nbsp;            throw new NullPointerException(&quot;workerMovedPosition&quot;);</b>
+<i>152</i>&nbsp;
+<b class="fc"><i>153</i>&nbsp;        return gameInstance.canBuild(buildPosition);</b>
+<i>154</i>&nbsp;    }
+<i>155</i>&nbsp;
+<i>156</i>&nbsp;    /**
+<i>157</i>&nbsp;     * Update model with worker&#39;s building in buildPosition
+<i>158</i>&nbsp;     *
+<i>159</i>&nbsp;     * @param buildPosition Position where Player want to build. It must be a position where worker can build.
+<i>160</i>&nbsp;     * @throws NullPointerException         if workerPos or movePos are null
+<i>161</i>&nbsp;     * @throws NotPresentWorkerException    if in workerPos there isn&#39;t any worker of current Player
+<i>162</i>&nbsp;     * @throws NotAdjacentMovementException workerPos isn&#39;t adjacent to movePos
+<i>163</i>&nbsp;     */
+<i>164</i>&nbsp;    public void buildWorker(Position buildPosition) throws NullPointerException, NotPresentWorkerException, NotAdjacentMovementException {
+<b class="fc"><i>165</i>&nbsp;        if (buildPosition == null)</b>
+<b class="fc"><i>166</i>&nbsp;            throw new NullPointerException(&quot;buildPosition&quot;);</b>
+<b class="fc"><i>167</i>&nbsp;        if (workerMovedPosition == null)</b>
+<b class="fc"><i>168</i>&nbsp;            throw new NullPointerException(&quot;workerMovedPosition&quot;);</b>
+<b class="fc"><i>169</i>&nbsp;        if (!workerMovedPosition.isAdjacent(buildPosition))</b>
+<b class="fc"><i>170</i>&nbsp;            throw new NotAdjacentBuildingException(workerMovedPosition.row, workerMovedPosition.col, buildPosition.row, buildPosition.col);</b>
+<i>171</i>&nbsp;
+<b class="fc"><i>172</i>&nbsp;        gameInstance.build(buildPosition);</b>
+<b class="fc"><i>173</i>&nbsp;    }</b>
+<i>174</i>&nbsp;
+<i>175</i>&nbsp;    /**
+<i>176</i>&nbsp;     * Return a list which contains Position where the worker can use his power
+<i>177</i>&nbsp;     *
+<i>178</i>&nbsp;     * @param workerPos Position where is located the worker that player want to use his power
+<i>179</i>&nbsp;     * @return List of Position that contains Position where the worker can use his power
+<i>180</i>&nbsp;     * @throws NullPointerException      if workerPos is null
+<i>181</i>&nbsp;     * @throws NotPresentWorkerException if in workerPos there isn&#39;t any worker of current Player
+<i>182</i>&nbsp;     */
+<i>183</i>&nbsp;    public List&lt;Position&gt; powerPositions(Position workerPos) throws NullPointerException, NotPresentWorkerException {
+<b class="fc"><i>184</i>&nbsp;        if (workerPos == null)</b>
+<b class="fc"><i>185</i>&nbsp;            throw new NullPointerException(&quot;workerPos&quot;);</b>
+<b class="fc"><i>186</i>&nbsp;        if (!movableWorkersPosition.contains(workerPos))</b>
+<b class="nc"><i>187</i>&nbsp;            throw new NotPresentWorkerException(workerPos.row, workerPos.col, gameInstance.getCurrentPlayerIndex());</b>
+<b class="fc"><i>188</i>&nbsp;        return gameInstance.getPowerPositions(workerPos);</b>
+<i>189</i>&nbsp;    }
+<i>190</i>&nbsp;
+<i>191</i>&nbsp;    /**
+<i>192</i>&nbsp;     * Method that check if a use of power from worker in workerPos to powerPos is valid
+<i>193</i>&nbsp;     *
+<i>194</i>&nbsp;     * @param workerPos Worker&#39;s Position before power
+<i>195</i>&nbsp;     * @param powerPos   Position where player want to use the power
+<i>196</i>&nbsp;     * @return true iff the use of power is valid
+<i>197</i>&nbsp;     * @throws NullPointerException if workerPos or powerPos are null
+<i>198</i>&nbsp;     */
+<i>199</i>&nbsp;    public boolean isValidUseOfPower(Position workerPos, Position powerPos) throws NullPointerException {
+<b class="fc"><i>200</i>&nbsp;        if (workerPos == null)</b>
+<b class="fc"><i>201</i>&nbsp;            throw new NullPointerException(&quot;workerPos&quot;);</b>
+<b class="fc"><i>202</i>&nbsp;        if (powerPos == null)</b>
+<b class="fc"><i>203</i>&nbsp;            throw new NullPointerException(&quot;powerPos&quot;);</b>
+<b class="fc"><i>204</i>&nbsp;        if (!currentPlayerWorkersPosition.contains(workerPos))</b>
+<b class="fc"><i>205</i>&nbsp;            return false;</b>
+<i>206</i>&nbsp;
+<b class="fc"><i>207</i>&nbsp;        gameInstance.setStartingWorker(workerPos);</b>
+<b class="fc"><i>208</i>&nbsp;        return gameInstance.canUsePowerWorker(powerPos);</b>
+<i>209</i>&nbsp;    }
+<i>210</i>&nbsp;
+<i>211</i>&nbsp;    /**
+<i>212</i>&nbsp;     * Update model when a player&#39;s worker use power from workerPos to powerPos
+<i>213</i>&nbsp;     *
+<i>214</i>&nbsp;     * @param workerPos Worker&#39;s Position before use of power
+<i>215</i>&nbsp;     * @param powerPos   Position where player want to use the power
+<i>216</i>&nbsp;     * @throws NullPointerException         if workerPos or powerPos are null
+<i>217</i>&nbsp;     * @throws NotPresentWorkerException    if in workerPos there isn&#39;t any worker of current Player
+<i>218</i>&nbsp;     * @throws NotAdjacentMovementException powerPos isn&#39;t adjacent to movePos
+<i>219</i>&nbsp;     */
+<i>220</i>&nbsp;    public void usePowerWorker(Position workerPos, Position powerPos) throws NullPointerException, NotPresentWorkerException, NotAdjacentMovementException {
+<b class="fc"><i>221</i>&nbsp;        if (workerPos == null)</b>
+<b class="nc"><i>222</i>&nbsp;            throw new NullPointerException(&quot;workerPos&quot;);</b>
+<b class="fc"><i>223</i>&nbsp;        if (powerPos == null)</b>
+<b class="nc"><i>224</i>&nbsp;            throw new NullPointerException(&quot;powerPos&quot;);</b>
+<b class="fc"><i>225</i>&nbsp;        if (!movableWorkersPosition.contains(workerPos))</b>
+<b class="nc"><i>226</i>&nbsp;            throw new NotPresentWorkerException(workerPos.row, workerPos.col, gameInstance.getCurrentPlayerIndex());</b>
+<b class="fc"><i>227</i>&nbsp;        if (!powerPos.isAdjacent(workerPos) &amp;&amp; !powerPos.equals(workerPos))</b>
+<b class="nc"><i>228</i>&nbsp;            throw new NotAdjacentMovementException(workerPos.row, workerPos.col, powerPos.row, powerPos.col);</b>
+<i>229</i>&nbsp;
+<b class="fc"><i>230</i>&nbsp;        gameInstance.usePowerWorker(powerPos);</b>
+<i>231</i>&nbsp;
+<b class="fc"><i>232</i>&nbsp;        if (gameInstance.getCurrentPlayerWorkersPosition().contains(powerPos)){</b>
+<b class="nc"><i>233</i>&nbsp;            currentPlayerWorkersPosition.remove(workerPos);</b>
+<b class="nc"><i>234</i>&nbsp;            currentPlayerWorkersPosition.add(powerPos);</b>
+<b class="nc"><i>235</i>&nbsp;            movableWorkersPosition = gameInstance.canPlayerMoveAWorker();</b>
+<b class="nc"><i>236</i>&nbsp;            workerMovedPosition = powerPos;</b>
+<i>237</i>&nbsp;        }
+<i>238</i>&nbsp;        else
+<b class="fc"><i>239</i>&nbsp;            workerMovedPosition = workerPos;</b>
+<b class="fc"><i>240</i>&nbsp;    }</b>
+<i>241</i>&nbsp;
+<i>242</i>&nbsp;    public void endTurn() {
+<b class="fc"><i>243</i>&nbsp;        gameInstance.endTurn();</b>
+<b class="fc"><i>244</i>&nbsp;    }</b>
+<i>245</i>&nbsp;
+<i>246</i>&nbsp;
+<i>247</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 15:42</div>
+</div>
+</body>
+</html>

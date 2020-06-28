@@ -1,0 +1,121 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TritonDecorator</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.player</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TritonDecorator (it.polimi.ingsw.model.player)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TritonDecorator</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/ 9)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.player;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.controller.GameState;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.board.BoardChange;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.board.Cell;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.board.Position;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.util.List;
+<i>9</i>&nbsp;import java.util.Map;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;public class TritonDecorator extends PlayerMoveDecorator{
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    public TritonDecorator() {
+<b class="fc"><i>14</i>&nbsp;        super(&quot;Triton&quot;, &quot;Each time your worker moves into a perimeter space, it may immediately move again.&quot;, GameState.BUILD, GameState.BUILD);</b>
+<b class="fc"><i>15</i>&nbsp;    }</b>
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    @Override
+<i>18</i>&nbsp;    public boolean canUsePower(List&lt;Cell&gt; adjacentList, Map&lt;Position, PlayerIndex&gt; adjacentPlayerList){
+<b class="fc"><i>19</i>&nbsp;        return canMove(adjacentPlayerList, adjacentList.get(0)) &amp;&amp; super.getCellOccupied().getPosition().isPerimeterPosition();</b>
+<i>20</i>&nbsp;    }
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    @Override
+<i>23</i>&nbsp;    public BoardChange usePower(Cell powerCell){
+<b class="fc"><i>24</i>&nbsp;        BoardChange boardChange = new BoardChange(super.getCellOccupied().getPosition(), powerCell.getPosition(), super.getPlayerNum());</b>
+<b class="fc"><i>25</i>&nbsp;        super.move(powerCell);</b>
+<b class="fc"><i>26</i>&nbsp;        return boardChange;</b>
+<i>27</i>&nbsp;    }
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    @Override
+<i>30</i>&nbsp;    public int getPowerListDimension() {
+<b class="fc"><i>31</i>&nbsp;        return 1;</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    @Override
+<i>35</i>&nbsp;    public void setChosenGod(Boolean condition){
+<b class="fc"><i>36</i>&nbsp;        super.setChosenGod(condition);</b>
+<b class="fc"><i>37</i>&nbsp;    }</b>
+<i>38</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 15:42</div>
+</div>
+</body>
+</html>

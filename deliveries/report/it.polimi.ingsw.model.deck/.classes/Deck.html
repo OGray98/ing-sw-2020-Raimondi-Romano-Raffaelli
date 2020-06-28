@@ -1,0 +1,194 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Deck</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.deck</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Deck (it.polimi.ingsw.model.deck)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Deck</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (40/ 40)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.deck;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.exception.InvalidNumberCardsChosenException;
+<i>4</i>&nbsp;import it.polimi.ingsw.exception.WrongGodNameException;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.player.*;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import java.util.ArrayList;
+<i>8</i>&nbsp;import java.util.List;
+<i>9</i>&nbsp;import java.util.stream.Collectors;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;public class Deck {
+<i>12</i>&nbsp;
+<b class="fc"><i>13</i>&nbsp;    private static final List&lt;CardInterface&gt; godCards = new ArrayList&lt;&gt;(</b>
+<b class="fc"><i>14</i>&nbsp;            List.of(</b>
+<i>15</i>&nbsp;                    new ApolloDecorator(),
+<i>16</i>&nbsp;                    new ArtemisDecorator(),
+<i>17</i>&nbsp;                    new AthenaDecorator(),
+<i>18</i>&nbsp;                    new AtlasDecorator(),
+<i>19</i>&nbsp;                    new DemeterDecorator(),
+<i>20</i>&nbsp;                    new HephaestusDecorator(),
+<i>21</i>&nbsp;                    new MinotaurDecorator(),
+<i>22</i>&nbsp;                    new PanDecorator(),
+<i>23</i>&nbsp;                    new PrometheusDecorator(),
+<i>24</i>&nbsp;                    new ZeusDecorator(),
+<i>25</i>&nbsp;                    new HestiaDecorator(),
+<i>26</i>&nbsp;                    new TritonDecorator(),
+<i>27</i>&nbsp;                    new CharonDecorator(),
+<i>28</i>&nbsp;                    new HeraDecorator()
+<i>29</i>&nbsp;            )
+<i>30</i>&nbsp;    );
+<i>31</i>&nbsp;    public final static int size = 14;
+<i>32</i>&nbsp;    private int playersNumber;
+<i>33</i>&nbsp;
+<b class="fc"><i>34</i>&nbsp;    public Deck() {</b>
+<b class="fc"><i>35</i>&nbsp;        this.playersNumber = 3;</b>
+<b class="fc"><i>36</i>&nbsp;    }</b>
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    public void setPlayersNumber(boolean threePlayer) {
+<b class="fc"><i>39</i>&nbsp;        this.playersNumber = threePlayer ? 3 : 2;</b>
+<b class="fc"><i>40</i>&nbsp;    }</b>
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    /**
+<i>43</i>&nbsp;     * Check if the
+<i>44</i>&nbsp;     * @return true if name is correct
+<i>45</i>&nbsp;     * @param name is a correct god name
+<i>46</i>&nbsp;     * @throws NullPointerException if name is null
+<i>47</i>&nbsp;     */
+<i>48</i>&nbsp;    public static boolean isCorrectedName(String name) throws NullPointerException {
+<b class="fc"><i>49</i>&nbsp;        if (name == null)</b>
+<b class="fc"><i>50</i>&nbsp;            throw new NullPointerException(&quot;name&quot;);</b>
+<b class="fc"><i>51</i>&nbsp;        return godCards.stream().anyMatch(card -&gt; card.getGodName().equals(name));</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    /**
+<i>55</i>&nbsp;     * Set the CardInterface
+<i>56</i>&nbsp;     * @param card as a card chosen by a player
+<i>57</i>&nbsp;     * @throws NullPointerException if card is null
+<i>58</i>&nbsp;     * */
+<i>59</i>&nbsp;    public void playerGodLikeChoose(CardInterface card) throws NullPointerException {
+<b class="fc"><i>60</i>&nbsp;        if (card == null)</b>
+<b class="fc"><i>61</i>&nbsp;            throw new NullPointerException(&quot;Card is null&quot;);</b>
+<b class="fc"><i>62</i>&nbsp;        card.setChosenGod(true);</b>
+<b class="fc"><i>63</i>&nbsp;    }</b>
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    /**
+<i>66</i>&nbsp;     * Set the cards chosen by the godlike player in the beginning of the game
+<i>67</i>&nbsp;     * @param gods is the list of the cards chosen
+<i>68</i>&nbsp;     * @throws NullPointerException if gods is null
+<i>69</i>&nbsp;     * @throws InvalidNumberCardsChosenException if the number of cards chosen and the number of players are different
+<i>70</i>&nbsp;     * @throws  WrongGodNameException if in the list given there is a god not present
+<i>71</i>&nbsp;     * */
+<i>72</i>&nbsp;    public void setChosenGodCards(List&lt;String&gt; gods) throws NullPointerException, ArrayIndexOutOfBoundsException {
+<b class="fc"><i>73</i>&nbsp;        if (gods == null)</b>
+<b class="fc"><i>74</i>&nbsp;            throw new NullPointerException(&quot;gods&quot;);</b>
+<b class="fc"><i>75</i>&nbsp;        if (gods.size() != playersNumber)</b>
+<b class="fc"><i>76</i>&nbsp;            throw new InvalidNumberCardsChosenException(playersNumber, gods.size());</b>
+<i>77</i>&nbsp;
+<b class="fc"><i>78</i>&nbsp;        for (String name : gods) {</b>
+<b class="fc"><i>79</i>&nbsp;            boolean thereIs = false;</b>
+<b class="fc"><i>80</i>&nbsp;            for (CardInterface god : godCards) {</b>
+<b class="fc"><i>81</i>&nbsp;                if (name.equals(god.getGodName())){</b>
+<b class="fc"><i>82</i>&nbsp;                    god.setChosenGod(true);</b>
+<b class="fc"><i>83</i>&nbsp;                    thereIs = true;</b>
+<i>84</i>&nbsp;                }
+<b class="fc"><i>85</i>&nbsp;            }</b>
+<b class="fc"><i>86</i>&nbsp;            if (!thereIs)</b>
+<b class="fc"><i>87</i>&nbsp;                throw new WrongGodNameException(name);</b>
+<b class="fc"><i>88</i>&nbsp;        }</b>
+<b class="fc"><i>89</i>&nbsp;    }</b>
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;    public List&lt;CardInterface&gt; getGodCards() {
+<b class="fc"><i>92</i>&nbsp;        return godCards;</b>
+<i>93</i>&nbsp;    }
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    public CardInterface getGodCard(String name) throws NullPointerException, WrongGodNameException {
+<b class="fc"><i>96</i>&nbsp;        if (name == null)</b>
+<b class="fc"><i>97</i>&nbsp;            throw new NullPointerException(&quot;name&quot;);</b>
+<b class="fc"><i>98</i>&nbsp;        for (CardInterface card : godCards) {</b>
+<b class="fc"><i>99</i>&nbsp;            if (card.getGodName().equals(name))</b>
+<b class="fc"><i>100</i>&nbsp;                return card;</b>
+<b class="fc"><i>101</i>&nbsp;        }</b>
+<b class="fc"><i>102</i>&nbsp;        throw new WrongGodNameException(name);</b>
+<i>103</i>&nbsp;    }
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;    public List&lt;CardInterface&gt; getChosenGodCards() {
+<b class="fc"><i>106</i>&nbsp;        return godCards.stream()</b>
+<b class="fc"><i>107</i>&nbsp;                .filter(CardInterface::getBoolChosenGod)</b>
+<b class="fc"><i>108</i>&nbsp;                .collect(Collectors.toList());</b>
+<i>109</i>&nbsp;    }
+<i>110</i>&nbsp;
+<i>111</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 15:42</div>
+</div>
+</body>
+</html>

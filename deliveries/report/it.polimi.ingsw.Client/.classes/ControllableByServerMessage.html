@@ -1,0 +1,82 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ControllableByServerMessage</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.Client</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ControllableByServerMessage (it.polimi.ingsw.Client)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ControllableByServerMessage</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.Client;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.message.*;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;public interface ControllableByServerMessage {
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;    void updateNickname(NicknameMessage message);
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;    void updateCurrentPlayer(CurrentPlayerMessage message);
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;    void updateIndex(ConnectionPlayerIndex message);
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    void updateState(UpdateStateMessage message);
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    void updateAction(ActionMessage message);
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    void updateGodCards(GodLikeChoseMessage message);
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    void updateSelectedCard(PlayerSelectGodMessage message);
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    void updatePutWorkerMessage(PutWorkerMessage message);
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    void updateMoveMessage(MoveMessage message);
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    void updateBuildMessage(BuildMessage message);
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    void updateBuildPowerMessage(BuildPowerMessage message);
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    void updateLoserMessage(LoserMessage message);
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    void updateCloseConnectionMessage(CloseConnectionMessage message);
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    void showInformationMessage(InformationMessage message);
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 15:42</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,187 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GUIMain</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.view</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GUIMain (it.polimi.ingsw.view)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GUIMain</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 16)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GUIMain$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 18)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.view;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.Client.ClientModel;
+<i>4</i>&nbsp;import it.polimi.ingsw.message.BuildViewMessage;
+<i>5</i>&nbsp;import it.polimi.ingsw.message.MoveMessage;
+<i>6</i>&nbsp;import it.polimi.ingsw.message.PlayerSelectGodMessage;
+<i>7</i>&nbsp;import it.polimi.ingsw.message.PutWorkerMessage;
+<i>8</i>&nbsp;import it.polimi.ingsw.model.board.Position;
+<i>9</i>&nbsp;import it.polimi.ingsw.model.player.PlayerIndex;
+<i>10</i>&nbsp;import it.polimi.ingsw.view.GUI.GUI;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import javax.swing.*;
+<i>13</i>&nbsp;import java.util.ArrayList;
+<i>14</i>&nbsp;import java.util.List;
+<i>15</i>&nbsp;
+<b class="nc"><i>16</i>&nbsp;public class GUIMain {</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    private final GUI gui;
+<i>19</i>&nbsp;
+<b class="nc"><i>20</i>&nbsp;    public GUIMain() {</b>
+<b class="nc"><i>21</i>&nbsp;        this.gui = new GUI(new ClientModel());</b>
+<b class="nc"><i>22</i>&nbsp;        this.gui.setPlayer(PlayerIndex.PLAYER0);</b>
+<i>23</i>&nbsp;
+<b class="nc"><i>24</i>&nbsp;        SwingUtilities.invokeLater(new Runnable() {</b>
+<i>25</i>&nbsp;            @Override
+<i>26</i>&nbsp;            public void run() {
+<b class="nc"><i>27</i>&nbsp;                gui.initGUI();</b>
+<i>28</i>&nbsp;            }
+<i>29</i>&nbsp;        });
+<i>30</i>&nbsp;
+<b class="nc"><i>31</i>&nbsp;        gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER0, new Position(3, 1), 1));</b>
+<b class="nc"><i>32</i>&nbsp;        gui.updatePutWorker(new PutWorkerMessage(PlayerIndex.PLAYER0, new Position(0, 4), new Position(2, 4)));</b>
+<b class="nc"><i>33</i>&nbsp;        gui.updatePutWorker(new PutWorkerMessage(PlayerIndex.PLAYER1, new Position(1,4), new Position(0,0)));</b>
+<b class="nc"><i>34</i>&nbsp;        gui.updatePutWorker(new PutWorkerMessage(PlayerIndex.PLAYER2, new Position(3,4), new Position(0,1)));</b>
+<b class="nc"><i>35</i>&nbsp;        gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER0, new Position(3,1), 2));</b>
+<b class="nc"><i>36</i>&nbsp;        gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER0, new Position(3,1), 3));</b>
+<b class="nc"><i>37</i>&nbsp;        gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER1, new Position(0,0), new Position(3,1)));</b>
+<i>38</i>&nbsp;        //gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER0, new Position(3,1), 3));
+<i>39</i>&nbsp;        //gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER1,new Position(3,0),1));
+<i>40</i>&nbsp;        //gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER1,new Position(3,0),2));
+<i>41</i>&nbsp;        //gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER0, new Position(3,1), 4));
+<i>42</i>&nbsp;        //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER1, new Position(0,0), new Position(3,1)));
+<i>43</i>&nbsp;        //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER0, new Position(2,4), new Position(3,0)));
+<i>44</i>&nbsp;        //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER1, new Position(1,4), new Position(3,0)));
+<i>45</i>&nbsp;        //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER2, new Position(0,1), new Position(3,0)));
+<i>46</i>&nbsp;        //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER0, new Position(3,0), new Position(3,1)));
+<i>47</i>&nbsp;        //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER0, new Position(3,0), new Position(1,4)));
+<i>48</i>&nbsp;        //gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER1,new Position(3,0),1));
+<i>49</i>&nbsp;        //gui.updateBuild(new BuildViewMessage(PlayerIndex.PLAYER1,new Position(3,0),2));
+<i>50</i>&nbsp;        //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER1, new Position(0,0), new Position(3,0)));
+<i>51</i>&nbsp;        //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER1, new Position(3,0), new Position(3,4)));
+<i>52</i>&nbsp;        //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER1, new Position(3,0), new Position(3,4)));
+<i>53</i>&nbsp;        //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER0, new Position(3,1), new Position(3,0)));
+<i>54</i>&nbsp;        //gui.updateMoveWorker(new MoveMessage(PlayerIndex.PLAYER0, new Position(2,2), new Position(3,1)));
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;        /*List&lt;Position&gt; actions = new ArrayList&lt;&gt;();
+<i>57</i>&nbsp;        actions.add(new Position(3,1));
+<i>58</i>&nbsp;        actions.add(new Position(4,3));
+<i>59</i>&nbsp;        actions.add(new Position(4,4));
+<i>60</i>&nbsp;        actions.add(new Position(2,1));
+<i>61</i>&nbsp;        gui.updateActionView(new ActionMessage(PlayerIndex.PLAYER0, new Position(3,4), actions, ActionType.MOVE));*/
+<b class="nc"><i>62</i>&nbsp;        gui.updateSelectedCardView(new PlayerSelectGodMessage(PlayerIndex.PLAYER0, &quot;Minotaur&quot;));</b>
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    }
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+<i>68</i>&nbsp;            UnsupportedLookAndFeelException{
+<b class="nc"><i>69</i>&nbsp;        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());</b>
+<b class="nc"><i>70</i>&nbsp;        new GUIMain();</b>
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;        //creo lista di gods da visualizzare in GodChoiceDialog
+<b class="nc"><i>73</i>&nbsp;        List&lt;String&gt; gods = new ArrayList&lt;&gt;(List.of(&quot;Apollo&quot;, &quot;Athena&quot;, &quot;Minotaur&quot;, &quot;Prometheus&quot;));</b>
+<i>74</i>&nbsp;        /*new GodChoiceDialog(new JFrame(), gods,true, true, e -&gt; {
+<i>75</i>&nbsp;            System.out.println(&quot;CHOSEN!&quot;);
+<i>76</i>&nbsp;        });*/
+<i>77</i>&nbsp;    }
+<i>78</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 15:42</div>
+</div>
+</body>
+</html>

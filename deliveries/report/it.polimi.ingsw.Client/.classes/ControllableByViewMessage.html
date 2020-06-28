@@ -1,0 +1,125 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ControllableByViewMessage</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.Client</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ControllableByViewMessage (it.polimi.ingsw.Client)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ControllableByViewMessage</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.Client;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.message.*;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;public interface ControllableByViewMessage {
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;    /**
+<i>8</i>&nbsp;     * Method that update the view when player put a worker
+<i>9</i>&nbsp;     * Implented in GUI or CLI
+<i>10</i>&nbsp;     * @param message is the message received from the server
+<i>11</i>&nbsp;     * */
+<i>12</i>&nbsp;    public void updatePutWorker(PutWorkerMessage message);
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    /**
+<i>15</i>&nbsp;     * Method that update the view when a player move a worker
+<i>16</i>&nbsp;     * @param message is the message received from the server
+<i>17</i>&nbsp;     * */
+<i>18</i>&nbsp;    public void updateMoveWorker(MoveMessage message);
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * Method that update the view when a player builds
+<i>22</i>&nbsp;     * @param message is the message received from the server
+<i>23</i>&nbsp;     * */
+<i>24</i>&nbsp;    public void updateBuild(BuildViewMessage message);
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * Method that update the view when a player select his god
+<i>28</i>&nbsp;     * @param message is the message received from the server
+<i>29</i>&nbsp;     * */
+<i>30</i>&nbsp;    public void updateSelectedCardView(PlayerSelectGodMessage message);
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    /**
+<i>33</i>&nbsp;     * Method that update the view when possible moves have to be shown
+<i>34</i>&nbsp;     * @param message is the message received from the server
+<i>35</i>&nbsp;     * */
+<i>36</i>&nbsp;    public void updateActions(PositionMessage message);
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * Method that update the view when a player connects
+<i>40</i>&nbsp;     * @param message is the message received from the server
+<i>41</i>&nbsp;     * */
+<i>42</i>&nbsp;    void updateClientIndex(ConnectionPlayerIndex message);
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    /**
+<i>45</i>&nbsp;     * Method that remove a loser player from the board
+<i>46</i>&nbsp;     * @param message is the message received from the server
+<i>47</i>&nbsp;     * */
+<i>48</i>&nbsp;    void updateRemovePlayer(RemovePlayerMessage message);
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    /**
+<i>51</i>&nbsp;     * Method that will show the winner at the end of the game
+<i>52</i>&nbsp;     * @param message is the message received from the server
+<i>53</i>&nbsp;     * */
+<i>54</i>&nbsp;    void showWinner(InformationMessage message);
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    /**
+<i>57</i>&nbsp;     * Method that will show the loser during a game
+<i>58</i>&nbsp;     * @param message is the message received from the server
+<i>59</i>&nbsp;     * */
+<i>60</i>&nbsp;    void showLoser(InformationMessage message);
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    /**
+<i>63</i>&nbsp;     * Method that show clearly the possibility of use a god power in the current turn phase
+<i>64</i>&nbsp;     * @param isOn indicates the state of the button
+<i>65</i>&nbsp;     * */
+<i>66</i>&nbsp;    void showPowerButton(boolean isOn);
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;    /**
+<i>69</i>&nbsp;     * Method that show clearly the possibility to end the turn
+<i>70</i>&nbsp;     * @param isOn indicates the state of the button
+<i>71</i>&nbsp;     * */
+<i>72</i>&nbsp;    void showEndTurnButton(boolean isOn);
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    /**
+<i>75</i>&nbsp;     * When a player insert a nickname already taken he must reinsert it
+<i>76</i>&nbsp;     * */
+<i>77</i>&nbsp;    void reinsertNickname();
+<i>78</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-25 15:42</div>
+</div>
+</body>
+</html>
