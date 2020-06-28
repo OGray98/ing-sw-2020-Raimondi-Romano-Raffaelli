@@ -478,6 +478,10 @@ public class ClientModel extends Observable<MessageToView> implements ViewModelI
         return amICurrentPlayer;
     }
 
+    /**
+     * set amICurrentPlayer true iff
+     * @param amICurrentPlayer is true
+     * */
     public void setAmICurrentPlayer(boolean amICurrentPlayer) {
         this.amICurrentPlayer = amICurrentPlayer;
     }
