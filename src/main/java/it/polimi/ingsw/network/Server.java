@@ -39,6 +39,9 @@ public class Server {
         this.isActive = condition;
     }
 
+    /**
+     * @return boolean that indicate if server is online
+     */
     public synchronized boolean getActive() {
         return isActive;
     }
@@ -128,6 +131,9 @@ public class Server {
 
      }
 
+    /**
+     * @return thread that create a client connection to server
+     */
      public Thread threadInConnection(){
         Thread t = new Thread(() -> {
             while (true){
@@ -150,6 +156,9 @@ public class Server {
      }
 
 
+    /**
+     * open the port of server
+     */
     public Server() throws IOException{
         this.serverSocket = new ServerSocket(PORT);
         System.out.println("Port is open ");

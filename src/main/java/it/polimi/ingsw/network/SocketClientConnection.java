@@ -53,6 +53,11 @@ public class SocketClientConnection extends Observable<MessageToServer> implemen
     }
 
 
+
+     /**
+      * Close socket, input-stream and output-stream
+     */
+
     public synchronized void closeConnection() {
 
         //notify(new CloseConnectionMessage(this.clientIndex));
