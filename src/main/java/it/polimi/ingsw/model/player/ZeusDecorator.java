@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.board.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class that decorates Player. It is used to play Zeus
+ * */
 public class ZeusDecorator extends PlayerBuildDecorator{
 
     public ZeusDecorator() {

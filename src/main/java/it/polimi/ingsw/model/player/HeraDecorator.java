@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.controller.GameState;
 
+/**
+ * Class that decorates Player. It is used to play Hera
+ * */
 public class HeraDecorator extends PlayerOpponentTurnDecorator{
 
     public HeraDecorator() {

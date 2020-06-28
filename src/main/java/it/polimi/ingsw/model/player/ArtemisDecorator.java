@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.board.Position;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class that decorates Player. It is used to play Artemis
+ * */
 public class ArtemisDecorator extends PlayerMoveDecorator {
 
     public ArtemisDecorator(){

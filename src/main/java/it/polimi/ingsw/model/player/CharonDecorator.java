@@ -9,6 +9,9 @@ import it.polimi.ingsw.model.board.Position;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class that decorates Player. It is used to play Charon
+ * */
 public class CharonDecorator extends PlayerYourTurnDecorator{
 
     private PlayerIndex enemyIndex;

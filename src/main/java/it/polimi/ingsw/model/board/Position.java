@@ -9,7 +9,13 @@ import java.io.Serializable;
  */
 public class Position implements Serializable {
     private static final long serialVersionUID = -1220918273625120376L;
+    /**
+     * number of the position's row on the board
+     * */
     public Integer row;
+    /**
+     * number of the position's column on the board
+     * */
     public Integer col;
 
     /**

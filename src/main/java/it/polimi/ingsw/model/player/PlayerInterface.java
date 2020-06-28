@@ -9,21 +9,42 @@ import it.polimi.ingsw.model.board.Position;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Interface of all methods implemented by Player and decorated classes of player
+ * */
 public interface PlayerInterface {
 
-    /* Getter of nickname*/
+    /**
+     * @return nickname of the player
+     * */
     String getNickname();
 
-    /* Set the situation when worker has never been moved yet */
+    /**
+     *  Set the situation when worker has never been moved yet
+     *  @param cellOccupied is the new cell occupied
+     *  @param cantGoUp say if is active a power that blocks moves up
+     *  */
     void setStartingWorkerSituation(Cell cellOccupied, boolean cantGoUp);
 
-    /* Each time a user select a worker tile, Game will set the needed information through this method */
+    /**
+     *  Each time a user select a worker tile, Game will set the needed information through this method
+     *  @param oldCell is the old cell
+     *  @param cellOccupied is the new cell occupied
+     *  @param cantGoUp say if is active a power that blocks moves up
+     *  */
     void setWorkerSituation(Cell oldCell, Cell cellOccupied, boolean cantGoUp);
 
-    /* Set the situation after a move */
+    /**
+     *  Set the situation after a move
+     *  @param oldCell is the old cell
+     *  @param cellOccupied is the new cell occupied
+     *  */
     void setAfterMove(Cell oldCell, Cell cellOccupied);
 
-    /*Setter of cantGoUp*/
+    /**
+     * Setter of cantGoUp
+     * @param cantGoUp say if is active a power that blocks moves up
+     * */
     void setCantGoUp(boolean cantGoUp);
 
     /**
@@ -80,8 +101,16 @@ public interface PlayerInterface {
      * */
     BoardChange usePower(Cell powerCell);
 
+    /**
+     * @return the old Cell of the player
+     * @throws NullPointerException if player has not set an old cell
+     * */
     Cell getOldCell() throws NullPointerException;
 
+    /**
+     * @return the Cell occupied of the player
+     * @throws NullPointerException if player has not set an old cell
+     * */
     Cell getCellOccupied() throws NullPointerException;
 
     /**
@@ -91,15 +120,33 @@ public interface PlayerInterface {
      * */
     Position getSecondPowerPosition(Position firstPowerPos);
 
+    /**
+     * @return cantGoUp attribute
+     * */
     boolean getCantGoUp();
 
+    /**
+     * @return the index of the player
+     * */
     PlayerIndex getPlayerNum();
 
+    /**
+     * @return the number of power cells needed for the god power
+     * */
     int getPowerListDimension();
 
+    /**
+     * @return the name of the god chosen
+     * */
     String getGodName();
 
+    /**
+     * @return the state when user can use his god power
+     * */
     GameState getPowerState();
 
+    /**
+     * @return the state where the game goes after using his god power
+     * */
     GameState getNextState();
 }
