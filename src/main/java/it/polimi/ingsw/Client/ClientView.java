@@ -75,6 +75,7 @@ public abstract class ClientView extends View implements Observer<MessageToView>
     /**
      * Show to the view the input panel to insert the ip of the server
      * @param message is the message shown to the view
+     * @return the string to print in the input panel
      * */
     public abstract String showSelectIP(String message);
 

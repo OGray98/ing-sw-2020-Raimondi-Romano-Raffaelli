@@ -158,6 +158,7 @@ public class Server {
 
     /**
      * open the port of server
+     * @throws IOException when there is an error during the join of threads
      */
     public Server() throws IOException{
         this.serverSocket = new ServerSocket(PORT);

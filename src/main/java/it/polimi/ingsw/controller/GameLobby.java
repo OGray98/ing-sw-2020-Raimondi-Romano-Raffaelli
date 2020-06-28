@@ -92,6 +92,7 @@ public class GameLobby {
 
     /**
      * Method that set the number of players for this game chosen by the godLike
+     * @param threePlayersGameDecided is true iff player godLike has already chosen the number of players
      * */
     public void setThreePlayersGameDecided(boolean threePlayersGameDecided) {
         this.threePlayersGameDecided = threePlayersGameDecided;
@@ -99,6 +100,7 @@ public class GameLobby {
 
     /**
      * Method that remove a player from the lobby
+     * @param playerToRemove is the index of the player to remove
      * */
     public void removeFromLobby(PlayerIndex playerToRemove){
         lobbyPlayers.remove(playerToRemove);
