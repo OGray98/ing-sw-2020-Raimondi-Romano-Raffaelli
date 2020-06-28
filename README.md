@@ -25,5 +25,8 @@ In /deliveries/report is possible to see a full report
 How to run:
 
 In /deliveries/jar there are two jar files that allow to run the application.
-Server.jar will launch the server, once the server is running it is possible to connect players
-launching Client.jar 
+Server.jar will launch the server, once the server is running it is possible to connect players launching Client.jar.
+
+To launch Server.jar digit :   java -jar Server.jar
+To launch a client that play on GUI digit :   java -jar Client.jar
+To launch a client that play on CLI digit :   java -jar Client.jar -c
