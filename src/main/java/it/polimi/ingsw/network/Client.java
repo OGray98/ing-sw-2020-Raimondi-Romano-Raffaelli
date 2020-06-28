@@ -125,6 +125,9 @@ public class Client implements ServerConnection {
         return t;
     }
 
+    /**
+     * @return thread that read message from queue and invoke client manager to change client action
+     */
     public Thread clientManageReadMessage() {
         Thread t = new Thread(() -> {
             try {
@@ -171,6 +174,10 @@ public class Client implements ServerConnection {
         }
     }
 
+    /**
+     * @throws IOException Input-output exception
+     * Close socket, input-stream and output-stream
+     */
     public void close() throws IOException {
         if(!socket.isClosed()){
             System.out.println("Client is closed");
