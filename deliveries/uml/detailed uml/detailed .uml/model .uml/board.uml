@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>it.polimi.ingsw.model.board</OriginalElement>
+  <nodes>
+    <node x="295.92857142857144" y="304.0">it.polimi.ingsw.model.board.BoardChange</node>
+    <node x="388.5" y="182.0">it.polimi.ingsw.model.board.BuildType</node>
+    <node x="154.22658567821054" y="182.0">it.polimi.ingsw.model.board.PositionContainer</node>
+    <node x="490.15277164502146" y="598.0">it.polimi.ingsw.model.board.BoardTest</node>
+    <node x="625.9683786075034" y="182.0">it.polimi.ingsw.model.board.PositionTest</node>
+    <node x="485.47443181818187" y="456.0">it.polimi.ingsw.model.board.Board</node>
+    <node x="173.63541053391037" y="456.0">it.polimi.ingsw.model.board.BoardChangesTest</node>
+    <node x="617.9449419191917" y="456.0">it.polimi.ingsw.model.board.CellTest</node>
+    <node x="567.4449419191917" y="304.0">it.polimi.ingsw.model.board.Cell</node>
+    <node x="471.1410984848485" y="0.0">it.polimi.ingsw.model.board.Position</node>
+    <node x="32.5" y="304.0">it.polimi.ingsw.model.board.PositionContainerTest</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="it.polimi.ingsw.model.board.PositionContainerTest" target="it.polimi.ingsw.model.board.PositionContainer">
+      <point x="0.0" y="-26.0" />
+      <point x="138.5" y="284.0" />
+      <point x="164.28214123376608" y="284.0" />
+      <point x="-80.44444444444446" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.BoardChange" target="it.polimi.ingsw.model.board.BuildType">
+      <point x="57.428571428571445" y="-26.0" />
+      <point x="420.3571428571429" y="284.0" />
+      <point x="424.20000000000005" y="284.0" />
+      <point x="-23.799999999999955" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.CellTest" target="it.polimi.ingsw.model.board.Cell">
+      <point x="27.75" y="-26.0" />
+      <point x="701.1949419191917" y="426.0" />
+      <point x="630.3020847763345" y="426.0" />
+      <point x="22.857142857142776" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.BoardChangesTest" target="it.polimi.ingsw.model.board.PositionContainer">
+      <point x="10.8125" y="-26.0" />
+      <point x="270.9479105339104" y="436.0" />
+      <point x="266.0" y="436.0" />
+      <point x="266.0" y="264.0" />
+      <point x="244.72658567821054" y="264.0" />
+      <point x="0.0" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.PositionTest" target="it.polimi.ingsw.model.board.Position">
+      <point x="35.5" y="-26.0" />
+      <point x="732.4683786075034" y="102.0" />
+      <point x="563.6410984848486" y="102.0" />
+      <point x="37.00000000000006" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.Board" target="it.polimi.ingsw.model.board.PositionContainer">
+      <point x="-38.66666666666663" y="-26.0" />
+      <point x="490.30776515151524" y="406.0" />
+      <point x="279.17857142857144" y="406.0" />
+      <point x="279.17857142857144" y="254.0" />
+      <point x="264.8376967893217" y="254.0" />
+      <point x="20.111111111111143" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.BoardTest" target="it.polimi.ingsw.model.board.BoardChange">
+      <point x="-54.09090909090912" y="-26.0" />
+      <point x="495.56186255411234" y="578.0" />
+      <point x="386.61160858585845" y="578.0" />
+      <point x="386.61160858585845" y="426.0" />
+      <point x="362.92857142857144" y="426.0" />
+      <point x="0.0" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.Board" target="it.polimi.ingsw.model.board.Position">
+      <point x="9.666666666666629" y="-26.0" />
+      <point x="538.6410984848485" y="396.0" />
+      <point x="556.9449419191917" y="396.0" />
+      <point x="556.9449419191917" y="152.0" />
+      <point x="537.212527056277" y="152.0" />
+      <point x="10.571428571428555" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.BoardTest" target="it.polimi.ingsw.model.board.Cell">
+      <point x="21.636363636363626" y="-26.0" />
+      <point x="571.2891352813851" y="548.0" />
+      <point x="739.4449419191917" y="548.0" />
+      <point x="739.4449419191917" y="416.0" />
+      <point x="641.7306562049059" y="416.0" />
+      <point x="34.28571428571422" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.BoardChange" target="it.polimi.ingsw.model.board.PositionContainer">
+      <point x="-57.428571428571445" y="-26.0" />
+      <point x="305.5" y="284.0" />
+      <point x="284.94880790043277" y="284.0" />
+      <point x="40.22222222222223" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.PositionContainer" target="it.polimi.ingsw.model.board.Position">
+      <point x="-60.33333333333343" y="-26.0" />
+      <point x="184.3932523448771" y="122.0" />
+      <point x="500.21252705627705" y="122.0" />
+      <point x="-26.428571428571445" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.Board" target="it.polimi.ingsw.model.board.BoardChange">
+      <point x="-29.0" y="-26.0" />
+      <point x="499.97443181818187" y="396.0" />
+      <point x="416.52857142857147" y="396.0" />
+      <point x="53.60000000000002" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.Board" target="it.polimi.ingsw.model.board.BuildType">
+      <point x="-19.33333333333337" y="-26.0" />
+      <point x="509.6410984848485" y="386.0" />
+      <point x="497.9683786075035" y="386.0" />
+      <point x="497.9683786075035" y="284.0" />
+      <point x="495.6" y="284.0" />
+      <point x="47.60000000000002" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.BoardTest" target="it.polimi.ingsw.model.board.Position">
+      <point x="43.27272727272725" y="-26.0" />
+      <point x="592.9254989177487" y="568.0" />
+      <point x="789.2865604256851" y="568.0" />
+      <point x="789.2865604256851" y="82.0" />
+      <point x="574.2125270562772" y="82.0" />
+      <point x="47.57142857142861" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.BoardChangesTest" target="it.polimi.ingsw.model.board.BuildType">
+      <point x="75.6875" y="-26.0" />
+      <point x="335.8229105339104" y="436.0" />
+      <point x="448.15882485569983" y="436.0" />
+      <point x="0.0" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.PositionContainerTest" target="it.polimi.ingsw.model.board.Position">
+      <point x="-42.400000000000034" y="-26.0" />
+      <point x="96.09999999999997" y="284.0" />
+      <point x="80.40000000000003" y="284.0" />
+      <point x="80.40000000000003" y="112.0" />
+      <point x="494.92681277056283" y="112.0" />
+      <point x="-31.714285714285722" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.BoardChange" target="it.polimi.ingsw.model.board.Position">
+      <point x="0.0" y="-26.0" />
+      <point x="362.92857142857144" y="284.0" />
+      <point x="367.0" y="284.0" />
+      <point x="367.0" y="152.0" />
+      <point x="516.06966991342" y="152.0" />
+      <point x="-10.571428571428555" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.BoardTest" target="it.polimi.ingsw.model.board.BuildType">
+      <point x="-32.454545454545496" y="-26.0" />
+      <point x="517.1982261904759" y="558.0" />
+      <point x="474.97443181818187" y="558.0" />
+      <point x="474.97443181818187" y="284.0" />
+      <point x="471.79999999999995" y="284.0" />
+      <point x="23.799999999999955" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.Cell" target="it.polimi.ingsw.model.board.Position">
+      <point x="0.0" y="-26.0" />
+      <point x="607.4449419191917" y="284.0" />
+      <point x="604.4683786075034" y="284.0" />
+      <point x="604.4683786075034" y="132.0" />
+      <point x="547.7839556277057" y="132.0" />
+      <point x="21.142857142857167" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.BoardChangesTest" target="it.polimi.ingsw.model.board.BoardChange">
+      <point x="32.4375" y="-26.0" />
+      <point x="292.5729105339104" y="416.0" />
+      <point x="309.3285714285714" y="416.0" />
+      <point x="-53.60000000000002" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.BoardTest" target="it.polimi.ingsw.model.board.Board">
+      <point x="-21.636363636363626" y="-26.0" />
+      <point x="528.0164080086579" y="548.0" />
+      <point x="499.97443181818187" y="548.0" />
+      <point x="-29.0" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.Board" target="it.polimi.ingsw.model.board.Cell">
+      <point x="38.66666666666663" y="-26.0" />
+      <point x="567.6410984848485" y="426.0" />
+      <point x="596.0163704906203" y="426.0" />
+      <point x="-11.428571428571445" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.model.board.BoardChangesTest" target="it.polimi.ingsw.model.board.Position">
+      <point x="-32.4375" y="-26.0" />
+      <point x="227.69791053391037" y="416.0" />
+      <point x="22.0" y="416.0" />
+      <point x="22.0" y="92.0" />
+      <point x="484.3553841991343" y="92.0" />
+      <point x="-42.28571428571428" y="26.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="451.5" y="318.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

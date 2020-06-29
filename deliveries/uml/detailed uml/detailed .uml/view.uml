@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>it.polimi.ingsw.view</OriginalElement>
+  <nodes>
+    <node x="326.0" y="102.0">it.polimi.ingsw.view.RemoteView</node>
+    <node x="188.0" y="102.0">it.polimi.ingsw.view.CLI</node>
+    <node x="96.83333333333336" y="244.0">it.polimi.ingsw.view.GUIMain</node>
+    <node x="50.0" y="102.0">it.polimi.ingsw.view.GUI</node>
+    <node x="177.5" y="0.0">it.polimi.ingsw.view.View</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="it.polimi.ingsw.view.RemoteView" target="it.polimi.ingsw.view.View">
+      <point x="0.0" y="-26.0" />
+      <point x="389.0" y="72.0" />
+      <point x="249.5" y="72.0" />
+      <point x="32.0" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.view.GUIMain" target="it.polimi.ingsw.view.GUI">
+      <point x="-25.75" y="-26.0" />
+      <point x="122.58333333333336" y="224.0" />
+      <point x="138.5" y="224.0" />
+      <point x="29.5" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.view.GUI" target="it.polimi.ingsw.view.GUI">
+      <point x="9.833333333333329" y="26.0" />
+      <point x="118.83333333333333" y="204.0" />
+      <point x="0.0" y="204.0" />
+      <point x="0.0" y="108.5" />
+      <point x="-59.0" y="-19.5" />
+    </edge>
+    <edge source="it.polimi.ingsw.view.CLI" target="it.polimi.ingsw.view.View">
+      <point x="29.5" y="-26.0" />
+      <point x="276.5" y="82.0" />
+      <point x="233.5" y="82.0" />
+      <point x="16.0" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.view.GUI" target="it.polimi.ingsw.view.View">
+      <point x="29.5" y="-26.0" />
+      <point x="138.5" y="82.0" />
+      <point x="201.5" y="82.0" />
+      <point x="-16.0" y="26.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="201.0" y="125.5" />
+  <SelectedNodes>
+    <node>it.polimi.ingsw.view.View</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

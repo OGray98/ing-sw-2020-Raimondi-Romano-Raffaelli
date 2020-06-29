@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>it.polimi.ingsw.controller</OriginalElement>
+  <nodes>
+    <node x="64.67803030303031" y="122.0">it.polimi.ingsw.controller.TurnManagerTest</node>
+    <node x="293.0" y="0.0">it.polimi.ingsw.controller.ControllableByClientMessage</node>
+    <node x="357.07954545454544" y="122.0">it.polimi.ingsw.controller.GameManager</node>
+    <node x="334.375" y="224.0">it.polimi.ingsw.controller.stub</node>
+    <node x="836.7045454545455" y="122.0">it.polimi.ingsw.controller.GameLobbyTest</node>
+    <node x="619.7045454545455" y="122.0">it.polimi.ingsw.controller.GodPhaseManagerTest</node>
+    <node x="139.0" y="0.0">it.polimi.ingsw.controller.TurnManager</node>
+    <node x="800.75" y="0.0">it.polimi.ingsw.controller.GameLobby</node>
+    <node x="0.0" y="0.0">it.polimi.ingsw.controller.GameState</node>
+    <node x="572.0" y="0.0">it.polimi.ingsw.controller.GodPhaseManager</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="it.polimi.ingsw.controller.TurnManagerTest" target="it.polimi.ingsw.controller.GameState">
+      <point x="-55.33333333333334" y="-26.0" />
+      <point x="92.344696969697" y="102.0" />
+      <point x="59.5" y="102.0" />
+      <point x="-7.105427357601002E-15" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.controller.GameManager" target="it.polimi.ingsw.controller.GameState">
+      <point x="-58.625" y="-26.0" />
+      <point x="365.45454545454544" y="92.0" />
+      <point x="99.16666666666663" y="92.0" />
+      <point x="39.66666666666666" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.controller.GameLobbyTest" target="it.polimi.ingsw.controller.GameLobby">
+      <point x="37.5" y="-26.0" />
+      <point x="949.2045454545455" y="102.0" />
+      <point x="904.875" y="102.0" />
+      <point x="44.625" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.controller.GodPhaseManagerTest" target="it.polimi.ingsw.controller.GodPhaseManager">
+      <point x="-49.25" y="-26.0" />
+      <point x="668.9545454545455" y="82.0" />
+      <point x="675.75" y="82.0" />
+      <point x="20.75" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.controller.stub" target="it.polimi.ingsw.controller.GameManager">
+      <point x="0.0" y="-26.0" />
+      <point x="397.375" y="199.0" />
+      <point x="390.57954545454544" y="199.0" />
+      <point x="-33.5" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.controller.GameManager" target="it.polimi.ingsw.controller.TurnManager">
+      <point x="-25.125" y="-26.0" />
+      <point x="398.95454545454544" y="72.0" />
+      <point x="256.25" y="72.0" />
+      <point x="50.25" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.controller.GameManager" target="it.polimi.ingsw.controller.ControllableByClientMessage">
+      <point x="-8.375" y="-26.0" />
+      <point x="415.70454545454544" y="102.0" />
+      <point x="422.5" y="102.0" />
+      <point x="0.0" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.controller.TurnManagerTest" target="it.polimi.ingsw.controller.TurnManager">
+      <point x="55.33333333333334" y="-26.0" />
+      <point x="203.01136363636365" y="102.0" />
+      <point x="189.25" y="102.0" />
+      <point x="-16.75" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.controller.GameManager" target="it.polimi.ingsw.controller.GameLobby">
+      <point x="58.625" y="-26.0" />
+      <point x="482.70454545454544" y="102.0" />
+      <point x="845.375" y="102.0" />
+      <point x="-14.875" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.controller.stub" target="it.polimi.ingsw.controller.GameState">
+      <point x="-42.0" y="-26.0" />
+      <point x="355.375" y="199.0" />
+      <point x="29.045454545454504" y="199.0" />
+      <point x="29.045454545454504" y="102.0" />
+      <point x="19.833333333333314" y="102.0" />
+      <point x="-39.666666666666686" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.controller.GameManager" target="it.polimi.ingsw.controller.GodPhaseManager">
+      <point x="25.125" y="-26.0" />
+      <point x="449.20454545454544" y="82.0" />
+      <point x="634.25" y="82.0" />
+      <point x="-20.75" y="26.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.controller.stub" target="it.polimi.ingsw.controller.stub">
+      <point x="-31.5" y="26.0" />
+      <point x="365.875" y="296.0" />
+      <point x="314.375" y="296.0" />
+      <point x="314.375" y="263.0" />
+      <point x="-63.0" y="13.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="487.5" y="222.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+
