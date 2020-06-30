@@ -71,5 +71,4 @@ java -jar client.jar cli
 To launch the GUI you must write:
 ```
 java -jar client.jar 
-
 ```
