@@ -12,11 +12,11 @@ import java.util.Map;
 /**
  * General class that implements the basic actions of a player
  * it will be specialized after the choice of the God through the Decorator pattern
- * */
-public class Player implements PlayerInterface{
+ */
+public class Player implements PlayerInterface {
 
-    private String nickName;
-    private PlayerIndex playerNum;
+    private final String nickName;
+    private final PlayerIndex playerNum;
     private Cell oldCell;
     private Cell cellOccupied;
     private boolean cantGoUp;
