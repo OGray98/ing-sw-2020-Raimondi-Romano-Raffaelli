@@ -20,11 +20,11 @@ In this section there are all the documents used to realize the design of the ga
 
 ### UML
 The follow uml describes the structure of the project
-- [UML](https://github.com/OGray98/ing-sw-2020-Raimondi-Romano-Raffaelli/deliveries/uml)
+- [UML](https://github.com/OGray98/ing-sw-2020-Raimondi-Romano-Raffaelli/tree/master/deliveries/uml)
 
 
 ### JavaDoc
-The follow documentation describe all method and class of project with java style, it is possible to see it at this link : [Javadoc](https://github.com/OGray98/ing-sw-2020-Raimondi-Romano-Raffaelli/deliveries/javadoc)
+The follow documentation describe all method and class of project with java style, it is possible to see it at this link : [Javadoc](https://github.com/OGray98/ing-sw-2020-Raimondi-Romano-Raffaelli/tree/master/deliveries/javadoc)
 
 ### Libraries e Plugins
 |Library/Plugin|Description|
@@ -35,7 +35,7 @@ The follow documentation describe all method and class of project with java styl
 
 
 ### Jars
-The follow jars are used to launch the software, how to launch this jar are described in section called __Jar execution__, it is possible to see them at this link: [Jars](https://github.com/OGray98/ing-sw-2020-Raimondi-Romano-Raffaelli/deliveries/jar).
+The follow jars are used to launch the software, how to launch this jar are described in section called __Jar execution__, it is possible to see them at this link: [Jars](https://github.com/OGray98/ing-sw-2020-Raimondi-Romano-Raffaelli/tree/master/deliveries/jar).
 
 
 ## Test coverage
@@ -46,7 +46,7 @@ The follow jars are used to launch the software, how to launch this jar are desc
 |__controller__|94% lines coverage|
 |__message and exception__|100% lines coverage|
 
-To see a full report click on this link [Report](https://github.com/OGray98/ing-sw-2020-Raimondi-Romano-Raffaelli/deliveries/report)
+To see a full report click on this link [Report](https://github.com/OGray98/ing-sw-2020-Raimondi-Romano-Raffaelli/tree/master/deliveries/report)
 
 ## Jar execution
 
