@@ -8,14 +8,14 @@ the MVC pattern
 - [__Francesco Romanò__](https://github.com/romano-francesco)
 - [__Davide Raffaelli__](https://github.com/daxus4)
 
-##Functionalities implemented:
+## Functionalities implemented:
 - Complete rules
 - GUI
 - CLI
 - Socket
 - Advanced Gods (as advanced functionality)
 
-#Documentation
+# Documentation
 In this section there are all the documents used to realize the design of the game
 
 ### UML
@@ -38,7 +38,7 @@ The follow documentation describe all method and class of project with java styl
 The follow jars are used to launch the software, how to launch this jar are described in section called __Jar execution__, it is possible to see them at this link: [Jars](https://github.com/OGray98/ing-sw-2020-Raimondi-Romano-Raffaelli/deliveries/jar).
 
 
-##Test coverage
+## Test coverage
 
 |Package|Coverage|
 |---------------|-----------|
