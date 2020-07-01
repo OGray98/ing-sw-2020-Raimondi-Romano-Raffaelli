@@ -65,7 +65,7 @@ The follow sections describe how launch GUI or CLI.
 To launch the CLI you must launch the client with a terminal that supports UTF-8 encoding and ANSI escapes.
 This is the command to digit:
 ```
-java -jar client.jar cli
+java -jar client.jar -c
 ```
 #### GUI
 To launch the GUI you must write:
