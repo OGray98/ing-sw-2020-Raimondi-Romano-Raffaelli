@@ -68,9 +68,7 @@ public class SocketClientConnection extends Observable<MessageToServer> implemen
             socket.close();
             System.out.println("Socket connection closed");
         } catch (IOException e) {
-            System.err.println("Error closing socket client connection");
-            Logger.getAnonymousLogger().severe(e.getMessage());
-
+            System.out.println(this.clientIndex + " isn't connected");
         }
         setIsActiveFalse();
     }
