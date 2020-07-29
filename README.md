@@ -1,6 +1,6 @@
 # Prova Finale di Ingegneria del Software - a.a. 2019-2020
 
-The project is the implementation of the game [Santorini](http://www.craniocreations.it/prodotto/santorini/) through 
+The project is the implementation in Java of the game [Santorini](http://www.craniocreations.it/prodotto/santorini/) through 
 the MVC pattern
 
 ## Students
